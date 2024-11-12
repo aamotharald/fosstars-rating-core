@@ -69,7 +69,9 @@
   </distributionManagement>
 
   <properties>
-    <version.java>8</version.java>
+    <java.version>17</java.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.jackson>2.15.2</version.jackson>
     <version.commons-math3>3.6.1</version.commons-math3>
@@ -112,8 +114,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${version.maven-compiler-plugin}</version>
         <configuration>
-          <source>${version.java}</source>
-          <target>${version.java}</target>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
         </configuration>
       </plugin>
       <plugin>
@@ -134,8 +136,8 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${version.maven-javadoc-plugin}</version>
         <configuration>
-          <source>${version.java}</source>
-          <target>${version.java}</target>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
           <failOnError>true</failOnError>
           <failOnWarnings>true</failOnWarnings>
           <additionalOptions>-Xdoclint:none</additionalOptions>
