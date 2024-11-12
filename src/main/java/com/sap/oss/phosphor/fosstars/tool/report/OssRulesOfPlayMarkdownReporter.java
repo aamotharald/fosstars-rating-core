@@ -79,6 +79,38 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
     this.formatter = new OssRulesOfPlayRatingMarkdownFormatter(advisor);
   }
 
+  /**
+   * Prints a name of a project.
+   *
+   * @param project The project.
+   * @return A formatted name of the project.
+   */
+  private static String nameOf(GitHubProject project) {
+    return String.format(
+        "[%s/%s](%s)", project.organization().name(), project.name(), project.scm().toString());
+  }
+
+  /**
+   * Prints a formatted number of violated rules for a project.
+   *
+   * @param project The project.
+   * @return A formatted number of violated rules for the project.
+   */
+  private static String numberOfViolatedRulesIn(GitHubProject project) {
+    Optional<RatingValue> ratingValue = project.ratingValue();
+    if (!ratingValue.isPresent()) {
+      return "UNKNOWN";
+    }
+
+    int n = findViolatedRulesIn(ratingValue.get().scoreValue().usedValues()).size();
+
+    if (n == 0) {
+      return "No violated rules";
+    }
+
+    return String.format("%d violated rule%s", n, n > 1 ? "s" : "");
+  }
+
   @Override
   public void runFor(List<GitHubProject> projects) throws IOException {
 
@@ -227,17 +259,6 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
   }
 
   /**
-   * Prints a name of a project.
-   *
-   * @param project The project.
-   * @return A formatted name of the project.
-   */
-  private static String nameOf(GitHubProject project) {
-    return String.format(
-        "[%s/%s](%s)", project.organization().name(), project.name(), project.scm().toString());
-  }
-
-  /**
    * Prints a status of a project.
    *
    * @param project The project.
@@ -253,26 +274,5 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
             .orElse("UNKNOWN"),
         project.organization().name(),
         project.name());
-  }
-
-  /**
-   * Prints a formatted number of violated rules for a project.
-   *
-   * @param project The project.
-   * @return A formatted number of violated rules for the project.
-   */
-  private static String numberOfViolatedRulesIn(GitHubProject project) {
-    Optional<RatingValue> ratingValue = project.ratingValue();
-    if (!ratingValue.isPresent()) {
-      return "UNKNOWN";
-    }
-
-    int n = findViolatedRulesIn(ratingValue.get().scoreValue().usedValues()).size();
-
-    if (n == 0) {
-      return "No violated rules";
-    }
-
-    return String.format("%d violated rule%s", n, n > 1 ? "s" : "");
   }
 }

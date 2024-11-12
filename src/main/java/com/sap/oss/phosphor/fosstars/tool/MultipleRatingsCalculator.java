@@ -23,14 +23,14 @@ public class MultipleRatingsCalculator implements RatingCalculator {
   /** A calculator that calculates a rating for a single subject. */
   private final RatingCalculator calculator;
 
+  /** A list of subjects for which a rating couldn't be calculated. */
+  private final List<Subject> failedSubjects = new ArrayList<>();
+
   /** A cache of processed subjects. */
   private SubjectCache subjectCache = SubjectCache.empty();
 
   /** A filename where the cache of subjects should be stored. */
   private String subjectCacheFile;
-
-  /** A list of subjects for which a rating couldn't be calculated. */
-  private final List<Subject> failedSubjects = new ArrayList<>();
 
   /**
    * Initializes a new calculator that calculates ratings for multiple subjects.

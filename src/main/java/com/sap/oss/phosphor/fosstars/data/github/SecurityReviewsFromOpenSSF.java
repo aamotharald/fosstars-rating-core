@@ -66,6 +66,76 @@ public class SecurityReviewsFromOpenSSF
     super(fetcher);
   }
 
+  /**
+   * Reads review metadata from a file.
+   *
+   * @param file The file.
+   * @return Metadata if available.
+   * @throws IOException If something went wrong.
+   */
+  private static Optional<JsonNode> readMetadataFrom(Path file) throws IOException {
+    try (BufferedReader reader = Files.newBufferedReader(file)) {
+      return readMetadataFrom(reader);
+    }
+  }
+
+  /**
+   * Reads review metadata from a reader.
+   *
+   * @param reader The reader.
+   * @return Metadata if available.
+   * @throws IOException If something wrong.
+   */
+  static Optional<JsonNode> readMetadataFrom(BufferedReader reader) throws IOException {
+    String line = reader.readLine();
+    if (!"---".equals(line)) {
+      return Optional.empty();
+    }
+
+    StringBuilder metadata = new StringBuilder();
+    do {
+      metadata.append(line).append("\n");
+      line = reader.readLine();
+    } while (line != null && !"---".equals(line));
+
+    return Optional.of(Yaml.mapper().readTree(metadata.toString()));
+  }
+
+  /**
+   * Checks if a file looks like a security review.
+   *
+   * @param path A path to the file.
+   * @return True if the file looks like a security review, false otherwise.
+   */
+  private static boolean isReview(Path path) {
+    return Files.isRegularFile(path) && path.getFileName().toString().endsWith(".md");
+  }
+
+  /**
+   * This is for testing and demo purposes.
+   *
+   * @param args Command-line options (option 1: API token, option 2: project URL).
+   * @throws Exception If something went wrong.
+   */
+  public static void main(String... args) throws Exception {
+    String token = args.length > 0 ? args[0] : "";
+    String url = args.length > 1 ? args[1] : "https://github.com/madler/zlib";
+    GitHubProject project = GitHubProject.parse(url);
+    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
+    SecurityReviewsFromOpenSSF provider =
+        new SecurityReviewsFromOpenSSF(new GitHubDataFetcher(github, token));
+
+    ValueSet values = provider.fetchValuesFor(project);
+    Optional<Value<SecurityReviews>> securityReviews = values.of(SECURITY_REVIEWS);
+    if (!securityReviews.isPresent()) {
+      throw new RuntimeException("Could not find security reviews!");
+    }
+
+    for (SecurityReview review : securityReviews.get().get()) {
+      System.out.println(review);
+    }
+  }
+
   @Override
   protected Feature<SecurityReviews> supportedFeature() {
     return SECURITY_REVIEWS;
@@ -170,75 +240,5 @@ public class SecurityReviewsFromOpenSSF
     }
 
     return false;
-  }
-
-  /**
-   * Reads review metadata from a file.
-   *
-   * @param file The file.
-   * @return Metadata if available.
-   * @throws IOException If something went wrong.
-   */
-  private static Optional<JsonNode> readMetadataFrom(Path file) throws IOException {
-    try (BufferedReader reader = Files.newBufferedReader(file)) {
-      return readMetadataFrom(reader);
-    }
-  }
-
-  /**
-   * Reads review metadata from a reader.
-   *
-   * @param reader The reader.
-   * @return Metadata if available.
-   * @throws IOException If something wrong.
-   */
-  static Optional<JsonNode> readMetadataFrom(BufferedReader reader) throws IOException {
-    String line = reader.readLine();
-    if (!"---".equals(line)) {
-      return Optional.empty();
-    }
-
-    StringBuilder metadata = new StringBuilder();
-    do {
-      metadata.append(line).append("\n");
-      line = reader.readLine();
-    } while (line != null && !"---".equals(line));
-
-    return Optional.of(Yaml.mapper().readTree(metadata.toString()));
-  }
-
-  /**
-   * Checks if a file looks like a security review.
-   *
-   * @param path A path to the file.
-   * @return True if the file looks like a security review, false otherwise.
-   */
-  private static boolean isReview(Path path) {
-    return Files.isRegularFile(path) && path.getFileName().toString().endsWith(".md");
-  }
-
-  /**
-   * This is for testing and demo purposes.
-   *
-   * @param args Command-line options (option 1: API token, option 2: project URL).
-   * @throws Exception If something went wrong.
-   */
-  public static void main(String... args) throws Exception {
-    String token = args.length > 0 ? args[0] : "";
-    String url = args.length > 1 ? args[1] : "https://github.com/madler/zlib";
-    GitHubProject project = GitHubProject.parse(url);
-    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
-    SecurityReviewsFromOpenSSF provider =
-        new SecurityReviewsFromOpenSSF(new GitHubDataFetcher(github, token));
-
-    ValueSet values = provider.fetchValuesFor(project);
-    Optional<Value<SecurityReviews>> securityReviews = values.of(SECURITY_REVIEWS);
-    if (!securityReviews.isPresent()) {
-      throw new RuntimeException("Could not find security reviews!");
-    }
-
-    for (SecurityReview review : securityReviews.get().get()) {
-      System.out.println(review);
-    }
   }
 }

@@ -62,25 +62,6 @@ public class AdviceContentYamlStorage {
   }
 
   /**
-   * Returns advice for a feature in a specified context.
-   *
-   * @param feature The feature.
-   * @param context The context.
-   * @return A list of advice.
-   * @throws MalformedURLException If the method couldn't parse URLs.
-   */
-  public List<AdviceContent> adviceFor(Feature<?> feature, AdviceContext context)
-      throws MalformedURLException {
-
-    List<AdviceContent> adviceContents = new ArrayList<>();
-    for (RawAdviceContent rawAdvice : featureToContent.getOrDefault(feature.name(), emptyList())) {
-      adviceContents.add(rawAdvice.transformFor(feature, context));
-    }
-
-    return adviceContents;
-  }
-
-  /**
    * Loads advice from a resource.
    *
    * @param path A path to the resource.
@@ -102,6 +83,25 @@ public class AdviceContentYamlStorage {
     }
 
     throw new IOException(String.format("'%s' not found!", path));
+  }
+
+  /**
+   * Returns advice for a feature in a specified context.
+   *
+   * @param feature The feature.
+   * @param context The context.
+   * @return A list of advice.
+   * @throws MalformedURLException If the method couldn't parse URLs.
+   */
+  public List<AdviceContent> adviceFor(Feature<?> feature, AdviceContext context)
+      throws MalformedURLException {
+
+    List<AdviceContent> adviceContents = new ArrayList<>();
+    for (RawAdviceContent rawAdvice : featureToContent.getOrDefault(feature.name(), emptyList())) {
+      adviceContents.add(rawAdvice.transformFor(feature, context));
+    }
+
+    return adviceContents;
   }
 
   /** A link to additional info for an advice. */
@@ -187,6 +187,24 @@ public class AdviceContentYamlStorage {
       this.links = new ArrayList<>(links != null ? links : emptyList());
     }
 
+    /**
+     * Replaces variables with their values in a string.
+     *
+     * @param string The string.
+     * @param values Maps variable names to their values.
+     * @return An updated string.
+     */
+    private static String resolve(String string, Map<String, Optional<String>> values) {
+      for (Map.Entry<String, Optional<String>> entry : values.entrySet()) {
+        if (entry.getValue().isPresent()) {
+          string =
+              string.replaceAll(
+                  String.format("\\$\\{%s\\}", entry.getKey()), entry.getValue().get());
+        }
+      }
+      return string;
+    }
+
     @JsonGetter("advice")
     private String advice() {
       return advice;
@@ -256,24 +274,6 @@ public class AdviceContentYamlStorage {
       }
 
       return new AdviceContent(feature, advice, links);
-    }
-
-    /**
-     * Replaces variables with their values in a string.
-     *
-     * @param string The string.
-     * @param values Maps variable names to their values.
-     * @return An updated string.
-     */
-    private static String resolve(String string, Map<String, Optional<String>> values) {
-      for (Map.Entry<String, Optional<String>> entry : values.entrySet()) {
-        if (entry.getValue().isPresent()) {
-          string =
-              string.replaceAll(
-                  String.format("\\$\\{%s\\}", entry.getKey()), entry.getValue().get());
-        }
-      }
-      return string;
     }
 
     @Override

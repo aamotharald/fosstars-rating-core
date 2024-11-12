@@ -34,34 +34,23 @@ import org.junit.jupiter.api.Test;
 
 public class EstimateImpactUsingKnownVulnerabilitiesTest extends TestGitHubDataFetcherHolder {
 
-  private static class TestVulnerabilitiesProvider extends AbstractDataProvider {
-
-    private final Vulnerabilities vulnerabilities = new Vulnerabilities();
-
-    void add(Vulnerability vulnerability) {
-      vulnerabilities.add(vulnerability);
+  private static void assertUnknown(ValueSet values, Feature<Impact> feature) {
+    Optional<Value<Impact>> something = values.of(feature);
+    if (!something.isPresent()) {
+      fail("Could not find value!");
     }
+    Value<Impact> value = something.get();
+    assertTrue(value.isUnknown());
+  }
 
-    @Override
-    protected TestVulnerabilitiesProvider doUpdate(Subject subject, ValueSet values) {
-      values.update(VULNERABILITIES_IN_PROJECT.value(vulnerabilities));
-      return this;
+  private static void assertValue(ValueSet values, Feature<Impact> feature, Impact expectedImpact) {
+    Optional<Value<Impact>> something = values.of(feature);
+    if (!something.isPresent()) {
+      fail("Could not find value!");
     }
-
-    @Override
-    public Set<Feature<?>> supportedFeatures() {
-      return singleton(VULNERABILITIES_IN_PROJECT);
-    }
-
-    @Override
-    public boolean supports(Subject subject) {
-      return true;
-    }
-
-    @Override
-    public boolean interactive() {
-      return false;
-    }
+    Value<Impact> value = something.get();
+    assertFalse(value.isUnknown());
+    assertEquals(expectedImpact, value.get());
   }
 
   @Test
@@ -142,22 +131,33 @@ public class EstimateImpactUsingKnownVulnerabilitiesTest extends TestGitHubDataF
     assertValue(values, AVAILABILITY_IMPACT, Impact.HIGH);
   }
 
-  private static void assertUnknown(ValueSet values, Feature<Impact> feature) {
-    Optional<Value<Impact>> something = values.of(feature);
-    if (!something.isPresent()) {
-      fail("Could not find value!");
-    }
-    Value<Impact> value = something.get();
-    assertTrue(value.isUnknown());
-  }
+  private static class TestVulnerabilitiesProvider extends AbstractDataProvider {
 
-  private static void assertValue(ValueSet values, Feature<Impact> feature, Impact expectedImpact) {
-    Optional<Value<Impact>> something = values.of(feature);
-    if (!something.isPresent()) {
-      fail("Could not find value!");
+    private final Vulnerabilities vulnerabilities = new Vulnerabilities();
+
+    void add(Vulnerability vulnerability) {
+      vulnerabilities.add(vulnerability);
     }
-    Value<Impact> value = something.get();
-    assertFalse(value.isUnknown());
-    assertEquals(expectedImpact, value.get());
+
+    @Override
+    protected TestVulnerabilitiesProvider doUpdate(Subject subject, ValueSet values) {
+      values.update(VULNERABILITIES_IN_PROJECT.value(vulnerabilities));
+      return this;
+    }
+
+    @Override
+    public Set<Feature<?>> supportedFeatures() {
+      return singleton(VULNERABILITIES_IN_PROJECT);
+    }
+
+    @Override
+    public boolean supports(Subject subject) {
+      return true;
+    }
+
+    @Override
+    public boolean interactive() {
+      return false;
+    }
   }
 }

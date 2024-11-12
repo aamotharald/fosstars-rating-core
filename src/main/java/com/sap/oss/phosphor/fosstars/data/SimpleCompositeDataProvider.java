@@ -91,6 +91,16 @@ public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
     this.defaultValue = defaultValue;
   }
 
+  /**
+   * Crete a builder for configuring a new data provider.
+   *
+   * @param feature A feature that the provider should support.
+   * @return A builder.
+   */
+  public static Builder forFeature(Feature<?> feature) {
+    return new Builder(feature);
+  }
+
   @Override
   protected ValueSet fetchValuesFor(Subject subject) throws IOException {
     ValueSet values = new ValueHashSet();
@@ -144,16 +154,6 @@ public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
    */
   private boolean weAreHappyWith(ValueSet values) {
     return values.of(feature).map(value -> !value.isUnknown()).orElse(false);
-  }
-
-  /**
-   * Crete a builder for configuring a new data provider.
-   *
-   * @param feature A feature that the provider should support.
-   * @return A builder.
-   */
-  public static Builder forFeature(Feature<?> feature) {
-    return new Builder(feature);
   }
 
   /** A builder for configuring a data provider. */

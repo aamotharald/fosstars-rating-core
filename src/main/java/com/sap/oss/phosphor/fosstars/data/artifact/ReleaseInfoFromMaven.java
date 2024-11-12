@@ -23,6 +23,21 @@ import java.util.Set;
  */
 public class ReleaseInfoFromMaven extends AbstractReleaseInfoLoader {
 
+  /**
+   * Main function used for testing purpose only.
+   *
+   * @param args String array
+   * @throws IOException If something goes wrong.
+   */
+  public static void main(String[] args) throws IOException {
+    MavenArtifact mavenArtifact =
+        new MavenArtifact("com.fasterxml.jackson.core", "jackson-databind", "2.9.8", null);
+    ReleaseInfoFromMaven releaseInfoFromMaven = new ReleaseInfoFromMaven();
+    ValueSet values = new ValueHashSet();
+    releaseInfoFromMaven.update(mavenArtifact, values);
+    values.forEach(System.out::println);
+  }
+
   @Override
   public ReleaseInfoFromMaven update(Subject subject, ValueSet values) throws IOException {
     Objects.requireNonNull(values, "Oh no! Values is null!");
@@ -42,20 +57,5 @@ public class ReleaseInfoFromMaven extends AbstractReleaseInfoLoader {
   @Override
   public boolean supports(Subject subject) {
     return subject instanceof MavenArtifact;
-  }
-
-  /**
-   * Main function used for testing purpose only.
-   *
-   * @param args String array
-   * @throws IOException If something goes wrong.
-   */
-  public static void main(String[] args) throws IOException {
-    MavenArtifact mavenArtifact =
-        new MavenArtifact("com.fasterxml.jackson.core", "jackson-databind", "2.9.8", null);
-    ReleaseInfoFromMaven releaseInfoFromMaven = new ReleaseInfoFromMaven();
-    ValueSet values = new ValueHashSet();
-    releaseInfoFromMaven.update(mavenArtifact, values);
-    values.forEach(System.out::println);
   }
 }

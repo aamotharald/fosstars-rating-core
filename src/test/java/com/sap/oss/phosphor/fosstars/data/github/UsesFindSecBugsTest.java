@@ -19,6 +19,22 @@ import org.junit.jupiter.api.Test;
 
 public class UsesFindSecBugsTest extends TestGitHubDataFetcherHolder {
 
+  private static void checkValue(UsesFindSecBugs provider, boolean expectedValue)
+      throws IOException {
+
+    GitHubProject project = new GitHubProject("org", "test");
+
+    ValueSet values = new ValueHashSet();
+    provider.update(project, values);
+
+    assertEquals(1, values.size());
+    assertTrue(values.has(USES_FIND_SEC_BUGS));
+    assertTrue(values.of(USES_FIND_SEC_BUGS).isPresent());
+
+    Value<Boolean> value = values.of(USES_FIND_SEC_BUGS).get();
+    assertEquals(expectedValue, value.get());
+  }
+
   @Test
   public void testMavenWithFindSecBugs() throws IOException {
     try (InputStream is = getClass().getResourceAsStream("MavenWithFindSecBugs.xml")) {
@@ -53,21 +69,5 @@ public class UsesFindSecBugsTest extends TestGitHubDataFetcherHolder {
     provider.set(new SubjectValueCache());
 
     return provider;
-  }
-
-  private static void checkValue(UsesFindSecBugs provider, boolean expectedValue)
-      throws IOException {
-
-    GitHubProject project = new GitHubProject("org", "test");
-
-    ValueSet values = new ValueHashSet();
-    provider.update(project, values);
-
-    assertEquals(1, values.size());
-    assertTrue(values.has(USES_FIND_SEC_BUGS));
-    assertTrue(values.of(USES_FIND_SEC_BUGS).isPresent());
-
-    Value<Boolean> value = values.of(USES_FIND_SEC_BUGS).get();
-    assertEquals(expectedValue, value.get());
   }
 }

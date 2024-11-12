@@ -45,6 +45,37 @@ public class DoubleInterval implements Interval {
   }
 
   /**
+   * Check if two double numbers are equal.
+   *
+   * @param a The first number.
+   * @param b The seconds number.
+   * @return True if the numbers are equal, false otherwise.
+   */
+  private static boolean equals(double a, double b) {
+    return Math.abs(a - b) < PRECISION;
+  }
+
+  /**
+   * Initializes a builder to build an interval.
+   *
+   * @return A new builder.
+   */
+  public static DoubleIntervalBuilder init() {
+    return new DoubleIntervalBuilder();
+  }
+
+  /**
+   * Creates a closed interval.
+   *
+   * @param from A left boundary.
+   * @param to A right boundary.
+   * @return A new interval.
+   */
+  public static DoubleInterval closed(double from, double to) {
+    return new DoubleInterval(from, false, false, to, false, false);
+  }
+
+  /**
    * Get a left boundary of the interval.
    *
    * @return The left boundary.
@@ -118,11 +149,9 @@ public class DoubleInterval implements Interval {
 
     if (!positiveInfinity) {
       if (equals(x, to)) {
-        if (openRight) {
-          return false;
-        }
-      } else if (Double.compare(x, to) > 0) {
-        return false;
+        return !openRight;
+      } else {
+        return Double.compare(x, to) <= 0;
       }
     }
 
@@ -175,7 +204,7 @@ public class DoubleInterval implements Interval {
     if (this == o) {
       return true;
     }
-    if (o instanceof DoubleInterval == false) {
+    if (!(o instanceof DoubleInterval)) {
       return false;
     }
     DoubleInterval that = (DoubleInterval) o;
@@ -187,40 +216,9 @@ public class DoubleInterval implements Interval {
         && positiveInfinity == that.positiveInfinity;
   }
 
-  /**
-   * Check if two double numbers are equal.
-   *
-   * @param a The first number.
-   * @param b The seconds number.
-   * @return True if the numbers are equal, false otherwise.
-   */
-  private static boolean equals(double a, double b) {
-    return Math.abs(a - b) < PRECISION;
-  }
-
   @Override
   public int hashCode() {
     return Objects.hash(from, openLeft, negativeInfinity, to, openRight, positiveInfinity);
-  }
-
-  /**
-   * Initializes a builder to build an interval.
-   *
-   * @return A new builder.
-   */
-  public static DoubleIntervalBuilder init() {
-    return new DoubleIntervalBuilder();
-  }
-
-  /**
-   * Creates a closed interval.
-   *
-   * @param from A left boundary.
-   * @param to A right boundary.
-   * @return A new interval.
-   */
-  public static DoubleInterval closed(double from, double to) {
-    return new DoubleInterval(from, false, false, to, false, false);
   }
 
   /** A builder for an interval. */

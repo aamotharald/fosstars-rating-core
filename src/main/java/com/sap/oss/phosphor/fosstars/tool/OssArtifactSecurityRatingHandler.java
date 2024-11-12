@@ -132,8 +132,7 @@ public class OssArtifactSecurityRatingHandler extends AbstractHandler {
                 return Optional.of(subject);
               }
 
-              if (subject instanceof Artifact) {
-                Artifact artifact = (Artifact) subject;
+              if (subject instanceof Artifact artifact) {
                 if (artifact.project().isPresent() && provider.supports(artifact.project().get())) {
                   return Optional.of(artifact.project().get());
                 }

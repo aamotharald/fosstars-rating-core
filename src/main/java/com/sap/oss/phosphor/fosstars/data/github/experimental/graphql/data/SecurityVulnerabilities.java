@@ -20,7 +20,8 @@ public class SecurityVulnerabilities {
   @JsonProperty("nodes")
   private List<Node> nodes = null;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("pageInfo")
   public PageInfo getPageInfo() {

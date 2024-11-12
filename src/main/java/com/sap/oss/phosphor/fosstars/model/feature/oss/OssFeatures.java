@@ -18,9 +18,6 @@ import java.util.Date;
 /** This class holds a list of features for open-source projects. */
 public class OssFeatures {
 
-  /** Don't allow creating instances of this class. */
-  private OssFeatures() {}
-
   /** Holds a list of artifact versions released by an open source project. */
   public static final Feature<ArtifactVersions> RELEASED_ARTIFACT_VERSIONS =
       new ArtifactVersionsFeature("Released artifact versions");
@@ -485,4 +482,7 @@ public class OssFeatures {
   /** Shows how many projects use a project on GitHub. */
   public static final PositiveIntegerFeature NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB =
       new PositiveIntegerFeature("Number of projects on GitHub that use an open source project");
+
+  /** Don't allow creating instances of this class. */
+  private OssFeatures() {}
 }

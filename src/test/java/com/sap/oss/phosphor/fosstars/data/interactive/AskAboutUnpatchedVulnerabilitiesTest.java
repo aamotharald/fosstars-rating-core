@@ -16,6 +16,23 @@ import org.junit.jupiter.api.Test;
 
 public class AskAboutUnpatchedVulnerabilitiesTest {
 
+  private static void testProvider(
+      Vulnerabilities expectedVulnerabilities,
+      AskAboutUnpatchedVulnerabilities provider,
+      UserCallback callback) {
+
+    ValueSet values = new ValueHashSet();
+    provider.set(NoValueCache.create());
+    provider.set(callback);
+    GitHubProject project = new GitHubProject("org", "test");
+    provider.ask(project, values);
+    assertEquals(1, values.size());
+    assertTrue(values.has(VULNERABILITIES_IN_PROJECT));
+    assertTrue(values.of(VULNERABILITIES_IN_PROJECT).isPresent());
+    Value<Vulnerabilities> value = values.of(VULNERABILITIES_IN_PROJECT).get();
+    assertEquals(expectedVulnerabilities, value.get());
+  }
+
   @Test
   public void twoVulnerabilities() {
     final String firstIssueId = "https://github.com/org/test/issues/1";
@@ -32,22 +49,5 @@ public class AskAboutUnpatchedVulnerabilitiesTest {
   public void noVulnerabilities() {
     testProvider(
         new Vulnerabilities(), new AskAboutUnpatchedVulnerabilities(), new TestUserCallback("no"));
-  }
-
-  private static void testProvider(
-      Vulnerabilities expectedVulnerabilities,
-      AskAboutUnpatchedVulnerabilities provider,
-      UserCallback callback) {
-
-    ValueSet values = new ValueHashSet();
-    provider.set(NoValueCache.create());
-    provider.set(callback);
-    GitHubProject project = new GitHubProject("org", "test");
-    provider.ask(project, values);
-    assertEquals(1, values.size());
-    assertTrue(values.has(VULNERABILITIES_IN_PROJECT));
-    assertTrue(values.of(VULNERABILITIES_IN_PROJECT).isPresent());
-    Value<Vulnerabilities> value = values.of(VULNERABILITIES_IN_PROJECT).get();
-    assertEquals(expectedVulnerabilities, value.get());
   }
 }

@@ -45,7 +45,7 @@ public class OwaspDependencyCheckCvssThresholdValue extends DoubleValue {
     if (this == o) {
       return true;
     }
-    if (o instanceof OwaspDependencyCheckCvssThresholdValue == false) {
+    if (!(o instanceof OwaspDependencyCheckCvssThresholdValue)) {
       return false;
     }
     if (!super.equals(o)) {

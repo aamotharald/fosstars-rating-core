@@ -30,6 +30,41 @@ public class OwaspDependencyCheckAdvisor extends AbstractOssAdvisor {
     super(OssAdviceContentYamlStorage.DEFAULT, contextFactory);
   }
 
+  /**
+   * Checks if a value is {@link
+   * com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsageValue} and it is equal to
+   * {@link com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage#MANDATORY}.
+   *
+   * @param value The value to be checked.
+   * @return True is the value is equal to {@link
+   *     com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage#MANDATORY}, false
+   *     otherwise.
+   */
+  private static boolean notMandatoryOwaspDependencyCheck(Value<?> value) {
+    return !value.isUnknown()
+        && value instanceof OwaspDependencyCheckUsageValue
+        && MANDATORY != value.get();
+  }
+
+  /**
+   * Check if a value is {@link OwaspDependencyCheckCvssThresholdValue} and a threshold is
+   * specified.
+   *
+   * @param value The value to be checked.
+   * @return True if the threshold for OWASP Dependency Check is specified.
+   */
+  private static boolean noThresholdForOwaspDependencyCheck(Value<?> value) {
+    if (value.isUnknown()) {
+      return false;
+    }
+
+    if (value instanceof OwaspDependencyCheckCvssThresholdValue thresholdValue) {
+      return !thresholdValue.specified();
+    }
+
+    return false;
+  }
+
   @Override
   protected List<Advice> adviceFor(
       Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
@@ -61,42 +96,5 @@ public class OwaspDependencyCheckAdvisor extends AbstractOssAdvisor {
             OwaspDependencyCheckAdvisor::noThresholdForOwaspDependencyCheck));
 
     return advice;
-  }
-
-  /**
-   * Checks if a value is {@link
-   * com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsageValue} and it is equal to
-   * {@link com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage#MANDATORY}.
-   *
-   * @param value The value to be checked.
-   * @return True is the value is equal to {@link
-   *     com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage#MANDATORY}, false
-   *     otherwise.
-   */
-  private static boolean notMandatoryOwaspDependencyCheck(Value<?> value) {
-    return !value.isUnknown()
-        && value instanceof OwaspDependencyCheckUsageValue
-        && MANDATORY != value.get();
-  }
-
-  /**
-   * Check if a value is {@link OwaspDependencyCheckCvssThresholdValue} and a threshold is
-   * specified.
-   *
-   * @param value The value to be checked.
-   * @return True if the threshold for OWASP Dependency Check is specified.
-   */
-  private static boolean noThresholdForOwaspDependencyCheck(Value<?> value) {
-    if (value.isUnknown()) {
-      return false;
-    }
-
-    if (value instanceof OwaspDependencyCheckCvssThresholdValue) {
-      OwaspDependencyCheckCvssThresholdValue thresholdValue =
-          (OwaspDependencyCheckCvssThresholdValue) value;
-      return !thresholdValue.specified();
-    }
-
-    return false;
   }
 }

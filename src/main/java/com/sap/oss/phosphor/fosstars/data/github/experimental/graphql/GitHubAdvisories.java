@@ -9,6 +9,7 @@ import com.sap.oss.phosphor.fosstars.util.Json;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +60,21 @@ public class GitHubAdvisories {
    */
   public GitHubAdvisories(String gitHubToken) {
     this.gitHubToken = Objects.requireNonNull(gitHubToken, "The GitHub token cannot be null!");
+  }
+
+  /**
+   * This is for testing purpose only.
+   *
+   * @param args Command line arguments.
+   * @throws IOException if something goes wrong.
+   */
+  public static void main(String... args) throws IOException {
+    String token = System.getenv("TOKEN");
+    GitHubAdvisories gitHubAdvisories = new GitHubAdvisories(token);
+    List<Node> advisories =
+        gitHubAdvisories.advisoriesFor(
+            PackageManager.MAVEN, "com.fasterxml.jackson.core:jackson-databind");
+    System.out.println("Total count :" + advisories.size());
   }
 
   /**
@@ -184,7 +200,8 @@ public class GitHubAdvisories {
    */
   private String load(String file) throws IOException {
     try (final InputStream is = getClass().getResourceAsStream(file)) {
-      return IOUtils.toString(is, "UTF-8").replaceAll("(\\r|\\n)", StringUtils.EMPTY);
+      return IOUtils.toString(is, StandardCharsets.UTF_8)
+          .replaceAll("(\\r|\\n)", StringUtils.EMPTY);
     }
   }
 
@@ -231,20 +248,5 @@ public class GitHubAdvisories {
       }
     }
     return false;
-  }
-
-  /**
-   * This is for testing purpose only.
-   *
-   * @param args Command line arguments.
-   * @throws IOException if something goes wrong.
-   */
-  public static void main(String... args) throws IOException {
-    String token = System.getenv("TOKEN");
-    GitHubAdvisories gitHubAdvisories = new GitHubAdvisories(token);
-    List<Node> advisories =
-        gitHubAdvisories.advisoriesFor(
-            PackageManager.MAVEN, "com.fasterxml.jackson.core:jackson-databind");
-    System.out.println("Total count :" + advisories.size());
   }
 }

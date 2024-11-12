@@ -14,12 +14,6 @@ import org.junit.jupiter.api.Test;
 
 public class EnumValueTest {
 
-  private enum TestEnum {
-    A,
-    B,
-    C
-  }
-
   @Test
   public void smokeTest() {
     EnumFeature<TestEnum> feature = new EnumFeature<>(TestEnum.class, "feature");
@@ -69,5 +63,11 @@ public class EnumValueTest {
     assertNotNull(clone);
     assertEquals(a, clone);
     assertEquals(a.hashCode(), clone.hashCode());
+  }
+
+  private enum TestEnum {
+    A,
+    B,
+    C
   }
 }

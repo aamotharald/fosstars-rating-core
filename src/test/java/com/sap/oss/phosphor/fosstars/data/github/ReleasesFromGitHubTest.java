@@ -39,7 +39,7 @@ public class ReleasesFromGitHubTest extends TestGitHubDataFetcherHolder {
     when(release.getName()).thenReturn("2.0.0");
     when(release.getPublished_at()).thenReturn(new Date());
 
-    List<GHRelease> releaselist = Arrays.asList(release);
+    List<GHRelease> releaselist = List.of(release);
     when(pagedIterable.toList()).thenReturn(releaselist);
     when(repository.listReleases()).thenReturn(pagedIterable);
 
@@ -76,7 +76,7 @@ public class ReleasesFromGitHubTest extends TestGitHubDataFetcherHolder {
     when(commit.getCommitDate()).thenReturn(new Date());
     when(tag.getCommit()).thenReturn(commit);
 
-    List<GHTag> tagList = Arrays.asList(tag);
+    List<GHTag> tagList = List.of(tag);
     when(pagedTagIterable.toList()).thenReturn(tagList);
     when(repository.listTags()).thenReturn(pagedTagIterable);
 

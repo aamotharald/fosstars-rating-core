@@ -60,6 +60,20 @@ public class ReleaseInfoLoader extends AbstractReleaseInfoLoader {
             releaseInfoFromNpm, "Oh no! You gave me a null instead of a ReleaseInfoFromNpm!");
   }
 
+  /**
+   * Checks if the values contain the known feature {@link
+   * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}.
+   *
+   * @param values The {@link ValueSet}.
+   * @return true if the values has the feature {@link
+   *     com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures #RELEASED_ARTIFACT_VERSIONS}.
+   *     Otherwise false.
+   */
+  private static boolean hasFeatureIn(ValueSet values) {
+    return values.of(RELEASED_ARTIFACT_VERSIONS).isPresent()
+        && !values.of(RELEASED_ARTIFACT_VERSIONS).get().isUnknown();
+  }
+
   @Override
   public ReleaseInfoLoader update(Subject subject, ValueSet values) throws IOException {
     Objects.requireNonNull(subject, "Oh no! Subject cannot be null");
@@ -70,9 +84,9 @@ public class ReleaseInfoLoader extends AbstractReleaseInfoLoader {
     }
 
     if (subject instanceof MavenArtifact) {
-      releaseInfoFromMaven.update((MavenArtifact) subject, values);
+      releaseInfoFromMaven.update(subject, values);
     } else if (subject instanceof NpmArtifact) {
-      releaseInfoFromNpm.update((NpmArtifact) subject, values);
+      releaseInfoFromNpm.update(subject, values);
     }
 
     Optional<GitHubProject> project = projectOf(subject);
@@ -103,20 +117,6 @@ public class ReleaseInfoLoader extends AbstractReleaseInfoLoader {
     }
 
     return Optional.empty();
-  }
-
-  /**
-   * Checks if the values contain the known feature {@link
-   * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}.
-   *
-   * @param values The {@link ValueSet}.
-   * @return true if the values has the feature {@link
-   *     com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures #RELEASED_ARTIFACT_VERSIONS}.
-   *     Otherwise false.
-   */
-  private static boolean hasFeatureIn(ValueSet values) {
-    return values.of(RELEASED_ARTIFACT_VERSIONS).isPresent()
-        && !values.of(RELEASED_ARTIFACT_VERSIONS).get().isUnknown();
   }
 
   @Override

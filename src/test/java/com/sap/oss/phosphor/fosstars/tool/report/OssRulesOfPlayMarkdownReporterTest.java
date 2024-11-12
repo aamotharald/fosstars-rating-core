@@ -32,6 +32,20 @@ import org.junit.jupiter.api.Test;
 
 public class OssRulesOfPlayMarkdownReporterTest {
 
+  private static int linesWith(String string, String content) throws IOException {
+    BufferedReader reader = new BufferedReader(new StringReader(content));
+
+    String line;
+    int n = 0;
+    while ((line = reader.readLine()) != null) {
+      if (line.contains(string)) {
+        n++;
+      }
+    }
+
+    return n;
+  }
+
   @Test
   public void testReport() throws IOException {
     Path outputDirectory =
@@ -67,11 +81,7 @@ public class OssRulesOfPlayMarkdownReporterTest {
       failedProject2.set(
           new RatingValue(
               new ScoreValue(
-                      rating.score(),
-                      Score.MIN,
-                      Weight.MAX,
-                      Confidence.MIN,
-                      Arrays.asList(failedReadme))
+                      rating.score(), Score.MIN, Weight.MAX, Confidence.MIN, List.of(failedReadme))
                   .set(Score.MIN)
                   .confidence(8.0),
               FAILED));
@@ -122,19 +132,5 @@ public class OssRulesOfPlayMarkdownReporterTest {
     } finally {
       FileUtils.forceDeleteOnExit(outputDirectory.toFile());
     }
-  }
-
-  private static int linesWith(String string, String content) throws IOException {
-    BufferedReader reader = new BufferedReader(new StringReader(content));
-
-    String line;
-    int n = 0;
-    while ((line = reader.readLine()) != null) {
-      if (line.contains(string)) {
-        n++;
-      }
-    }
-
-    return n;
   }
 }

@@ -19,7 +19,8 @@ public class Identifier {
   @JsonProperty("type")
   private String type;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("value")
   public String getValue() {

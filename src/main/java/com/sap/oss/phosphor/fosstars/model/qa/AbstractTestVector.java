@@ -57,6 +57,33 @@ public abstract class AbstractTestVector implements TestVector {
     this.expectedNotApplicableScore = expectedNotApplicableScore;
   }
 
+  /**
+   * Looks for a sub-score in a score.
+   *
+   * @param score The score.
+   * @param scoreClassName A class name of the sub-score.
+   * @return The sub-score if it's found.
+   * @throws IllegalArgumentException If no sub-score found.
+   */
+  static Optional<Score> subScoreIn(Score score, String scoreClassName) {
+    Class<? extends Score> scoreClass = score.getClass();
+    if (scoreClassName.equals(scoreClass.getName())
+        || scoreClassName.equals(scoreClass.getSimpleName())
+        || scoreClassName.equals(scoreClass.getCanonicalName())) {
+
+      return Optional.of(score);
+    }
+
+    for (Score subScore : score.subScores()) {
+      Optional<Score> result = subScoreIn(subScore, scoreClassName);
+      if (result.isPresent()) {
+        return result;
+      }
+    }
+
+    return Optional.empty();
+  }
+
   @Override
   @JsonGetter("expectedScore")
   public final Interval expectedScore() {
@@ -97,7 +124,7 @@ public abstract class AbstractTestVector implements TestVector {
     if (this == o) {
       return true;
     }
-    if (o instanceof AbstractTestVector == false) {
+    if (!(o instanceof AbstractTestVector)) {
       return false;
     }
     AbstractTestVector that = (AbstractTestVector) o;
@@ -112,32 +139,5 @@ public abstract class AbstractTestVector implements TestVector {
   public int hashCode() {
     return Objects.hash(
         expectedScore, expectedUnknownScore, expectedNotApplicableScore, expectedLabel, alias);
-  }
-
-  /**
-   * Looks for a sub-score in a score.
-   *
-   * @param score The score.
-   * @param scoreClassName A class name of the sub-score.
-   * @return The sub-score if it's found.
-   * @throws IllegalArgumentException If no sub-score found.
-   */
-  static Optional<Score> subScoreIn(Score score, String scoreClassName) {
-    Class<? extends Score> scoreClass = score.getClass();
-    if (scoreClassName.equals(scoreClass.getName())
-        || scoreClassName.equals(scoreClass.getSimpleName())
-        || scoreClassName.equals(scoreClass.getCanonicalName())) {
-
-      return Optional.of(score);
-    }
-
-    for (Score subScore : score.subScores()) {
-      Optional<Score> result = subScoreIn(subScore, scoreClassName);
-      if (result.isPresent()) {
-        return result;
-      }
-    }
-
-    return Optional.empty();
   }
 }

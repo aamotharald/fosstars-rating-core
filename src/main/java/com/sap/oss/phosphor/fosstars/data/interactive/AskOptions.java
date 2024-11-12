@@ -33,6 +33,17 @@ public class AskOptions<T extends Enum<T>> extends AbstractInteractiveDataProvid
     this.enumClass = requireNonNull(enumClass, "Oops! Options is null!");
   }
 
+  /**
+   * Create a builder for configuring a data provider.
+   *
+   * @param feature A feature that the provider should support.
+   * @param <T> A type of data that the feature holds.
+   * @return A builder.
+   */
+  public static <T extends Enum<T>> Builder<T> forFeature(Feature<T> feature) {
+    return new Builder<>(feature);
+  }
+
   @Override
   public Set<Feature<?>> supportedFeatures() {
     return singleton(feature);
@@ -49,17 +60,6 @@ public class AskOptions<T extends Enum<T>> extends AbstractInteractiveDataProvid
     T reply = select.ask();
     values.update(feature.value(reply));
     return this;
-  }
-
-  /**
-   * Create a builder for configuring a data provider.
-   *
-   * @param feature A feature that the provider should support.
-   * @param <T> A type of data that the feature holds.
-   * @return A builder.
-   */
-  public static <T extends Enum<T>> Builder<T> forFeature(Feature<T> feature) {
-    return new Builder<>(feature);
   }
 
   /**

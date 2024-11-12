@@ -20,17 +20,6 @@ import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
  */
 public class RiskLikelihoodCoefficient extends WeightedCompositeScore {
 
-  /**
-   * Initializes weights for sub-scores.
-   *
-   * @return The weights of sub-scores.
-   */
-  private static ScoreWeights initWeights() {
-    return ScoreWeights.empty()
-        .set(OssSecurityScore.class, new ImmutableWeight(0.8))
-        .set(AdoptedRiskLikelihoodFactor.class, new ImmutableWeight(0.2));
-  }
-
   /** Creates a new scoring function with default parameters. */
   RiskLikelihoodCoefficient() {
     this(new OssSecurityScore(), new AdoptedRiskLikelihoodFactor());
@@ -49,6 +38,17 @@ public class RiskLikelihoodCoefficient extends WeightedCompositeScore {
         "Likelihood coefficient for security risk of open source project",
         setOf(ossSecurityScore, adoptedRiskLikelihoodFactor),
         initWeights());
+  }
+
+  /**
+   * Initializes weights for sub-scores.
+   *
+   * @return The weights of sub-scores.
+   */
+  private static ScoreWeights initWeights() {
+    return ScoreWeights.empty()
+        .set(OssSecurityScore.class, new ImmutableWeight(0.8))
+        .set(AdoptedRiskLikelihoodFactor.class, new ImmutableWeight(0.2));
   }
 
   @Override

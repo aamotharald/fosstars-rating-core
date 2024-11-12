@@ -51,7 +51,7 @@ public class Reference {
     if (this == o) {
       return true;
     }
-    if (o instanceof Reference == false) {
+    if (!(o instanceof Reference)) {
       return false;
     }
     Reference reference = (Reference) o;

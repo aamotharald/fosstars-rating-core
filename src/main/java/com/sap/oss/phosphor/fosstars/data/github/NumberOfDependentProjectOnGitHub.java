@@ -31,6 +31,33 @@ public class NumberOfDependentProjectOnGitHub
     super(fetcher);
   }
 
+  /**
+   * Try to extract an integer from a string.
+   *
+   * @param s The string.
+   * @return An integer.
+   * @throws NumberFormatException If the string doesn't have an integer.
+   */
+  static int numberFrom(String s) throws NumberFormatException {
+    return Integer.parseInt(s.replaceAll("[,+\\s+]", EMPTY));
+  }
+
+  /**
+   * This is for testing and demo purposes.
+   *
+   * @param args Command-line options (option 1: API token, option 2: project URL).
+   * @throws Exception If something went wrong.
+   */
+  public static void main(String... args) throws Exception {
+    String token = args.length > 0 ? args[0] : "";
+    String url = args.length > 1 ? args[1] : "https://github.com/FasterXML/jackson-databind";
+    GitHubProject project = GitHubProject.parse(url);
+    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
+    NumberOfDependentProjectOnGitHub provider =
+        new NumberOfDependentProjectOnGitHub(new GitHubDataFetcher(github, token));
+    System.out.println(provider.fetchValueFor(project));
+  }
+
   @Override
   protected Feature<Integer> supportedFeature() {
     return NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB;
@@ -76,32 +103,5 @@ public class NumberOfDependentProjectOnGitHub
   Element loadFrontPageOf(GitHubProject project) throws IOException {
     String url = format("https://github.com/%s/%s", project.organization().name(), project.name());
     return Jsoup.connect(url).get();
-  }
-
-  /**
-   * Try to extract an integer from a string.
-   *
-   * @param s The string.
-   * @return An integer.
-   * @throws NumberFormatException If the string doesn't have an integer.
-   */
-  static int numberFrom(String s) throws NumberFormatException {
-    return Integer.parseInt(s.replaceAll("[,+\\s+]", EMPTY));
-  }
-
-  /**
-   * This is for testing and demo purposes.
-   *
-   * @param args Command-line options (option 1: API token, option 2: project URL).
-   * @throws Exception If something went wrong.
-   */
-  public static void main(String... args) throws Exception {
-    String token = args.length > 0 ? args[0] : "";
-    String url = args.length > 1 ? args[1] : "https://github.com/FasterXML/jackson-databind";
-    GitHubProject project = GitHubProject.parse(url);
-    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
-    NumberOfDependentProjectOnGitHub provider =
-        new NumberOfDependentProjectOnGitHub(new GitHubDataFetcher(github, token));
-    System.out.println(provider.fetchValueFor(project));
   }
 }

@@ -71,34 +71,6 @@ import org.junit.jupiter.api.Test;
 
 public class OssSecurityScoreTest {
 
-  @Test
-  public void testSerializeAndDeserialize() throws IOException {
-    OssSecurityScore score = new OssSecurityScore();
-    byte[] bytes = Json.toBytes(score);
-    assertNotNull(bytes);
-    assertTrue(bytes.length > 0);
-    OssSecurityScore clone = Json.read(bytes, OssSecurityScore.class);
-    assertEquals(score, clone);
-  }
-
-  @Test
-  public void testCalculateForAllUnknown() {
-    Score score = new OssSecurityScore();
-    ScoreValue scoreValue = score.calculate(Utils.allUnknown(score.allFeatures()));
-    assertTrue(scoreValue.isUnknown());
-    assertEquals(Confidence.MIN, scoreValue.confidence(), DELTA);
-    checkUsedValues(scoreValue);
-  }
-
-  @Test
-  public void testCalculate() {
-    Score score = new OssSecurityScore();
-    ScoreValue scoreValue = score.calculate(defaultValues());
-    assertTrue(Score.INTERVAL.contains(scoreValue.get()));
-    assertEquals(Confidence.MAX, scoreValue.confidence(), DELTA);
-    checkUsedValues(scoreValue);
-  }
-
   public static Set<Value<?>> defaultValues() {
     return setOf(
         SUPPORTED_BY_COMPANY.value(false),
@@ -161,5 +133,33 @@ public class OssSecurityScoreTest {
         fail("Unexpected value: " + value.feature().getClass());
       }
     }
+  }
+
+  @Test
+  public void testSerializeAndDeserialize() throws IOException {
+    OssSecurityScore score = new OssSecurityScore();
+    byte[] bytes = Json.toBytes(score);
+    assertNotNull(bytes);
+    assertTrue(bytes.length > 0);
+    OssSecurityScore clone = Json.read(bytes, OssSecurityScore.class);
+    assertEquals(score, clone);
+  }
+
+  @Test
+  public void testCalculateForAllUnknown() {
+    Score score = new OssSecurityScore();
+    ScoreValue scoreValue = score.calculate(Utils.allUnknown(score.allFeatures()));
+    assertTrue(scoreValue.isUnknown());
+    assertEquals(Confidence.MIN, scoreValue.confidence(), DELTA);
+    checkUsedValues(scoreValue);
+  }
+
+  @Test
+  public void testCalculate() {
+    Score score = new OssSecurityScore();
+    ScoreValue scoreValue = score.calculate(defaultValues());
+    assertTrue(Score.INTERVAL.contains(scoreValue.get()));
+    assertEquals(Confidence.MAX, scoreValue.confidence(), DELTA);
+    checkUsedValues(scoreValue);
   }
 }

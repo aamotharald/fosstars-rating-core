@@ -43,6 +43,20 @@ public class PrettyPrinter extends CommonFormatter {
     DECIMAL_FORMAT.setMaximumFractionDigits(2);
   }
 
+  /** A flag that turns on verbose output. */
+  private final boolean verbose;
+
+  /**
+   * Creates a new {@link PrettyPrinter}.
+   *
+   * @param verbose A flag that turns on verbose output.
+   * @param advisor An advisor.
+   */
+  private PrettyPrinter(boolean verbose, Advisor advisor) {
+    super(advisor);
+    this.verbose = verbose;
+  }
+
   /**
    * Creates a new {@link PrettyPrinter} that doesn't print all the details.
    *
@@ -62,18 +76,53 @@ public class PrettyPrinter extends CommonFormatter {
     return new PrettyPrinter(true, advisor);
   }
 
-  /** A flag that turns on verbose output. */
-  private final boolean verbose;
+  /**
+   * Prints an actual value of a score value. The method takes care about unknown and not-applicable
+   * score values.
+   *
+   * @param scoreValue The score value.
+   * @return A string that represents the score value.
+   */
+  public static String tellMeActualValueOf(ScoreValue scoreValue) {
+    if (scoreValue.isNotApplicable()) {
+      return "N/A";
+    }
+
+    if (scoreValue.isUnknown()) {
+      return "unknown";
+    }
+
+    return printValueAndMax(scoreValue.get(), Score.MAX);
+  }
 
   /**
-   * Creates a new {@link PrettyPrinter}.
+   * Prints out a number with its max value.
    *
-   * @param verbose A flag that turns on verbose output.
-   * @param advisor An advisor.
+   * @param value The number.
+   * @param max The max value.
+   * @return A formatted string with the number and max value.
    */
-  private PrettyPrinter(boolean verbose, Advisor advisor) {
-    super(advisor);
-    this.verbose = verbose;
+  public static String printValueAndMax(double value, double max) {
+    return String.format(
+        "%-4s out of %4s", DECIMAL_FORMAT.format(value), DECIMAL_FORMAT.format(max));
+  }
+
+  /**
+   * Adds a number of specified characters to the end of a string to make it fit to the specified
+   * length.
+   *
+   * @param string The original string.
+   * @param c The character to be appended.
+   * @param length The final length of the string.
+   * @return A string with appended characters if the length of the original string is less than the
+   *     specified length, otherwise the original string.
+   */
+  private static String append(String string, char c, int length) {
+    StringBuilder sb = new StringBuilder(string);
+    while (sb.length() <= length) {
+      sb.append(c);
+    }
+    return sb.toString();
   }
 
   @Override
@@ -92,20 +141,18 @@ public class PrettyPrinter extends CommonFormatter {
    * @return A formatted rating value.
    */
   public String print(RatingValue ratingValue) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(String.format("Here is how the rating was calculated:%n"));
-    sb.append(print(ratingValue.scoreValue(), INDENT_STEP, true, new HashSet<>()));
-    sb.append("\n");
-    sb.append(
-        String.format(
-            "Rating:     %s -> %s%n",
-            tellMeActualValueOf(ratingValue.scoreValue()), ratingValue.label()));
-    sb.append(
-        String.format(
-            "Confidence: %s (%s)%n",
-            confidenceLabelFor(ratingValue.confidence()),
-            printValueAndMax(ratingValue.confidence(), Confidence.MAX)));
-    return sb.toString();
+    String sb =
+        String.format("Here is how the rating was calculated:%n")
+            + print(ratingValue.scoreValue(), INDENT_STEP, true, new HashSet<>())
+            + "\n"
+            + String.format(
+                "Rating:     %s -> %s%n",
+                tellMeActualValueOf(ratingValue.scoreValue()), ratingValue.label())
+            + String.format(
+                "Confidence: %s (%s)%n",
+                confidenceLabelFor(ratingValue.confidence()),
+                printValueAndMax(ratingValue.confidence(), Confidence.MAX));
+    return sb;
   }
 
   /**
@@ -313,54 +360,5 @@ public class PrettyPrinter extends CommonFormatter {
    */
   private boolean shouldPrint(List<Value<?>> featureValues) {
     return verbose && !featureValues.isEmpty();
-  }
-
-  /**
-   * Prints an actual value of a score value. The method takes care about unknown and not-applicable
-   * score values.
-   *
-   * @param scoreValue The score value.
-   * @return A string that represents the score value.
-   */
-  public static String tellMeActualValueOf(ScoreValue scoreValue) {
-    if (scoreValue.isNotApplicable()) {
-      return "N/A";
-    }
-
-    if (scoreValue.isUnknown()) {
-      return "unknown";
-    }
-
-    return printValueAndMax(scoreValue.get(), Score.MAX);
-  }
-
-  /**
-   * Prints out a number with its max value.
-   *
-   * @param value The number.
-   * @param max The max value.
-   * @return A formatted string with the number and max value.
-   */
-  public static String printValueAndMax(double value, double max) {
-    return String.format(
-        "%-4s out of %4s", DECIMAL_FORMAT.format(value), DECIMAL_FORMAT.format(max));
-  }
-
-  /**
-   * Adds a number of specified characters to the end of a string to make it fit to the specified
-   * length.
-   *
-   * @param string The original string.
-   * @param c The character to be appended.
-   * @param length The final length of the string.
-   * @return A string with appended characters if the length of the original string is less than the
-   *     specified length, otherwise the original string.
-   */
-  private static String append(String string, char c, int length) {
-    StringBuilder sb = new StringBuilder(string);
-    while (sb.length() <= length) {
-      sb.append(c);
-    }
-    return sb.toString();
   }
 }

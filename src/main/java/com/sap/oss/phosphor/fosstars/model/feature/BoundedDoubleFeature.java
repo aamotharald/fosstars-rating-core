@@ -55,7 +55,7 @@ public class BoundedDoubleFeature extends AbstractFeature<Double> {
     if (this == o) {
       return true;
     }
-    if (o instanceof BoundedDoubleFeature == false) {
+    if (!(o instanceof BoundedDoubleFeature)) {
       return false;
     }
     if (!super.equals(o)) {

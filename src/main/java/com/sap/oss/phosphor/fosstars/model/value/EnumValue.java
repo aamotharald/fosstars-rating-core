@@ -44,7 +44,7 @@ public class EnumValue<T extends Enum<T>> extends AbstractKnownValue<T> {
     if (this == o) {
       return true;
     }
-    if (o instanceof EnumValue == false) {
+    if (!(o instanceof EnumValue)) {
       return false;
     }
     if (!super.equals(o)) {

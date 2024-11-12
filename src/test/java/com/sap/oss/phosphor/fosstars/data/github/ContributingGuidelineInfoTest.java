@@ -23,6 +23,13 @@ import org.junit.jupiter.api.Test;
 
 public class ContributingGuidelineInfoTest extends TestGitHubDataFetcherHolder {
 
+  private static void checkValue(ValueSet values, Feature<Boolean> feature, boolean expected) {
+    Optional<Value<Boolean>> something = values.of(feature);
+    assertTrue(something.isPresent());
+    Value<Boolean> value = something.get();
+    assertEquals(expected, value.get());
+  }
+
   @Test
   public void testSupportedFeatures() throws IOException {
     ContributingGuidelineInfo provider = new ContributingGuidelineInfo(fetcher);
@@ -137,12 +144,5 @@ public class ContributingGuidelineInfoTest extends TestGitHubDataFetcherHolder {
     } finally {
       FileUtils.forceDeleteOnExit(config.toFile());
     }
-  }
-
-  private static void checkValue(ValueSet values, Feature<Boolean> feature, boolean expected) {
-    Optional<Value<Boolean>> something = values.of(feature);
-    assertTrue(something.isPresent());
-    Value<Boolean> value = something.get();
-    assertEquals(expected, value.get());
   }
 }

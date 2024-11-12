@@ -25,14 +25,14 @@ import org.kohsuke.github.GitHub;
  */
 public class GitHubProjectFinder {
 
+  /** An empty exclude list. */
+  static final List<String> EMPTY_EXCLUDE_LIST = Collections.emptyList();
+
   /** The default minimal number of stars. */
   private static final int DEFAULT_STARS = 0;
 
   /** A page size for requests to GitHub. */
   private static final int PAGE_SIZE = 100;
-
-  /** An empty exclude list. */
-  static final List<String> EMPTY_EXCLUDE_LIST = Collections.emptyList();
 
   /** An interface to GitHub. */
   private final GitHub github;
@@ -332,7 +332,7 @@ public class GitHubProjectFinder {
       if (this == o) {
         return true;
       }
-      if (o instanceof OrganizationConfig == false) {
+      if (!(o instanceof OrganizationConfig)) {
         return false;
       }
       OrganizationConfig that = (OrganizationConfig) o;
@@ -375,7 +375,7 @@ public class GitHubProjectFinder {
       if (this == o) {
         return true;
       }
-      if (o instanceof ProjectConfig == false) {
+      if (!(o instanceof ProjectConfig)) {
         return false;
       }
       ProjectConfig that = (ProjectConfig) o;

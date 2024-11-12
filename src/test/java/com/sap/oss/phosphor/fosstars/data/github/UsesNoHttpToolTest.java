@@ -19,6 +19,22 @@ import org.junit.jupiter.api.Test;
 
 public class UsesNoHttpToolTest extends TestGitHubDataFetcherHolder {
 
+  private static void checkValue(UsesNoHttpTool provider, boolean expectedValue)
+      throws IOException {
+
+    GitHubProject project = new GitHubProject("org", "test");
+
+    ValueSet values = new ValueHashSet();
+    provider.update(project, values);
+
+    assertEquals(1, values.size());
+    assertTrue(values.has(USES_NOHTTP));
+    assertTrue(values.of(USES_NOHTTP).isPresent());
+
+    Value<Boolean> value = values.of(USES_NOHTTP).get();
+    assertEquals(expectedValue, value.get());
+  }
+
   @Test
   public void testMavenWithNoHttp() throws IOException {
     try (InputStream is = getClass().getResourceAsStream("MavenCheckStyleWithNoHttp.xml")) {
@@ -67,21 +83,5 @@ public class UsesNoHttpToolTest extends TestGitHubDataFetcherHolder {
     provider.set(new SubjectValueCache());
 
     return provider;
-  }
-
-  private static void checkValue(UsesNoHttpTool provider, boolean expectedValue)
-      throws IOException {
-
-    GitHubProject project = new GitHubProject("org", "test");
-
-    ValueSet values = new ValueHashSet();
-    provider.update(project, values);
-
-    assertEquals(1, values.size());
-    assertTrue(values.has(USES_NOHTTP));
-    assertTrue(values.of(USES_NOHTTP).isPresent());
-
-    Value<Boolean> value = values.of(USES_NOHTTP).get();
-    assertEquals(expectedValue, value.get());
   }
 }

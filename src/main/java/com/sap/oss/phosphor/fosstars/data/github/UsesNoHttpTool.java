@@ -35,6 +35,40 @@ public class UsesNoHttpTool extends CachedSingleFeatureGitHubDataProvider<Boolea
     super(fetcher);
   }
 
+  /**
+   * Check if a plugin is maven-checkstyle-plugin with nohttp.
+   *
+   * @param plugin The plugin to be checked.
+   * @return True if the plugin runs nohttp, false otherwise.
+   * @see <a href="https://github.com/spring-io/nohttp/tree/master/samples/nohttp-maven-sample">Demo
+   *     of using nohttp checkstyle with Maven</a>
+   */
+  private static boolean isNoHttp(Plugin plugin) {
+
+    // first, check if the plugin is maven-checkstyle-plugin
+    if (!"org.apache.maven.plugins".equals(plugin.getGroupId())
+        || !"maven-checkstyle-plugin".equals(plugin.getArtifactId())) {
+
+      return false;
+    }
+
+    // next, check if one of the dependencies is nohttp
+    for (Dependency dependency : plugin.getDependencies()) {
+      if ("io.spring.nohttp".equals(dependency.getGroupId())
+          && "nohttp-checkstyle".equals(dependency.getArtifactId())) {
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /** Creates a new visitor for searching the nohttp tool. */
+  private static Visitor withVisitor() {
+    return new Visitor();
+  }
+
   @Override
   protected Feature<Boolean> supportedFeature() {
     return USES_NOHTTP;
@@ -90,40 +124,6 @@ public class UsesNoHttpTool extends CachedSingleFeatureGitHubDataProvider<Boolea
     }
 
     return false;
-  }
-
-  /**
-   * Check if a plugin is maven-checkstyle-plugin with nohttp.
-   *
-   * @param plugin The plugin to be checked.
-   * @return True if the plugin runs nohttp, false otherwise.
-   * @see <a href="https://github.com/spring-io/nohttp/tree/master/samples/nohttp-maven-sample">Demo
-   *     of using nohttp checkstyle with Maven</a>
-   */
-  private static boolean isNoHttp(Plugin plugin) {
-
-    // first, check if the plugin is maven-checkstyle-plugin
-    if (!"org.apache.maven.plugins".equals(plugin.getGroupId())
-        || !"maven-checkstyle-plugin".equals(plugin.getArtifactId())) {
-
-      return false;
-    }
-
-    // next, check if one of the dependencies is nohttp
-    for (Dependency dependency : plugin.getDependencies()) {
-      if ("io.spring.nohttp".equals(dependency.getGroupId())
-          && "nohttp-checkstyle".equals(dependency.getArtifactId())) {
-
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /** Creates a new visitor for searching the nohttp tool. */
-  private static Visitor withVisitor() {
-    return new Visitor();
   }
 
   /** A visitor for searching the nohttp tool. */

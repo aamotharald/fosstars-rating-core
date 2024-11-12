@@ -50,9 +50,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class VulnerabilitiesFromNpmAudit implements DataProvider {
 
-  /** A logger. */
-  private final Logger logger = LogManager.getLogger(getClass());
-
   /** NPM registry URL to access security audit. */
   private static final String NPM_AUDIT_URL = "https://registry.npmjs.org/-/npm/v1/security/audits";
 
@@ -66,6 +63,9 @@ public class VulnerabilitiesFromNpmAudit implements DataProvider {
           "\"requires\" :{\"%s\": \"%s\"},",
           "\"dependencies\": {\"%s\": {\"version\": \"%s\"}}",
           "}");
+
+  /** A logger. */
+  private final Logger logger = LogManager.getLogger(getClass());
 
   /** An interface to NVD. */
   private final NVD nvd;

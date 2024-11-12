@@ -95,8 +95,7 @@ public class StandardTestVector extends AbstractTestVector {
    * @return A prepared or the same value.
    */
   private Value<?> prepare(Value<?> value, Score score) {
-    if (value instanceof TestScoreValue) {
-      TestScoreValue testScoreValue = (TestScoreValue) value;
+    if (value instanceof TestScoreValue testScoreValue) {
       Score targetScore =
           subScoreIn(score, testScoreValue.scoreClassName())
               .orElseThrow(

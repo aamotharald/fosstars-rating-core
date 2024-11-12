@@ -1,109 +1,129 @@
 {
-  "projectVulnerabilities" : {
-    "https://github.com/apache/httpcomponents-client" : {
-      "entries" : [ {
-        "id" : "https://issues.apache.org/jira/browse/HTTPCLIENT-1973",
-        "cvss" : null,
-        "references" : [ ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      } ]
+  "projectVulnerabilities": {
+    "https://github.com/apache/httpcomponents-client": {
+      "entries": [
+        {
+          "id": "https://issues.apache.org/jira/browse/HTTPCLIENT-1973",
+          "cvss": null,
+          "references": [],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
+        }
+      ]
     },
-    "https://github.com/apache/commons-fileupload" : {
-      "entries" : [ {
-        "id" : "https://issues.apache.org/jira/browse/FILEUPLOAD-297",
-        "cvss" : null,
-        "references" : [ ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      }, {
-        "id" : "CVE-2013-0248",
-        "cvss" : null,
-        "references" : [ {
-          "description" : "",
-          "url" : "https://issues.apache.org/jira/browse/FILEUPLOAD-298"
-        } ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      } ]
-    },
-    "https://github.com/spring-projects/spring-security-oauth" : {
-      "entries" : [ {
-        "id" : "https://github.com/spring-projects/spring-security-oauth/issues/1472",
-        "cvss" : null,
-        "references" : [ ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      }, {
-        "id" : "https://github.com/spring-projects/spring-security-oauth/issues/1682",
-        "cvss" : null,
-        "references" : [ ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      } ]
-    },
-    "https://github.com/apache/batik" : {
-      "entries" : [ {
-        "id" : "https://issues.apache.org/jira/browse/BATIK-1189",
-        "cvss" : null,
-        "references" : [ ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      } ]
-    },
-    "https://github.com/odata4j/odata4j" : {
-      "entries" : [ {
-        "id" : "CVE-2014-0171",
-        "cvss" : {
-          "type" : "CVSS$V2",
-          "value" : 5.0,
-          "confidentialityImpact": "PARTIAL",
-          "integrityImpact": "NONE",
-          "availabilityImpact": "NONE"
+    "https://github.com/apache/commons-fileupload": {
+      "entries": [
+        {
+          "id": "https://issues.apache.org/jira/browse/FILEUPLOAD-297",
+          "cvss": null,
+          "references": [],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
         },
-        "references" : [ ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      }, {
-        "id" : "CVE-2016-11023",
-        "cvss" : {
-          "type" : "CVSS$V3",
-          "value" : 9.8,
-          "confidentialityImpact": "HIGH",
-          "integrityImpact": "HIGH",
-          "availabilityImpact": "HIGH"
+        {
+          "id": "CVE-2013-0248",
+          "cvss": null,
+          "references": [
+            {
+              "description": "",
+              "url": "https://issues.apache.org/jira/browse/FILEUPLOAD-298"
+            }
+          ],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
+        }
+      ]
+    },
+    "https://github.com/spring-projects/spring-security-oauth": {
+      "entries": [
+        {
+          "id": "https://github.com/spring-projects/spring-security-oauth/issues/1472",
+          "cvss": null,
+          "references": [],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
         },
-        "references" : [ {
-          "description" : "Public disclosure",
-          "url" : "https://groups.google.com/d/msg/odata4j-discuss/_lBwwXP30g0/Av6zkZMdBwAJ"
-        } ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      }, {
-        "id" : "CVE-2016-11024",
-        "cvss" : {
-          "type" : "CVSS$V3",
-          "value" : 9.8,
-          "confidentialityImpact": "HIGH",
-          "integrityImpact": "HIGH",
-          "availabilityImpact": "HIGH"
+        {
+          "id": "https://github.com/spring-projects/spring-security-oauth/issues/1682",
+          "cvss": null,
+          "references": [],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
+        }
+      ]
+    },
+    "https://github.com/apache/batik": {
+      "entries": [
+        {
+          "id": "https://issues.apache.org/jira/browse/BATIK-1189",
+          "cvss": null,
+          "references": [],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
+        }
+      ]
+    },
+    "https://github.com/odata4j/odata4j": {
+      "entries": [
+        {
+          "id": "CVE-2014-0171",
+          "cvss": {
+            "type": "CVSS$V2",
+            "value": 5.0,
+            "confidentialityImpact": "PARTIAL",
+            "integrityImpact": "NONE",
+            "availabilityImpact": "NONE"
+          },
+          "references": [],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
         },
-        "references" : [ {
-          "description" : "Public disclosure",
-          "url" : "https://groups.google.com/d/msg/odata4j-discuss/_lBwwXP30g0/Av6zkZMdBwAJ"
-        } ],
-        "resolution" : "UNPATCHED",
-        "introduced" : null,
-        "fixed" : null
-      } ]
+        {
+          "id": "CVE-2016-11023",
+          "cvss": {
+            "type": "CVSS$V3",
+            "value": 9.8,
+            "confidentialityImpact": "HIGH",
+            "integrityImpact": "HIGH",
+            "availabilityImpact": "HIGH"
+          },
+          "references": [
+            {
+              "description": "Public disclosure",
+              "url": "https://groups.google.com/d/msg/odata4j-discuss/_lBwwXP30g0/Av6zkZMdBwAJ"
+            }
+          ],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
+        },
+        {
+          "id": "CVE-2016-11024",
+          "cvss": {
+            "type": "CVSS$V3",
+            "value": 9.8,
+            "confidentialityImpact": "HIGH",
+            "integrityImpact": "HIGH",
+            "availabilityImpact": "HIGH"
+          },
+          "references": [
+            {
+              "description": "Public disclosure",
+              "url": "https://groups.google.com/d/msg/odata4j-discuss/_lBwwXP30g0/Av6zkZMdBwAJ"
+            }
+          ],
+          "resolution": "UNPATCHED",
+          "introduced": null,
+          "fixed": null
+        }
+      ]
     }
   }
 }

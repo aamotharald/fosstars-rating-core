@@ -47,6 +47,69 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
     this.projectVulnerabilities = projectVulnerabilities;
   }
 
+  /**
+   * Loads the default list of unpatched vulnerabilities.
+   *
+   * @return An instance of {@link UnpatchedVulnerabilitiesStorage}.
+   * @throws IOException If something went wrong.
+   */
+  public static UnpatchedVulnerabilitiesStorage load() throws IOException {
+    return load(RESOURCE_PATH);
+  }
+
+  /**
+   * Loads a list of unpatched vulnerabilities from a JSON file or resource.
+   *
+   * @param path A path to the file or resource.
+   * @return An instance of {@link UnpatchedVulnerabilitiesStorage}.
+   * @throws IOException If something went wrong.
+   */
+  public static UnpatchedVulnerabilitiesStorage load(String path) throws IOException {
+    return load(path, UnpatchedVulnerabilitiesStorage.class);
+  }
+
+  /**
+   * Check if an instance of {@link UnpatchedVulnerabilitiesStorage} is valid.
+   *
+   * @param storage The storage to be checked;
+   * @return The same storage if it's valid.
+   * @throws IllegalArgumentException If the storage is invalid.
+   */
+  private static UnpatchedVulnerabilitiesStorage check(UnpatchedVulnerabilitiesStorage storage) {
+    for (Map.Entry<URL, Vulnerabilities> entry : storage.projectVulnerabilities.entrySet()) {
+      for (Vulnerability vulnerability : entry.getValue().entries()) {
+        if (vulnerability.resolution() != Resolution.UNPATCHED) {
+          throw new IllegalArgumentException(
+              String.format(
+                  "Hey! The list of unpatched vulnerabilities is supposed to contain "
+                      + "only unpatched vulnerabilities (check out '%s')",
+                  vulnerability.id()));
+        }
+      }
+    }
+    return storage;
+  }
+
+  /**
+   * The main method is here for demo purposes. It can be also used to add unpatched vulnerabilities
+   * to the storage.
+   *
+   * @param args Command line arguments.
+   * @throws IOException If something went wrong.
+   */
+  public static void main(String... args) throws IOException {
+    UnpatchedVulnerabilitiesStorage storage = UnpatchedVulnerabilitiesStorage.load();
+
+    storage.add(
+        "https://github.com/odata4j/odata4j",
+        newVulnerability("https://nvd.nist.gov/vuln/detail/CVE-2014-0171")
+            .set(new CVSS.V2(5.0, V2.UNKNOWN_IMPACT, V2.UNKNOWN_IMPACT, V2.UNKNOWN_IMPACT))
+            .set(Resolution.UNPATCHED)
+            .make());
+
+    storage.store("src/main/resources/" + RESOURCE_PATH);
+  }
+
   /*
    * This getter is here to make Jackson happy.
    */
@@ -109,27 +172,6 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
   }
 
   /**
-   * Loads the default list of unpatched vulnerabilities.
-   *
-   * @return An instance of {@link UnpatchedVulnerabilitiesStorage}.
-   * @throws IOException If something went wrong.
-   */
-  public static UnpatchedVulnerabilitiesStorage load() throws IOException {
-    return load(RESOURCE_PATH);
-  }
-
-  /**
-   * Loads a list of unpatched vulnerabilities from a JSON file or resource.
-   *
-   * @param path A path to the file or resource.
-   * @return An instance of {@link UnpatchedVulnerabilitiesStorage}.
-   * @throws IOException If something went wrong.
-   */
-  public static UnpatchedVulnerabilitiesStorage load(String path) throws IOException {
-    return load(path, UnpatchedVulnerabilitiesStorage.class);
-  }
-
-  /**
    * Stores the current list of unpatched vulnerabilities to a JSON file.
    *
    * @param path A path to the file.
@@ -137,47 +179,5 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
    */
   public void store(String path) throws IOException {
     Files.write(Paths.get(path), Json.toBytes(this));
-  }
-
-  /**
-   * Check if an instance of {@link UnpatchedVulnerabilitiesStorage} is valid.
-   *
-   * @param storage The storage to be checked;
-   * @return The same storage if it's valid.
-   * @throws IllegalArgumentException If the storage is invalid.
-   */
-  private static UnpatchedVulnerabilitiesStorage check(UnpatchedVulnerabilitiesStorage storage) {
-    for (Map.Entry<URL, Vulnerabilities> entry : storage.projectVulnerabilities.entrySet()) {
-      for (Vulnerability vulnerability : entry.getValue().entries()) {
-        if (vulnerability.resolution() != Resolution.UNPATCHED) {
-          throw new IllegalArgumentException(
-              String.format(
-                  "Hey! The list of unpatched vulnerabilities is supposed to contain "
-                      + "only unpatched vulnerabilities (check out '%s')",
-                  vulnerability.id()));
-        }
-      }
-    }
-    return storage;
-  }
-
-  /**
-   * The main method is here for demo purposes. It can be also used to add unpatched vulnerabilities
-   * to the storage.
-   *
-   * @param args Command line arguments.
-   * @throws IOException If something went wrong.
-   */
-  public static void main(String... args) throws IOException {
-    UnpatchedVulnerabilitiesStorage storage = UnpatchedVulnerabilitiesStorage.load();
-
-    storage.add(
-        "https://github.com/odata4j/odata4j",
-        newVulnerability("https://nvd.nist.gov/vuln/detail/CVE-2014-0171")
-            .set(new CVSS.V2(5.0, V2.UNKNOWN_IMPACT, V2.UNKNOWN_IMPACT, V2.UNKNOWN_IMPACT))
-            .set(Resolution.UNPATCHED)
-            .make());
-
-    storage.store("src/main/resources/" + RESOURCE_PATH);
   }
 }

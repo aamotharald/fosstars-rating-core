@@ -45,6 +45,18 @@ public class TestScoreValue implements Value<Double> {
   }
 
   /**
+   * Create a new test score value.
+   *
+   * @param scoreClass A score class.
+   * @param value A score value.
+   * @return A test score value.
+   */
+  public static TestScoreValue testScoreValue(Class<? extends Score> scoreClass, double value) {
+    requireNonNull(scoreClass, "Oops! Score is null!");
+    return new TestScoreValue(scoreClass.getCanonicalName(), value, false, false);
+  }
+
+  /**
    * Return a class name of a score which the value is for.
    *
    * @return The score class name.
@@ -106,17 +118,5 @@ public class TestScoreValue implements Value<Double> {
   @Override
   public Value<Double> processIfUnknown(Runnable processor) {
     throw new UnsupportedOperationException("Oops! I can't do that!");
-  }
-
-  /**
-   * Create a new test score value.
-   *
-   * @param scoreClass A score class.
-   * @param value A score value.
-   * @return A test score value.
-   */
-  public static TestScoreValue testScoreValue(Class<? extends Score> scoreClass, double value) {
-    requireNonNull(scoreClass, "Oops! Score is null!");
-    return new TestScoreValue(scoreClass.getCanonicalName(), value, false, false);
   }
 }

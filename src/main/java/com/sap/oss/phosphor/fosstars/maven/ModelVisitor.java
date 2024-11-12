@@ -8,15 +8,6 @@ import org.apache.maven.model.ReportPlugin;
 /** A visitor for visiting elements in a POM file. */
 public interface ModelVisitor {
 
-  /** Known locations of elements in a POM file. */
-  enum Location {
-    BUILD,
-    REPORTING,
-    PROFILE,
-    MANAGEMENT,
-    DEPENDENCIES
-  }
-
   /**
    * Visit a plugin.
    *
@@ -40,4 +31,13 @@ public interface ModelVisitor {
    * @param locations A set of locations that tells where the dependency is located.
    */
   void accept(Dependency dependency, Set<Location> locations);
+
+  /** Known locations of elements in a POM file. */
+  enum Location {
+    BUILD,
+    REPORTING,
+    PROFILE,
+    MANAGEMENT,
+    DEPENDENCIES
+  }
 }

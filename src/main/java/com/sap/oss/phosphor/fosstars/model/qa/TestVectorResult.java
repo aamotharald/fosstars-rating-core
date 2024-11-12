@@ -6,11 +6,6 @@ import java.util.Objects;
 /** A holder for a result of executing a test vector. */
 public class TestVectorResult {
 
-  public enum Status {
-    PASSED,
-    FAILED
-  }
-
   /** A test vector. */
   public final TestVector vector;
 
@@ -65,7 +60,7 @@ public class TestVectorResult {
     if (this == o) {
       return true;
     }
-    if (o instanceof TestVectorResult == false) {
+    if (!(o instanceof TestVectorResult)) {
       return false;
     }
     TestVectorResult result = (TestVectorResult) o;
@@ -79,5 +74,10 @@ public class TestVectorResult {
   @Override
   public int hashCode() {
     return Objects.hash(vector, index, scoreValue, status, message);
+  }
+
+  public enum Status {
+    PASSED,
+    FAILED
   }
 }

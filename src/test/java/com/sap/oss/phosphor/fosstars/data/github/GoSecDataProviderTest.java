@@ -51,6 +51,15 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
     }
   }
 
+  @AfterAll
+  public static void shutdown() {
+    try {
+      FileUtils.forceDeleteOnExit(repositoryDirectory.toFile());
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
   @Test
   public void testNotInteractive() {
     assertFalse(new GoSecDataProvider(fetcher).interactive());
@@ -197,15 +206,6 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
       Optional<? extends Value<?>> something = values.of(expectedValue.feature());
       assertTrue(something.isPresent());
       assertEquals(expectedValue, something.get());
-    }
-  }
-
-  @AfterAll
-  public static void shutdown() {
-    try {
-      FileUtils.forceDeleteOnExit(repositoryDirectory.toFile());
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
     }
   }
 }

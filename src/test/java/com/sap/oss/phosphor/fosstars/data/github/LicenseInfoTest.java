@@ -27,27 +27,14 @@ import org.junit.jupiter.api.Test;
 
 public class LicenseInfoTest extends TestGitHubDataFetcherHolder {
 
-  private static class LicenseInfoMock extends LicenseInfo {
+  private static Value<Boolean> checkValue(
+      ValueSet values, Feature<Boolean> feature, boolean expected) {
 
-    protected Map<String, String> licenseMetadataMock = new HashMap<>();
-
-    public LicenseInfoMock(GitHubDataFetcher fetcher) throws IOException {
-      super(fetcher);
-      allowedLicenses("Apache-2.0", "CC-BY-4.0", "MIT", "EPL-2.0");
-    }
-
-    @Override
-    Map<String, String> licenseMetadata(GitHubProject project) {
-      return licenseMetadataMock;
-    }
-
-    public void setLicensePath(String path) {
-      licenseMetadataMock.put(LICENSE_PATH, path);
-    }
-
-    public void setSpdxId(String spdxId) {
-      licenseMetadataMock.put(SPDX_ID, spdxId);
-    }
+    Optional<Value<Boolean>> something = values.of(feature);
+    assertTrue(something.isPresent());
+    Value<Boolean> value = something.get();
+    assertEquals(expected, value.get());
+    return value;
   }
 
   @Test
@@ -85,16 +72,6 @@ public class LicenseInfoTest extends TestGitHubDataFetcherHolder {
     value = checkValue(values, LICENSE_HAS_DISALLOWED_CONTENT, true);
     assertFalse(value.explanation().isEmpty());
     assertTrue(value.explanation().get(0).contains(disallowedPattern));
-  }
-
-  private static Value<Boolean> checkValue(
-      ValueSet values, Feature<Boolean> feature, boolean expected) {
-
-    Optional<Value<Boolean>> something = values.of(feature);
-    assertTrue(something.isPresent());
-    Value<Boolean> value = something.get();
-    assertEquals(expected, value.get());
-    return value;
   }
 
   @Test
@@ -348,5 +325,28 @@ public class LicenseInfoTest extends TestGitHubDataFetcherHolder {
     something = values.of(LICENSE_HAS_DISALLOWED_CONTENT);
     assertTrue(something.isPresent());
     assertTrue(something.get().isUnknown());
+  }
+
+  private static class LicenseInfoMock extends LicenseInfo {
+
+    protected Map<String, String> licenseMetadataMock = new HashMap<>();
+
+    public LicenseInfoMock(GitHubDataFetcher fetcher) throws IOException {
+      super(fetcher);
+      allowedLicenses("Apache-2.0", "CC-BY-4.0", "MIT", "EPL-2.0");
+    }
+
+    @Override
+    Map<String, String> licenseMetadata(GitHubProject project) {
+      return licenseMetadataMock;
+    }
+
+    public void setLicensePath(String path) {
+      licenseMetadataMock.put(LICENSE_PATH, path);
+    }
+
+    public void setSpdxId(String spdxId) {
+      licenseMetadataMock.put(SPDX_ID, spdxId);
+    }
   }
 }

@@ -33,6 +33,21 @@ public class TeamsInfoTest extends TestGitHubDataFetcherHolder {
   private static final boolean EXPECT_TRUE = true;
   private static final boolean EXPECT_FALSE = false;
 
+  private static void checkValue(
+      ValueSet values,
+      Feature<Boolean> feature,
+      boolean expected,
+      Consumer<Value<Boolean>> additionalCheck) {
+
+    Optional<Value<Boolean>> something = values.of(feature);
+    assertTrue(something.isPresent());
+    Value<Boolean> value = something.get();
+    assertFalse(value.isUnknown());
+    assertFalse(value.isNotApplicable());
+    assertEquals(expected, value.get());
+    additionalCheck.accept(value);
+  }
+
   @Test
   public void testSupportedFeatures() {
     TeamsInfo provider = new TeamsInfo(fetcher);
@@ -144,20 +159,5 @@ public class TeamsInfoTest extends TestGitHubDataFetcherHolder {
     checkValue(values, HAS_ENOUGH_ADMINS_ON_GITHUB, EXPECT_FALSE, HAS_EXPLANATION);
     checkValue(values, HAS_TEAM_WITH_PUSH_PRIVILEGES_ON_GITHUB, EXPECT_FALSE, HAS_EXPLANATION);
     checkValue(values, HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB, EXPECT_FALSE, HAS_EXPLANATION);
-  }
-
-  private static void checkValue(
-      ValueSet values,
-      Feature<Boolean> feature,
-      boolean expected,
-      Consumer<Value<Boolean>> additionalCheck) {
-
-    Optional<Value<Boolean>> something = values.of(feature);
-    assertTrue(something.isPresent());
-    Value<Boolean> value = something.get();
-    assertFalse(value.isUnknown());
-    assertFalse(value.isNotApplicable());
-    assertEquals(expected, value.get());
-    additionalCheck.accept(value);
   }
 }

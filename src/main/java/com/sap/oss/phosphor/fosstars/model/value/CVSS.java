@@ -12,18 +12,103 @@ import java.util.Optional;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public abstract class CVSS {
 
+  /** The minimum CVSS score. */
+  public static final double MIN = 0.0;
+
+  /** The maximum CVSS score. */
+  public static final double MAX = 10.0;
+
+  /** A score. */
+  private final Double value;
+
+  /**
+   * Initializes a CVSS score.
+   *
+   * @param value A score in the interval [0, 10].
+   */
+  public CVSS(@JsonProperty("value") Double value) {
+    this.value = check(value);
+  }
+
+  /**
+   * Checks that a score belongs to the interval [0, 10], it's null.
+   *
+   * @param value The score value to be checked.
+   * @return The score value if it's valid or null.
+   * @throws IllegalArgumentException If the score value is invalid.
+   */
+  public static Double check(Double value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (Double.compare(value, MIN) < 0 || Double.compare(value, MAX) > 0) {
+      throw new IllegalArgumentException(
+          format("What the heck? %f doesn't look like a CVSS score!", value));
+    }
+
+    return value;
+  }
+
+  /**
+   * Get the CVSS score.
+   *
+   * @return The CVSS score.
+   */
+  @JsonGetter("value")
+  public Double value() {
+    return value;
+  }
+
+  /**
+   * Get the confidentiality impact.
+   *
+   * @return The confidentiality impact if available.
+   */
+  public abstract Optional<?> confidentialityImpact();
+
+  /**
+   * Get the integrity impact.
+   *
+   * @return The integrity impact if available.
+   */
+  public abstract Optional<?> integrityImpact();
+
+  /**
+   * Get the availability impact.
+   *
+   * @return The availability impact if available.
+   */
+  public abstract Optional<?> availabilityImpact();
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!CVSS.class.isAssignableFrom(o.getClass())) {
+      return false;
+    }
+    CVSS cvss = (CVSS) o;
+    return Objects.equals(value, cvss.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
+
+  /** CVSS version. */
+  public enum Version {
+    V2,
+    V3
+  }
+
   /** CVSS version 2. */
   public static class V2 extends CVSS {
 
     /** Unknown impact. */
     public static final Impact UNKNOWN_IMPACT = null;
-
-    /** Possible impact values. */
-    public enum Impact {
-      NONE,
-      PARTIAL,
-      COMPLETE
-    }
 
     /** Confidentiality impact. */
     @JsonProperty("confidentialityImpact")
@@ -106,6 +191,13 @@ public abstract class CVSS {
       return Objects.hash(
           super.hashCode(), confidentialityImpact, integrityImpact, availabilityImpact);
     }
+
+    /** Possible impact values. */
+    public enum Impact {
+      NONE,
+      PARTIAL,
+      COMPLETE
+    }
   }
 
   /** CVSS version 3. */
@@ -113,13 +205,6 @@ public abstract class CVSS {
 
     /** Unknown impact. */
     public static final Impact UNKNOWN_IMPACT = null;
-
-    /** Possible impact values. */
-    public enum Impact {
-      NONE,
-      LOW,
-      HIGH
-    }
 
     /** Confidentiality impact. */
     @JsonProperty("confidentialityImpact")
@@ -202,97 +287,12 @@ public abstract class CVSS {
       return Objects.hash(
           super.hashCode(), confidentialityImpact, integrityImpact, availabilityImpact);
     }
-  }
 
-  /** The minimum CVSS score. */
-  public static final double MIN = 0.0;
-
-  /** The maximum CVSS score. */
-  public static final double MAX = 10.0;
-
-  /** CVSS version. */
-  public enum Version {
-    V2,
-    V3
-  }
-
-  /** A score. */
-  private final Double value;
-
-  /**
-   * Initializes a CVSS score.
-   *
-   * @param value A score in the interval [0, 10].
-   */
-  public CVSS(@JsonProperty("value") Double value) {
-    this.value = check(value);
-  }
-
-  /**
-   * Get the CVSS score.
-   *
-   * @return The CVSS score.
-   */
-  @JsonGetter("value")
-  public Double value() {
-    return value;
-  }
-
-  /**
-   * Get the confidentiality impact.
-   *
-   * @return The confidentiality impact if available.
-   */
-  public abstract Optional<?> confidentialityImpact();
-
-  /**
-   * Get the integrity impact.
-   *
-   * @return The integrity impact if available.
-   */
-  public abstract Optional<?> integrityImpact();
-
-  /**
-   * Get the availability impact.
-   *
-   * @return The availability impact if available.
-   */
-  public abstract Optional<?> availabilityImpact();
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    /** Possible impact values. */
+    public enum Impact {
+      NONE,
+      LOW,
+      HIGH
     }
-    if (!CVSS.class.isAssignableFrom(o.getClass())) {
-      return false;
-    }
-    CVSS cvss = (CVSS) o;
-    return Objects.equals(value, cvss.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
-
-  /**
-   * Checks that a score belongs to the interval [0, 10], it's null.
-   *
-   * @param value The score value to be checked.
-   * @return The score value if it's valid or null.
-   * @throws IllegalArgumentException If the score value is invalid.
-   */
-  public static Double check(Double value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (Double.compare(value, MIN) < 0 || Double.compare(value, MAX) > 0) {
-      throw new IllegalArgumentException(
-          format("What the heck? %f doesn't look like a CVSS score!", value));
-    }
-
-    return value;
   }
 }

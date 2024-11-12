@@ -143,6 +143,31 @@ public class ProjectSecurityAwarenessScore extends FeatureBasedScore {
             HAS_EXECUTABLE_BINARIES));
   }
 
+  /**
+   * Checks if a value means that one of the security tools is used in a project.
+   *
+   * @param value The value to be examined.
+   * @return True if a value means that one of the security tools is used, false otherwise.
+   * @throws IllegalArgumentException In case of an unexpected type of the value.
+   */
+  private static boolean usedSecurityTools(Value<?> value) {
+    if (value.isUnknown()) {
+      return false;
+    }
+
+    Object object = value.get();
+    if (object instanceof Boolean) {
+      return (Boolean) object;
+    }
+
+    if (object instanceof OwaspDependencyCheckUsage usage) {
+      return usage != NOT_USED;
+    }
+
+    throw new IllegalArgumentException(
+        String.format("Hey! This is an unexpected value: %s", value));
+  }
+
   @Override
   public ScoreValue calculate(Value<?>... values) {
     Value<Boolean> securityPolicy = find(HAS_SECURITY_POLICY, values);
@@ -222,31 +247,5 @@ public class ProjectSecurityAwarenessScore extends FeatureBasedScore {
     scoreValue.increase(n * SECURITY_TOOL_POINTS);
 
     return scoreValue;
-  }
-
-  /**
-   * Checks if a value means that one of the security tools is used in a project.
-   *
-   * @param value The value to be examined.
-   * @return True if a value means that one of the security tools is used, false otherwise.
-   * @throws IllegalArgumentException In case of an unexpected type of the value.
-   */
-  private static boolean usedSecurityTools(Value<?> value) {
-    if (value.isUnknown()) {
-      return false;
-    }
-
-    Object object = value.get();
-    if (object instanceof Boolean) {
-      return (Boolean) object;
-    }
-
-    if (object instanceof OwaspDependencyCheckUsage) {
-      OwaspDependencyCheckUsage usage = (OwaspDependencyCheckUsage) object;
-      return usage != NOT_USED;
-    }
-
-    throw new IllegalArgumentException(
-        String.format("Hey! This is an unexpected value: %s", value));
   }
 }

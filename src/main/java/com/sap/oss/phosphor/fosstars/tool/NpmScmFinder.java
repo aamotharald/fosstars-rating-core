@@ -20,6 +20,23 @@ import org.apache.http.impl.client.HttpClients;
 public class NpmScmFinder {
 
   /**
+   * Fetch JSON from a specified URL.
+   *
+   * @param url The URL.
+   * @return A {@link JsonNode}.
+   * @throws IOException If something went wrong.
+   */
+  static JsonNode fetchJsonFrom(String url) throws IOException {
+    try (CloseableHttpClient client = HttpClients.createDefault()) {
+      HttpGet httpGetRequest = new HttpGet(url);
+      httpGetRequest.addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.getMimeType());
+      try (CloseableHttpResponse httpResponse = client.execute(httpGetRequest)) {
+        return Json.mapper().readTree(httpResponse.getEntity().getContent());
+      }
+    }
+  }
+
+  /**
    * Takes a name of an NPM package and looks for its SCM on GitHub.
    *
    * @param identifier The name of the package.
@@ -67,22 +84,5 @@ public class NpmScmFinder {
     }
 
     return Optional.empty();
-  }
-
-  /**
-   * Fetch JSON from a specified URL.
-   *
-   * @param url The URL.
-   * @return A {@link JsonNode}.
-   * @throws IOException If something went wrong.
-   */
-  static JsonNode fetchJsonFrom(String url) throws IOException {
-    try (CloseableHttpClient client = HttpClients.createDefault()) {
-      HttpGet httpGetRequest = new HttpGet(url);
-      httpGetRequest.addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.getMimeType());
-      try (CloseableHttpResponse httpResponse = client.execute(httpGetRequest)) {
-        return Json.mapper().readTree(httpResponse.getEntity().getContent());
-      }
-    }
   }
 }

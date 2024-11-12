@@ -134,6 +134,11 @@ public class PrettyPrinterTest {
     Locale.setDefault(Locale.US);
   }
 
+  @AfterAll
+  public static void cleanup() {
+    Locale.setDefault(savedLocale);
+  }
+
   @Test
   public void testPrint() {
     RatingValue ratingValue = RATING.calculate(TEST_VALUES);
@@ -188,10 +193,5 @@ public class PrettyPrinterTest {
     assertEquals("1.23 out of 10.0", PrettyPrinter.printValueAndMax(1.23345, 10.0));
     assertEquals("10.0 out of 10.0", PrettyPrinter.printValueAndMax(10.0, 10.0));
     assertEquals("9.0  out of 10.0", PrettyPrinter.printValueAndMax(9.0, 10.0));
-  }
-
-  @AfterAll
-  public static void cleanup() {
-    Locale.setDefault(savedLocale);
   }
 }

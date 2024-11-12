@@ -6,6 +6,7 @@ import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.SE
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.SECURITY_TESTING_SCORE_EXAMPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -318,12 +319,12 @@ public class WeightedCompositeScoreTest {
 
     assertEquals(2, usedValues.size());
 
-    assertTrue(usedValues.get(0) instanceof ScoreValue);
+    assertInstanceOf(ScoreValue.class, usedValues.get(0));
     ScoreValue subScoreValue = (ScoreValue) usedValues.get(0);
     assertTrue(subScoreValue.isNotApplicable());
     assertEquals(WeightedScoreImpl.FIRST_WEIGHT, subScoreValue.weight(), PRECISION);
 
-    assertTrue(usedValues.get(1) instanceof ScoreValue);
+    assertInstanceOf(ScoreValue.class, usedValues.get(1));
     subScoreValue = (ScoreValue) usedValues.get(1);
     assertFalse(subScoreValue.isNotApplicable());
     assertEquals(SecondScore.VALUE, subScoreValue.get(), PRECISION);

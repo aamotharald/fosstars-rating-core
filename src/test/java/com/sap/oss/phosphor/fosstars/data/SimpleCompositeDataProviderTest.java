@@ -21,6 +21,48 @@ public class SimpleCompositeDataProviderTest {
 
   private static final Feature<Integer> SOMETHING = new PositiveIntegerFeature("test feature");
 
+  private static void assertValueIn(ValueSet values, int expectedValue) {
+    assertEquals(1, values.size());
+    Optional<Value<Integer>> something = values.of(SOMETHING);
+    assertTrue(something.isPresent());
+    assertEquals(expectedValue, (int) something.get().get());
+  }
+
+  @Test
+  public void testSupportedFeatures() {
+    SimpleCompositeDataProvider provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING).withDefaultValue(SOMETHING.value(42));
+    assertEquals(1, provider.supportedFeatures().size());
+    assertTrue(provider.supportedFeatures().contains(SOMETHING));
+  }
+
+  @Test
+  public void testUpdate() throws IOException {
+    ValueSet values = new ValueHashSet();
+
+    SimpleCompositeDataProvider provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING).withDefaultValue(SOMETHING.value(42));
+    provider.update(PROJECT, values);
+    assertValueIn(values, 42);
+
+    provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING)
+            .withInteractiveProvider(new TestInteractiveProvider())
+            .withDefaultValue(SOMETHING.value(42));
+    provider.set(new TestCallback());
+    provider.update(PROJECT, values);
+    assertValueIn(values, 2);
+
+    provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING)
+            .withInteractiveProvider(new TestInteractiveProvider())
+            .withNonInteractiveProvider(new TestNonInteractiveProvider())
+            .withDefaultValue(SOMETHING.value(42));
+    provider.set(new TestCallback());
+    provider.update(PROJECT, values);
+    assertValueIn(values, 1);
+  }
+
   private static class TestNonInteractiveProvider extends AbstractDataProvider {
 
     @Override
@@ -85,47 +127,5 @@ public class SimpleCompositeDataProviderTest {
     public void say(String phrase) {
       // do nothing
     }
-  }
-
-  @Test
-  public void testSupportedFeatures() {
-    SimpleCompositeDataProvider provider =
-        SimpleCompositeDataProvider.forFeature(SOMETHING).withDefaultValue(SOMETHING.value(42));
-    assertEquals(1, provider.supportedFeatures().size());
-    assertTrue(provider.supportedFeatures().contains(SOMETHING));
-  }
-
-  @Test
-  public void testUpdate() throws IOException {
-    ValueSet values = new ValueHashSet();
-
-    SimpleCompositeDataProvider provider =
-        SimpleCompositeDataProvider.forFeature(SOMETHING).withDefaultValue(SOMETHING.value(42));
-    provider.update(PROJECT, values);
-    assertValueIn(values, 42);
-
-    provider =
-        SimpleCompositeDataProvider.forFeature(SOMETHING)
-            .withInteractiveProvider(new TestInteractiveProvider())
-            .withDefaultValue(SOMETHING.value(42));
-    provider.set(new TestCallback());
-    provider.update(PROJECT, values);
-    assertValueIn(values, 2);
-
-    provider =
-        SimpleCompositeDataProvider.forFeature(SOMETHING)
-            .withInteractiveProvider(new TestInteractiveProvider())
-            .withNonInteractiveProvider(new TestNonInteractiveProvider())
-            .withDefaultValue(SOMETHING.value(42));
-    provider.set(new TestCallback());
-    provider.update(PROJECT, values);
-    assertValueIn(values, 1);
-  }
-
-  private static void assertValueIn(ValueSet values, int expectedValue) {
-    assertEquals(1, values.size());
-    Optional<Value<Integer>> something = values.of(SOMETHING);
-    assertTrue(something.isPresent());
-    assertEquals(expectedValue, (int) something.get().get());
   }
 }

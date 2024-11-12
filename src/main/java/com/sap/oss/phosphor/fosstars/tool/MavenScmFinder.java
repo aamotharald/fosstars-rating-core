@@ -44,23 +44,6 @@ public class MavenScmFinder {
           "\\s*<latest>([A-Za-z0-9]+(\\.[A-Za-z0-9]+)*.*)</latest>", Pattern.CASE_INSENSITIVE);
 
   /**
-   * Takes GAV coordinates of an artifact and looks for a URL to its SCM.
-   *
-   * @param gav The GAV coordinates.
-   * @return A URL to SCM.
-   * @throws IOException If something went wrong.
-   */
-  public Optional<String> findScmFor(GAV gav) throws IOException {
-    Model pom = loadPomFor(gav);
-    Scm scm = pom.getScm();
-    if (scm == null) {
-      return Optional.empty();
-    }
-
-    return normalizeGitHubProjectPath(scm.getUrl());
-  }
-
-  /**
    * The method tries to normalize and resolve a GitHub project path from the given URI syntax.
    *
    * @param url The input URL to be parsed and converted into a GitHub URL.
@@ -106,41 +89,6 @@ public class MavenScmFinder {
 
     URI uri = URI.create(url);
     return Optional.ofNullable(uri.getPath());
-  }
-
-  /**
-   * Takes GAV coordinates to an artifact and looks for a corresponding GitHub project (maybe a
-   * mirror) that contains the source code.
-   *
-   * @param gav The GAV coordinates.
-   * @return A project on GitHub.
-   * @throws IOException If something went wrong.
-   */
-  public Optional<GitHubProject> findGithubProjectFor(GAV gav) throws IOException {
-    Optional<String> scm = findScmFor(gav);
-    if (scm.isPresent()) {
-      String url = scm.get();
-      if (isOnGitHub(url)) {
-        return Optional.of(GitHubProject.parse(url));
-      }
-    }
-
-    return tryToGuessGitHubProjectFor(gav);
-  }
-
-  /**
-   * Takes GAV coordinates and tries to guess a possible GitHub project.
-   *
-   * @param gav The GAV coordinates.
-   * @return A project on GitHub if it exists.
-   */
-  public Optional<GitHubProject> tryToGuessGitHubProjectFor(GAV gav) {
-    Optional<GitHubProject> project = guessGitHubProjectFor(gav);
-    if (project.isPresent() && looksLikeValid(project.get())) {
-      return project;
-    }
-
-    return Optional.empty();
   }
 
   /**
@@ -325,5 +273,57 @@ public class MavenScmFinder {
         new MavenScmFinder().findGithubProjectFor(GAV.parse(coordinates));
     System.out.println(
         project.isPresent() ? String.format("GitHub URL = %s", project.get()) : "No SCM found!");
+  }
+
+  /**
+   * Takes GAV coordinates of an artifact and looks for a URL to its SCM.
+   *
+   * @param gav The GAV coordinates.
+   * @return A URL to SCM.
+   * @throws IOException If something went wrong.
+   */
+  public Optional<String> findScmFor(GAV gav) throws IOException {
+    Model pom = loadPomFor(gav);
+    Scm scm = pom.getScm();
+    if (scm == null) {
+      return Optional.empty();
+    }
+
+    return normalizeGitHubProjectPath(scm.getUrl());
+  }
+
+  /**
+   * Takes GAV coordinates to an artifact and looks for a corresponding GitHub project (maybe a
+   * mirror) that contains the source code.
+   *
+   * @param gav The GAV coordinates.
+   * @return A project on GitHub.
+   * @throws IOException If something went wrong.
+   */
+  public Optional<GitHubProject> findGithubProjectFor(GAV gav) throws IOException {
+    Optional<String> scm = findScmFor(gav);
+    if (scm.isPresent()) {
+      String url = scm.get();
+      if (isOnGitHub(url)) {
+        return Optional.of(GitHubProject.parse(url));
+      }
+    }
+
+    return tryToGuessGitHubProjectFor(gav);
+  }
+
+  /**
+   * Takes GAV coordinates and tries to guess a possible GitHub project.
+   *
+   * @param gav The GAV coordinates.
+   * @return A project on GitHub if it exists.
+   */
+  public Optional<GitHubProject> tryToGuessGitHubProjectFor(GAV gav) {
+    Optional<GitHubProject> project = guessGitHubProjectFor(gav);
+    if (project.isPresent() && looksLikeValid(project.get())) {
+      return project;
+    }
+
+    return Optional.empty();
   }
 }

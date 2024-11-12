@@ -23,7 +23,6 @@ import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersions;
 import com.sap.oss.phosphor.fosstars.model.value.ValueHashSet;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +54,7 @@ public class ReleaseInfoLoaderTest extends TestGitHubDataFetcherHolder {
     when(release.getName()).thenReturn("2.0.0");
     when(release.getPublished_at()).thenReturn(new Date());
 
-    List<GHRelease> releaselist = Arrays.asList(release);
+    List<GHRelease> releaselist = List.of(release);
     when(pagedIterable.toList()).thenReturn(releaselist);
 
     when(fetcher.github().getRepository(any())).thenReturn(repository);

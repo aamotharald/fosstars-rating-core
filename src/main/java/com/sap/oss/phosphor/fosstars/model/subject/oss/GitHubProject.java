@@ -63,6 +63,37 @@ public class GitHubProject extends AbstractSubject implements OpenSourceProject 
     this.name = Objects.requireNonNull(name, "Hey! Project's name can't be null!");
   }
 
+  /**
+   * Makes a project from its URL.
+   *
+   * @param urlString The URL.
+   * @return A new project.
+   * @throws IOException If something went wrong.
+   */
+  public static GitHubProject parse(String urlString) throws IOException {
+    URL url = new URL(urlString);
+    if (!"github.com".equals(url.getHost())) {
+      throw new IllegalArgumentException(format("The host name is not github.com: %s", urlString));
+    }
+    String[] parts = url.getPath().split("/");
+    String name = parts[2];
+    if (name.endsWith(".git")) {
+      name = name.substring(0, name.length() - 4);
+    }
+    return new GitHubProject(new GitHubOrganization(parts[1]), name);
+  }
+
+  /**
+   * Checks if a URL points to GitHub.
+   *
+   * @param url The URL to be checked.
+   * @return True if the URL points to GitHub, false otherwise.
+   */
+  public static boolean isOnGitHub(String url) {
+    return url != null
+        && (url.startsWith("https://github.com/") || url.startsWith("http://github.com/"));
+  }
+
   @Override
   public URL scm() {
     try {
@@ -126,36 +157,5 @@ public class GitHubProject extends AbstractSubject implements OpenSourceProject 
   @Override
   public String toString() {
     return scm().toString();
-  }
-
-  /**
-   * Makes a project from its URL.
-   *
-   * @param urlString The URL.
-   * @return A new project.
-   * @throws IOException If something went wrong.
-   */
-  public static GitHubProject parse(String urlString) throws IOException {
-    URL url = new URL(urlString);
-    if (!"github.com".equals(url.getHost())) {
-      throw new IllegalArgumentException(format("The host name is not github.com: %s", urlString));
-    }
-    String[] parts = url.getPath().split("/");
-    String name = parts[2];
-    if (name.endsWith(".git")) {
-      name = name.substring(0, name.length() - 4);
-    }
-    return new GitHubProject(new GitHubOrganization(parts[1]), name);
-  }
-
-  /**
-   * Checks if a URL points to GitHub.
-   *
-   * @param url The URL to be checked.
-   * @return True if the URL points to GitHub, false otherwise.
-   */
-  public static boolean isOnGitHub(String url) {
-    return url != null
-        && (url.startsWith("https://github.com/") || url.startsWith("http://github.com/"));
   }
 }

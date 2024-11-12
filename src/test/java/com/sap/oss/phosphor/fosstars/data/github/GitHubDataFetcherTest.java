@@ -50,6 +50,45 @@ import org.kohsuke.github.PagedSearchIterable;
 
 public class GitHubDataFetcherTest extends TestGitHubDataFetcherHolder {
 
+  private static List<GitHubProject> generateProjectsForSize(int n) {
+    List<GitHubProject> projects = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      projects.add(new GitHubProject("test", String.format("project%s", i)));
+    }
+    return projects;
+  }
+
+  private static boolean checkLocalRepositories(
+      List<GitHubProject> projects, Map<URL, LocalRepository> localRepositories) {
+
+    Set<URL> projectUrls = projects.stream().map(GitHubProject::scm).collect(Collectors.toSet());
+    assertEquals(projects.size(), projectUrls.size());
+
+    return projectUrls.containsAll(localRepositories.keySet());
+  }
+
+  private static void checkLocalRepository(GitHubProject project, int expectedSize)
+      throws IOException {
+
+    LocalRepositoryInfo localRepositoryInfo = localRepositoryInfoFor(project, expectedSize);
+    assertNotNull(localRepositoryInfo);
+    assertEquals(project.scm(), localRepositoryInfo.url());
+  }
+
+  private static void checkCleanUp(GitHubProject project, int expectedSize) throws IOException {
+    LocalRepositoryInfo cleanRepositoryInfo = localRepositoryInfoFor(project, expectedSize);
+    assertNull(cleanRepositoryInfo);
+    assertFalse(LOCAL_REPOSITORIES.containsKey(project.scm()));
+  }
+
+  private static LocalRepositoryInfo localRepositoryInfoFor(GitHubProject project, int expectedSize)
+      throws IOException {
+
+    loadLocalRepositoriesInfo();
+    assertEquals(LOCAL_REPOSITORIES_INFO.size(), expectedSize);
+    return LOCAL_REPOSITORIES_INFO.get(project.scm());
+  }
+
   @Test
   public void testRepositoryCache() throws IOException {
     GHRepository repository = mock(GHRepository.class);
@@ -417,34 +456,9 @@ public class GitHubDataFetcherTest extends TestGitHubDataFetcherHolder {
     assertEquals(0, foundIssues.size());
   }
 
-  private static List<GitHubProject> generateProjectsForSize(int n) {
-    List<GitHubProject> projects = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-      projects.add(new GitHubProject("test", String.format("project%s", i)));
-    }
-    return projects;
-  }
-
-  private static boolean checkLocalRepositories(
-      List<GitHubProject> projects, Map<URL, LocalRepository> localRepositories) {
-
-    Set<URL> projectUrls = projects.stream().map(GitHubProject::scm).collect(Collectors.toSet());
-    assertEquals(projects.size(), projectUrls.size());
-
-    return projectUrls.containsAll(localRepositories.keySet());
-  }
-
   private void testLocalRepositoryFor(GitHubProject project, int expectedSize) throws IOException {
     GitHubDataFetcher.localRepositoryFor(project);
     checkLocalRepository(project, expectedSize);
-  }
-
-  private static void checkLocalRepository(GitHubProject project, int expectedSize)
-      throws IOException {
-
-    LocalRepositoryInfo localRepositoryInfo = localRepositoryInfoFor(project, expectedSize);
-    assertNotNull(localRepositoryInfo);
-    assertEquals(project.scm(), localRepositoryInfo.url());
   }
 
   private void testCleanup(GitHubProject project, int expectedSize) throws IOException {
@@ -454,19 +468,5 @@ public class GitHubDataFetcherTest extends TestGitHubDataFetcherHolder {
 
   private void runCleanupFor(GitHubProject project) throws IOException {
     fetcher.cleanup((url, repo, total) -> url.equals(project.scm()));
-  }
-
-  private static void checkCleanUp(GitHubProject project, int expectedSize) throws IOException {
-    LocalRepositoryInfo cleanRepositoryInfo = localRepositoryInfoFor(project, expectedSize);
-    assertNull(cleanRepositoryInfo);
-    assertFalse(LOCAL_REPOSITORIES.containsKey(project.scm()));
-  }
-
-  private static LocalRepositoryInfo localRepositoryInfoFor(GitHubProject project, int expectedSize)
-      throws IOException {
-
-    loadLocalRepositoriesInfo();
-    assertEquals(LOCAL_REPOSITORIES_INFO.size(), expectedSize);
-    return LOCAL_REPOSITORIES_INFO.get(project.scm());
   }
 }

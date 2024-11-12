@@ -42,7 +42,7 @@ public class ArtifactVersionsValue extends AbstractKnownValue<ArtifactVersions> 
     if (this == o) {
       return true;
     }
-    if (o instanceof ArtifactVersionsValue == false) {
+    if (!(o instanceof ArtifactVersionsValue)) {
       return false;
     }
     if (!super.equals(o)) {

@@ -36,6 +36,20 @@ public class CalculatedSecurityRiskIntroducedByOssTest {
   private static final CalculatedSecurityRiskIntroducedByOss SCORE =
       new CalculatedSecurityRiskIntroducedByOss();
 
+  public static ValueSet defaultValues() {
+    ValueSet values = new ValueHashSet();
+    values.update(OssSecurityScoreTest.defaultValues());
+    values.update(PROJECT_USAGE.value(QUITE_A_LOT));
+    values.update(FUNCTIONALITY.value(NETWORKING));
+    values.update(HANDLING_UNTRUSTED_DATA_LIKELIHOOD.value(MEDIUM));
+    values.update(IS_ADOPTED.no());
+    values.update(DATA_CONFIDENTIALITY.value(INTERNAL));
+    values.update(CONFIDENTIALITY_IMPACT.value(LOW));
+    values.update(INTEGRITY_IMPACT.value(LOW));
+    values.update(AVAILABILITY_IMPACT.value(HIGH));
+    return values;
+  }
+
   @Test
   public void testJsonSerialization() throws IOException {
     CalculatedSecurityRiskIntroducedByOss clone =
@@ -71,19 +85,5 @@ public class CalculatedSecurityRiskIntroducedByOssTest {
     ScoreValue clone = Json.read(Json.toBytes(scoreValue), ScoreValue.class);
     assertTrue(scoreValue.equals(clone) && clone.equals(scoreValue));
     assertEquals(scoreValue.hashCode(), clone.hashCode());
-  }
-
-  public static ValueSet defaultValues() {
-    ValueSet values = new ValueHashSet();
-    values.update(OssSecurityScoreTest.defaultValues());
-    values.update(PROJECT_USAGE.value(QUITE_A_LOT));
-    values.update(FUNCTIONALITY.value(NETWORKING));
-    values.update(HANDLING_UNTRUSTED_DATA_LIKELIHOOD.value(MEDIUM));
-    values.update(IS_ADOPTED.no());
-    values.update(DATA_CONFIDENTIALITY.value(INTERNAL));
-    values.update(CONFIDENTIALITY_IMPACT.value(LOW));
-    values.update(INTEGRITY_IMPACT.value(LOW));
-    values.update(AVAILABILITY_IMPACT.value(HIGH));
-    return values;
   }
 }

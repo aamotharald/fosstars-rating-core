@@ -22,13 +22,6 @@ public interface Confidence {
   Interval INTERVAL = DoubleInterval.init().from(MIN).to(MAX).closed().make();
 
   /**
-   * Get a level of confidence.
-   *
-   * @return A level of confidence.
-   */
-  double confidence();
-
-  /**
    * Checks if a specified confidence level is correct.
    *
    * @param confidence The confidence level to be checked.
@@ -89,8 +82,7 @@ public interface Confidence {
       if (value.isUnknown()) {
         // if value is unknown, then confidence is min and weight is 1.0
         weightSum += 1.0;
-      } else if (value instanceof ScoreValue) {
-        ScoreValue scoreValue = (ScoreValue) value;
+      } else if (value instanceof ScoreValue scoreValue) {
         weightSum += scoreValue.weight();
         weightedConfidenceSum += scoreValue.weight() * scoreValue.confidence();
       } else if (value instanceof Confidence) {
@@ -117,4 +109,11 @@ public interface Confidence {
     Objects.requireNonNull(values, "Hey! Values can't be null!");
     return make(Arrays.asList(values));
   }
+
+  /**
+   * Get a level of confidence.
+   *
+   * @return A level of confidence.
+   */
+  double confidence();
 }

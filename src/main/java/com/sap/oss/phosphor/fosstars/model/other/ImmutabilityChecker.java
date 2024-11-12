@@ -47,8 +47,7 @@ public class ImmutabilityChecker implements Visitor {
    * @param object The object to be checked.
    */
   private void checkImmutability(Object object) {
-    if (object instanceof Tunable) {
-      Tunable tunable = (Tunable) object;
+    if (object instanceof Tunable tunable) {
       if (!tunable.isImmutable()) {
         isImmutable = false;
       }

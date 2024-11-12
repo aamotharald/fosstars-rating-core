@@ -29,6 +29,12 @@ import org.kohsuke.github.PagedIterable;
 
 public class GitHubProjectFinderTest {
 
+  private static GHRepository mockRepository(String name) {
+    GHRepository repository = mock(GHRepository.class);
+    when(repository.getName()).thenReturn(name);
+    return repository;
+  }
+
   @Test
   public void parseValidConfig() throws IOException {
     ConfigParser parser = new ConfigParser();
@@ -107,11 +113,5 @@ public class GitHubProjectFinderTest {
       assertThat(
           config.projectConfigs, hasItem(new ProjectConfig("FasterXML", "jackson-dataformat-xml")));
     }
-  }
-
-  private static GHRepository mockRepository(String name) {
-    GHRepository repository = mock(GHRepository.class);
-    when(repository.getName()).thenReturn(name);
-    return repository;
   }
 }

@@ -16,15 +16,6 @@ import java.util.Objects;
  */
 public class OssArtifactSecurityRating extends AbstractRating {
 
-  /** A set of labels for the rating. */
-  public enum ArtifactSecurityLabel implements Label {
-    BAD,
-    MODERATE,
-    GOOD,
-    UNCLEAR,
-    UNKNOWN;
-  }
-
   /** Thresholds for labels. */
   private final Thresholds thresholds;
 
@@ -78,6 +69,15 @@ public class OssArtifactSecurityRating extends AbstractRating {
     }
 
     return ArtifactSecurityLabel.GOOD;
+  }
+
+  /** A set of labels for the rating. */
+  public enum ArtifactSecurityLabel implements Label {
+    BAD,
+    MODERATE,
+    GOOD,
+    UNCLEAR,
+    UNKNOWN
   }
 
   /** Holds thresholds for labels. */

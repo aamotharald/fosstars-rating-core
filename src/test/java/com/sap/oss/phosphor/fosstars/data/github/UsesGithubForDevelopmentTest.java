@@ -27,52 +27,6 @@ import org.kohsuke.github.GHRepository;
 
 public class UsesGithubForDevelopmentTest extends TestGitHubDataFetcherHolder {
 
-  private static class RepositoryMockBuilder {
-
-    GHRepository repository;
-    Set<Integer> passedChecks;
-
-    private final List<Consumer<Boolean>> checks =
-        Arrays.asList(
-            passed ->
-                when(repository.getDescription())
-                    .thenReturn(passed ? "This is the main repository" : "This is a mirror"),
-            passed -> when(repository.hasIssues()).thenReturn(passed),
-            passed -> when(repository.hasWiki()).thenReturn(passed),
-            passed -> {
-              when(repository.getMirrorUrl()).thenReturn(passed ? "" : "https://test.com");
-              when(repository.getSvnUrl()).thenReturn(passed ? "" : "https://test.com");
-            },
-            passed -> when(repository.isArchived()).thenReturn(!passed));
-
-    RepositoryMockBuilder() {
-      init();
-    }
-
-    final void init() {
-      repository = mock(GHRepository.class);
-      passedChecks = new HashSet<>();
-      checks.forEach(check -> check.accept(false));
-    }
-
-    int allChecks() {
-      return checks.size();
-    }
-
-    int passedChecks() {
-      return passedChecks.size();
-    }
-
-    void passCheck(int i) {
-      checks.get(i).accept(true);
-      passedChecks.add(i);
-    }
-
-    GHRepository repository() {
-      return repository;
-    }
-  }
-
   @Test
   public void testVariousChecks() throws IOException {
     Random random = new Random();
@@ -184,5 +138,50 @@ public class UsesGithubForDevelopmentTest extends TestGitHubDataFetcherHolder {
     assertTrue(notGitHubUrl(""));
     assertTrue(notGitHubUrl("https://test.com/test"));
     assertFalse(notGitHubUrl("https://github.com/apache/nifi"));
+  }
+
+  private static class RepositoryMockBuilder {
+
+    GHRepository repository;
+    private final List<Consumer<Boolean>> checks =
+        Arrays.asList(
+            passed ->
+                when(repository.getDescription())
+                    .thenReturn(passed ? "This is the main repository" : "This is a mirror"),
+            passed -> when(repository.hasIssues()).thenReturn(passed),
+            passed -> when(repository.hasWiki()).thenReturn(passed),
+            passed -> {
+              when(repository.getMirrorUrl()).thenReturn(passed ? "" : "https://test.com");
+              when(repository.getSvnUrl()).thenReturn(passed ? "" : "https://test.com");
+            },
+            passed -> when(repository.isArchived()).thenReturn(!passed));
+    Set<Integer> passedChecks;
+
+    RepositoryMockBuilder() {
+      init();
+    }
+
+    final void init() {
+      repository = mock(GHRepository.class);
+      passedChecks = new HashSet<>();
+      checks.forEach(check -> check.accept(false));
+    }
+
+    int allChecks() {
+      return checks.size();
+    }
+
+    int passedChecks() {
+      return passedChecks.size();
+    }
+
+    void passCheck(int i) {
+      checks.get(i).accept(true);
+      passedChecks.add(i);
+    }
+
+    GHRepository repository() {
+      return repository;
+    }
   }
 }

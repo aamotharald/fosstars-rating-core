@@ -1,5 +1,5 @@
 ---
-defaults: []
+defaults: [ ]
 elements:
   - type: "StandardTestVector"
     values:
@@ -24,7 +24,7 @@ elements:
         feature:
           type: "SecurityReviewsFeature"
           name: "Security reviews for a project"
-        reviews: []
+        reviews: [ ]
     expectedScore:
       type: "DoubleInterval"
       from: 0.0

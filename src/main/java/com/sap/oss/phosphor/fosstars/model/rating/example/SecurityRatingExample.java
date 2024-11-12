@@ -18,6 +18,11 @@ import java.util.Objects;
  */
 public class SecurityRatingExample extends AbstractRating implements Tunable {
 
+  /** Initializes a security rating with SecurityScoreExample. */
+  SecurityRatingExample() {
+    super("Security rating (example)", SECURITY_SCORE_EXAMPLE);
+  }
+
   @Override
   public List<? extends Parameter> parameters() {
     return score().parameters();
@@ -32,17 +37,6 @@ public class SecurityRatingExample extends AbstractRating implements Tunable {
   @Override
   public void makeImmutable() {
     score().makeImmutable();
-  }
-
-  public enum SecurityLabelExample implements Label {
-    AWFUL,
-    OKAY,
-    AWESOME
-  }
-
-  /** Initializes a security rating with SecurityScoreExample. */
-  SecurityRatingExample() {
-    super("Security rating (example)", SECURITY_SCORE_EXAMPLE);
   }
 
   @Override
@@ -66,5 +60,11 @@ public class SecurityRatingExample extends AbstractRating implements Tunable {
     }
 
     return SecurityLabelExample.AWESOME;
+  }
+
+  public enum SecurityLabelExample implements Label {
+    AWFUL,
+    OKAY,
+    AWESOME
   }
 }

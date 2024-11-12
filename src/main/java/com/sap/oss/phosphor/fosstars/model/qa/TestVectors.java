@@ -56,6 +56,32 @@ public class TestVectors implements Iterable<TestVector> {
   }
 
   /**
+   * Loads a list of test vectors from a YAML file.
+   *
+   * @param filename The filename.
+   * @return A list of loaded test vectors.
+   * @throws IOException If something went wrong (file doesn't exist, the content is wrong, etc).
+   */
+  public static TestVectors loadFromYaml(Path filename) throws IOException {
+    Objects.requireNonNull(filename, "Filename can't be null!");
+    try (InputStream is = Files.newInputStream(filename)) {
+      return loadFromYaml(is);
+    }
+  }
+
+  /**
+   * Loads a list of test vectors from YAML.
+   *
+   * @param is An input stream with YAML.
+   * @return A list of test vectors.
+   * @throws IOException If something went wrong.
+   */
+  public static TestVectors loadFromYaml(InputStream is) throws IOException {
+    Objects.requireNonNull(is, "Input stream can't be null!");
+    return Yaml.read(is, TestVectors.class);
+  }
+
+  /**
    * Adds a test vector to the collection.
    *
    * @param vector The test vector to be added.
@@ -122,7 +148,7 @@ public class TestVectors implements Iterable<TestVector> {
     if (this == o) {
       return true;
     }
-    if (o instanceof TestVectors == false) {
+    if (!(o instanceof TestVectors)) {
       return false;
     }
     TestVectors that = (TestVectors) o;
@@ -147,32 +173,6 @@ public class TestVectors implements Iterable<TestVector> {
     }
 
     return list;
-  }
-
-  /**
-   * Loads a list of test vectors from a YAML file.
-   *
-   * @param filename The filename.
-   * @return A list of loaded test vectors.
-   * @throws IOException If something went wrong (file doesn't exist, the content is wrong, etc).
-   */
-  public static TestVectors loadFromYaml(Path filename) throws IOException {
-    Objects.requireNonNull(filename, "Filename can't be null!");
-    try (InputStream is = Files.newInputStream(filename)) {
-      return loadFromYaml(is);
-    }
-  }
-
-  /**
-   * Loads a list of test vectors from YAML.
-   *
-   * @param is An input stream with YAML.
-   * @return A list of test vectors.
-   * @throws IOException If something went wrong.
-   */
-  public static TestVectors loadFromYaml(InputStream is) throws IOException {
-    Objects.requireNonNull(is, "Input stream can't be null!");
-    return Yaml.read(is, TestVectors.class);
   }
 
   /**

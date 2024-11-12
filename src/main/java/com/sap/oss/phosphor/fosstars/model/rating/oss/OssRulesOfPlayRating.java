@@ -10,14 +10,6 @@ import java.util.Objects;
 /** This rating checks whether an open source project violates certain rules or not. */
 public class OssRulesOfPlayRating extends AbstractRating {
 
-  /** A set of labels for the rating. */
-  public enum OssRulesOfPlayLabel implements Label {
-    PASSED,
-    PASSED_WITH_WARNING,
-    FAILED,
-    UNCLEAR
-  }
-
   /** Initializes a new rating. */
   public OssRulesOfPlayRating() {
     super("Open source rules of play rating", new OssRulesOfPlayScore());
@@ -45,5 +37,13 @@ public class OssRulesOfPlayRating extends AbstractRating {
     }
 
     return OssRulesOfPlayLabel.PASSED;
+  }
+
+  /** A set of labels for the rating. */
+  public enum OssRulesOfPlayLabel implements Label {
+    PASSED,
+    PASSED_WITH_WARNING,
+    FAILED,
+    UNCLEAR
   }
 }

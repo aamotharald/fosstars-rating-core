@@ -17,6 +17,15 @@ public class NumberOfCommitsLastMonthExample extends AbstractFeature<Integer> {
     super("Number of commits last month (example)");
   }
 
+  private static Integer check(Integer n) {
+    if (n < 0) {
+      throw new IllegalArgumentException(
+          String.format("Number of commits (%d) can't be negative!", n));
+    }
+
+    return n;
+  }
+
   @Override
   public IntegerValue value(Integer object) {
     return new IntegerValue(this, check(object));
@@ -25,14 +34,5 @@ public class NumberOfCommitsLastMonthExample extends AbstractFeature<Integer> {
   @Override
   public Value<Integer> parse(String string) {
     return value(Integer.valueOf(string));
-  }
-
-  private static Integer check(Integer n) {
-    if (n < 0) {
-      throw new IllegalArgumentException(
-          String.format("Number of commits (%d) can't be negative!", n));
-    }
-
-    return n;
   }
 }

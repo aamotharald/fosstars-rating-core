@@ -28,14 +28,14 @@ public abstract class AbstractScore implements Score {
   /** No description. */
   static final String EMPTY_DESCRIPTION = "";
 
+  /** A logger. */
+  @JsonIgnore protected final Logger logger = LogManager.getLogger(getClass());
+
   /** Score name. */
   private final String name;
 
   /** Description. */
   @JsonIgnore private final String description;
-
-  /** A logger. */
-  @JsonIgnore protected final Logger logger = LogManager.getLogger(getClass());
 
   /**
    * Initializes a new score.
@@ -64,97 +64,6 @@ public abstract class AbstractScore implements Score {
     this.description = description;
   }
 
-  @Override
-  @JsonGetter("name")
-  public final String name() {
-    return name;
-  }
-
-  @Override
-  public String description() {
-    return description;
-  }
-
-  @Override
-  public ScoreValue calculate(Set<Value<?>> values) {
-    Objects.requireNonNull(values, "Hey! Values can't be null!");
-    return calculate(values.toArray(new Value[0]));
-  }
-
-  @Override
-  public ScoreValue calculate(ValueSet values) {
-    Objects.requireNonNull(values, "Hey! Value set can't be null!");
-    return calculate(values.toSet());
-  }
-
-  @Override
-  public void accept(Visitor visitor) {
-    for (Score subScore : subScores()) {
-      subScore.accept(visitor);
-    }
-    for (Feature feature : features()) {
-      feature.accept(visitor);
-    }
-    visitor.visit(this);
-  }
-
-  @Override
-  public Value<Double> unknown() {
-    return UnknownValue.of(this);
-  }
-
-  @Override
-  public Value<Double> value(Double n) {
-    return new ScoreValue(
-        this, Score.check(n), Weight.MAX, Confidence.MAX, Collections.emptyList());
-  }
-
-  @Override
-  public Value<Double> parse(String string) {
-    return value(Double.parseDouble(string));
-  }
-
-  @Override
-  public Set<Feature<?>> allFeatures() {
-    return fillOutFeatures(this, new HashSet<>());
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o instanceof AbstractScore == false) {
-      return false;
-    }
-    AbstractScore that = (AbstractScore) o;
-    return Objects.equals(name, that.name) && Objects.equals(description, that.description);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(name, description);
-  }
-
-  /**
-   * Looks for a sub-score of a specified type.
-   *
-   * @param clazz The class which represents the type.
-   * @param <T> The type.
-   * @return A sub-score if found.
-   * @throws IllegalArgumentException If a sub-score was not found.
-   */
-  public <T extends Score> Score score(Class<T> clazz) {
-    Objects.requireNonNull(clazz, "Class can't be null!");
-    for (Score subScore : subScores()) {
-      if (clazz.equals(subScore.getClass())) {
-        return subScore;
-      }
-    }
-    throw new IllegalArgumentException(
-        String.format("Sub-score %s not found", clazz.getCanonicalName()));
-  }
-
   /**
    * Collect all features which are used by a specified score and its sub-scores. The method browses
    * the underlying sub-scores recursively and adds features to a specified set.
@@ -169,59 +78,6 @@ public abstract class AbstractScore implements Score {
       fillOutFeatures(subScore, allFeatures);
     }
     return allFeatures;
-  }
-
-  /**
-   * Initializes a score value for the score. The method adjusts the specified score value so that
-   * it fits to the valid range [0, 10].
-   *
-   * @param value The score value.
-   * @param usedValues The values which were used to produce the score value.
-   * @return A new {@link ScoreValue}.
-   */
-  protected ScoreValue scoreValue(double value, Value<?>... usedValues) {
-    return new ScoreValue(
-        this,
-        Score.adjust(value),
-        Weight.MAX,
-        Confidence.make(usedValues),
-        Arrays.asList(usedValues));
-  }
-
-  /**
-   * Initializes a score value for the score. The method adjusts the specified score value so that
-   * it fits to the valid range [0, 10].
-   *
-   * @param value The score value.
-   * @param usedValues The values which were used to produce the score value.
-   * @return A new {@link ScoreValue}.
-   */
-  protected ScoreValue scoreValue(double value, List<Value<?>> usedValues) {
-    return new ScoreValue(
-        this, Score.adjust(value), Weight.MAX, Confidence.make(usedValues), usedValues);
-  }
-
-  /**
-   * Looks for a value of a specified feature in a list of values.
-   *
-   * @param feature The feature.
-   * @param values The list of values.
-   * @param <T> A type of the feature.
-   * @return A value for the specified feature if it's in the list.
-   * @throws IllegalArgumentException If a value was not found.
-   */
-  protected <T> Value<T> find(Feature<T> feature, Value<?>... values) {
-    Objects.requireNonNull(values, "Oh no! Feature values can't be null!");
-    Objects.requireNonNull(feature, "Oh no! Feature can't be null!");
-
-    for (Value<?> value : values) {
-      if (feature.equals(value.feature())) {
-        return (Value<T>) value;
-      }
-    }
-
-    throw new IllegalArgumentException(
-        String.format("Oh no! We could not find feature: %s", feature.name()));
   }
 
   /**
@@ -320,5 +176,149 @@ public abstract class AbstractScore implements Score {
     }
 
     return true;
+  }
+
+  @Override
+  @JsonGetter("name")
+  public final String name() {
+    return name;
+  }
+
+  @Override
+  public String description() {
+    return description;
+  }
+
+  @Override
+  public ScoreValue calculate(Set<Value<?>> values) {
+    Objects.requireNonNull(values, "Hey! Values can't be null!");
+    return calculate(values.toArray(new Value[0]));
+  }
+
+  @Override
+  public ScoreValue calculate(ValueSet values) {
+    Objects.requireNonNull(values, "Hey! Value set can't be null!");
+    return calculate(values.toSet());
+  }
+
+  @Override
+  public void accept(Visitor visitor) {
+    for (Score subScore : subScores()) {
+      subScore.accept(visitor);
+    }
+    for (Feature feature : features()) {
+      feature.accept(visitor);
+    }
+    visitor.visit(this);
+  }
+
+  @Override
+  public Value<Double> unknown() {
+    return UnknownValue.of(this);
+  }
+
+  @Override
+  public Value<Double> value(Double n) {
+    return new ScoreValue(
+        this, Score.check(n), Weight.MAX, Confidence.MAX, Collections.emptyList());
+  }
+
+  @Override
+  public Value<Double> parse(String string) {
+    return value(Double.parseDouble(string));
+  }
+
+  @Override
+  public Set<Feature<?>> allFeatures() {
+    return fillOutFeatures(this, new HashSet<>());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof AbstractScore)) {
+      return false;
+    }
+    AbstractScore that = (AbstractScore) o;
+    return Objects.equals(name, that.name) && Objects.equals(description, that.description);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, description);
+  }
+
+  /**
+   * Looks for a sub-score of a specified type.
+   *
+   * @param clazz The class which represents the type.
+   * @param <T> The type.
+   * @return A sub-score if found.
+   * @throws IllegalArgumentException If a sub-score was not found.
+   */
+  public <T extends Score> Score score(Class<T> clazz) {
+    Objects.requireNonNull(clazz, "Class can't be null!");
+    for (Score subScore : subScores()) {
+      if (clazz.equals(subScore.getClass())) {
+        return subScore;
+      }
+    }
+    throw new IllegalArgumentException(
+        String.format("Sub-score %s not found", clazz.getCanonicalName()));
+  }
+
+  /**
+   * Initializes a score value for the score. The method adjusts the specified score value so that
+   * it fits to the valid range [0, 10].
+   *
+   * @param value The score value.
+   * @param usedValues The values which were used to produce the score value.
+   * @return A new {@link ScoreValue}.
+   */
+  protected ScoreValue scoreValue(double value, Value<?>... usedValues) {
+    return new ScoreValue(
+        this,
+        Score.adjust(value),
+        Weight.MAX,
+        Confidence.make(usedValues),
+        Arrays.asList(usedValues));
+  }
+
+  /**
+   * Initializes a score value for the score. The method adjusts the specified score value so that
+   * it fits to the valid range [0, 10].
+   *
+   * @param value The score value.
+   * @param usedValues The values which were used to produce the score value.
+   * @return A new {@link ScoreValue}.
+   */
+  protected ScoreValue scoreValue(double value, List<Value<?>> usedValues) {
+    return new ScoreValue(
+        this, Score.adjust(value), Weight.MAX, Confidence.make(usedValues), usedValues);
+  }
+
+  /**
+   * Looks for a value of a specified feature in a list of values.
+   *
+   * @param feature The feature.
+   * @param values The list of values.
+   * @param <T> A type of the feature.
+   * @return A value for the specified feature if it's in the list.
+   * @throws IllegalArgumentException If a value was not found.
+   */
+  protected <T> Value<T> find(Feature<T> feature, Value<?>... values) {
+    Objects.requireNonNull(values, "Oh no! Feature values can't be null!");
+    Objects.requireNonNull(feature, "Oh no! Feature can't be null!");
+
+    for (Value<?> value : values) {
+      if (feature.equals(value.feature())) {
+        return (Value<T>) value;
+      }
+    }
+
+    throw new IllegalArgumentException(
+        String.format("Oh no! We could not find feature: %s", feature.name()));
   }
 }

@@ -37,7 +37,7 @@ public class IntegerValue extends AbstractKnownValue<Integer> {
     if (this == o) {
       return true;
     }
-    if (o instanceof IntegerValue == false) {
+    if (!(o instanceof IntegerValue)) {
       return false;
     }
     if (!super.equals(o)) {

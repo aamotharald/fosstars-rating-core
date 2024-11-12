@@ -70,6 +70,16 @@ public class HasExecutableBinaries extends CachedSingleFeatureGitHubDataProvider
     super(fetcher);
   }
 
+  /**
+   * Check if the file represented by the path is a executable binary file.
+   *
+   * @param path The file path.
+   * @return true if the executable binary file type is found, otherwise false.
+   */
+  private static boolean isExecutableBinary(Path path) {
+    return FILE_EXTENSIONS.stream().anyMatch(ext -> path.getFileName().toString().endsWith(ext));
+  }
+
   @Override
   protected Feature<Boolean> supportedFeature() {
     return HAS_EXECUTABLE_BINARIES;
@@ -93,15 +103,5 @@ public class HasExecutableBinaries extends CachedSingleFeatureGitHubDataProvider
    */
   LocalRepository loadLocalRepository(GitHubProject project) throws IOException {
     return GitHubDataFetcher.localRepositoryFor(project);
-  }
-
-  /**
-   * Check if the file represented by the path is a executable binary file.
-   *
-   * @param path The file path.
-   * @return true if the executable binary file type is found, otherwise false.
-   */
-  private static boolean isExecutableBinary(Path path) {
-    return FILE_EXTENSIONS.stream().anyMatch(ext -> path.getFileName().toString().endsWith(ext));
   }
 }

@@ -7,6 +7,9 @@ import com.sap.oss.phosphor.fosstars.model.rating.NotApplicableLabel;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface Label {
 
+  /** This is a label for a score value that is marked as not-applicable. */
+  Label NOT_APPLICABLE = new NotApplicableLabel();
+
   /**
    * Get the label's name.
    *
@@ -22,7 +25,4 @@ public interface Label {
   default boolean isNotApplicable() {
     return false;
   }
-
-  /** This is a label for a score value that is marked as not-applicable. */
-  Label NOT_APPLICABLE = new NotApplicableLabel();
 }

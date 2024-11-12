@@ -79,7 +79,7 @@ public class OwaspDependencyScanScore extends FeatureBasedScore {
       return scoreValue;
     }
 
-    if (thresholdValue instanceof OwaspDependencyCheckCvssThresholdValue == false) {
+    if (!(thresholdValue instanceof OwaspDependencyCheckCvssThresholdValue)) {
       throw new IllegalArgumentException("Expected OwaspDependencyCheckCvssThresholdValue!");
     }
 

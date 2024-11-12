@@ -58,52 +58,6 @@ public class UsesSanitizers extends GitHubCachingDataProvider {
     super(fetcher);
   }
 
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return setOf(USES_ADDRESS_SANITIZER, USES_MEMORY_SANITIZER, USES_UNDEFINED_BEHAVIOR_SANITIZER);
-  }
-
-  @Override
-  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
-    Objects.requireNonNull(project, "Oh no! Project is null!");
-
-    logger.info("Figuring out if the project uses sanitizers ...");
-
-    ValueSet values = new ValueHashSet();
-    values.update(USES_ADDRESS_SANITIZER.value(false));
-    values.update(USES_MEMORY_SANITIZER.value(false));
-    values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(false));
-
-    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
-
-    List<Path> files =
-        repository.files(path -> Files.isRegularFile(path) && maybeBuildConfig(path));
-
-    for (Path path : files) {
-      Optional<String> content = repository.file(path);
-      if (!content.isPresent()) {
-        continue;
-      }
-
-      List<String> sanitizers = lookForSanitizers(content.get());
-      for (String sanitizer : sanitizers) {
-        if (sanitizer.contains("address")) {
-          values.update(USES_ADDRESS_SANITIZER.value(true));
-        }
-
-        if (sanitizer.contains("memory")) {
-          values.update(USES_MEMORY_SANITIZER.value(true));
-        }
-
-        if (sanitizer.contains("undefined")) {
-          values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(true));
-        }
-      }
-    }
-
-    return values;
-  }
-
   /**
    * Checks if a file looks like a build config.
    *
@@ -178,5 +132,51 @@ public class UsesSanitizers extends GitHubCachingDataProvider {
     }
 
     return options;
+  }
+
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return setOf(USES_ADDRESS_SANITIZER, USES_MEMORY_SANITIZER, USES_UNDEFINED_BEHAVIOR_SANITIZER);
+  }
+
+  @Override
+  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
+    Objects.requireNonNull(project, "Oh no! Project is null!");
+
+    logger.info("Figuring out if the project uses sanitizers ...");
+
+    ValueSet values = new ValueHashSet();
+    values.update(USES_ADDRESS_SANITIZER.value(false));
+    values.update(USES_MEMORY_SANITIZER.value(false));
+    values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(false));
+
+    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
+
+    List<Path> files =
+        repository.files(path -> Files.isRegularFile(path) && maybeBuildConfig(path));
+
+    for (Path path : files) {
+      Optional<String> content = repository.file(path);
+      if (!content.isPresent()) {
+        continue;
+      }
+
+      List<String> sanitizers = lookForSanitizers(content.get());
+      for (String sanitizer : sanitizers) {
+        if (sanitizer.contains("address")) {
+          values.update(USES_ADDRESS_SANITIZER.value(true));
+        }
+
+        if (sanitizer.contains("memory")) {
+          values.update(USES_MEMORY_SANITIZER.value(true));
+        }
+
+        if (sanitizer.contains("undefined")) {
+          values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(true));
+        }
+      }
+    }
+
+    return values;
   }
 }

@@ -106,8 +106,7 @@ public abstract class AbstractHandler implements Handler {
     if (commandLine.hasOption("cleanup")) {
       calculator.doAfter(
           subject -> {
-            if (subject instanceof GitHubProject) {
-              GitHubProject project = (GitHubProject) subject;
+            if (subject instanceof GitHubProject project) {
               CleanupStrategy processedRepository = (url, info, total) -> project.scm().equals(url);
               try {
                 fetcher.cleanup(processedRepository);

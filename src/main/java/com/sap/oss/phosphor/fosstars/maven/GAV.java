@@ -38,6 +38,26 @@ public class GAV {
   }
 
   /**
+   * Parse a string with GAV coordinates. The coordinates have to have group and artifact IDs, but
+   * version is optional.
+   *
+   * @param gav The string with GAV coordinates.
+   * @return An instance of {@link GAV}.
+   * @throws IllegalArgumentException If the string doesn't have valid GAV coordinates.
+   */
+  public static GAV parse(String gav) {
+    Objects.requireNonNull(gav, "Oh no! GAV is null");
+
+    String[] parts = gav.trim().split(":");
+
+    if (parts.length < 2 || parts.length > 3) {
+      throw new IllegalArgumentException("Oh no! The string doesn't look like GAV!");
+    }
+
+    return new GAV(parts[0], parts[1], parts.length > 2 ? parts[2] : null);
+  }
+
+  /**
    * Return the group ID.
    *
    * @return The group ID.
@@ -90,25 +110,5 @@ public class GAV {
     }
 
     return format("%s:%s:%s", group, artifact, version);
-  }
-
-  /**
-   * Parse a string with GAV coordinates. The coordinates have to have group and artifact IDs, but
-   * version is optional.
-   *
-   * @param gav The string with GAV coordinates.
-   * @return An instance of {@link GAV}.
-   * @throws IllegalArgumentException If the string doesn't have valid GAV coordinates.
-   */
-  public static GAV parse(String gav) {
-    Objects.requireNonNull(gav, "Oh no! GAV is null");
-
-    String[] parts = gav.trim().split(":");
-
-    if (parts.length < 2 || parts.length > 3) {
-      throw new IllegalArgumentException("Oh no! The string doesn't look like GAV!");
-    }
-
-    return new GAV(parts[0], parts[1], parts.length > 2 ? parts[2] : null);
   }
 }

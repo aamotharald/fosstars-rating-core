@@ -122,9 +122,7 @@ public class SemanticVersion {
       if (this.minor > startVersion.minor) {
         return true;
       } else if (this.minor == startVersion.minor) {
-        if (this.micro >= startVersion.micro) {
-          return true;
-        }
+        return this.micro >= startVersion.micro;
       }
     }
     return false;
@@ -138,9 +136,7 @@ public class SemanticVersion {
       if (this.minor < endVersion.minor) {
         return true;
       } else if (this.minor == endVersion.minor) {
-        if (this.micro <= endVersion.micro) {
-          return true;
-        }
+        return this.micro <= endVersion.micro;
       }
     }
     return false;

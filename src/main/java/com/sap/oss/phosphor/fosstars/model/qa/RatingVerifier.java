@@ -27,23 +27,6 @@ public class RatingVerifier extends AbstractVerifier {
   }
 
   /**
-   * Check if the rating produces expected scores and labels defined by the test vectors.
-   *
-   * @return A list of failed test vectors.
-   */
-  List<TestVectorResult> runImpl() {
-    List<TestVectorResult> results = new ArrayList<>();
-
-    int index = 0;
-    for (TestVector vector : vectors) {
-      RatingValue ratingValue = rating.calculate(vector.valuesFor(rating));
-      results.add(testResultFor(vector, ratingValue, index++));
-    }
-
-    return results;
-  }
-
-  /**
    * Verifies a rating value against a test vector.
    *
    * @param vector The test vector.
@@ -86,5 +69,22 @@ public class RatingVerifier extends AbstractVerifier {
     }
 
     return !vector.expectedLabel().equals(ratingValue.label());
+  }
+
+  /**
+   * Check if the rating produces expected scores and labels defined by the test vectors.
+   *
+   * @return A list of failed test vectors.
+   */
+  List<TestVectorResult> runImpl() {
+    List<TestVectorResult> results = new ArrayList<>();
+
+    int index = 0;
+    for (TestVector vector : vectors) {
+      RatingValue ratingValue = rating.calculate(vector.valuesFor(rating));
+      results.add(testResultFor(vector, ratingValue, index++));
+    }
+
+    return results;
   }
 }

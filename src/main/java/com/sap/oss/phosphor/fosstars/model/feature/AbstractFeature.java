@@ -38,7 +38,7 @@ public abstract class AbstractFeature<T> implements Feature<T> {
     if (this == o) {
       return true;
     }
-    if (o instanceof AbstractFeature == false) {
+    if (!(o instanceof AbstractFeature)) {
       return false;
     }
     AbstractFeature<?> that = (AbstractFeature<?>) o;

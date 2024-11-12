@@ -42,6 +42,21 @@ public class HasSecurityPolicy extends CachedSingleFeatureGitHubDataProvider<Boo
     super(fetcher);
   }
 
+  /**
+   * Check if a file exists in a repository and its content more than {@link
+   * #ACCEPTABLE_POLICY_SIZE}.
+   *
+   * @param repository The repository.
+   * @param path A path to the file
+   * @return True if the file exists in the repository and it's big enough, false otherwise.
+   */
+  private static boolean isPolicy(LocalRepository repository, String path) throws IOException {
+    return repository
+        .file(path)
+        .filter(content -> content.length() > ACCEPTABLE_POLICY_SIZE)
+        .isPresent();
+  }
+
   @Override
   protected Feature<Boolean> supportedFeature() {
     return HAS_SECURITY_POLICY;
@@ -98,20 +113,5 @@ public class HasSecurityPolicy extends CachedSingleFeatureGitHubDataProvider<Boo
    */
   CloseableHttpClient httpClient() {
     return HttpClients.createDefault();
-  }
-
-  /**
-   * Check if a file exists in a repository and its content more than {@link
-   * #ACCEPTABLE_POLICY_SIZE}.
-   *
-   * @param repository The repository.
-   * @param path A path to the file
-   * @return True if the file exists in the repository and it's big enough, false otherwise.
-   */
-  private static boolean isPolicy(LocalRepository repository, String path) throws IOException {
-    return repository
-        .file(path)
-        .filter(content -> content.length() > ACCEPTABLE_POLICY_SIZE)
-        .isPresent();
   }
 }

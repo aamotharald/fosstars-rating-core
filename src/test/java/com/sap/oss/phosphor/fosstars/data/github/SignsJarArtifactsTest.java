@@ -18,6 +18,24 @@ import org.junit.jupiter.api.Test;
 
 public class SignsJarArtifactsTest extends TestGitHubDataFetcherHolder {
 
+  private static void checkValue(SignsJarArtifacts provider, boolean expectedValue)
+      throws IOException {
+
+    GitHubProject project = new GitHubProject("org", "test");
+
+    ValueSet values = new ValueHashSet();
+    provider.update(project, values);
+
+    assertEquals(1, values.size());
+    assertTrue(values.has(SIGNS_ARTIFACTS));
+
+    Optional<Value<Boolean>> something = values.of(SIGNS_ARTIFACTS);
+    assertTrue(something.isPresent());
+
+    Value<Boolean> actualValue = something.get();
+    assertEquals(expectedValue, actualValue.get());
+  }
+
   @Test
   public void testSupportedFeature() {
     SignsJarArtifacts provider = new SignsJarArtifacts(fetcher);
@@ -43,29 +61,11 @@ public class SignsJarArtifactsTest extends TestGitHubDataFetcherHolder {
     when(repository.read(filename)).thenReturn(Optional.of(is));
 
     GitHubProject project = new GitHubProject("org", "test");
-    fetcher.addForTesting(project, repository);
+    TestGitHubDataFetcher.addForTesting(project, repository);
 
     SignsJarArtifacts provider = new SignsJarArtifacts(fetcher);
     provider.set(new SubjectValueCache());
 
     return provider;
-  }
-
-  private static void checkValue(SignsJarArtifacts provider, boolean expectedValue)
-      throws IOException {
-
-    GitHubProject project = new GitHubProject("org", "test");
-
-    ValueSet values = new ValueHashSet();
-    provider.update(project, values);
-
-    assertEquals(1, values.size());
-    assertTrue(values.has(SIGNS_ARTIFACTS));
-
-    Optional<Value<Boolean>> something = values.of(SIGNS_ARTIFACTS);
-    assertTrue(something.isPresent());
-
-    Value<Boolean> actualValue = something.get();
-    assertEquals(expectedValue, actualValue.get());
   }
 }

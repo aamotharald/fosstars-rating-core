@@ -18,6 +18,20 @@ import java.util.Set;
 /** This data provider asks a user about unpatched vulnerabilities. */
 public class AskAboutUnpatchedVulnerabilities extends AbstractInteractiveDataProvider {
 
+  /**
+   * Searches for {@link
+   * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#VULNERABILITIES_IN_PROJECT} feature
+   * a set of values.
+   *
+   * @param values The set of value.
+   * @return An existing value for the feature, or an empty value otherwise.
+   */
+  private static Value<Vulnerabilities> knownVulnerabilities(ValueSet values) {
+    return values
+        .of(VULNERABILITIES_IN_PROJECT)
+        .orElseGet(() -> VULNERABILITIES_IN_PROJECT.value(new Vulnerabilities()));
+  }
+
   @Override
   protected AskAboutUnpatchedVulnerabilities ask(Subject subject, ValueSet values) {
     Vulnerabilities unpatchedVulnerabilities = new Vulnerabilities();
@@ -47,20 +61,6 @@ public class AskAboutUnpatchedVulnerabilities extends AbstractInteractiveDataPro
   @Override
   public boolean supports(Subject subject) {
     return true;
-  }
-
-  /**
-   * Searches for {@link
-   * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#VULNERABILITIES_IN_PROJECT} feature
-   * a set of values.
-   *
-   * @param values The set of value.
-   * @return An existing value for the feature, or an empty value otherwise.
-   */
-  private static Value<Vulnerabilities> knownVulnerabilities(ValueSet values) {
-    return values
-        .of(VULNERABILITIES_IN_PROJECT)
-        .orElseGet(() -> VULNERABILITIES_IN_PROJECT.value(new Vulnerabilities()));
   }
 
   @Override

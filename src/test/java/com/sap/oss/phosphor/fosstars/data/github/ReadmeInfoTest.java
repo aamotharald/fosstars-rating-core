@@ -25,6 +25,16 @@ import org.junit.jupiter.api.Test;
 
 public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
 
+  private static Value<Boolean> checkValue(
+      ValueSet values, Feature<Boolean> feature, boolean expected) {
+
+    Optional<Value<Boolean>> something = values.of(feature);
+    assertTrue(something.isPresent());
+    Value<Boolean> value = something.get();
+    assertEquals(expected, value.get());
+    return value;
+  }
+
   @Test
   public void testSupportedFeatures() throws IOException {
     Set<Feature<?>> features = new ReadmeInfo(fetcher).supportedFeatures();
@@ -175,15 +185,5 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
     } finally {
       FileUtils.forceDeleteOnExit(config.toFile());
     }
-  }
-
-  private static Value<Boolean> checkValue(
-      ValueSet values, Feature<Boolean> feature, boolean expected) {
-
-    Optional<Value<Boolean>> something = values.of(feature);
-    assertTrue(something.isPresent());
-    Value<Boolean> value = something.get();
-    assertEquals(expected, value.get());
-    return value;
   }
 }

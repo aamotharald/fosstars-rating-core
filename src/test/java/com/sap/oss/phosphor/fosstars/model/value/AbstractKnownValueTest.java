@@ -20,41 +20,6 @@ import org.junit.jupiter.api.Test;
 
 public class AbstractKnownValueTest {
 
-  private static class FeatureImpl extends AbstractFeature<String> {
-
-    FeatureImpl(@JsonProperty("name") String name) {
-      super(name);
-    }
-
-    @Override
-    public Value<String> value(String object) {
-      return new ValueImpl(this, object);
-    }
-
-    @Override
-    public Value<String> parse(String string) {
-      throw new UnsupportedOperationException();
-    }
-  }
-
-  private static class ValueImpl extends AbstractKnownValue<String> {
-
-    final String value;
-
-    ValueImpl(
-        @JsonProperty("feature") Feature<String> feature, @JsonProperty("value") String value) {
-
-      super(feature);
-      this.value = value;
-    }
-
-    @Override
-    @JsonGetter("value")
-    public String get() {
-      return value;
-    }
-  }
-
   @Test
   public void testProcessIfKnown() {
     ValueImpl value = new ValueImpl(new FeatureImpl("feature"), "test");
@@ -131,5 +96,40 @@ public class AbstractKnownValueTest {
     assertEquals("feature", value.feature().name());
     assertEquals("test", value.get());
     assertTrue(value.explanation().isEmpty());
+  }
+
+  private static class FeatureImpl extends AbstractFeature<String> {
+
+    FeatureImpl(@JsonProperty("name") String name) {
+      super(name);
+    }
+
+    @Override
+    public Value<String> value(String object) {
+      return new ValueImpl(this, object);
+    }
+
+    @Override
+    public Value<String> parse(String string) {
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  private static class ValueImpl extends AbstractKnownValue<String> {
+
+    final String value;
+
+    ValueImpl(
+        @JsonProperty("feature") Feature<String> feature, @JsonProperty("value") String value) {
+
+      super(feature);
+      this.value = value;
+    }
+
+    @Override
+    @JsonGetter("value")
+    public String get() {
+      return value;
+    }
   }
 }

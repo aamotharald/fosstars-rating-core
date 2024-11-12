@@ -65,6 +65,38 @@ public class ReadmeInfo extends GitHubCachingDataProvider {
   }
 
   /**
+   * Looks for a README file in a repository.
+   *
+   * @param repository The repository.
+   * @return A file name of README.
+   */
+  static Optional<String> readmeIn(LocalRepository repository) {
+    for (String filename : KNOWN_README_FILES) {
+      if (repository.hasFile(filename)) {
+        return Optional.of(filename);
+      }
+    }
+
+    return Optional.empty();
+  }
+
+  /**
+   * Reads a README file in a repository.
+   *
+   * @param repository The repository.
+   * @return Content of a README fine if found.
+   * @throws IOException If something went wrong.
+   */
+  static Optional<String> readReadmeIn(LocalRepository repository) throws IOException {
+    Optional<String> readme = readmeIn(repository);
+    if (!readme.isPresent()) {
+      return Optional.empty();
+    }
+
+    return repository.readTextFrom(readme.get());
+  }
+
+  /**
    * Return a list of patterns that describe required content in README.
    *
    * @return A list of patterns.
@@ -133,38 +165,6 @@ public class ReadmeInfo extends GitHubCachingDataProvider {
                     .collect(joining(", ")));
 
     return ValueHashSet.from(hasReadme, incompleteReadme);
-  }
-
-  /**
-   * Looks for a README file in a repository.
-   *
-   * @param repository The repository.
-   * @return A file name of README.
-   */
-  static Optional<String> readmeIn(LocalRepository repository) {
-    for (String filename : KNOWN_README_FILES) {
-      if (repository.hasFile(filename)) {
-        return Optional.of(filename);
-      }
-    }
-
-    return Optional.empty();
-  }
-
-  /**
-   * Reads a README file in a repository.
-   *
-   * @param repository The repository.
-   * @return Content of a README fine if found.
-   * @throws IOException If something went wrong.
-   */
-  static Optional<String> readReadmeIn(LocalRepository repository) throws IOException {
-    Optional<String> readme = readmeIn(repository);
-    if (!readme.isPresent()) {
-      return Optional.empty();
-    }
-
-    return repository.readTextFrom(readme.get());
   }
 
   /**

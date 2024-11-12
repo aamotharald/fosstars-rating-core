@@ -32,6 +32,16 @@ public class ReleasesFromGitHub extends CachedSingleFeatureGitHubDataProvider<Ar
     super(fetcher);
   }
 
+  /**
+   * Convert a Date to a LocalDateTime instance using the system default ZoneId.
+   *
+   * @param date The date to be converted.
+   * @return The time as LocalDateTime.
+   */
+  private static LocalDateTime convertToLocalDate(Date date) {
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+  }
+
   @Override
   protected Feature<ArtifactVersions> supportedFeature() {
     return RELEASED_ARTIFACT_VERSIONS;
@@ -72,15 +82,5 @@ public class ReleasesFromGitHub extends CachedSingleFeatureGitHubDataProvider<Ar
       logger.warn("Could not create artifact version!", e);
       return null;
     }
-  }
-
-  /**
-   * Convert a Date to a LocalDateTime instance using the system default ZoneId.
-   *
-   * @param date The date to be converted.
-   * @return The time as LocalDateTime.
-   */
-  private static LocalDateTime convertToLocalDate(Date date) {
-    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
   }
 }

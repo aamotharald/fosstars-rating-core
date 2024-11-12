@@ -42,6 +42,25 @@ public class UnpatchedVulnerabilitiesScore extends FeatureBasedScore {
     super("How well vulnerabilities are patched", VULNERABILITIES_IN_PROJECT);
   }
 
+  /**
+   * Apply a penalty to a score value if issues found.
+   *
+   * @param scoreValue The score value to be updated.
+   * @param issues The number of issues.
+   * @param severity The severity of issues in human-readable format.
+   * @param penalty The penalty for one issue.
+   */
+  private static void applyPenaltyIfNecessary(
+      ScoreValue scoreValue, int issues, String severity, double penalty) {
+
+    if (issues > 0) {
+      double overallPenalty = penalty * issues;
+      scoreValue.decrease(overallPenalty);
+      scoreValue.explain(
+          String.format(EXPLANATION_TEMPLATE, issues, severity, overallPenalty, issues, penalty));
+    }
+  }
+
   @Override
   public ScoreValue calculate(Value<?>... values) {
     Value<Vulnerabilities> vulnerabilities =
@@ -84,24 +103,5 @@ public class UnpatchedVulnerabilitiesScore extends FeatureBasedScore {
     }
 
     return scoreValue;
-  }
-
-  /**
-   * Apply a penalty to a score value if issues found.
-   *
-   * @param scoreValue The score value to be updated.
-   * @param issues The number of issues.
-   * @param severity The severity of issues in human-readable format.
-   * @param penalty The penalty for one issue.
-   */
-  private static void applyPenaltyIfNecessary(
-      ScoreValue scoreValue, int issues, String severity, double penalty) {
-
-    if (issues > 0) {
-      double overallPenalty = penalty * issues;
-      scoreValue.decrease(overallPenalty);
-      scoreValue.explain(
-          String.format(EXPLANATION_TEMPLATE, issues, severity, overallPenalty, issues, penalty));
-    }
   }
 }

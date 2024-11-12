@@ -34,6 +34,9 @@ public class TestVectorBuilder {
   /** An alias. */
   private String alias;
 
+  /** Private constructor. Please use the {@link #newTestVector()} method to create an instance. */
+  private TestVectorBuilder() {}
+
   /**
    * Creates a new test vector builder.
    *
@@ -52,9 +55,6 @@ public class TestVectorBuilder {
   public static TestVectorBuilder newTestVector(String alias) {
     return newTestVector().alias(alias);
   }
-
-  /** Private constructor. Please use the {@link #newTestVector()} method to create an instance. */
-  private TestVectorBuilder() {}
 
   /**
    * Set an expected interval for a score.

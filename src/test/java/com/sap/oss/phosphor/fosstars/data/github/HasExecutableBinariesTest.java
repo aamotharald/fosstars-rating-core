@@ -25,10 +25,8 @@ import org.junit.jupiter.api.Test;
 
 public class HasExecutableBinariesTest extends TestGitHubDataFetcherHolder {
 
-  private static Path BASE_DIR;
-
   private static final GitHubProject PROJECT = new GitHubProject("org", "test");
-
+  private static Path BASE_DIR;
   private static LocalRepository LOCAL_REPOSITORY;
 
   @BeforeAll
@@ -52,6 +50,15 @@ public class HasExecutableBinariesTest extends TestGitHubDataFetcherHolder {
       when(LOCAL_REPOSITORY.info()).thenReturn(localRepositoryInfo);
 
       TestGitHubDataFetcher.addForTesting(PROJECT, LOCAL_REPOSITORY);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  @AfterAll
+  public static void shutdown() {
+    try {
+      FileUtils.forceDeleteOnExit(BASE_DIR.toFile());
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
@@ -104,15 +111,6 @@ public class HasExecutableBinariesTest extends TestGitHubDataFetcherHolder {
       assertFalse(value.get());
     } finally {
       FileUtils.forceDeleteOnExit(javaFile.toFile());
-    }
-  }
-
-  @AfterAll
-  public static void shutdown() {
-    try {
-      FileUtils.forceDeleteOnExit(BASE_DIR.toFile());
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
     }
   }
 }

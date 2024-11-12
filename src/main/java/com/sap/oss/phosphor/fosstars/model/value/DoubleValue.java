@@ -38,7 +38,7 @@ public class DoubleValue extends AbstractKnownValue<Double> {
     if (this == o) {
       return true;
     }
-    if (o instanceof DoubleValue == false) {
+    if (!(o instanceof DoubleValue)) {
       return false;
     }
     if (!super.equals(o)) {

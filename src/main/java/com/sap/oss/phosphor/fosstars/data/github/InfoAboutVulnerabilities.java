@@ -25,7 +25,7 @@ import java.util.List;
  *   <li>{@link VulnerabilitiesFromNvd}
  * </ul>
  *
- * The data provider caches a value for the {@link
+ * <p>The data provider caches a value for the {@link
  * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#VULNERABILITIES_IN_PROJECT} feature.
  */
 public class InfoAboutVulnerabilities

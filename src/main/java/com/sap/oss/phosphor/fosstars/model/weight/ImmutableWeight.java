@@ -41,7 +41,7 @@ public class ImmutableWeight extends AbstractWeight {
     if (this == o) {
       return true;
     }
-    if (o instanceof ImmutableWeight == false) {
+    if (!(o instanceof ImmutableWeight)) {
       return false;
     }
     ImmutableWeight weight = (ImmutableWeight) o;

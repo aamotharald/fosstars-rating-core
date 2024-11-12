@@ -16,6 +16,21 @@ import org.junit.jupiter.api.Test;
 
 public class HasSecurityTeamTest extends TestGitHubDataFetcherHolder {
 
+  private static Value<Boolean> check(HasSecurityTeam provider, GitHubProject project)
+      throws IOException {
+    ValueHashSet values = new ValueHashSet();
+    provider.update(project, values);
+
+    assertEquals(1, values.size());
+    assertTrue(values.has(HAS_SECURITY_TEAM));
+
+    Optional<Value<Boolean>> something = values.of(HAS_SECURITY_TEAM);
+    assertNotNull(something);
+    assertTrue(something.isPresent());
+
+    return something.get();
+  }
+
   @Test
   public void testHasTeam() throws IOException {
     GitHubProject project = new GitHubProject("apache", "poi");
@@ -34,20 +49,5 @@ public class HasSecurityTeamTest extends TestGitHubDataFetcherHolder {
     Value<Boolean> value = check(provider, project);
     assertNotNull(value);
     assertFalse(value.get());
-  }
-
-  private static Value<Boolean> check(HasSecurityTeam provider, GitHubProject project)
-      throws IOException {
-    ValueHashSet values = new ValueHashSet();
-    provider.update(project, values);
-
-    assertEquals(1, values.size());
-    assertTrue(values.has(HAS_SECURITY_TEAM));
-
-    Optional<Value<Boolean>> something = values.of(HAS_SECURITY_TEAM);
-    assertNotNull(something);
-    assertTrue(something.isPresent());
-
-    return something.get();
   }
 }

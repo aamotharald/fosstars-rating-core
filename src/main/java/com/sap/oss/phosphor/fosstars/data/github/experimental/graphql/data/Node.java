@@ -38,7 +38,8 @@ public class Node {
   @JsonProperty("vulnerableVersionRange")
   private String vulnerableVersionRange;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("advisory")
   public Advisory getAdvisory() {

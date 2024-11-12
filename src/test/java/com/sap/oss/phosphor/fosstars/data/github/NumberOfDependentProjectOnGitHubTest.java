@@ -17,24 +17,6 @@ import org.junit.jupiter.api.Test;
 
 public class NumberOfDependentProjectOnGitHubTest extends TestGitHubDataFetcherHolder {
 
-  private static class TestProvider extends NumberOfDependentProjectOnGitHub {
-
-    private String content;
-
-    public TestProvider(GitHubDataFetcher fetcher) throws IOException {
-      super(fetcher);
-    }
-
-    void set(String content) {
-      this.content = content;
-    }
-
-    @Override
-    Element loadFrontPageOf(GitHubProject project) {
-      return Jsoup.parse(content);
-    }
-  }
-
   @Test
   public void testSupportedFeature() throws IOException {
     assertEquals(
@@ -90,5 +72,23 @@ public class NumberOfDependentProjectOnGitHubTest extends TestGitHubDataFetcherH
     value = provider.fetchValueFor(PROJECT);
     assertFalse(value.isUnknown());
     assertEquals(423030, (int) value.get());
+  }
+
+  private static class TestProvider extends NumberOfDependentProjectOnGitHub {
+
+    private String content;
+
+    public TestProvider(GitHubDataFetcher fetcher) throws IOException {
+      super(fetcher);
+    }
+
+    void set(String content) {
+      this.content = content;
+    }
+
+    @Override
+    Element loadFrontPageOf(GitHubProject project) {
+      return Jsoup.parse(content);
+    }
   }
 }

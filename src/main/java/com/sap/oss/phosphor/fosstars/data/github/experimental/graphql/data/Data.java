@@ -16,7 +16,8 @@ public class Data {
   @JsonProperty("securityVulnerabilities")
   private SecurityVulnerabilities securityVulnerabilities;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("securityVulnerabilities")
   public SecurityVulnerabilities getSecurityVulnerabilities() {

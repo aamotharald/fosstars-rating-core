@@ -64,6 +64,22 @@ public class OssRulesOfPlayAdvisor extends AbstractOssAdvisor {
     super(OssAdviceContentYamlStorage.loadFrom(path), contextFactory);
   }
 
+  /**
+   * Load an advice storage.
+   *
+   * @return An advice storage.
+   * @throws IOException If an advice storage could not be loaded.
+   */
+  private static OssAdviceContentYamlStorage storage() throws IOException {
+    Optional<Path> path = loadDefaultYamlConfigIfAvailable(OssRulesOfPlayAdvisor.class);
+    if (path.isPresent()) {
+      LOGGER.info("Found a config for the advisor: {}", path.get());
+      return OssAdviceContentYamlStorage.loadFrom(path.get().toString());
+    }
+
+    return DEFAULT;
+  }
+
   @Override
   protected List<Advice> adviceFor(
       Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
@@ -84,21 +100,5 @@ public class OssRulesOfPlayAdvisor extends AbstractOssAdvisor {
     }
 
     return advice;
-  }
-
-  /**
-   * Load an advice storage.
-   *
-   * @return An advice storage.
-   * @throws IOException If an advice storage could not be loaded.
-   */
-  private static OssAdviceContentYamlStorage storage() throws IOException {
-    Optional<Path> path = loadDefaultYamlConfigIfAvailable(OssRulesOfPlayAdvisor.class);
-    if (path.isPresent()) {
-      LOGGER.info("Found a config for the advisor: {}", path.get());
-      return OssAdviceContentYamlStorage.loadFrom(path.get().toString());
-    }
-
-    return DEFAULT;
   }
 }

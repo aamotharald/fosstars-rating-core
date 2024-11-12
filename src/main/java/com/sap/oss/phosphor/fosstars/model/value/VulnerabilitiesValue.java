@@ -39,7 +39,7 @@ public class VulnerabilitiesValue extends AbstractKnownValue<Vulnerabilities> {
     if (this == o) {
       return true;
     }
-    if (o instanceof VulnerabilitiesValue == false) {
+    if (!(o instanceof VulnerabilitiesValue)) {
       return false;
     }
     if (!super.equals(o)) {

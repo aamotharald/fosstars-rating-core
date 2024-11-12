@@ -48,30 +48,6 @@ public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
     super(fetcher);
   }
 
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return setOf(USES_OWASP_ESAPI, USES_OWASP_JAVA_ENCODER, USES_OWASP_JAVA_HTML_SANITIZER);
-  }
-
-  @Override
-  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
-    logger.info("Figuring out if the project uses OWASP security libraries ...");
-
-    ValueSet values = new ValueHashSet();
-
-    // set default values
-    values.update(USES_OWASP_ESAPI.value(false));
-    values.update(USES_OWASP_JAVA_ENCODER.value(false));
-    values.update(USES_OWASP_JAVA_HTML_SANITIZER.value(false));
-
-    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
-
-    checkMaven(repository, values);
-    checkGradle(repository, values);
-
-    return values;
-  }
-
   /**
    * Looks for the feature in a Maven project.
    *
@@ -215,6 +191,30 @@ public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
     return new Visitor();
   }
 
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return setOf(USES_OWASP_ESAPI, USES_OWASP_JAVA_ENCODER, USES_OWASP_JAVA_HTML_SANITIZER);
+  }
+
+  @Override
+  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
+    logger.info("Figuring out if the project uses OWASP security libraries ...");
+
+    ValueSet values = new ValueHashSet();
+
+    // set default values
+    values.update(USES_OWASP_ESAPI.value(false));
+    values.update(USES_OWASP_JAVA_ENCODER.value(false));
+    values.update(USES_OWASP_JAVA_HTML_SANITIZER.value(false));
+
+    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
+
+    checkMaven(repository, values);
+    checkGradle(repository, values);
+
+    return values;
+  }
+
   /** A visitor for searching security libraries in a POM file. */
   private static class Visitor extends AbstractModelVisitor {
 
@@ -226,21 +226,6 @@ public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
 
     /** This flag shows whether OWASP Java HTML Sanitizer was found in a POM file or not. */
     private boolean foundOwaspJavaHtmlSanitizer = false;
-
-    @Override
-    public void accept(Dependency dependency, Set<Location> locations) {
-      if (isOwaspEsapi(dependency)) {
-        foundOwaspEsapi = true;
-      }
-
-      if (isOwaspJavaEncoder(dependency)) {
-        foundOwaspJavaEncoder = true;
-      }
-
-      if (isOwaspJavaHtmlSanitizer(dependency)) {
-        foundOwaspJavaHtmlSanitizer = true;
-      }
-    }
 
     /**
      * Checks if a dependency is OWASP ESAPI.
@@ -274,6 +259,21 @@ public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
     private static boolean isOwaspJavaHtmlSanitizer(Dependency dependency) {
       return "com.googlecode.owasp-java-html-sanitizer".equals(dependency.getGroupId())
           && "owasp-java-html-sanitizer".equals(dependency.getArtifactId());
+    }
+
+    @Override
+    public void accept(Dependency dependency, Set<Location> locations) {
+      if (isOwaspEsapi(dependency)) {
+        foundOwaspEsapi = true;
+      }
+
+      if (isOwaspJavaEncoder(dependency)) {
+        foundOwaspJavaEncoder = true;
+      }
+
+      if (isOwaspJavaHtmlSanitizer(dependency)) {
+        foundOwaspJavaHtmlSanitizer = true;
+      }
     }
   }
 }

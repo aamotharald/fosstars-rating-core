@@ -253,6 +253,17 @@ public class DataProviderSelector {
   }
 
   /**
+   * Check whether a data provider gathers a feature.
+   *
+   * @param provider The provider.
+   * @param feature The feature.
+   * @return True if the data provider gathers the feature, false otherwise.
+   */
+  private static boolean applicable(DataProvider provider, Feature<?> feature) {
+    return provider.supportedFeatures().contains(feature);
+  }
+
+  /**
    * Configure data providers.
    *
    * @param configs A list of config files.
@@ -307,16 +318,5 @@ public class DataProviderSelector {
     return providers.stream()
         .filter(provider -> applicable(provider, feature))
         .collect(Collectors.toList());
-  }
-
-  /**
-   * Check whether a data provider gathers a feature.
-   *
-   * @param provider The provider.
-   * @param feature The feature.
-   * @return True if the data provider gathers the feature, false otherwise.
-   */
-  private static boolean applicable(DataProvider provider, Feature<?> feature) {
-    return provider.supportedFeatures().contains(feature);
   }
 }

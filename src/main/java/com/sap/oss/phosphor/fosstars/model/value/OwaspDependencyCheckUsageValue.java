@@ -42,7 +42,7 @@ public class OwaspDependencyCheckUsageValue extends AbstractKnownValue<OwaspDepe
     if (this == o) {
       return true;
     }
-    if (o instanceof OwaspDependencyCheckUsageValue == false) {
+    if (!(o instanceof OwaspDependencyCheckUsageValue)) {
       return false;
     }
     if (!super.equals(o)) {

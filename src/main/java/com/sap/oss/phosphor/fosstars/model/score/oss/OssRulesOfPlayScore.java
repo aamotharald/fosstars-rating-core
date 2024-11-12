@@ -93,28 +93,6 @@ public class OssRulesOfPlayScore extends FeatureBasedScore {
         merge(EXPECTED_TRUE, EXPECTED_FALSE, RECOMMENDED_TRUE, RECOMMENDED_FALSE));
   }
 
-  @Override
-  public ScoreValue calculate(Value<?>... values) {
-    List<Value<?>> usedValues =
-        features().stream().map(feature -> find(feature, values)).collect(Collectors.toList());
-
-    List<Value<Boolean>> violatedRules = findViolatedRulesIn(usedValues);
-    if (!violatedRules.isEmpty()) {
-      return scoreValue(MIN, usedValues)
-          .explain(
-              "Found %d violated rule%s",
-              violatedRules.size(), violatedRules.size() == 1 ? "" : "s");
-    }
-
-    List<Value<Boolean>> warnings = findWarningsIn(usedValues);
-    if (!warnings.isEmpty()) {
-      return scoreValue(SCORE_WITH_WARNING, usedValues)
-          .explain("Found %d recommendations%s", warnings.size(), warnings.size() == 1 ? "" : "s");
-    }
-
-    return scoreValue(MAX, usedValues).explain("No violated rules found.");
-  }
-
   /**
    * Looks for violated rules.
    *
@@ -173,5 +151,27 @@ public class OssRulesOfPlayScore extends FeatureBasedScore {
       result.addAll(set);
     }
     return result;
+  }
+
+  @Override
+  public ScoreValue calculate(Value<?>... values) {
+    List<Value<?>> usedValues =
+        features().stream().map(feature -> find(feature, values)).collect(Collectors.toList());
+
+    List<Value<Boolean>> violatedRules = findViolatedRulesIn(usedValues);
+    if (!violatedRules.isEmpty()) {
+      return scoreValue(MIN, usedValues)
+          .explain(
+              "Found %d violated rule%s",
+              violatedRules.size(), violatedRules.size() == 1 ? "" : "s");
+    }
+
+    List<Value<Boolean>> warnings = findWarningsIn(usedValues);
+    if (!warnings.isEmpty()) {
+      return scoreValue(SCORE_WITH_WARNING, usedValues)
+          .explain("Found %d recommendations%s", warnings.size(), warnings.size() == 1 ? "" : "s");
+    }
+
+    return scoreValue(MAX, usedValues).explain("No violated rules found.");
   }
 }

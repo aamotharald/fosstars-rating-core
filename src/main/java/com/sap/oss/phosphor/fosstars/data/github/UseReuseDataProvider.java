@@ -72,38 +72,6 @@ public class UseReuseDataProvider extends GitHubCachingDataProvider {
     loadDefaultConfigIfAvailable();
   }
 
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return setOf(
-        USES_REUSE,
-        README_HAS_REUSE_INFO,
-        HAS_REUSE_LICENSES,
-        REGISTERED_IN_REUSE,
-        IS_REUSE_COMPLIANT);
-  }
-
-  @Override
-  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
-    logger.info("Figuring out how the project uses REUSE ...");
-
-    // Some repositories apply other copyright annotations and are well-known exceptions.
-    // Those ones will reported as OK by this data provider.
-    if (this.repositoryExceptionUrls.contains(project.toString())) {
-      return ValueHashSet.from(
-          USES_REUSE.value(true),
-          README_HAS_REUSE_INFO.value(true),
-          HAS_REUSE_LICENSES.value(true),
-          REGISTERED_IN_REUSE.value(true),
-          IS_REUSE_COMPLIANT.value(true));
-    }
-
-    ValueSet values =
-        ValueHashSet.from(
-            useReuse(project), readmeHasReuseInfo(project), hasReuseLicenses(project));
-    values.update(reuseInfo(project));
-    return values;
-  }
-
   /**
    * Check whether a project uses REUSE or not.
    *
@@ -170,13 +138,87 @@ public class UseReuseDataProvider extends GitHubCachingDataProvider {
         .explainIf(false, "The project doesn't have licenses in %s directory", licenseDirectory);
   }
 
-  /** Possible results of the REUSE tool registration check. */
-  private enum ReuseInfo {
-    UNAVAILABLE,
-    UNKNOWN,
-    UNREGISTERED,
-    COMPLIANT,
-    NON_COMPLIANT
+  /**
+   * Checks if a path is a regular file.
+   *
+   * @param path The path.
+   * @return True if the path is a regular file, false otherwise.
+   */
+  private static boolean isFile(Path path) {
+    return Files.isRegularFile(path);
+  }
+
+  /**
+   * Command-line interface for testing.
+   *
+   * @param args Command-line options.
+   * @throws Exception If something went wrong.
+   */
+  public static void main(String... args) throws Exception {
+    String token = args[0];
+    String url = args[1];
+    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
+    GitHubDataFetcher fetcher = new GitHubDataFetcher(github, token);
+    UseReuseDataProvider provider = new UseReuseDataProvider(fetcher);
+    provider.configure(
+        IOUtils.toInputStream(
+            "---\n"
+                + "repositoryExceptions:\n"
+                + "  - https://github.com/SAP/SapMachine\n"
+                + "  - https://github.com/SAP/async-profiler\n"
+                + "  - https://github.com/SAP/jmc\n",
+            "UTF-8"));
+    GitHubProject project = GitHubProject.parse(url);
+    ValueSet values = provider.fetchValuesFor(project);
+    print(values, USES_REUSE);
+    print(values, README_HAS_REUSE_INFO);
+    print(values, HAS_REUSE_LICENSES);
+    print(values, REGISTERED_IN_REUSE);
+    print(values, IS_REUSE_COMPLIANT);
+  }
+
+  /**
+   * Looks for a feature in a set of values and prints it out.
+   *
+   * @param values The values.
+   * @param feature The feature.
+   */
+  private static void print(ValueSet values, Feature<Boolean> feature) {
+    Optional<Value<Boolean>> something = values.of(feature);
+    System.out.printf(
+        "%s: %s%n", feature.name(), something.map(Value::toString).orElse("not found"));
+  }
+
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return setOf(
+        USES_REUSE,
+        README_HAS_REUSE_INFO,
+        HAS_REUSE_LICENSES,
+        REGISTERED_IN_REUSE,
+        IS_REUSE_COMPLIANT);
+  }
+
+  @Override
+  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
+    logger.info("Figuring out how the project uses REUSE ...");
+
+    // Some repositories apply other copyright annotations and are well-known exceptions.
+    // Those ones will reported as OK by this data provider.
+    if (this.repositoryExceptionUrls.contains(project.toString())) {
+      return ValueHashSet.from(
+          USES_REUSE.value(true),
+          README_HAS_REUSE_INFO.value(true),
+          HAS_REUSE_LICENSES.value(true),
+          REGISTERED_IN_REUSE.value(true),
+          IS_REUSE_COMPLIANT.value(true));
+    }
+
+    ValueSet values =
+        ValueHashSet.from(
+            useReuse(project), readmeHasReuseInfo(project), hasReuseLicenses(project));
+    values.update(reuseInfo(project));
+    return values;
   }
 
   /**
@@ -291,57 +333,6 @@ public class UseReuseDataProvider extends GitHubCachingDataProvider {
     return HttpClients.createDefault();
   }
 
-  /**
-   * Checks if a path is a regular file.
-   *
-   * @param path The path.
-   * @return True if the path is a regular file, false otherwise.
-   */
-  private static boolean isFile(Path path) {
-    return Files.isRegularFile(path);
-  }
-
-  /**
-   * Command-line interface for testing.
-   *
-   * @param args Command-line options.
-   * @throws Exception If something went wrong.
-   */
-  public static void main(String... args) throws Exception {
-    String token = args[0];
-    String url = args[1];
-    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
-    GitHubDataFetcher fetcher = new GitHubDataFetcher(github, token);
-    UseReuseDataProvider provider = new UseReuseDataProvider(fetcher);
-    provider.configure(
-        IOUtils.toInputStream(
-            "---\n"
-                + "repositoryExceptions:\n"
-                + "  - https://github.com/SAP/SapMachine\n"
-                + "  - https://github.com/SAP/async-profiler\n"
-                + "  - https://github.com/SAP/jmc\n",
-            "UTF-8"));
-    GitHubProject project = GitHubProject.parse(url);
-    ValueSet values = provider.fetchValuesFor(project);
-    print(values, USES_REUSE);
-    print(values, README_HAS_REUSE_INFO);
-    print(values, HAS_REUSE_LICENSES);
-    print(values, REGISTERED_IN_REUSE);
-    print(values, IS_REUSE_COMPLIANT);
-  }
-
-  /**
-   * Looks for a feature in a set of values and prints it out.
-   *
-   * @param values The values.
-   * @param feature The feature.
-   */
-  private static void print(ValueSet values, Feature<Boolean> feature) {
-    Optional<Value<Boolean>> something = values.of(feature);
-    System.out.printf(
-        "%s: %s%n", feature.name(), something.map(Value::toString).orElse("not found"));
-  }
-
   @Override
   public UseReuseDataProvider configure(Path configurationPath) throws IOException {
     try (InputStream is = Files.newInputStream(configurationPath)) {
@@ -392,5 +383,14 @@ public class UseReuseDataProvider extends GitHubCachingDataProvider {
    */
   List<String> repositoryExceptions() {
     return new ArrayList<>(repositoryExceptionUrls);
+  }
+
+  /** Possible results of the REUSE tool registration check. */
+  private enum ReuseInfo {
+    UNAVAILABLE,
+    UNKNOWN,
+    UNREGISTERED,
+    COMPLIANT,
+    NON_COMPLIANT
   }
 }

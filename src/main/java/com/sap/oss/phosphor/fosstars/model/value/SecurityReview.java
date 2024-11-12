@@ -19,11 +19,11 @@ public class SecurityReview {
   /** No info about changes since a review. */
   public static final Double NO_INFO_ABOUT_CHANGES = null;
 
-  /** A valid interval for amount of changes returned by {@link #changes()}. */
-  private static final Interval CHANGES_INTERVAL = DoubleInterval.closed(0.0, 1.0);
-
   /** A parser for dates. */
   static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+  /** A valid interval for amount of changes returned by {@link #changes()}. */
+  private static final Interval CHANGES_INTERVAL = DoubleInterval.closed(0.0, 1.0);
 
   /** When the review was done. */
   private final Date date;

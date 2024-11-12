@@ -16,14 +16,6 @@ import java.util.Objects;
  */
 public class OssSecurityRating extends AbstractRating {
 
-  /** A set of labels for the rating. */
-  public enum SecurityLabel implements Label {
-    BAD,
-    MODERATE,
-    GOOD,
-    UNCLEAR
-  }
-
   /** Thresholds for labels. */
   private final Thresholds thresholds;
 
@@ -81,6 +73,14 @@ public class OssSecurityRating extends AbstractRating {
    */
   public Thresholds thresholds() {
     return thresholds;
+  }
+
+  /** A set of labels for the rating. */
+  public enum SecurityLabel implements Label {
+    BAD,
+    MODERATE,
+    GOOD,
+    UNCLEAR
   }
 
   /** Holds thresholds for labels. */

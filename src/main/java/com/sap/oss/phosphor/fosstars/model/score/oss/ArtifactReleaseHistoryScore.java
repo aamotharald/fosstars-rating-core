@@ -38,56 +38,6 @@ public class ArtifactReleaseHistoryScore extends FeatureBasedScore {
         ARTIFACT_VERSION);
   }
 
-  @Override
-  public ScoreValue calculate(Value<?>... values) {
-    Value<ArtifactVersions> artifactVersions = find(RELEASED_ARTIFACT_VERSIONS, values);
-    Value<ArtifactVersion> artifactVersion = find(ARTIFACT_VERSION, values);
-
-    if (artifactVersions.isUnknown()) {
-      return scoreValue(0.0, artifactVersions)
-          .makeUnknown()
-          .withMinConfidence()
-          .explain("No versions are found. Hence, no release history score can be calculated");
-    }
-
-    if (artifactVersions.get().size() <= ARTIFACT_VERSIONS_SIZE_THRESHOLD) {
-      return scoreValue(0.0, artifactVersions)
-          .explain("Only one version is given. Hence, no release history score can be calculated")
-          .withMinConfidence();
-    }
-
-    ScoreValue scoreValue = scoreValue(7.0, artifactVersions, artifactVersion);
-
-    final Collection<ArtifactVersion> artifactCollection =
-        filter(artifactVersions, artifactVersion);
-
-    // check release frequency over time
-    Collection<VersionInfo> versionInfo = versionInfo(artifactCollection);
-    VersionStats stats = calculateVersionStats(versionInfo);
-
-    if (stats.averageDaysBetweenReleases < 10) {
-      scoreValue.increase(3);
-    } else if (stats.averageDaysBetweenReleases < 30) {
-      scoreValue.increase(2);
-    } else if (stats.averageDaysBetweenReleases < 60) {
-      scoreValue.increase(1);
-    } else if (stats.averageDaysBetweenReleases < 180) {
-      scoreValue.decrease(1);
-    } else if (stats.averageDaysBetweenReleases < 270) {
-      scoreValue.decrease(2);
-    } else if (stats.averageDaysBetweenReleases < 360) {
-      scoreValue.decrease(3);
-    }
-
-    if (stats.releaseCycleTrend < 0) {
-      scoreValue.decrease(-1 * stats.releaseCycleTrend);
-    } else {
-      scoreValue.increase(stats.releaseCycleTrend);
-    }
-
-    return scoreValue;
-  }
-
   /**
    * Calculate statistics.
    *
@@ -172,6 +122,56 @@ public class ArtifactReleaseHistoryScore extends FeatureBasedScore {
       }
     }
     return artifactVersions.get().sortByReleaseDate();
+  }
+
+  @Override
+  public ScoreValue calculate(Value<?>... values) {
+    Value<ArtifactVersions> artifactVersions = find(RELEASED_ARTIFACT_VERSIONS, values);
+    Value<ArtifactVersion> artifactVersion = find(ARTIFACT_VERSION, values);
+
+    if (artifactVersions.isUnknown()) {
+      return scoreValue(0.0, artifactVersions)
+          .makeUnknown()
+          .withMinConfidence()
+          .explain("No versions are found. Hence, no release history score can be calculated");
+    }
+
+    if (artifactVersions.get().size() <= ARTIFACT_VERSIONS_SIZE_THRESHOLD) {
+      return scoreValue(0.0, artifactVersions)
+          .explain("Only one version is given. Hence, no release history score can be calculated")
+          .withMinConfidence();
+    }
+
+    ScoreValue scoreValue = scoreValue(7.0, artifactVersions, artifactVersion);
+
+    final Collection<ArtifactVersion> artifactCollection =
+        filter(artifactVersions, artifactVersion);
+
+    // check release frequency over time
+    Collection<VersionInfo> versionInfo = versionInfo(artifactCollection);
+    VersionStats stats = calculateVersionStats(versionInfo);
+
+    if (stats.averageDaysBetweenReleases < 10) {
+      scoreValue.increase(3);
+    } else if (stats.averageDaysBetweenReleases < 30) {
+      scoreValue.increase(2);
+    } else if (stats.averageDaysBetweenReleases < 60) {
+      scoreValue.increase(1);
+    } else if (stats.averageDaysBetweenReleases < 180) {
+      scoreValue.decrease(1);
+    } else if (stats.averageDaysBetweenReleases < 270) {
+      scoreValue.decrease(2);
+    } else if (stats.averageDaysBetweenReleases < 360) {
+      scoreValue.decrease(3);
+    }
+
+    if (stats.releaseCycleTrend < 0) {
+      scoreValue.decrease(-1 * stats.releaseCycleTrend);
+    } else {
+      scoreValue.increase(stats.releaseCycleTrend);
+    }
+
+    return scoreValue;
   }
 
   /** Statistics about artifact versions. */

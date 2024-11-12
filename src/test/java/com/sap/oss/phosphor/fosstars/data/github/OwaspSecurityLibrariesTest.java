@@ -28,6 +28,21 @@ import org.junit.jupiter.api.Test;
 
 public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
+  private static void checkValue(
+      OwaspSecurityLibraries provider, Feature<Boolean> feature, boolean expectedValue)
+      throws IOException {
+
+    GitHubProject project = new GitHubProject("org", "test");
+    ValueSet values = new ValueHashSet();
+    provider.update(project, values);
+
+    Optional<Value<Boolean>> something = values.of(feature);
+    assertTrue(something.isPresent());
+    Value<Boolean> value = something.get();
+    assertFalse(value.isUnknown());
+    assertEquals(expectedValue, value.get());
+  }
+
   @Test
   public void testSupportedFeatures() {
     OwaspSecurityLibraries provider = new OwaspSecurityLibraries(fetcher);
@@ -129,21 +144,6 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
       checkValue(provider, USES_OWASP_JAVA_ENCODER, false);
       checkValue(provider, USES_OWASP_JAVA_HTML_SANITIZER, false);
     }
-  }
-
-  private static void checkValue(
-      OwaspSecurityLibraries provider, Feature<Boolean> feature, boolean expectedValue)
-      throws IOException {
-
-    GitHubProject project = new GitHubProject("org", "test");
-    ValueSet values = new ValueHashSet();
-    provider.update(project, values);
-
-    Optional<Value<Boolean>> something = values.of(feature);
-    assertTrue(something.isPresent());
-    Value<Boolean> value = something.get();
-    assertFalse(value.isUnknown());
-    assertEquals(expectedValue, value.get());
   }
 
   private OwaspSecurityLibraries createProvider(InputStream is, String filename)

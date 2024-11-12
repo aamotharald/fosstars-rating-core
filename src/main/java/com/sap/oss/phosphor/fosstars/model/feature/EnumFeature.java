@@ -46,7 +46,7 @@ public class EnumFeature<T extends Enum<T>> extends AbstractFeature<T> {
     if (this == o) {
       return true;
     }
-    if (o instanceof EnumFeature == false) {
+    if (!(o instanceof EnumFeature)) {
       return false;
     }
     if (!super.equals(o)) {

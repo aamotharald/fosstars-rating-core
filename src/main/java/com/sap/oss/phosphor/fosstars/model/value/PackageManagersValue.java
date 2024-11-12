@@ -39,7 +39,7 @@ public class PackageManagersValue extends AbstractKnownValue<PackageManagers> {
     if (this == o) {
       return true;
     }
-    if (o instanceof PackageManagersValue == false) {
+    if (!(o instanceof PackageManagersValue)) {
       return false;
     }
     if (!super.equals(o)) {

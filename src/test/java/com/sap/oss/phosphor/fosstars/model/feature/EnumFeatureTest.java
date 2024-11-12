@@ -14,19 +14,6 @@ import org.junit.jupiter.api.Test;
 
 public class EnumFeatureTest {
 
-  private enum TestEnum {
-    A,
-    B,
-    C
-  }
-
-  private enum AnotherEnum {
-    A,
-    B,
-    C,
-    D
-  }
-
   @Test
   public void testValue() {
     EnumFeature<TestEnum> feature = new EnumFeature<>(TestEnum.class, "test");
@@ -85,5 +72,18 @@ public class EnumFeatureTest {
     assertNotNull(clone);
     assertEquals(feature, clone);
     assertEquals(feature.hashCode(), clone.hashCode());
+  }
+
+  private enum TestEnum {
+    A,
+    B,
+    C
+  }
+
+  private enum AnotherEnum {
+    A,
+    B,
+    C,
+    D
   }
 }

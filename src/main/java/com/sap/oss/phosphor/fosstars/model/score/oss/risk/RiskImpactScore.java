@@ -22,6 +22,31 @@ import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
  */
 public class RiskImpactScore extends WeightedCompositeScore {
 
+  /** Initializes a new score. */
+  public RiskImpactScore() {
+    super(
+        "Aggregated impact factors for security risk of open source project",
+        setOf(
+            new DataConfidentialityRiskImpactFactor(),
+            new ConfidentialityRiskImpactFactor(),
+            new IntegrityRiskImpactFactor(),
+            new AvailabilityRiskImpactFactor()),
+        initWeights());
+  }
+
+  /**
+   * Initializes weights for sub-scores.
+   *
+   * @return The weights of sub-scores.
+   */
+  private static ScoreWeights initWeights() {
+    return ScoreWeights.empty()
+        .set(DataConfidentialityRiskImpactFactor.class, new ImmutableWeight(1.0))
+        .set(ConfidentialityRiskImpactFactor.class, new ImmutableWeight(0.8))
+        .set(IntegrityRiskImpactFactor.class, new ImmutableWeight(0.8))
+        .set(AvailabilityRiskImpactFactor.class, new ImmutableWeight(0.8));
+  }
+
   /**
    * This scoring function outputs am impact factor for security risk of open source project. The
    * factor is based on potential confidentiality impact in case of a security problem in an open
@@ -59,30 +84,5 @@ public class RiskImpactScore extends WeightedCompositeScore {
     public AvailabilityRiskImpactFactor() {
       super("Availability impact factor", AVAILABILITY_IMPACT);
     }
-  }
-
-  /**
-   * Initializes weights for sub-scores.
-   *
-   * @return The weights of sub-scores.
-   */
-  private static ScoreWeights initWeights() {
-    return ScoreWeights.empty()
-        .set(DataConfidentialityRiskImpactFactor.class, new ImmutableWeight(1.0))
-        .set(ConfidentialityRiskImpactFactor.class, new ImmutableWeight(0.8))
-        .set(IntegrityRiskImpactFactor.class, new ImmutableWeight(0.8))
-        .set(AvailabilityRiskImpactFactor.class, new ImmutableWeight(0.8));
-  }
-
-  /** Initializes a new score. */
-  public RiskImpactScore() {
-    super(
-        "Aggregated impact factors for security risk of open source project",
-        setOf(
-            new DataConfidentialityRiskImpactFactor(),
-            new ConfidentialityRiskImpactFactor(),
-            new IntegrityRiskImpactFactor(),
-            new AvailabilityRiskImpactFactor()),
-        initWeights());
   }
 }

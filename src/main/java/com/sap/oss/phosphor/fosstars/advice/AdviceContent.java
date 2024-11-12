@@ -83,8 +83,7 @@ public class AdviceContent {
       return true;
     }
 
-    if (o instanceof AdviceContent) {
-      AdviceContent that = (AdviceContent) o;
+    if (o instanceof AdviceContent that) {
       return Objects.equals(feature, that.feature)
           && Objects.equals(text, that.text)
           && Objects.equals(links, that.links);

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 public class AbstractStaticScanToolsDataProviderTest extends GitHubDataFetcherTest {
 
-  private static GitHubDataFetcher FETCHER = mock(GitHubDataFetcher.class);
+  private static final GitHubDataFetcher FETCHER = mock(GitHubDataFetcher.class);
 
   @Test
   public void testBanditSupportedFeatures() {

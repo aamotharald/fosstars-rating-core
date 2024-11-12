@@ -22,6 +22,11 @@ public class CommunityCommitmentScoreTest {
 
   private static final CommunityCommitmentScore SCORE = new CommunityCommitmentScore();
 
+  private static Set<Value<?>> values(boolean company, boolean apache, boolean eclipse) {
+    return setOf(
+        SUPPORTED_BY_COMPANY.value(company), IS_APACHE.value(apache), IS_ECLIPSE.value(eclipse));
+  }
+
   @Test
   public void testWithoutValueForCompanySupport() {
     assertThrows(
@@ -67,10 +72,5 @@ public class CommunityCommitmentScoreTest {
     ScoreValue scoreValue = SCORE.calculate(Utils.allUnknown(SCORE.allFeatures()));
     assertTrue(scoreValue.isUnknown());
     assertEquals(Confidence.MIN, scoreValue.confidence(), DELTA);
-  }
-
-  private static Set<Value<?>> values(boolean company, boolean apache, boolean eclipse) {
-    return setOf(
-        SUPPORTED_BY_COMPANY.value(company), IS_APACHE.value(apache), IS_ECLIPSE.value(eclipse));
   }
 }

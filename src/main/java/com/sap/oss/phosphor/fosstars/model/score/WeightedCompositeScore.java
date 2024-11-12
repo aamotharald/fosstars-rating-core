@@ -220,7 +220,7 @@ public class WeightedCompositeScore extends AbstractScore implements Tunable {
     if (this == o) {
       return true;
     }
-    if (o instanceof WeightedCompositeScore == false) {
+    if (!(o instanceof WeightedCompositeScore)) {
       return false;
     }
     if (!super.equals(o)) {

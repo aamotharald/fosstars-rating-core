@@ -42,6 +42,34 @@ public class ArtifactVersionSecurityScoreTest {
   private static final double DELTA = 0.01;
   private static final double CONFIDENCE_NO_VULNERABILITIES = 8.823529411764705;
 
+  private static ArtifactVersions testArtifactVersions(boolean with2xx) {
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version101 = new ArtifactVersion("1.0.1", LocalDateTime.now().minusMonths(13));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(6));
+    ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(72));
+    if (with2xx) {
+      ArtifactVersion version200 = new ArtifactVersion("2.0.0", LocalDateTime.now().minusDays(7));
+      return ArtifactVersions.of(version100, version101, version110, version120, version200);
+    }
+    return ArtifactVersions.of(version100, version101, version110, version120);
+  }
+
+  private static void checkUsedValues(ScoreValue scoreValue) {
+    assertEquals(scoreValue.score().subScores().size(), scoreValue.usedValues().size());
+    for (Value<?> value : scoreValue.usedValues()) {
+      boolean found = false;
+      for (Score subScore : scoreValue.score().subScores()) {
+        if (value.feature().getClass() == subScore.getClass()) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        fail("Unexpected value: " + value.feature().getClass());
+      }
+    }
+  }
+
   @Test
   public void testSerializeAndDeserialize() throws IOException {
     ObjectMapper mapper = Json.mapper();
@@ -214,33 +242,5 @@ public class ArtifactVersionSecurityScoreTest {
     assertTrue(DoubleInterval.closed(8, 9).contains(scoreValue.get()));
     assertEquals(Confidence.MAX, scoreValue.confidence(), DELTA);
     checkUsedValues(scoreValue);
-  }
-
-  private static ArtifactVersions testArtifactVersions(boolean with2xx) {
-    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version101 = new ArtifactVersion("1.0.1", LocalDateTime.now().minusMonths(13));
-    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(6));
-    ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(72));
-    if (with2xx) {
-      ArtifactVersion version200 = new ArtifactVersion("2.0.0", LocalDateTime.now().minusDays(7));
-      return ArtifactVersions.of(version100, version101, version110, version120, version200);
-    }
-    return ArtifactVersions.of(version100, version101, version110, version120);
-  }
-
-  private static void checkUsedValues(ScoreValue scoreValue) {
-    assertEquals(scoreValue.score().subScores().size(), scoreValue.usedValues().size());
-    for (Value<?> value : scoreValue.usedValues()) {
-      boolean found = false;
-      for (Score subScore : scoreValue.score().subScores()) {
-        if (value.feature().getClass() == subScore.getClass()) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        fail("Unexpected value: " + value.feature().getClass());
-      }
-    }
   }
 }

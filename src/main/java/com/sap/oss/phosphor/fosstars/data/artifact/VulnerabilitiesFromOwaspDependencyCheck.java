@@ -99,80 +99,6 @@ public class VulnerabilitiesFromOwaspDependencyCheck implements DataProvider {
     settings.setString(Settings.KEYS.H2_DATA_DIRECTORY, DB_DIR);
   }
 
-  /** The method always returns false, so that all child classes can't be interactive. */
-  @Override
-  public final boolean interactive() {
-    return false;
-  }
-
-  /** This is a dummy cache which stores nothing. */
-  @Override
-  public ValueCache<Subject> cache() {
-    return NoValueCache.create();
-  }
-
-  /** There is not call back required for this data provider. */
-  @Override
-  public VulnerabilitiesFromOwaspDependencyCheck set(UserCallback callback) {
-    return this;
-  }
-
-  /** No cache value is needed that is used by the data provider. */
-  @Override
-  public VulnerabilitiesFromOwaspDependencyCheck set(ValueCache<Subject> cache) {
-    return this;
-  }
-
-  /** No configuration is required for this data provider. */
-  @Override
-  public VulnerabilitiesFromOwaspDependencyCheck configure(Path config) throws IOException {
-    return this;
-  }
-
-  @Override
-  public VulnerabilitiesFromOwaspDependencyCheck update(Subject subject, ValueSet values)
-      throws IOException {
-
-    Objects.requireNonNull(values, "On no! Values cannot be null");
-    MavenArtifact artifact = cast(subject, MavenArtifact.class);
-
-    if (!artifact.version().isPresent()) {
-      throw new IOException("Oh no! The version is not available.");
-    }
-
-    Optional<OwaspDependencyCheckEntry> owaspDependencyCheckEntry = scan(artifact);
-    if (!owaspDependencyCheckEntry.isPresent()
-        || owaspDependencyCheckEntry.get().getDependencies() == null) {
-      values.update(VULNERABILITIES_IN_ARTIFACT.unknown());
-      return this;
-    }
-
-    Vulnerabilities vulnerabilities = new Vulnerabilities();
-    for (Dependency dependency : owaspDependencyCheckEntry.get().getDependencies()) {
-      if (dependency.getVulnerabilities() == null) {
-        continue;
-      }
-
-      for (OwaspDependencyCheckVuln owaspDependencyCheckVuln : dependency.getVulnerabilities()) {
-        vulnerabilities.add(from(owaspDependencyCheckVuln));
-      }
-    }
-
-    values.update(VULNERABILITIES_IN_ARTIFACT.value(vulnerabilities));
-    return this;
-  }
-
-  /** Returns the supported feature loaded by this data provider. */
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return setOf(VULNERABILITIES_IN_ARTIFACT);
-  }
-
-  @Override
-  public boolean supports(Subject subject) {
-    return subject instanceof MavenArtifact;
-  }
-
   /**
    * Scan the input jar file and analyze the extracted {@link Dependency}.
    *
@@ -210,28 +136,6 @@ public class VulnerabilitiesFromOwaspDependencyCheck implements DataProvider {
         return Optional.ofNullable(Json.mapper().readValue(file, OwaspDependencyCheckEntry.class));
       } catch (ReportException e) {
         throw new IOException("Oh no! The report writing failed.", e);
-      }
-    }
-    return Optional.empty();
-  }
-
-  /**
-   * Scan the {@link MavenArtifact}.
-   *
-   * @param artifact The {@link MavenArtifact}.
-   * @return An optional of {@link OwaspDependencyCheckEntry}.
-   * @throws IOException If something went wrong.
-   */
-  Optional<OwaspDependencyCheckEntry> scan(MavenArtifact artifact) throws IOException {
-    Optional<Path> filePath = fetch(artifact);
-
-    if (filePath.isPresent()) {
-      final ExceptionCollection exceptionCollection = new ExceptionCollection();
-      try (Engine engine = new Engine(settings)) {
-        analyze(engine, filePath.get().toFile(), exceptionCollection);
-        return process(engine, filePath.get().toFile().getName(), exceptionCollection);
-      } finally {
-        delete(TEMP_DIR, JAR_DIR, REPORT_DIR);
       }
     }
     return Optional.empty();
@@ -404,5 +308,101 @@ public class VulnerabilitiesFromOwaspDependencyCheck implements DataProvider {
    */
   private static Optional<Path> createDirectory(String directory) throws IOException {
     return Optional.ofNullable(Files.createDirectories(Paths.get(directory)));
+  }
+
+  /** The method always returns false, so that all child classes can't be interactive. */
+  @Override
+  public final boolean interactive() {
+    return false;
+  }
+
+  /** This is a dummy cache which stores nothing. */
+  @Override
+  public ValueCache<Subject> cache() {
+    return NoValueCache.create();
+  }
+
+  /** There is not call back required for this data provider. */
+  @Override
+  public VulnerabilitiesFromOwaspDependencyCheck set(UserCallback callback) {
+    return this;
+  }
+
+  /** No cache value is needed that is used by the data provider. */
+  @Override
+  public VulnerabilitiesFromOwaspDependencyCheck set(ValueCache<Subject> cache) {
+    return this;
+  }
+
+  /** No configuration is required for this data provider. */
+  @Override
+  public VulnerabilitiesFromOwaspDependencyCheck configure(Path config) throws IOException {
+    return this;
+  }
+
+  @Override
+  public VulnerabilitiesFromOwaspDependencyCheck update(Subject subject, ValueSet values)
+      throws IOException {
+
+    Objects.requireNonNull(values, "On no! Values cannot be null");
+    MavenArtifact artifact = cast(subject, MavenArtifact.class);
+
+    if (!artifact.version().isPresent()) {
+      throw new IOException("Oh no! The version is not available.");
+    }
+
+    Optional<OwaspDependencyCheckEntry> owaspDependencyCheckEntry = scan(artifact);
+    if (!owaspDependencyCheckEntry.isPresent()
+        || owaspDependencyCheckEntry.get().getDependencies() == null) {
+      values.update(VULNERABILITIES_IN_ARTIFACT.unknown());
+      return this;
+    }
+
+    Vulnerabilities vulnerabilities = new Vulnerabilities();
+    for (Dependency dependency : owaspDependencyCheckEntry.get().getDependencies()) {
+      if (dependency.getVulnerabilities() == null) {
+        continue;
+      }
+
+      for (OwaspDependencyCheckVuln owaspDependencyCheckVuln : dependency.getVulnerabilities()) {
+        vulnerabilities.add(from(owaspDependencyCheckVuln));
+      }
+    }
+
+    values.update(VULNERABILITIES_IN_ARTIFACT.value(vulnerabilities));
+    return this;
+  }
+
+  /** Returns the supported feature loaded by this data provider. */
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return setOf(VULNERABILITIES_IN_ARTIFACT);
+  }
+
+  @Override
+  public boolean supports(Subject subject) {
+    return subject instanceof MavenArtifact;
+  }
+
+  /**
+   * Scan the {@link MavenArtifact}.
+   *
+   * @param artifact The {@link MavenArtifact}.
+   * @return An optional of {@link OwaspDependencyCheckEntry}.
+   * @throws IOException If something went wrong.
+   */
+  Optional<OwaspDependencyCheckEntry> scan(MavenArtifact artifact) throws IOException {
+    Optional<Path> filePath = fetch(artifact);
+
+    if (filePath.isPresent()) {
+      final ExceptionCollection exceptionCollection = new ExceptionCollection();
+      try (Engine engine = new Engine(settings)) {
+        analyze(engine, filePath.get().toFile(), exceptionCollection);
+        return process(engine, filePath.get().toFile().getName(), exceptionCollection);
+      } finally {
+        delete(TEMP_DIR, JAR_DIR, REPORT_DIR);
+      }
+    }
+    return Optional.empty();
   }
 }

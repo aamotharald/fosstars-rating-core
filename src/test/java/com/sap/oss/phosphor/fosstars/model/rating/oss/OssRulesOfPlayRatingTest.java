@@ -3,6 +3,7 @@ package com.sap.oss.phosphor.fosstars.model.rating.oss;
 import static com.sap.oss.phosphor.fosstars.model.score.oss.OssRulesOfPlayScoreTest.allRulesPassed;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -113,7 +114,7 @@ public class OssRulesOfPlayRatingTest {
   @Test
   public void testCalculateWithOneFailedRule() {
     for (Feature<?> feature : RATING.allFeatures()) {
-      assertTrue(feature instanceof BooleanFeature);
+      assertInstanceOf(BooleanFeature.class, feature);
       ValueSet values = allRulesPassed();
       double expectedScore = Score.MIN;
       OssRulesOfPlayLabel expectedLabel = OssRulesOfPlayLabel.FAILED;
@@ -145,7 +146,7 @@ public class OssRulesOfPlayRatingTest {
   @Test
   public void testCalculateWithOneUnknownValue() {
     for (Feature<?> feature : RATING.allFeatures()) {
-      assertTrue(feature instanceof BooleanFeature);
+      assertInstanceOf(BooleanFeature.class, feature);
       ValueSet values = allRulesPassed().update(UnknownValue.of(feature));
       RatingValue ratingValue = RATING.calculate(values);
       ScoreValue scoreValue = ratingValue.scoreValue();

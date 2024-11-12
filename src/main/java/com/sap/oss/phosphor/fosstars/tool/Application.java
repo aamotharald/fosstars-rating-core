@@ -61,6 +61,22 @@ public class Application {
   private final Handler defaultHandler;
 
   /**
+   * Initialize CLI.
+   *
+   * @throws IOException If something went wrong.
+   */
+  public Application() throws IOException {
+    handlers =
+        new Handler[] {
+          new OssProjectSecurityRatingHandler(),
+          new OssArtifactSecurityRatingHandler(),
+          new OssRulesOfPlayRatingHandler(),
+          new SecurityRiskIntroducedByOssHandler()
+        };
+    defaultHandler = handlers[0];
+  }
+
+  /**
    * Entry point.
    *
    * @param args Command-line parameters.
@@ -77,19 +93,123 @@ public class Application {
   }
 
   /**
-   * Initialize CLI.
+   * Checks command-line options and throws an exception if something is wrong.
    *
-   * @throws IOException If something went wrong.
+   * @param commandLine The command-line options.
+   * @throws IllegalArgumentException If the options are invalid.
    */
-  public Application() throws IOException {
-    handlers =
-        new Handler[] {
-          new OssProjectSecurityRatingHandler(),
-          new OssArtifactSecurityRatingHandler(),
-          new OssRulesOfPlayRatingHandler(),
-          new SecurityRiskIntroducedByOssHandler()
-        };
-    defaultHandler = handlers[0];
+  private static void checkOptionsIn(CommandLine commandLine) {
+    if (commandLine.hasOption("h")) {
+      return;
+    }
+
+    if (commandLine.hasOption("report-type") && !commandLine.hasOption("report-file")) {
+      throw new IllegalArgumentException(
+          "The option --report-type has to be used with --report-file");
+    }
+
+    if (commandLine.hasOption("report-type")
+        && !asList("text", "markdown", "json")
+            .contains(commandLine.getOptionValue("report-type"))) {
+
+      throw new IllegalArgumentException(
+          format("Unknown report type: %s", commandLine.getOptionValue("report-type")));
+    }
+  }
+
+  /**
+   * Tries to establish a connection to GitHub.
+   *
+   * @param token A GitHub token (may be null).
+   * @return An interface for the GitHub API.
+   * @throws IOException If a connection to GitHub couldn't be established.
+   */
+  private static GitHub connectToGithub(String token, UserCallback callback) throws IOException {
+    if (token == null && callback.canTalk()) {
+      LOGGER.warn("You didn't provide an access token for GitHub ...");
+      LOGGER.warn("But you can create it now. Do the following:");
+      LOGGER.info("    1. Go to https://github.com/settings/tokens");
+      LOGGER.info("    2. Click the 'Generate new token' button");
+      LOGGER.info("    3. Write a short note for a token");
+      LOGGER.info("    4. Select scopes");
+      LOGGER.info("    5. Click the 'Generate token' button");
+      LOGGER.info("    6. Copy your new token");
+      LOGGER.info("    7. Paste the token here");
+
+      Answer answer = new YesNoQuestion(callback, "Would you like to create a token now?").ask();
+      switch (answer) {
+        case YES:
+          LOGGER.info("Paste the token here ------+");
+          LOGGER.info("                               |");
+          LOGGER.info("                               |");
+          LOGGER.info("     +-------------------------+");
+          LOGGER.info("     |");
+          LOGGER.info("     |");
+          LOGGER.info("     V");
+          token = new InputString(callback).get();
+          break;
+        case NO:
+          LOGGER.info("Okay ...");
+          break;
+        default:
+          throw new IllegalArgumentException(format("Not sure what I can do with '%s'", answer));
+      }
+    }
+
+    List<Exception> suppressed = new ArrayList<>();
+    if (token != null) {
+      LOGGER.info("Okay, we have a GitHub token, let's try to use it");
+      try {
+        return new GitHubBuilder()
+            .withConnector(okHttpGitHubConnector())
+            .withOAuthToken(token)
+            .build();
+      } catch (IOException e) {
+        LOGGER.warn("Something went wrong: {}", e.getMessage());
+        suppressed.add(e);
+      }
+    } else {
+      LOGGER.warn("No GitHub token provided");
+    }
+
+    try {
+      LOGGER.info("Now, let's try to use GitHub settings from environment variables");
+      return GitHubBuilder.fromEnvironment().withConnector(okHttpGitHubConnector()).build();
+    } catch (IOException e) {
+      LOGGER.warn("Could not connect to GitHub", e);
+
+      suppressed.add(e);
+    }
+
+    try {
+      LOGGER.info("Then, let's try to establish an anonymous connection");
+      GitHub github = new GitHubBuilder().withConnector(okHttpGitHubConnector()).build();
+      LOGGER.warn("We have established only an anonymous connection to GitHub ...");
+      return github;
+    } catch (IOException e) {
+      LOGGER.warn("Something went wrong", e);
+      suppressed.add(e);
+    }
+
+    IOException error = new IOException("Could not connect to GitHub!");
+    for (Exception e : suppressed) {
+      error.addSuppressed(e);
+    }
+    throw error;
+  }
+
+  /**
+   * Create a {@link OkHttpGitHubConnector}.
+   *
+   * @return {@link OkHttpGitHubConnector}.
+   */
+  private static OkHttpGitHubConnector okHttpGitHubConnector() {
+    OkHttpClient client =
+        new OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .build();
+    return new OkHttpGitHubConnector(client);
   }
 
   /**
@@ -293,125 +413,5 @@ public class Application {
       LOGGER.warn("Could not load the default value cache!", e);
     }
     return new SubjectValueCache();
-  }
-
-  /**
-   * Checks command-line options and throws an exception if something is wrong.
-   *
-   * @param commandLine The command-line options.
-   * @throws IllegalArgumentException If the options are invalid.
-   */
-  private static void checkOptionsIn(CommandLine commandLine) {
-    if (commandLine.hasOption("h")) {
-      return;
-    }
-
-    if (commandLine.hasOption("report-type") && !commandLine.hasOption("report-file")) {
-      throw new IllegalArgumentException(
-          "The option --report-type has to be used with --report-file");
-    }
-
-    if (commandLine.hasOption("report-type")
-        && !asList("text", "markdown", "json")
-            .contains(commandLine.getOptionValue("report-type"))) {
-
-      throw new IllegalArgumentException(
-          format("Unknown report type: %s", commandLine.getOptionValue("report-type")));
-    }
-  }
-
-  /**
-   * Tries to establish a connection to GitHub.
-   *
-   * @param token A GitHub token (may be null).
-   * @return An interface for the GitHub API.
-   * @throws IOException If a connection to GitHub couldn't be established.
-   */
-  private static GitHub connectToGithub(String token, UserCallback callback) throws IOException {
-    if (token == null && callback.canTalk()) {
-      LOGGER.warn("You didn't provide an access token for GitHub ...");
-      LOGGER.warn("But you can create it now. Do the following:");
-      LOGGER.info("    1. Go to https://github.com/settings/tokens");
-      LOGGER.info("    2. Click the 'Generate new token' button");
-      LOGGER.info("    3. Write a short note for a token");
-      LOGGER.info("    4. Select scopes");
-      LOGGER.info("    5. Click the 'Generate token' button");
-      LOGGER.info("    6. Copy your new token");
-      LOGGER.info("    7. Paste the token here");
-
-      Answer answer = new YesNoQuestion(callback, "Would you like to create a token now?").ask();
-      switch (answer) {
-        case YES:
-          LOGGER.info("Paste the token here ------+");
-          LOGGER.info("                               |");
-          LOGGER.info("                               |");
-          LOGGER.info("     +-------------------------+");
-          LOGGER.info("     |");
-          LOGGER.info("     |");
-          LOGGER.info("     V");
-          token = new InputString(callback).get();
-          break;
-        case NO:
-          LOGGER.info("Okay ...");
-          break;
-        default:
-          throw new IllegalArgumentException(format("Not sure what I can do with '%s'", answer));
-      }
-    }
-
-    List<Exception> suppressed = new ArrayList<>();
-    if (token != null) {
-      LOGGER.info("Okay, we have a GitHub token, let's try to use it");
-      try {
-        return new GitHubBuilder()
-            .withConnector(okHttpGitHubConnector())
-            .withOAuthToken(token)
-            .build();
-      } catch (IOException e) {
-        LOGGER.warn("Something went wrong: {}", e.getMessage());
-        suppressed.add(e);
-      }
-    } else {
-      LOGGER.warn("No GitHub token provided");
-    }
-
-    try {
-      LOGGER.info("Now, let's try to use GitHub settings from environment variables");
-      return GitHubBuilder.fromEnvironment().withConnector(okHttpGitHubConnector()).build();
-    } catch (IOException e) {
-      LOGGER.warn("Could not connect to GitHub", e);
-
-      suppressed.add(e);
-    }
-
-    try {
-      LOGGER.info("Then, let's try to establish an anonymous connection");
-      GitHub github = new GitHubBuilder().withConnector(okHttpGitHubConnector()).build();
-      LOGGER.warn("We have established only an anonymous connection to GitHub ...");
-      return github;
-    } catch (IOException e) {
-      LOGGER.warn("Something went wrong", e);
-      suppressed.add(e);
-    }
-
-    IOException error = new IOException("Could not connect to GitHub!");
-    for (Exception e : suppressed) {
-      error.addSuppressed(e);
-    }
-    throw error;
-  }
-
-  /**
-   * Create a {@link OkHttpGitHubConnector}.
-   *
-   * @return {@link OkHttpGitHubConnector}.
-   */
-  private static OkHttpGitHubConnector okHttpGitHubConnector() {
-    OkHttpClient client =
-        new OkHttpClient.Builder()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .build();
-    return new OkHttpGitHubConnector(client);
   }
 }

@@ -30,6 +30,20 @@ import org.junit.jupiter.api.Test;
 
 public class OssSecurityRatingMarkdownReporterTest {
 
+  private static int linesWith(String string, String content) throws IOException {
+    BufferedReader reader = new BufferedReader(new StringReader(content));
+
+    String line;
+    int n = 0;
+    while ((line = reader.readLine()) != null) {
+      if (line.contains(string)) {
+        n++;
+      }
+    }
+
+    return n;
+  }
+
   @Test
   public void testReport() throws IOException {
     Path outputDirectory =
@@ -117,19 +131,5 @@ public class OssSecurityRatingMarkdownReporterTest {
     } finally {
       FileUtils.forceDeleteOnExit(baseDirectory.toFile());
     }
-  }
-
-  private static int linesWith(String string, String content) throws IOException {
-    BufferedReader reader = new BufferedReader(new StringReader(content));
-
-    String line;
-    int n = 0;
-    while ((line = reader.readLine()) != null) {
-      if (line.contains(string)) {
-        n++;
-      }
-    }
-
-    return n;
   }
 }

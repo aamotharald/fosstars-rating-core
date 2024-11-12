@@ -8,6 +8,7 @@ import static com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsag
 import static com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage.OPTIONAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -35,6 +36,40 @@ import org.junit.jupiter.api.Test;
 public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
 
   private static final Double NOT_SPECIFIED = null;
+
+  private static ValueSet values(UsesOwaspDependencyCheck provider) throws IOException {
+    GitHubProject project = new GitHubProject("org", "test");
+
+    ValueSet values = new ValueHashSet();
+    provider.update(project, values);
+
+    Set<Feature<?>> features = provider.supportedFeatures();
+    assertEquals(features.size(), values.size());
+    assertTrue(values.containsAll(features));
+    return values;
+  }
+
+  private static void checkUsage(OwaspDependencyCheckUsage expected, ValueSet values) {
+    Optional<Value<OwaspDependencyCheckUsage>> value = values.of(OWASP_DEPENDENCY_CHECK_USAGE);
+    assertTrue(value.isPresent());
+    Value<OwaspDependencyCheckUsage> usage = value.get();
+    assertEquals(expected, usage.get());
+  }
+
+  private static void checkThreshold(Double expected, ValueSet values) {
+    Optional<Value<Double>> value = values.of(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD);
+    assertTrue(value.isPresent());
+    Value<Double> n = value.get();
+    assertInstanceOf(OwaspDependencyCheckCvssThresholdValue.class, n);
+    OwaspDependencyCheckCvssThresholdValue threshold = (OwaspDependencyCheckCvssThresholdValue) n;
+
+    if (expected == null) {
+      assertFalse(threshold.specified());
+    } else {
+      assertTrue(threshold.specified());
+      assertEquals(expected, threshold.get());
+    }
+  }
 
   @Test
   public void testMavenWithOwaspDependencyCheckInBuild() throws IOException {
@@ -189,8 +224,7 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithBigFailBuildOnCVSS() throws IOException {
     String pom =
-        ""
-            + "<project>\n"
+        "<project>\n"
             + "  <build>\n"
             + "    <plugins>\n"
             + "      <plugin>\n"
@@ -238,39 +272,5 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
     provider.set(new SubjectValueCache());
 
     return provider;
-  }
-
-  private static ValueSet values(UsesOwaspDependencyCheck provider) throws IOException {
-    GitHubProject project = new GitHubProject("org", "test");
-
-    ValueSet values = new ValueHashSet();
-    provider.update(project, values);
-
-    Set<Feature<?>> features = provider.supportedFeatures();
-    assertEquals(features.size(), values.size());
-    assertTrue(values.containsAll(features));
-    return values;
-  }
-
-  private static void checkUsage(OwaspDependencyCheckUsage expected, ValueSet values) {
-    Optional<Value<OwaspDependencyCheckUsage>> value = values.of(OWASP_DEPENDENCY_CHECK_USAGE);
-    assertTrue(value.isPresent());
-    Value<OwaspDependencyCheckUsage> usage = value.get();
-    assertEquals(expected, usage.get());
-  }
-
-  private static void checkThreshold(Double expected, ValueSet values) {
-    Optional<Value<Double>> value = values.of(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD);
-    assertTrue(value.isPresent());
-    Value<Double> n = value.get();
-    assertTrue(n instanceof OwaspDependencyCheckCvssThresholdValue);
-    OwaspDependencyCheckCvssThresholdValue threshold = (OwaspDependencyCheckCvssThresholdValue) n;
-
-    if (expected == null) {
-      assertFalse(threshold.specified());
-    } else {
-      assertTrue(threshold.specified());
-      assertEquals(expected, threshold.get());
-    }
   }
 }

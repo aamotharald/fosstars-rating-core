@@ -90,7 +90,7 @@ public class Vulnerabilities implements Iterable<Vulnerability> {
     if (this == o) {
       return true;
     }
-    if (o instanceof Vulnerabilities == false) {
+    if (!(o instanceof Vulnerabilities)) {
       return false;
     }
     Vulnerabilities that = (Vulnerabilities) o;

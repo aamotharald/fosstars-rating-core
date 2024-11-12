@@ -37,7 +37,7 @@ public class StringValue extends AbstractKnownValue<String> {
     if (this == o) {
       return true;
     }
-    if (o instanceof StringValue == false) {
+    if (!(o instanceof StringValue)) {
       return false;
     }
     if (!super.equals(o)) {

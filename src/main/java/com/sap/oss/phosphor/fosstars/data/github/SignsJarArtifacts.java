@@ -35,6 +35,23 @@ public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boo
     super(fetcher);
   }
 
+  /**
+   * Checks a plugin is the Maven GPG plugin.
+   *
+   * @param plugin The plugin to be checked.
+   * @return True if the plugin is the Maven GPG plugin, false otherwise.
+   */
+  private static boolean isMavenGpg(Plugin plugin) {
+    return plugin != null
+        && "org.apache.maven.plugins".equals(plugin.getGroupId())
+        && "maven-gpg-plugin".equals(plugin.getArtifactId());
+  }
+
+  /** Creates a new visitor for searching for Maven GPG plugin in a build section of a POM file. */
+  private static Visitor withVisitor() {
+    return new Visitor();
+  }
+
   @Override
   protected Feature<Boolean> supportedFeature() {
     return SIGNS_ARTIFACTS;
@@ -66,23 +83,6 @@ public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boo
       Model model = readModel(is);
       return browse(model, withVisitor()).result;
     }
-  }
-
-  /**
-   * Checks a plugin is the Maven GPG plugin.
-   *
-   * @param plugin The plugin to be checked.
-   * @return True if the plugin is the Maven GPG plugin, false otherwise.
-   */
-  private static boolean isMavenGpg(Plugin plugin) {
-    return plugin != null
-        && "org.apache.maven.plugins".equals(plugin.getGroupId())
-        && "maven-gpg-plugin".equals(plugin.getArtifactId());
-  }
-
-  /** Creates a new visitor for searching for Maven GPG plugin in a build section of a POM file. */
-  private static Visitor withVisitor() {
-    return new Visitor();
   }
 
   /** A visitor for searching for Maven GPG plugin in a build section of a POM file. */

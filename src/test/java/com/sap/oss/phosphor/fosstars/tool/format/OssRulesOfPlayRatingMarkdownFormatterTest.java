@@ -40,6 +40,18 @@ public class OssRulesOfPlayRatingMarkdownFormatterTest {
           + "  rl-readme_file-1: If a project has a README file\n"
           + "documentationUrl: https://wiki.local/TestPage";
 
+  private static void checkRuleIds(String text) {
+    assertTrue(text.contains("rl-license_file-1"));
+    assertTrue(text.contains("rl-license_file-2"));
+    assertTrue(text.contains("rl-license_file-3"));
+    assertTrue(text.contains("rl-readme_file-1"));
+  }
+
+  @AfterAll
+  public static void shutdown() throws IOException {
+    FileUtils.forceDeleteOnExit(CONFIG_PATH.toFile());
+  }
+
   @Test
   public void testPrintWithCompliantProject() throws IOException {
     Files.write(CONFIG_PATH, RULE_IDS.getBytes());
@@ -136,17 +148,5 @@ public class OssRulesOfPlayRatingMarkdownFormatterTest {
     } finally {
       FileUtils.forceDeleteOnExit(CONFIG_PATH.toFile());
     }
-  }
-
-  private static void checkRuleIds(String text) {
-    assertTrue(text.contains("rl-license_file-1"));
-    assertTrue(text.contains("rl-license_file-2"));
-    assertTrue(text.contains("rl-license_file-3"));
-    assertTrue(text.contains("rl-readme_file-1"));
-  }
-
-  @AfterAll
-  public static void shutdown() throws IOException {
-    FileUtils.forceDeleteOnExit(CONFIG_PATH.toFile());
   }
 }

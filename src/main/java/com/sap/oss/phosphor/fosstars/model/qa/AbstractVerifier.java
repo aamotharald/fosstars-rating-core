@@ -9,11 +9,11 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractVerifier implements Verifier {
 
-  /** A logger. */
-  private final Logger logger = LogManager.getLogger(getClass());
-
   /** A list of test vectors. */
   final TestVectors vectors;
+
+  /** A logger. */
+  private final Logger logger = LogManager.getLogger(getClass());
 
   /**
    * Initialize a verifier.
@@ -28,36 +28,6 @@ public abstract class AbstractVerifier implements Verifier {
     }
 
     this.vectors = vectors;
-  }
-
-  /**
-   * Check the rating against the test vectors and returns a list of failed test vectors.
-   *
-   * @return A list of failed test vectors.
-   */
-  abstract List<TestVectorResult> runImpl();
-
-  @Override
-  public final List<TestVectorResult> run() {
-    List<TestVectorResult> results = runImpl();
-    for (TestVectorResult vector : results) {
-      if (vector.failed()) {
-        logger.info("Test vector #{} failed", vector.index);
-        logger.info("    reason: {}", vector.message);
-        logger.info("    alias:  {}", vector.vector.alias());
-      }
-    }
-    return results;
-  }
-
-  @Override
-  public void verify() throws VerificationFailedException {
-    List<TestVectorResult> results = run();
-    for (TestVectorResult result : results) {
-      if (result.failed()) {
-        throw new VerificationFailedException();
-      }
-    }
   }
 
   /**
@@ -126,5 +96,35 @@ public abstract class AbstractVerifier implements Verifier {
 
     return new TestVectorResult(
         vector, index, scoreValue, Status.PASSED, "Ok, got an expected score value");
+  }
+
+  /**
+   * Check the rating against the test vectors and returns a list of failed test vectors.
+   *
+   * @return A list of failed test vectors.
+   */
+  abstract List<TestVectorResult> runImpl();
+
+  @Override
+  public final List<TestVectorResult> run() {
+    List<TestVectorResult> results = runImpl();
+    for (TestVectorResult vector : results) {
+      if (vector.failed()) {
+        logger.info("Test vector #{} failed", vector.index);
+        logger.info("    reason: {}", vector.message);
+        logger.info("    alias:  {}", vector.vector.alias());
+      }
+    }
+    return results;
+  }
+
+  @Override
+  public void verify() throws VerificationFailedException {
+    List<TestVectorResult> results = run();
+    for (TestVectorResult result : results) {
+      if (result.failed()) {
+        throw new VerificationFailedException();
+      }
+    }
   }
 }

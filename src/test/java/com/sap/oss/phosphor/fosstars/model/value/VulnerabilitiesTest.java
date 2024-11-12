@@ -19,16 +19,6 @@ import org.junit.jupiter.api.Test;
 
 public class VulnerabilitiesTest {
 
-  @Test
-  public void testJsonSerializationAndDeserialization() throws IOException {
-    serializationAndDeserialization(Json.mapper(), vulnerabilities());
-  }
-
-  @Test
-  public void testYamlSerializationAndDeserialization() throws IOException {
-    serializationAndDeserialization(Yaml.mapper(), vulnerabilities());
-  }
-
   private static void serializationAndDeserialization(
       ObjectMapper mapper, Vulnerabilities vulnerabilities) throws IOException {
 
@@ -58,5 +48,15 @@ public class VulnerabilitiesTest {
             .introduced(new Date())
             .fixed(new Date())
             .make());
+  }
+
+  @Test
+  public void testJsonSerializationAndDeserialization() throws IOException {
+    serializationAndDeserialization(Json.mapper(), vulnerabilities());
+  }
+
+  @Test
+  public void testYamlSerializationAndDeserialization() throws IOException {
+    serializationAndDeserialization(Yaml.mapper(), vulnerabilities());
   }
 }

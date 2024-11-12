@@ -104,11 +104,6 @@ public abstract class AbstractStaticScanToolsDataProvider extends GitHubCachingD
     this.supportedFeatures = supportedFeatures;
   }
 
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return supportedFeatures;
-  }
-
   /**
    * Browse a POM file with a specified visitor.
    *
@@ -175,7 +170,7 @@ public abstract class AbstractStaticScanToolsDataProvider extends GitHubCachingD
    *
    * @param githubAction GitHub Actions.
    * @param matchers predicates to match through the given action.
-   * @return Optional<{@link Map}> step if one of the predicate finds matches. Optional.empty
+   * @return Optional<{ @ link Map }> step if one of the predicate finds matches. Optional.empty
    *     otherwise.
    */
   private static Optional<Map> scanGitHubAction(
@@ -199,7 +194,7 @@ public abstract class AbstractStaticScanToolsDataProvider extends GitHubCachingD
    *
    * @param jobs Iterable list of GitHub action jobs.
    * @param matchers predicates to match through the given action.
-   * @return Optional<{@link Map}> step if one of the predicate finds matches. Optional.empty
+   * @return Optional<{ @ link Map }> step if one of the predicate finds matches. Optional.empty
    *     otherwise.
    */
   private static Optional<Map> scanJobs(Iterable<?> jobs, Map<String, Predicate<String>> matchers) {
@@ -385,6 +380,11 @@ public abstract class AbstractStaticScanToolsDataProvider extends GitHubCachingD
    */
   protected static Visitor withVisitor() {
     return new Visitor();
+  }
+
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return supportedFeatures;
   }
 
   /** A visitor for searching a specific config predicate in a {@link GitHubProject}. */

@@ -22,6 +22,15 @@ import org.junit.jupiter.api.Test;
 
 public class MultipleRatingsCalculatorTest extends TestGitHubDataFetcherHolder {
 
+  private static void check(RatingValue ratingValue) {
+    assertEquals(SecurityLabel.UNCLEAR, ratingValue.label());
+    assertEquals(
+        Confidence.MIN,
+        Double.compare(Confidence.MIN, ratingValue.scoreValue().confidence()),
+        DELTA);
+    assertTrue(ratingValue.scoreValue().isUnknown());
+  }
+
   @Test
   public void testCalculateFor() {
     Rating rating = RatingRepository.INSTANCE.rating(OssSecurityRating.class);
@@ -50,14 +59,5 @@ public class MultipleRatingsCalculatorTest extends TestGitHubDataFetcherHolder {
     check(eclipseSteady.ratingValue().get());
 
     assertTrue(multipleRatingsCalculator.failedSubjects().isEmpty());
-  }
-
-  private static void check(RatingValue ratingValue) {
-    assertEquals(SecurityLabel.UNCLEAR, ratingValue.label());
-    assertEquals(
-        Confidence.MIN,
-        Double.compare(Confidence.MIN, ratingValue.scoreValue().confidence()),
-        DELTA);
-    assertTrue(ratingValue.scoreValue().isUnknown());
   }
 }

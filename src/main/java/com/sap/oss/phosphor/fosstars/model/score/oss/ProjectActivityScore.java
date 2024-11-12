@@ -43,16 +43,16 @@ public class ProjectActivityScore extends FeatureBasedScore {
 
   private static final Map<Integer, Double> CONTRIBUTOR_FACTOR = new TreeMap<>();
 
+  /** A description of the score. */
+  private static final String DESCRIPTION =
+      "The score evaluates how active a project is. "
+          + "It's based on number of commits and contributors in the last 3 months.";
+
   static {
     CONTRIBUTOR_FACTOR.put(2, 0.05);
     CONTRIBUTOR_FACTOR.put(3, 0.1);
     CONTRIBUTOR_FACTOR.put(5, 0.2);
   }
-
-  /** A description of the score. */
-  private static final String DESCRIPTION =
-      "The score evaluates how active a project is. "
-          + "It's based on number of commits and contributors in the last 3 months.";
 
   /** Initializes a new score. */
   ProjectActivityScore() {

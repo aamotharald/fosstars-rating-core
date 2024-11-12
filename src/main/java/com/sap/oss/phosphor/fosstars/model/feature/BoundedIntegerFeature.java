@@ -54,7 +54,7 @@ public class BoundedIntegerFeature extends AbstractFeature<Integer> {
     if (this == o) {
       return true;
     }
-    if (o instanceof BoundedIntegerFeature == false) {
+    if (!(o instanceof BoundedIntegerFeature)) {
       return false;
     }
     if (!super.equals(o)) {

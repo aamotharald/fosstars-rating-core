@@ -19,8 +19,6 @@ public abstract class AbstractDependencyScanDataProvider extends GitHubCachingDa
   /** A minimal number of characters in a config for dependency checker. */
   private static final int ACCEPTABLE_CONFIG_SIZE = 10;
 
-  protected abstract String getDependencyCheckerPattern();
-
   /**
    * Initializes a data provider.
    *
@@ -29,6 +27,8 @@ public abstract class AbstractDependencyScanDataProvider extends GitHubCachingDa
   public AbstractDependencyScanDataProvider(GitHubDataFetcher fetcher) {
     super(fetcher);
   }
+
+  protected abstract String getDependencyCheckerPattern();
 
   /**
    * Checks if a repository contains commits from dependency checker in the commit history.

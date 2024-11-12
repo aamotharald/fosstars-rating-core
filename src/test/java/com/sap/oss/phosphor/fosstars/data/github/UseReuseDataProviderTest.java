@@ -240,23 +240,6 @@ public class UseReuseDataProviderTest extends TestGitHubDataFetcherHolder {
     }
   }
 
-  static class HttpGetMatcher implements ArgumentMatcher<HttpGet> {
-
-    private final String expectedUrl;
-
-    public HttpGetMatcher(String expectedUrl) {
-      this.expectedUrl = expectedUrl;
-    }
-
-    @Override
-    public boolean matches(HttpGet actualHttpGet) {
-      if (actualHttpGet == null) {
-        return false;
-      }
-      return actualHttpGet.getURI().toString().equals(expectedUrl);
-    }
-  }
-
   @Test
   public void testReuseCompliantWithTrailingSlash() throws IOException {
 
@@ -366,5 +349,22 @@ public class UseReuseDataProviderTest extends TestGitHubDataFetcherHolder {
                         format(
                             "Could not find an expected feature: %s", IS_REUSE_COMPLIANT.name())));
     assertTrue(isCompliantValue.get());
+  }
+
+  static class HttpGetMatcher implements ArgumentMatcher<HttpGet> {
+
+    private final String expectedUrl;
+
+    public HttpGetMatcher(String expectedUrl) {
+      this.expectedUrl = expectedUrl;
+    }
+
+    @Override
+    public boolean matches(HttpGet actualHttpGet) {
+      if (actualHttpGet == null) {
+        return false;
+      }
+      return actualHttpGet.getURI().toString().equals(expectedUrl);
+    }
   }
 }

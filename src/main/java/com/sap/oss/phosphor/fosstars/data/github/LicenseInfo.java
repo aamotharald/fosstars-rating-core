@@ -79,6 +79,38 @@ public class LicenseInfo extends GitHubCachingDataProvider {
   }
 
   /**
+   * This is for testing and demo purposes.
+   *
+   * @param args Command-line options (option 1: API token, option 2: project URL).
+   * @throws Exception If something went wrong.
+   */
+  public static void main(String... args) throws Exception {
+    String token = args.length > 0 ? args[0] : "";
+    String url = args.length > 1 ? args[1] : "https://github.com/SAP/fosstars-rating-core";
+    GitHubProject project = GitHubProject.parse(url);
+    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
+    LicenseInfo provider = new LicenseInfo(new GitHubDataFetcher(github, token));
+    provider.configure(
+        IOUtils.toInputStream(
+            "---\n"
+                + "allowedLicenses:\n"
+                + "  - Apache-2.0\n"
+                + "  - CC-BY-4.0\n"
+                + "  - MIT\n"
+                + "  - EPL-2.0\n"
+                + "disallowedLicensePatterns:\n"
+                + "  - API\n"
+                + "repositoryExceptions:\n"
+                + "  - https://github.com/SAP/SapMachine\n"
+                + "  - https://github.com/SAP/jmc\n",
+            "UTF-8"));
+    ValueSet values = provider.fetchValuesFor(project);
+    for (Value<?> value : values) {
+      System.out.printf("%s: %s%n", value.feature().name(), value.get());
+    }
+  }
+
+  /**
    * Returns a list of SPDX IDs of allowed licenses.
    *
    * @return A list of SPDX IDs of allowed licenses.
@@ -333,37 +365,5 @@ public class LicenseInfo extends GitHubCachingDataProvider {
     disallowedLicensePatterns(readListFrom(config, "disallowedLicensePatterns"));
     repositoryExceptions(readListFrom(config, "repositoryExceptions"));
     return this;
-  }
-
-  /**
-   * This is for testing and demo purposes.
-   *
-   * @param args Command-line options (option 1: API token, option 2: project URL).
-   * @throws Exception If something went wrong.
-   */
-  public static void main(String... args) throws Exception {
-    String token = args.length > 0 ? args[0] : "";
-    String url = args.length > 1 ? args[1] : "https://github.com/SAP/fosstars-rating-core";
-    GitHubProject project = GitHubProject.parse(url);
-    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
-    LicenseInfo provider = new LicenseInfo(new GitHubDataFetcher(github, token));
-    provider.configure(
-        IOUtils.toInputStream(
-            "---\n"
-                + "allowedLicenses:\n"
-                + "  - Apache-2.0\n"
-                + "  - CC-BY-4.0\n"
-                + "  - MIT\n"
-                + "  - EPL-2.0\n"
-                + "disallowedLicensePatterns:\n"
-                + "  - API\n"
-                + "repositoryExceptions:\n"
-                + "  - https://github.com/SAP/SapMachine\n"
-                + "  - https://github.com/SAP/jmc\n",
-            "UTF-8"));
-    ValueSet values = provider.fetchValuesFor(project);
-    for (Value<?> value : values) {
-      System.out.printf("%s: %s%n", value.feature().name(), value.get());
-    }
   }
 }

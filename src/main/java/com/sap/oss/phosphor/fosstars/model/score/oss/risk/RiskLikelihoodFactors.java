@@ -18,6 +18,17 @@ import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
  */
 public class RiskLikelihoodFactors extends WeightedCompositeScore {
 
+  /** Initializes a new score. */
+  public RiskLikelihoodFactors() {
+    super(
+        "Aggregated likelihood factors for security risk of open source project",
+        setOf(
+            new UsageRiskLikelihoodFactor(),
+            new FunctionalityRiskLikelihoodFactor(),
+            new HandlingUntrustedDataRiskLikelihoodFactor()),
+        initWeights());
+  }
+
   /**
    * Initializes weights for sub-scores.
    *
@@ -28,16 +39,5 @@ public class RiskLikelihoodFactors extends WeightedCompositeScore {
         .set(UsageRiskLikelihoodFactor.class, new ImmutableWeight(1.0))
         .set(FunctionalityRiskLikelihoodFactor.class, new ImmutableWeight(0.8))
         .set(HandlingUntrustedDataRiskLikelihoodFactor.class, new ImmutableWeight(0.8));
-  }
-
-  /** Initializes a new score. */
-  public RiskLikelihoodFactors() {
-    super(
-        "Aggregated likelihood factors for security risk of open source project",
-        setOf(
-            new UsageRiskLikelihoodFactor(),
-            new FunctionalityRiskLikelihoodFactor(),
-            new HandlingUntrustedDataRiskLikelihoodFactor()),
-        initWeights());
   }
 }

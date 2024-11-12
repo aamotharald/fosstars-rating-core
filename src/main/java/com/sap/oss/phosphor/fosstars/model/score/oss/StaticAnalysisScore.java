@@ -25,6 +25,20 @@ import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
  */
 public class StaticAnalysisScore extends WeightedCompositeScore {
 
+  /** Initializes a new score. */
+  public StaticAnalysisScore() {
+    super(
+        "How a project uses static analysis for security testing",
+        setOf(
+            new CodeqlScore(),
+            new FindSecBugsScore(),
+            new BanditScore(),
+            new PylintScore(),
+            new MyPyScore(),
+            new GoSecScore()),
+        initWeights());
+  }
+
   /**
    * Initializes weights for sub-scores.
    *
@@ -38,19 +52,5 @@ public class StaticAnalysisScore extends WeightedCompositeScore {
         .set(PylintScore.class, new ImmutableWeight(0.35))
         .set(MyPyScore.class, new ImmutableWeight(0.2))
         .set(GoSecScore.class, new ImmutableWeight(0.3));
-  }
-
-  /** Initializes a new score. */
-  public StaticAnalysisScore() {
-    super(
-        "How a project uses static analysis for security testing",
-        setOf(
-            new CodeqlScore(),
-            new FindSecBugsScore(),
-            new BanditScore(),
-            new PylintScore(),
-            new MyPyScore(),
-            new GoSecScore()),
-        initWeights());
   }
 }

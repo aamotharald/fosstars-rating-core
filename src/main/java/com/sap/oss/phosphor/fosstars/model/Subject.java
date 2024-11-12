@@ -19,6 +19,26 @@ public interface Subject {
   Date NO_RATING_DATE = null;
 
   /**
+   * Casts a subject to a specified type that implements {@link Subject}.
+   *
+   * @param subject The subject.
+   * @param clazz The class.
+   * @param <T> The type.
+   * @return The subject.
+   * @throws IllegalArgumentException If the subject can't be casted to the specified type.
+   */
+  static <T extends Subject> T cast(Subject subject, Class<T> clazz) {
+    Objects.requireNonNull(subject, "Oh no! Subject is null!");
+    Objects.requireNonNull(clazz, "Oh no! Class is null!");
+
+    if (!clazz.isAssignableFrom(subject.getClass())) {
+      throw new IllegalArgumentException(format("Oh no! Expected %s", clazz.getName()));
+    }
+
+    return clazz.cast(subject);
+  }
+
+  /**
    * Returns a date when the rating value was calculated if it's set.
    *
    * @return An {@link Optional} with the date.
@@ -45,24 +65,4 @@ public interface Subject {
    * @return A PURL.
    */
   String purl();
-
-  /**
-   * Casts a subject to a specified type that implements {@link Subject}.
-   *
-   * @param subject The subject.
-   * @param clazz The class.
-   * @param <T> The type.
-   * @return The subject.
-   * @throws IllegalArgumentException If the subject can't be casted to the specified type.
-   */
-  static <T extends Subject> T cast(Subject subject, Class<T> clazz) {
-    Objects.requireNonNull(subject, "Oh no! Subject is null!");
-    Objects.requireNonNull(clazz, "Oh no! Class is null!");
-
-    if (!clazz.isAssignableFrom(subject.getClass())) {
-      throw new IllegalArgumentException(format("Oh no! Expected %s", clazz.getName()));
-    }
-
-    return clazz.cast(subject);
-  }
 }

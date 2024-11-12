@@ -73,7 +73,7 @@ public class GitHubDataCache<T> implements Cache<GitHubProject, T> {
     if (this == o) {
       return true;
     }
-    if (o instanceof GitHubDataCache == false) {
+    if (!(o instanceof GitHubDataCache)) {
       return false;
     }
     GitHubDataCache<T> cache = (GitHubDataCache<T>) o;

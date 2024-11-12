@@ -19,12 +19,12 @@ import java.util.Optional;
  */
 public class OssAdviceContentYamlStorage {
 
+  /** A default instance of the storage that contains advice loaded from {@link #RESOURCE_PATH}. */
+  public static final OssAdviceContentYamlStorage DEFAULT;
+
   /** A path to a resource that contains the default advice. */
   private static final String RESOURCE_PATH =
       "com/sap/oss/phosphor/fosstars/advice/oss/OssAdvice.yml";
-
-  /** A default instance of the storage that contains advice loaded from {@link #RESOURCE_PATH}. */
-  public static final OssAdviceContentYamlStorage DEFAULT;
 
   static {
     try {
@@ -48,6 +48,17 @@ public class OssAdviceContentYamlStorage {
   }
 
   /**
+   * Loads advice from a resource.
+   *
+   * @param path A path to the resource.
+   * @return An instance of {@link OssAdviceContentYamlStorage}.
+   * @throws IOException If the advice couldn't be loaded.
+   */
+  public static OssAdviceContentYamlStorage loadFrom(String path) throws IOException {
+    return new OssAdviceContentYamlStorage(AdviceContentYamlStorage.loadFrom(path));
+  }
+
+  /**
    * Returns advice for a feature in a specified context for an open-source project.
    *
    * @param feature The feature.
@@ -59,17 +70,6 @@ public class OssAdviceContentYamlStorage {
       throws MalformedURLException {
 
     return adviceContentYamlStorage.adviceFor(feature, context);
-  }
-
-  /**
-   * Loads advice from a resource.
-   *
-   * @param path A path to the resource.
-   * @return An instance of {@link OssAdviceContentYamlStorage}.
-   * @throws IOException If the advice couldn't be loaded.
-   */
-  public static OssAdviceContentYamlStorage loadFrom(String path) throws IOException {
-    return new OssAdviceContentYamlStorage(AdviceContentYamlStorage.loadFrom(path));
   }
 
   /** A context for advice for open-source projects. */

@@ -6,13 +6,6 @@ import java.util.Objects;
 /** Ask a questions and offers yes/no/skip answers. */
 public class YesNoSkipQuestion {
 
-  /** Acceptable answers. */
-  public enum Answer {
-    YES,
-    NO,
-    SKIP
-  }
-
   /** A callback to interact with a user. */
   private final UserCallback callback;
 
@@ -62,5 +55,12 @@ public class YesNoSkipQuestion {
                   "[!] What the heck is '%s'? I didn't get it ... please try again?%n", reply));
       }
     }
+  }
+
+  /** Acceptable answers. */
+  public enum Answer {
+    YES,
+    NO,
+    SKIP
   }
 }

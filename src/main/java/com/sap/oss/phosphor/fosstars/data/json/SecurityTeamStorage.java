@@ -30,6 +30,16 @@ public class SecurityTeamStorage extends AbstractJsonStorage {
   }
 
   /**
+   * Loads info about security teams from the default location.
+   *
+   * @return An instance of {@link SecurityTeamStorage}.
+   * @throws IOException If something went wrong.
+   */
+  public static SecurityTeamStorage load() throws IOException {
+    return load(RESOURCE_PATH, SecurityTeamStorage.class);
+  }
+
+  /**
    * Checks if a project has a security team.
    *
    * @param url The project's code repository URL.
@@ -64,16 +74,6 @@ public class SecurityTeamStorage extends AbstractJsonStorage {
   @JsonGetter("securityTeams")
   private Map<String, Info> securityTeams() {
     return Collections.unmodifiableMap(securityTeams);
-  }
-
-  /**
-   * Loads info about security teams from the default location.
-   *
-   * @return An instance of {@link SecurityTeamStorage}.
-   * @throws IOException If something went wrong.
-   */
-  public static SecurityTeamStorage load() throws IOException {
-    return load(RESOURCE_PATH, SecurityTeamStorage.class);
   }
 
   /**

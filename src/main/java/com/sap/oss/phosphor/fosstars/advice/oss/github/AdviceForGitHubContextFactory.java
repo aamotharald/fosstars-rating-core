@@ -21,8 +21,7 @@ public class AdviceForGitHubContextFactory implements OssAdviceContextFactory {
 
       @Override
       public Optional<String> lgtmProjectLink() {
-        if (subject instanceof GitHubProject) {
-          GitHubProject project = (GitHubProject) subject;
+        if (subject instanceof GitHubProject project) {
           return Optional.of(
               String.format(
                   "https://lgtm.com/projects/g/%s/%s",
@@ -34,8 +33,7 @@ public class AdviceForGitHubContextFactory implements OssAdviceContextFactory {
 
       @Override
       public Optional<String> suggestSecurityPolicyLink() {
-        if (subject instanceof GitHubProject) {
-          GitHubProject project = (GitHubProject) subject;
+        if (subject instanceof GitHubProject project) {
           return Optional.of(
               String.format(
                   "https://github.com/%s/%s/security/policy",

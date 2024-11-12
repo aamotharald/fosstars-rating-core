@@ -22,6 +22,21 @@ import org.junit.jupiter.api.Test;
 
 public class StandardValueCacheTest {
 
+  private static <T> void testPutAndGet(StandardValueCache cache, String key, Value<T> value) {
+    cache.put(key, value);
+
+    Optional<ValueSet> someValueSet = cache.get(key);
+    assertTrue(someValueSet.isPresent());
+    ValueSet values = someValueSet.get();
+    assertTrue(values.has(value.feature()));
+    assertTrue(values.of(value.feature()).isPresent());
+    assertEquals(value, values.of(value.feature()).get());
+
+    Optional<Value<T>> someValue = cache.get(key, value.feature());
+    assertTrue(someValue.isPresent());
+    assertEquals(value, someValue.get());
+  }
+
   @Test
   public void testStoreAndLoad() throws IOException {
     Path tmp = Files.createTempFile(StandardValueCacheTest.class.getCanonicalName(), "test");
@@ -72,21 +87,6 @@ public class StandardValueCacheTest {
 
     testPutAndGet(cache, "second", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0));
     assertEquals(2, cache.size());
-  }
-
-  private static <T> void testPutAndGet(StandardValueCache cache, String key, Value<T> value) {
-    cache.put(key, value);
-
-    Optional<ValueSet> someValueSet = cache.get(key);
-    assertTrue(someValueSet.isPresent());
-    ValueSet values = someValueSet.get();
-    assertTrue(values.has(value.feature()));
-    assertTrue(values.of(value.feature()).isPresent());
-    assertEquals(value, values.of(value.feature()).get());
-
-    Optional<Value<T>> someValue = cache.get(key, value.feature());
-    assertTrue(someValue.isPresent());
-    assertEquals(value, someValue.get());
   }
 
   @Test

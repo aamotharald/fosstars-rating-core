@@ -19,7 +19,8 @@ public class PageInfo {
   @JsonProperty("hasNextPage")
   private Boolean hasNextPage;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("endCursor")
   public String getEndCursor() {

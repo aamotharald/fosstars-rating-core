@@ -53,6 +53,23 @@ public class TuningWithCMAES extends AbstractTuning {
   }
 
   /**
+   * Checks if a new solution is better than the current one. A new solution is better its value of
+   * the fitness function is lower, or there is currently no solution.
+   *
+   * @param currentSolution The old solution.
+   * @param newSolution The new solution.
+   * @return True if the new solution is better than the old solution, false otherwise.
+   */
+  private static boolean isBetter(PointValuePair currentSolution, PointValuePair newSolution) {
+    if (currentSolution == null) {
+      return true;
+    }
+    double oldValue = currentSolution.getValue();
+    double newValue = newSolution.getValue();
+    return oldValue > newValue && oldValue - newValue > ACCURACY;
+  }
+
+  /**
    * Runs the CMA-ES optimization algorithm with particular parameters.
    *
    * @param step A step value for the algorithm.
@@ -192,23 +209,6 @@ public class TuningWithCMAES extends AbstractTuning {
         }
       }
     }
-  }
-
-  /**
-   * Checks if a new solution is better than the current one. A new solution is better its value of
-   * the fitness function is lower, or there is currently no solution.
-   *
-   * @param currentSolution The old solution.
-   * @param newSolution The new solution.
-   * @return True if the new solution is better than the old solution, false otherwise.
-   */
-  private static boolean isBetter(PointValuePair currentSolution, PointValuePair newSolution) {
-    if (currentSolution == null) {
-      return true;
-    }
-    double oldValue = currentSolution.getValue();
-    double newValue = newSolution.getValue();
-    return oldValue > newValue && oldValue - newValue > ACCURACY;
   }
 
   /**

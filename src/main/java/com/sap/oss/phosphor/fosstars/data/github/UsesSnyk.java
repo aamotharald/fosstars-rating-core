@@ -27,14 +27,6 @@ import java.util.function.Predicate;
 public class UsesSnyk extends AbstractDependencyScanDataProvider {
 
   /**
-   * A file name containing Snyk policies in a repository.
-   *
-   * @see <a href="https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/the-.snyk-file/">The .snyk
-   *     file</a>
-   */
-  private static String SNYK_POLICY_FILE_NAME = ".snyk";
-
-  /**
    * A location of a Snyk configuration file in a repository.
    *
    * @see <a href="https://github.com/snyk/actions/tree/master/setup">To setup Snyk actions</a>
@@ -42,10 +34,6 @@ public class UsesSnyk extends AbstractDependencyScanDataProvider {
   private static final String[] SNYK_CONFIGS = {
     ".github/workflows/snyk.yaml", ".github/workflows/snyk.yml"
   };
-
-  /** Predicate to confirm if there is a file in open-source project with the .snyk extension. */
-  private static final Predicate<Path> SNYK_FILE_PREDICATE =
-      path -> path.getFileName().toString().endsWith(SNYK_POLICY_FILE_NAME);
 
   /**
    * A pattern to detect commits by Snyk.
@@ -56,10 +44,17 @@ public class UsesSnyk extends AbstractDependencyScanDataProvider {
    */
   private static final String SNYK_PATTERN = "snyk";
 
-  @Override
-  protected String getDependencyCheckerPattern() {
-    return SNYK_PATTERN;
-  }
+  /**
+   * A file name containing Snyk policies in a repository.
+   *
+   * @see <a href="https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/the-.snyk-file/">The .snyk
+   *     file</a>
+   */
+  private static final String SNYK_POLICY_FILE_NAME = ".snyk";
+
+  /** Predicate to confirm if there is a file in open-source project with the .snyk extension. */
+  private static final Predicate<Path> SNYK_FILE_PREDICATE =
+      path -> path.getFileName().toString().endsWith(SNYK_POLICY_FILE_NAME);
 
   /**
    * Initializes a data provider.
@@ -68,6 +63,11 @@ public class UsesSnyk extends AbstractDependencyScanDataProvider {
    */
   public UsesSnyk(GitHubDataFetcher fetcher) {
     super(fetcher);
+  }
+
+  @Override
+  protected String getDependencyCheckerPattern() {
+    return SNYK_PATTERN;
   }
 
   @Override

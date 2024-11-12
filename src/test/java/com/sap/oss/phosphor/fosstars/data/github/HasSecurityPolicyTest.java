@@ -28,6 +28,24 @@ import org.junit.jupiter.api.Test;
 
 public class HasSecurityPolicyTest extends TestGitHubDataFetcherHolder {
 
+  private static void check(HasSecurityPolicy provider, boolean expectedValue) throws IOException {
+    ValueHashSet values = new ValueHashSet();
+    GitHubProject project = new GitHubProject("org", "test");
+    provider.update(project, values);
+
+    assertEquals(1, values.size());
+    assertTrue(values.has(HAS_SECURITY_POLICY));
+    Optional<Value<Boolean>> something = values.of(HAS_SECURITY_POLICY);
+    assertNotNull(something);
+    assertTrue(something.isPresent());
+    Value<Boolean> value = something.get();
+    assertNotNull(value);
+    assertEquals(expectedValue, value.get());
+    if (!expectedValue) {
+      assertFalse(value.explanation().isEmpty());
+    }
+  }
+
   @Test
   public void testIfProjectHasPolicy() throws IOException {
     final LocalRepository repository = mock(LocalRepository.class);
@@ -95,23 +113,5 @@ public class HasSecurityPolicyTest extends TestGitHubDataFetcherHolder {
     provider.set(new SubjectValueCache());
 
     check(provider, false);
-  }
-
-  private static void check(HasSecurityPolicy provider, boolean expectedValue) throws IOException {
-    ValueHashSet values = new ValueHashSet();
-    GitHubProject project = new GitHubProject("org", "test");
-    provider.update(project, values);
-
-    assertEquals(1, values.size());
-    assertTrue(values.has(HAS_SECURITY_POLICY));
-    Optional<Value<Boolean>> something = values.of(HAS_SECURITY_POLICY);
-    assertNotNull(something);
-    assertTrue(something.isPresent());
-    Value<Boolean> value = something.get();
-    assertNotNull(value);
-    assertEquals(expectedValue, value.get());
-    if (!expectedValue) {
-      assertFalse(value.explanation().isEmpty());
-    }
   }
 }

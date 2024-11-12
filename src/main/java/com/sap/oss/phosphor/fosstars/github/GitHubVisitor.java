@@ -10,14 +10,6 @@ import java.util.function.Predicate;
 /** A visitor for visiting elements in a {@link GitHubProject}. */
 public interface GitHubVisitor {
 
-  /** Known locations of elements in a {@link GitHubProject}. */
-  enum Location {
-    PRE_COMMIT_HOOK,
-    INI_CONFIG,
-    TYPE_PY,
-    GITHUB_ACTION
-  }
-
   /**
    * Visit the pre-commit hook config file.
    *
@@ -74,4 +66,12 @@ public interface GitHubVisitor {
       Map<String, Predicate<String>> configMatchers,
       Set<Location> locations)
       throws IOException;
+
+  /** Known locations of elements in a {@link GitHubProject}. */
+  enum Location {
+    PRE_COMMIT_HOOK,
+    INI_CONFIG,
+    TYPE_PY,
+    GITHUB_ACTION
+  }
 }

@@ -38,7 +38,7 @@ public class BooleanValue extends AbstractKnownValue<Boolean> {
     if (this == o) {
       return true;
     }
-    if (o instanceof BooleanValue == false) {
+    if (!(o instanceof BooleanValue)) {
       return false;
     }
     if (!super.equals(o)) {

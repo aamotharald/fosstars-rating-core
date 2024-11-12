@@ -23,7 +23,8 @@ public class SecurityAdvisories {
   @JsonProperty("nodes")
   private List<Advisory> nodes = null;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("pageInfo")
   public PageInfo getPageInfo() {

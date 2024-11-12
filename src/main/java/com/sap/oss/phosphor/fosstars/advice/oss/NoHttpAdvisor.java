@@ -21,14 +21,6 @@ public class NoHttpAdvisor extends AbstractOssAdvisor {
     super(OssAdviceContentYamlStorage.DEFAULT, contextFactory);
   }
 
-  @Override
-  protected List<Advice> adviceFor(
-      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
-      throws MalformedURLException {
-
-    return adviceForFeature(usedValues, USES_NOHTTP, subject, context, NoHttpAdvisor::noHttpTool);
-  }
-
   /**
    * Checks if a value tells that NoHttp tool is not used.
    *
@@ -39,5 +31,13 @@ public class NoHttpAdvisor extends AbstractOssAdvisor {
     return USES_NOHTTP.equals(value.feature())
         && !value.isUnknown()
         && Boolean.FALSE.equals(value.get());
+  }
+
+  @Override
+  protected List<Advice> adviceFor(
+      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
+      throws MalformedURLException {
+
+    return adviceForFeature(usedValues, USES_NOHTTP, subject, context, NoHttpAdvisor::noHttpTool);
   }
 }

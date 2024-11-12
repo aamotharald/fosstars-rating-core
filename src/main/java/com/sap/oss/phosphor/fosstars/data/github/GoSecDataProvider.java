@@ -32,6 +32,13 @@ public class GoSecDataProvider extends AbstractStaticScanToolsDataProvider {
   /** A Predicate to check step in a GitHub action that triggers analysis with GoSec. */
   private static final Map<String, Predicate<String>> MATCH_GOSEC_PREDICATE = new HashMap<>();
 
+  /**
+   * A Predicate to check step in a GitHub action that triggers analysis with GoSec with specific
+   * configs.
+   */
+  private static final Map<String, Predicate<String>> MATCH_GOSEC_STEP_CONFIG_PREDICATE =
+      new HashMap<>();
+
   static {
     {
       MATCH_GOSEC_PREDICATE.put(
@@ -41,13 +48,6 @@ public class GoSecDataProvider extends AbstractStaticScanToolsDataProvider {
           "run", step -> Pattern.compile("^.*gosec .*$", Pattern.DOTALL).matcher(step).matches());
     }
   }
-
-  /**
-   * A Predicate to check step in a GitHub action that triggers analysis with GoSec with specific
-   * configs.
-   */
-  private static final Map<String, Predicate<String>> MATCH_GOSEC_STEP_CONFIG_PREDICATE =
-      new HashMap<>();
 
   static {
     {

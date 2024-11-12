@@ -18,15 +18,6 @@ public abstract class AbstractVerification {
   }
 
   /**
-   * Get the test vectors.
-   *
-   * @return The test vectors.
-   */
-  public TestVectors vectors() {
-    return vectors;
-  }
-
-  /**
    * Checks if a list of test vectors is not empty and doesn't contain duplicate entries.
    *
    * @param vectors A list of test vectors to check.
@@ -40,6 +31,15 @@ public abstract class AbstractVerification {
           "Hey! You are not supposed to give me an empty list of test vectors!");
     }
 
+    return vectors;
+  }
+
+  /**
+   * Get the test vectors.
+   *
+   * @return The test vectors.
+   */
+  public TestVectors vectors() {
     return vectors;
   }
 }

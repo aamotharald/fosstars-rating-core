@@ -40,7 +40,7 @@ public class MutableWeight extends AbstractWeight {
     if (this == o) {
       return true;
     }
-    if (o instanceof MutableWeight == false) {
+    if (!(o instanceof MutableWeight)) {
       return false;
     }
     MutableWeight weight = (MutableWeight) o;

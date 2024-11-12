@@ -134,62 +134,6 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
   }
 
   /**
-   * Return the URL to docs if available.
-   *
-   * @return The URL to docs if available.
-   */
-  public Optional<String> ruleDocumentationUrl() {
-    return isEmpty(ruleDocumentationUrl) ? Optional.empty() : Optional.of(ruleDocumentationUrl);
-  }
-
-  @Override
-  public String print(Subject subject) {
-    if (!subject.ratingValue().isPresent()) {
-      return EMPTY;
-    }
-
-    return print(subject.ratingValue().get(), adviceFor(subject));
-  }
-
-  /**
-   * Print a rating value with a list of advice.
-   *
-   * @param ratingValue The rating value.
-   * @param advice The advice.
-   * @return A formatted rating value with advice.
-   */
-  String print(RatingValue ratingValue, List<Advice> advice) {
-    List<FormattedRule> violations = formatted(violationsIn(ratingValue), advice);
-    List<FormattedRule> warnings = formatted(warningsIn(ratingValue), advice);
-    List<FormattedRule> passedRules = formatted(passedRulesIn(ratingValue), advice);
-    List<FormattedRule> unclearRules = formatted(unclearRulesIn(ratingValue), advice);
-
-    return template
-        .replace("%MAX_CONFIDENCE%", formatted(Confidence.MAX))
-        .replace("%STATUS%", formatted(ratingValue.label()))
-        .replace("%CONFIDENCE_LABEL%", confidenceLabelFor(ratingValue.confidence()))
-        .replace("%CONFIDENCE_VALUE%", formatted(ratingValue.confidence()))
-        .replace("%VIOLATED_RULES%", makeListFrom(violations, "Violated rules"))
-        .replace("%WARNINGS%", makeListFrom(warnings, "Warnings"))
-        .replace("%PASSED_RULES%", makeListFrom(passedRules, "Passed rules"))
-        .replace("%UNCLEAR_RULES%", makeListFrom(unclearRules, "Unclear"))
-        .replace("%ADVICE%", makeAdviceFrom(violations, warnings, passedRules, unclearRules));
-  }
-
-  /**
-   * Convert a list of formatted rules to Markdown-formatted advice.
-   *
-   * @param rules The rules.
-   * @return A list of Markdown-formatted advice.
-   */
-  private List<MarkdownElement> adviceFor(List<FormattedRule> rules) {
-    return rules.stream()
-        .filter(FormattedRule::hasAdvice)
-        .map(rule -> rule.adviceSection)
-        .collect(toList());
-  }
-
-  /**
    * Looks for advice for a specified rule.
    *
    * @param rule The rule.
@@ -198,79 +142,6 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
    */
   private static List<Advice> selectAdviceFor(Value<Boolean> rule, List<Advice> adviceList) {
     return adviceList.stream().filter(advice -> advice.value().equals(rule)).collect(toList());
-  }
-
-  /**
-   * Make a Markdown-formatted document that contains advice for specified rules.
-   *
-   * @param violations A list of violated rules.
-   * @param warnings A list of warnings.
-   * @param passedRules A list of passed rules.
-   * @param unclearRules A list of unclear rules.
-   * @return A Markdown-formatted document with advice.
-   */
-  private String makeAdviceFrom(
-      List<FormattedRule> violations,
-      List<FormattedRule> warnings,
-      List<FormattedRule> passedRules,
-      List<FormattedRule> unclearRules) {
-
-    MarkdownElement advice =
-        Markdown.join()
-            .of(adviceFor(violations))
-            .of(adviceFor(warnings))
-            .of(adviceFor(passedRules))
-            .of(adviceFor(unclearRules))
-            .delimitedBy(NEW_LINE);
-
-    MarkdownHeader header =
-        Markdown.header().level(2).withCaption("What is wrong, and how to fix it");
-    MarkdownSection section = Markdown.section().with(header).thatContains(advice);
-    BooleanSupplier sectionIsNotEmpty = () -> !Markdown.isEmpty(section.text().make());
-
-    return Markdown.choose(section).when(sectionIsNotEmpty).otherwise(MarkdownString.EMPTY).make();
-  }
-
-  /**
-   * Make a Markdown document that contains a header and a list of rules.
-   *
-   * @param rules The rules.
-   * @param title The header.
-   * @return A Markdown document.
-   */
-  private String makeListFrom(List<FormattedRule> rules, String title) {
-    if (rules.isEmpty()) {
-      return EMPTY;
-    }
-
-    List<MarkdownElement> elements = rules.stream().map(rule -> rule.listText).collect(toList());
-    MarkdownList list = Markdown.orderedListOf(elements);
-    MarkdownHeader header = Markdown.header().level(2).withCaption(title);
-    return Markdown.join(header, list).delimitedBy(NEW_LINE).make();
-  }
-
-  /**
-   * Create a Markdown-formatted advice for a rule.
-   *
-   * @param rule The rule.
-   * @param adviceList A list of advice.
-   * @return A Markdown-formatted advice.
-   */
-  private String adviceTextFor(Value<Boolean> rule, List<Advice> adviceList) {
-    List<MarkdownElement> elements = new ArrayList<>();
-
-    for (String note : rule.explanation()) {
-      elements.add(Markdown.string(note));
-    }
-
-    for (Advice advice : adviceList) {
-      MarkdownString text = Markdown.string(advice.content().text());
-      UnorderedMarkdownList links = Markdown.unorderedListOf(linksIn(advice));
-      MarkdownElement adviceContent = Markdown.group(text, links);
-      elements.add(adviceContent);
-    }
-
-    return Markdown.join(elements).delimitedBy(DOUBLE_NEW_LINE).make();
   }
 
   /**
@@ -322,86 +193,6 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
         .filter(Value::isUnknown)
         .map(value -> (Value<Boolean>) value)
         .collect(toList());
-  }
-
-  /**
-   * Format a boolean value.
-   *
-   * @param value The value.
-   * @return A formatted value.
-   * @throws IllegalArgumentException If the value is not boolean.
-   */
-  public String printValueAnswer(Value<?> value) {
-    String answer = "unknown";
-    if (!value.isUnknown()) {
-      if (!BooleanValue.class.equals(value.getClass())) {
-        throw new IllegalArgumentException("Oh no! Expected a boolean value!");
-      }
-      answer = ((BooleanValue) value).get() ? "Yes" : "No";
-    }
-    return answer;
-  }
-
-  /**
-   * Search for ID for a rule.
-   *
-   * @param rule The rule.
-   * @return ID of the rule if available.
-   */
-  public Optional<String> identifierOf(Feature<?> rule) {
-    return Optional.ofNullable(featureToRuleId.get(rule)).map(id -> format("[%s]", id));
-  }
-
-  /**
-   * Format a rule with advice.
-   *
-   * @param rule The rule.
-   * @param adviceList The advice.
-   * @return A Markdown-formatted rule.
-   */
-  private FormattedRule formatted(Value<Boolean> rule, List<Advice> adviceList) {
-    String advice = adviceTextFor(rule, selectAdviceFor(rule, adviceList));
-    BooleanSupplier weHaveAdvice = () -> !Markdown.isEmpty(advice);
-
-    String rawId = featureToRuleId.getOrDefault(rule.feature(), EMPTY);
-    BooleanSupplier weHaveId = () -> !Markdown.isEmpty(rawId);
-
-    MarkdownElement id =
-        Markdown.choose(Markdown.string(rawId))
-            .when(weHaveId)
-            .otherwise(Markdown.string(rule.feature().name()));
-    MarkdownHeader header = Markdown.header().level(3).withCaption(id);
-    MarkdownSection adviceSection = Markdown.section().with(header).thatContains(advice);
-    MarkdownRuleIdentifier ruleId = Markdown.rule(id);
-    MarkdownHeaderReference identifierWithReference =
-        Markdown.reference().to(adviceSection).withCaption(ruleId);
-    MarkdownChoice identifier =
-        Markdown.choose(identifierWithReference).when(weHaveAdvice).otherwise(ruleId);
-    MarkdownString formattedRule = Markdown.string(formatted(rule));
-    JoinedMarkdownElements listText = Markdown.join(identifier, formattedRule).delimitedBy(SPACE);
-
-    return new FormattedRule(listText, adviceSection);
-  }
-
-  /**
-   * Format a list of rules with advice.
-   *
-   * @param rules The rules.
-   * @param advice The advice.
-   * @return A list of formatted rules.
-   */
-  private List<FormattedRule> formatted(List<Value<Boolean>> rules, List<Advice> advice) {
-    return rules.stream().map(rule -> formatted(rule, advice)).collect(toList());
-  }
-
-  /**
-   * Prints a formatted violated rule.
-   *
-   * @param value The rule.
-   * @return A formatted violated rule.
-   */
-  private String formatted(Value<?> value) {
-    return format("%s **%s**", nameOf(value.feature()), printValueAnswer(value));
   }
 
   /**
@@ -543,6 +334,215 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
     }
 
     return config.get("documentationUrl").asText();
+  }
+
+  /**
+   * Return the URL to docs if available.
+   *
+   * @return The URL to docs if available.
+   */
+  public Optional<String> ruleDocumentationUrl() {
+    return isEmpty(ruleDocumentationUrl) ? Optional.empty() : Optional.of(ruleDocumentationUrl);
+  }
+
+  @Override
+  public String print(Subject subject) {
+    if (!subject.ratingValue().isPresent()) {
+      return EMPTY;
+    }
+
+    return print(subject.ratingValue().get(), adviceFor(subject));
+  }
+
+  /**
+   * Print a rating value with a list of advice.
+   *
+   * @param ratingValue The rating value.
+   * @param advice The advice.
+   * @return A formatted rating value with advice.
+   */
+  String print(RatingValue ratingValue, List<Advice> advice) {
+    List<FormattedRule> violations = formatted(violationsIn(ratingValue), advice);
+    List<FormattedRule> warnings = formatted(warningsIn(ratingValue), advice);
+    List<FormattedRule> passedRules = formatted(passedRulesIn(ratingValue), advice);
+    List<FormattedRule> unclearRules = formatted(unclearRulesIn(ratingValue), advice);
+
+    return template
+        .replace("%MAX_CONFIDENCE%", formatted(Confidence.MAX))
+        .replace("%STATUS%", formatted(ratingValue.label()))
+        .replace("%CONFIDENCE_LABEL%", confidenceLabelFor(ratingValue.confidence()))
+        .replace("%CONFIDENCE_VALUE%", formatted(ratingValue.confidence()))
+        .replace("%VIOLATED_RULES%", makeListFrom(violations, "Violated rules"))
+        .replace("%WARNINGS%", makeListFrom(warnings, "Warnings"))
+        .replace("%PASSED_RULES%", makeListFrom(passedRules, "Passed rules"))
+        .replace("%UNCLEAR_RULES%", makeListFrom(unclearRules, "Unclear"))
+        .replace("%ADVICE%", makeAdviceFrom(violations, warnings, passedRules, unclearRules));
+  }
+
+  /**
+   * Convert a list of formatted rules to Markdown-formatted advice.
+   *
+   * @param rules The rules.
+   * @return A list of Markdown-formatted advice.
+   */
+  private List<MarkdownElement> adviceFor(List<FormattedRule> rules) {
+    return rules.stream()
+        .filter(FormattedRule::hasAdvice)
+        .map(rule -> rule.adviceSection)
+        .collect(toList());
+  }
+
+  /**
+   * Make a Markdown-formatted document that contains advice for specified rules.
+   *
+   * @param violations A list of violated rules.
+   * @param warnings A list of warnings.
+   * @param passedRules A list of passed rules.
+   * @param unclearRules A list of unclear rules.
+   * @return A Markdown-formatted document with advice.
+   */
+  private String makeAdviceFrom(
+      List<FormattedRule> violations,
+      List<FormattedRule> warnings,
+      List<FormattedRule> passedRules,
+      List<FormattedRule> unclearRules) {
+
+    MarkdownElement advice =
+        Markdown.join()
+            .of(adviceFor(violations))
+            .of(adviceFor(warnings))
+            .of(adviceFor(passedRules))
+            .of(adviceFor(unclearRules))
+            .delimitedBy(NEW_LINE);
+
+    MarkdownHeader header =
+        Markdown.header().level(2).withCaption("What is wrong, and how to fix it");
+    MarkdownSection section = Markdown.section().with(header).thatContains(advice);
+    BooleanSupplier sectionIsNotEmpty = () -> !Markdown.isEmpty(section.text().make());
+
+    return Markdown.choose(section).when(sectionIsNotEmpty).otherwise(MarkdownString.EMPTY).make();
+  }
+
+  /**
+   * Make a Markdown document that contains a header and a list of rules.
+   *
+   * @param rules The rules.
+   * @param title The header.
+   * @return A Markdown document.
+   */
+  private String makeListFrom(List<FormattedRule> rules, String title) {
+    if (rules.isEmpty()) {
+      return EMPTY;
+    }
+
+    List<MarkdownElement> elements = rules.stream().map(rule -> rule.listText).collect(toList());
+    MarkdownList list = Markdown.orderedListOf(elements);
+    MarkdownHeader header = Markdown.header().level(2).withCaption(title);
+    return Markdown.join(header, list).delimitedBy(NEW_LINE).make();
+  }
+
+  /**
+   * Create a Markdown-formatted advice for a rule.
+   *
+   * @param rule The rule.
+   * @param adviceList A list of advice.
+   * @return A Markdown-formatted advice.
+   */
+  private String adviceTextFor(Value<Boolean> rule, List<Advice> adviceList) {
+    List<MarkdownElement> elements = new ArrayList<>();
+
+    for (String note : rule.explanation()) {
+      elements.add(Markdown.string(note));
+    }
+
+    for (Advice advice : adviceList) {
+      MarkdownString text = Markdown.string(advice.content().text());
+      UnorderedMarkdownList links = Markdown.unorderedListOf(linksIn(advice));
+      MarkdownElement adviceContent = Markdown.group(text, links);
+      elements.add(adviceContent);
+    }
+
+    return Markdown.join(elements).delimitedBy(DOUBLE_NEW_LINE).make();
+  }
+
+  /**
+   * Format a boolean value.
+   *
+   * @param value The value.
+   * @return A formatted value.
+   * @throws IllegalArgumentException If the value is not boolean.
+   */
+  public String printValueAnswer(Value<?> value) {
+    String answer = "unknown";
+    if (!value.isUnknown()) {
+      if (!BooleanValue.class.equals(value.getClass())) {
+        throw new IllegalArgumentException("Oh no! Expected a boolean value!");
+      }
+      answer = ((BooleanValue) value).get() ? "Yes" : "No";
+    }
+    return answer;
+  }
+
+  /**
+   * Search for ID for a rule.
+   *
+   * @param rule The rule.
+   * @return ID of the rule if available.
+   */
+  public Optional<String> identifierOf(Feature<?> rule) {
+    return Optional.ofNullable(featureToRuleId.get(rule)).map(id -> format("[%s]", id));
+  }
+
+  /**
+   * Format a rule with advice.
+   *
+   * @param rule The rule.
+   * @param adviceList The advice.
+   * @return A Markdown-formatted rule.
+   */
+  private FormattedRule formatted(Value<Boolean> rule, List<Advice> adviceList) {
+    String advice = adviceTextFor(rule, selectAdviceFor(rule, adviceList));
+    BooleanSupplier weHaveAdvice = () -> !Markdown.isEmpty(advice);
+
+    String rawId = featureToRuleId.getOrDefault(rule.feature(), EMPTY);
+    BooleanSupplier weHaveId = () -> !Markdown.isEmpty(rawId);
+
+    MarkdownElement id =
+        Markdown.choose(Markdown.string(rawId))
+            .when(weHaveId)
+            .otherwise(Markdown.string(rule.feature().name()));
+    MarkdownHeader header = Markdown.header().level(3).withCaption(id);
+    MarkdownSection adviceSection = Markdown.section().with(header).thatContains(advice);
+    MarkdownRuleIdentifier ruleId = Markdown.rule(id);
+    MarkdownHeaderReference identifierWithReference =
+        Markdown.reference().to(adviceSection).withCaption(ruleId);
+    MarkdownChoice identifier =
+        Markdown.choose(identifierWithReference).when(weHaveAdvice).otherwise(ruleId);
+    MarkdownString formattedRule = Markdown.string(formatted(rule));
+    JoinedMarkdownElements listText = Markdown.join(identifier, formattedRule).delimitedBy(SPACE);
+
+    return new FormattedRule(listText, adviceSection);
+  }
+
+  /**
+   * Format a list of rules with advice.
+   *
+   * @param rules The rules.
+   * @param advice The advice.
+   * @return A list of formatted rules.
+   */
+  private List<FormattedRule> formatted(List<Value<Boolean>> rules, List<Advice> advice) {
+    return rules.stream().map(rule -> formatted(rule, advice)).collect(toList());
+  }
+
+  /**
+   * Prints a formatted violated rule.
+   *
+   * @param value The rule.
+   * @return A formatted violated rule.
+   */
+  private String formatted(Value<?> value) {
+    return format("%s **%s**", nameOf(value.feature()), printValueAnswer(value));
   }
 
   /**

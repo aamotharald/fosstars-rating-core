@@ -35,17 +35,6 @@ public class ValueHashSet implements ValueSet {
   /** A mapping from a feature to its value. */
   private final Map<Feature<?>, Value<?>> featureToValue = new HashMap<>();
 
-  /**
-   * Initializes a new {@link ValueHashSet} with a number of values.
-   *
-   * @param values The values.
-   * @return The new {@link ValueHashSet}.
-   */
-  public static ValueHashSet from(Value<?>... values) {
-    Objects.requireNonNull(values, "Values can't be null!");
-    return new ValueHashSet(values);
-  }
-
   /** Initializes an empty {@link ValueHashSet}. */
   public ValueHashSet() {}
 
@@ -68,6 +57,17 @@ public class ValueHashSet implements ValueSet {
     for (Value<?> value : values) {
       update(value);
     }
+  }
+
+  /**
+   * Initializes a new {@link ValueHashSet} with a number of values.
+   *
+   * @param values The values.
+   * @return The new {@link ValueHashSet}.
+   */
+  public static ValueHashSet from(Value<?>... values) {
+    Objects.requireNonNull(values, "Values can't be null!");
+    return new ValueHashSet(values);
   }
 
   /**
@@ -166,7 +166,7 @@ public class ValueHashSet implements ValueSet {
     if (this == o) {
       return true;
     }
-    if (o instanceof ValueHashSet == false) {
+    if (!(o instanceof ValueHashSet)) {
       return false;
     }
     ValueHashSet that = (ValueHashSet) o;

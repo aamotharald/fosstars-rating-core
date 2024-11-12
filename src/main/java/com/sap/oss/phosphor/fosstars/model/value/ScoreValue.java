@@ -19,6 +19,9 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
   /** A score. */
   private final Score score;
 
+  /** A list of values which were used to build the score value. */
+  private final List<Value<?>> usedValues;
+
   /** A score value. */
   private double value;
 
@@ -27,9 +30,6 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
 
   /** A weight of the score. */
   private double weight;
-
-  /** A list of values which were used to build the score value. */
-  private final List<Value<?>> usedValues;
 
   /** A flag that tells if the score value is unknown. */
   private boolean isUnknown;
@@ -95,6 +95,53 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
     this.usedValues = new ArrayList<>(usedValues);
     this.isUnknown = isUnknown;
     this.isNotApplicable = isNotApplicable;
+  }
+
+  /**
+   * Get a list of feature values that are used in a score value or in its underlying score values.
+   *
+   * @param scoreValue The score value to be checked.
+   * @return A list of feature values.
+   */
+  private static List<Value<?>> usedFeatureValuesIn(ScoreValue scoreValue) {
+    List<Value<?>> usedFeatureValues = new ArrayList<>();
+
+    for (Value<?> value : scoreValue.usedValues) {
+      if (value instanceof ScoreValue) {
+        usedFeatureValues.addAll(usedFeatureValuesIn((ScoreValue) value));
+      } else {
+        usedFeatureValues.add(value);
+      }
+    }
+
+    return usedFeatureValues;
+  }
+
+  /**
+   * Recursively looks for a used sub-score value of a specified score.
+   *
+   * @param scoreValue The score value to be checked.
+   * @param subScoreClass A class of the sub-score.
+   * @return An {@link Optional} with the sub-score value.
+   */
+  private static Optional<ScoreValue> findUsedSubScoreValueIn(
+      ScoreValue scoreValue, Class<? extends Score> subScoreClass) {
+
+    for (Value<?> usedValue : scoreValue.usedValues) {
+      if (usedValue instanceof ScoreValue subScoreValue) {
+
+        if (subScoreClass.isInstance(subScoreValue.score)) {
+          return Optional.of(subScoreValue);
+        }
+
+        Optional<ScoreValue> result = findUsedSubScoreValueIn(subScoreValue, subScoreClass);
+        if (result.isPresent()) {
+          return result;
+        }
+      }
+    }
+
+    return Optional.empty();
   }
 
   @JsonGetter("score")
@@ -169,26 +216,6 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
   }
 
   /**
-   * Get a list of feature values that are used in a score value or in its underlying score values.
-   *
-   * @param scoreValue The score value to be checked.
-   * @return A list of feature values.
-   */
-  private static List<Value<?>> usedFeatureValuesIn(ScoreValue scoreValue) {
-    List<Value<?>> usedFeatureValues = new ArrayList<>();
-
-    for (Value<?> value : scoreValue.usedValues) {
-      if (value instanceof ScoreValue) {
-        usedFeatureValues.addAll(usedFeatureValuesIn((ScoreValue) value));
-      } else {
-        usedFeatureValues.add(value);
-      }
-    }
-
-    return usedFeatureValues;
-  }
-
-  /**
    * Recursively looks for a used sub-score value of a specified score.
    *
    * @param subScoreClass A class of the sub-score.
@@ -196,34 +223,6 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
    */
   public Optional<ScoreValue> findUsedSubScoreValue(Class<? extends Score> subScoreClass) {
     return findUsedSubScoreValueIn(this, subScoreClass);
-  }
-
-  /**
-   * Recursively looks for a used sub-score value of a specified score.
-   *
-   * @param scoreValue The score value to be checked.
-   * @param subScoreClass A class of the sub-score.
-   * @return An {@link Optional} with the sub-score value.
-   */
-  private static Optional<ScoreValue> findUsedSubScoreValueIn(
-      ScoreValue scoreValue, Class<? extends Score> subScoreClass) {
-
-    for (Value<?> usedValue : scoreValue.usedValues) {
-      if (usedValue instanceof ScoreValue) {
-        ScoreValue subScoreValue = (ScoreValue) usedValue;
-
-        if (subScoreClass.isInstance(subScoreValue.score)) {
-          return Optional.of(subScoreValue);
-        }
-
-        Optional<ScoreValue> result = findUsedSubScoreValueIn(subScoreValue, subScoreClass);
-        if (result.isPresent()) {
-          return result;
-        }
-      }
-    }
-
-    return Optional.empty();
   }
 
   /**

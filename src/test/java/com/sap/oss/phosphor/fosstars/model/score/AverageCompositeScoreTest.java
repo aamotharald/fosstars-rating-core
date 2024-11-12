@@ -2,6 +2,7 @@ package com.sap.oss.phosphor.fosstars.model.score;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -132,10 +133,10 @@ public class AverageCompositeScoreTest {
 
     assertEquals(2, usedValues.size());
 
-    assertTrue(usedValues.get(0) instanceof ScoreValue);
+    assertInstanceOf(ScoreValue.class, usedValues.get(0));
     assertTrue(usedValues.get(0).isNotApplicable());
 
-    assertTrue(usedValues.get(1) instanceof ScoreValue);
+    assertInstanceOf(ScoreValue.class, usedValues.get(1));
     ScoreValue subScoreValue = (ScoreValue) usedValues.get(1);
     assertEquals(SecondScore.VALUE, subScoreValue.get(), PRECISION);
     assertEquals(Confidence.MAX, subScoreValue.confidence(), PRECISION);

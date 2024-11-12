@@ -21,15 +21,6 @@ public class SigningAdvisor extends AbstractOssAdvisor {
     super(OssAdviceContentYamlStorage.DEFAULT, contextFactory);
   }
 
-  @Override
-  protected List<Advice> adviceFor(
-      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
-      throws MalformedURLException {
-
-    return adviceForFeature(
-        usedValues, SIGNS_ARTIFACTS, subject, context, SigningAdvisor::disabledArtifactSigning);
-  }
-
   /**
    * Checks if a value tells that artifact signing is disabled.
    *
@@ -40,5 +31,14 @@ public class SigningAdvisor extends AbstractOssAdvisor {
     return SIGNS_ARTIFACTS.equals(value.feature())
         && !value.isUnknown()
         && Boolean.FALSE.equals(value.get());
+  }
+
+  @Override
+  protected List<Advice> adviceFor(
+      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
+      throws MalformedURLException {
+
+    return adviceForFeature(
+        usedValues, SIGNS_ARTIFACTS, subject, context, SigningAdvisor::disabledArtifactSigning);
   }
 }

@@ -26,6 +26,49 @@ public interface Score extends Feature<Double> {
   Interval INTERVAL = DoubleInterval.init().from(0).to(10).closed().make();
 
   /**
+   * Checks if a score is correct.
+   *
+   * @param score The score to be checked.
+   * @return The same score if it's correct.
+   * @throws IllegalArgumentException If the score is not correct.
+   */
+  static double check(double score) {
+    if (score < MIN || score > MAX) {
+      throw new IllegalArgumentException(
+          String.format("Score is not in the range [0, 1]: %f", score));
+    }
+    return score;
+  }
+
+  /**
+   * Checks if a score is in the valid range, and returns an adjusted value if necessary.
+   *
+   * @param value A score to be checked.
+   * @return {@link #MIN} if the score is less than {@link Score#MIN}, {@link #MAX} if the score is
+   *     greater than {@link Score#MAX}, or the original score otherwise.
+   */
+  static double adjust(double value) {
+    if (value < Score.MIN) {
+      return Score.MIN;
+    }
+    if (value > Score.MAX) {
+      return Score.MAX;
+    }
+    return value;
+  }
+
+  /**
+   * Get an Interval with the provided range.
+   *
+   * @param min An interval start value.
+   * @param max An interval end value.
+   * @return Interval with the range provided from min and max param values.
+   */
+  static Interval makeInterval(double min, double max) {
+    return DoubleInterval.init().from(min).to(max).closed().make();
+  }
+
+  /**
    * Get a name of the score.
    *
    * @return A name of the score.
@@ -96,47 +139,4 @@ public interface Score extends Feature<Double> {
    * @param visitor The visitor.
    */
   void accept(Visitor visitor);
-
-  /**
-   * Checks if a score is correct.
-   *
-   * @param score The score to be checked.
-   * @return The same score if it's correct.
-   * @throws IllegalArgumentException If the score is not correct.
-   */
-  static double check(double score) {
-    if (score < MIN || score > MAX) {
-      throw new IllegalArgumentException(
-          String.format("Score is not in the range [0, 1]: %f", score));
-    }
-    return score;
-  }
-
-  /**
-   * Checks if a score is in the valid range, and returns an adjusted value if necessary.
-   *
-   * @param value A score to be checked.
-   * @return {@link #MIN} if the score is less than {@link Score#MIN}, {@link #MAX} if the score is
-   *     greater than {@link Score#MAX}, or the original score otherwise.
-   */
-  static double adjust(double value) {
-    if (value < Score.MIN) {
-      return Score.MIN;
-    }
-    if (value > Score.MAX) {
-      return Score.MAX;
-    }
-    return value;
-  }
-
-  /**
-   * Get an Interval with the provided range.
-   *
-   * @param min An interval start value.
-   * @param max An interval end value.
-   * @return Interval with the range provided from min and max param values.
-   */
-  static Interval makeInterval(double min, double max) {
-    return DoubleInterval.init().from(min).to(max).closed().make();
-  }
 }

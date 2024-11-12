@@ -40,15 +40,6 @@ public class Config {
   }
 
   /**
-   * Checks the config has a filename of a cache.
-   *
-   * @return True if the config has a filename of a cache, false otherwise.
-   */
-  boolean hasCacheFile() {
-    return cacheFilename != null && !cacheFilename.trim().isEmpty();
-  }
-
-  /**
    * Loads a config from a file.
    *
    * @param filename A path to the config.
@@ -72,5 +63,14 @@ public class Config {
     ObjectMapper mapper = Yaml.mapper();
     mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     return mapper.readValue(is, Config.class);
+  }
+
+  /**
+   * Checks the config has a filename of a cache.
+   *
+   * @return True if the config has a filename of a cache, false otherwise.
+   */
+  boolean hasCacheFile() {
+    return cacheFilename != null && !cacheFilename.trim().isEmpty();
   }
 }

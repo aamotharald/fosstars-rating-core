@@ -187,8 +187,8 @@ public class UsesSanitizersTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testParseOptions() {
     assertTrue(UsesSanitizers.parseOptions("something else").isEmpty());
-    assertEquals(Arrays.asList("address"), UsesSanitizers.parseOptions("-fsanitize=address"));
-    assertEquals(Arrays.asList("memory"), UsesSanitizers.parseOptions("-fsanitize=memory"));
+    assertEquals(List.of("address"), UsesSanitizers.parseOptions("-fsanitize=address"));
+    assertEquals(List.of("memory"), UsesSanitizers.parseOptions("-fsanitize=memory"));
     assertEquals(
         Arrays.asList("address", "memory", "test"),
         UsesSanitizers.parseOptions("-fsanitize=address,memory,test"));

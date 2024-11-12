@@ -30,6 +30,16 @@ public class CompanySupportStorage extends AbstractJsonStorage {
   }
 
   /**
+   * Loads info about company support from the default location.
+   *
+   * @return An instance of {@link CompanySupportStorage}.
+   * @throws IOException If something went wrong.
+   */
+  public static CompanySupportStorage load() throws IOException {
+    return load(RESOURCE_PATH, CompanySupportStorage.class);
+  }
+
+  /**
    * Checks if a project is supported by at least one company.
    *
    * @param url The project's code repository URL.
@@ -74,15 +84,5 @@ public class CompanySupportStorage extends AbstractJsonStorage {
   @JsonGetter("projects")
   private Map<String, List<String>> projects() {
     return Collections.unmodifiableMap(projects);
-  }
-
-  /**
-   * Loads info about company support from the default location.
-   *
-   * @return An instance of {@link CompanySupportStorage}.
-   * @throws IOException If something went wrong.
-   */
-  public static CompanySupportStorage load() throws IOException {
-    return load(RESOURCE_PATH, CompanySupportStorage.class);
   }
 }

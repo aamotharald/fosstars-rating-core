@@ -23,6 +23,21 @@ public class SecurityReviewScore extends FeatureBasedScore {
     super("How security reviews have been done for an open source project", SECURITY_REVIEWS);
   }
 
+  /**
+   * Calculate points for a security review.
+   *
+   * @param review The security review.
+   * @param now Current time.
+   * @return Points for the security review.
+   */
+  static double pointsFor(SecurityReview review, Instant now) {
+    if (review.projectChanged().isPresent()) {
+      return MAX * (1.0 - review.projectChanged().get());
+    }
+    long years = (Duration.between(review.date().toInstant(), now).toDays() / 365) + 1;
+    return MAX / years;
+  }
+
   @Override
   public ScoreValue calculate(Value<?>... values) {
     Value<SecurityReviews> reviews =
@@ -44,20 +59,5 @@ public class SecurityReviewScore extends FeatureBasedScore {
     }
 
     return score.set(value);
-  }
-
-  /**
-   * Calculate points for a security review.
-   *
-   * @param review The security review.
-   * @param now Current time.
-   * @return Points for the security review.
-   */
-  static double pointsFor(SecurityReview review, Instant now) {
-    if (review.projectChanged().isPresent()) {
-      return MAX * (1.0 - review.projectChanged().get());
-    }
-    long years = (Duration.between(review.date().toInstant(), now).toDays() / 365) + 1;
-    return MAX / years;
   }
 }

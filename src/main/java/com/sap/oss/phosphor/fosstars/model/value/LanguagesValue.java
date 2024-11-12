@@ -38,7 +38,7 @@ public class LanguagesValue extends AbstractKnownValue<Languages> {
     if (this == o) {
       return true;
     }
-    if (o instanceof LanguagesValue == false) {
+    if (!(o instanceof LanguagesValue)) {
       return false;
     }
     if (!super.equals(o)) {

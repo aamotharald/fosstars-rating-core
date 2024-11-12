@@ -17,6 +17,15 @@ import org.junit.jupiter.api.Test;
 
 public class ProjectActivityScoreExampleTest {
 
+  private static Set<Value<?>> makeValues(
+      int numberOfCommitsLastMonth, int numberOfContributorsLastMonth) {
+
+    Set<Value<?>> values = new HashSet<>();
+    values.add(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(numberOfCommitsLastMonth));
+    values.add(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(numberOfContributorsLastMonth));
+    return values;
+  }
+
   @Test
   public void name() {
     assertNotNull(PROJECT_ACTIVITY_SCORE_EXAMPLE.name());
@@ -85,14 +94,5 @@ public class ProjectActivityScoreExampleTest {
           values.add(new IntegerValue(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE, 11));
           Score.INTERVAL.contains(PROJECT_ACTIVITY_SCORE_EXAMPLE.calculate(values).get());
         });
-  }
-
-  private static Set<Value<?>> makeValues(
-      int numberOfCommitsLastMonth, int numberOfContributorsLastMonth) {
-
-    Set<Value<?>> values = new HashSet<>();
-    values.add(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(numberOfCommitsLastMonth));
-    values.add(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(numberOfContributorsLastMonth));
-    return values;
   }
 }

@@ -50,42 +50,6 @@ public class JsonPrettyPrinter extends CommonFormatter {
     super(advisor);
   }
 
-  @Override
-  public String print(Subject subject) {
-    if (!subject.ratingValue().isPresent()) {
-      return StringUtils.EMPTY;
-    }
-    RatingValue ratingValue = subject.ratingValue().get();
-    Rating rating = from(ratingValue, subject);
-    rating.advices(adviceFor(subject));
-    StringBuilder output = new StringBuilder();
-    try {
-      output.append(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rating));
-    } catch (JsonProcessingException e) {
-      throw new UncheckedIOException(
-          "Oops! Could not parse the rating value object to Json string!", e);
-    }
-
-    return output.toString();
-  }
-
-  /**
-   * Extract advices for a subject.
-   *
-   * @param subject The subject.
-   * @return Advices collected form a subject.
-   */
-  private List<Advices> adviceFor(Subject subject) {
-    try {
-      return advisor.adviceFor(subject).stream()
-          .map(JsonPrettyPrinter::from)
-          .collect(Collectors.toList());
-    } catch (IOException e) {
-      LOGGER.warn("Oops! Could not collect advices!", e);
-      return emptyList();
-    }
-  }
-
   /**
    * Map Advice to serializable class.
    *
@@ -202,5 +166,41 @@ public class JsonPrettyPrinter extends CommonFormatter {
    */
   public static String printValue(double value) {
     return String.format("%-4s", DECIMAL_FORMAT.format(value));
+  }
+
+  @Override
+  public String print(Subject subject) {
+    if (!subject.ratingValue().isPresent()) {
+      return StringUtils.EMPTY;
+    }
+    RatingValue ratingValue = subject.ratingValue().get();
+    Rating rating = from(ratingValue, subject);
+    rating.advices(adviceFor(subject));
+    StringBuilder output = new StringBuilder();
+    try {
+      output.append(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rating));
+    } catch (JsonProcessingException e) {
+      throw new UncheckedIOException(
+          "Oops! Could not parse the rating value object to Json string!", e);
+    }
+
+    return output.toString();
+  }
+
+  /**
+   * Extract advices for a subject.
+   *
+   * @param subject The subject.
+   * @return Advices collected form a subject.
+   */
+  private List<Advices> adviceFor(Subject subject) {
+    try {
+      return advisor.adviceFor(subject).stream()
+          .map(JsonPrettyPrinter::from)
+          .collect(Collectors.toList());
+    } catch (IOException e) {
+      LOGGER.warn("Oops! Could not collect advices!", e);
+      return emptyList();
+    }
   }
 }

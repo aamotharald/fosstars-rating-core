@@ -18,25 +18,6 @@ public class Languages implements Iterable<Language> {
   private final Set<Language> elements;
 
   /**
-   * Creates a collection of languages.
-   *
-   * @param languages The languages.
-   * @return A collection of the specified languages.
-   */
-  public static Languages of(Language... languages) {
-    return new Languages(setOf(languages));
-  }
-
-  /**
-   * Creates an empty set of languages.
-   *
-   * @return An empty set of languages.
-   */
-  public static Languages empty() {
-    return new Languages();
-  }
-
-  /**
    * Initializes a set of languages.
    *
    * @param languages A set of languages.
@@ -54,6 +35,25 @@ public class Languages implements Iterable<Language> {
    */
   public Languages(Language... languages) {
     this(setOf(languages));
+  }
+
+  /**
+   * Creates a collection of languages.
+   *
+   * @param languages The languages.
+   * @return A collection of the specified languages.
+   */
+  public static Languages of(Language... languages) {
+    return new Languages(setOf(languages));
+  }
+
+  /**
+   * Creates an empty set of languages.
+   *
+   * @return An empty set of languages.
+   */
+  public static Languages empty() {
+    return new Languages();
   }
 
   /**
@@ -108,7 +108,7 @@ public class Languages implements Iterable<Language> {
     if (this == o) {
       return true;
     }
-    if (o instanceof Languages == false) {
+    if (!(o instanceof Languages)) {
       return false;
     }
     Languages other = (Languages) o;

@@ -20,20 +20,6 @@ public interface Weight extends Parameter {
   Interval INTERVAL = DoubleInterval.init().from(MIN).to(MAX).openLeft().closedRight().make();
 
   /**
-   * Get the weight's value.
-   *
-   * @return The weight's value.
-   */
-  Double value();
-
-  /**
-   * Accept a visitor.
-   *
-   * @param visitor The visitor.
-   */
-  void accept(Visitor visitor);
-
-  /**
    * Checks if a weight belongs to the correct interval.
    *
    * @param value The weight.
@@ -47,4 +33,18 @@ public interface Weight extends Parameter {
     }
     return value;
   }
+
+  /**
+   * Get the weight's value.
+   *
+   * @return The weight's value.
+   */
+  Double value();
+
+  /**
+   * Accept a visitor.
+   *
+   * @param visitor The visitor.
+   */
+  void accept(Visitor visitor);
 }

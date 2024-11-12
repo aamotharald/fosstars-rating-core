@@ -26,16 +26,6 @@ public enum LgtmGrade {
   }
 
   /**
-   * Get the grade as a string.
-   *
-   * @return The LGTM grade as a string.
-   */
-  @JsonValue
-  public String grade() {
-    return grade;
-  }
-
-  /**
    * Converts a string to an LGTM grade.
    *
    * @param string The string to be parsed.
@@ -58,6 +48,16 @@ public enum LgtmGrade {
     }
 
     throw new IllegalArgumentException(String.format("Unknown value: %s", string));
+  }
+
+  /**
+   * Get the grade as a string.
+   *
+   * @return The LGTM grade as a string.
+   */
+  @JsonValue
+  public String grade() {
+    return grade;
   }
 
   @Override

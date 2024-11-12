@@ -35,15 +35,6 @@ public class OssArtifactSecurityRatingMarkdownFormatter extends AbstractMarkdown
     this(advisor, DEFAULT_RATING_VALUE_TEMPLATE);
   }
 
-  @Override
-  public String print(Subject subject) {
-    if (!subject.ratingValue().isPresent()) {
-      return StringUtils.EMPTY;
-    }
-
-    return print(subject.ratingValue().get(), markdownAdviceFor(subject));
-  }
-
   /**
    * Create a new formatter.
    *
@@ -53,6 +44,15 @@ public class OssArtifactSecurityRatingMarkdownFormatter extends AbstractMarkdown
   public OssArtifactSecurityRatingMarkdownFormatter(Advisor advisor, String template) {
     super(advisor);
     this.template = Objects.requireNonNull(template, "Oh no! Template can't be null!");
+  }
+
+  @Override
+  public String print(Subject subject) {
+    if (!subject.ratingValue().isPresent()) {
+      return StringUtils.EMPTY;
+    }
+
+    return print(subject.ratingValue().get(), markdownAdviceFor(subject));
   }
 
   protected String print(RatingValue ratingValue, MarkdownElement advice) {

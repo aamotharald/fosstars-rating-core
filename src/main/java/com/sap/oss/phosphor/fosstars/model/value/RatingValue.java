@@ -79,7 +79,7 @@ public class RatingValue implements Confidence {
     if (this == o) {
       return true;
     }
-    if (o instanceof RatingValue == false) {
+    if (!(o instanceof RatingValue)) {
       return false;
     }
     RatingValue that = (RatingValue) o;

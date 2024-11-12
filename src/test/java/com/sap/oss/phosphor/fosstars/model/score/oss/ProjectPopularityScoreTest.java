@@ -21,6 +21,13 @@ public class ProjectPopularityScoreTest {
 
   private static final ProjectPopularityScore SCORE = new ProjectPopularityScore();
 
+  private static Set<Value<?>> values(int stars, int watchers, int dependents) {
+    return setOf(
+        NUMBER_OF_GITHUB_STARS.value(stars),
+        NUMBER_OF_WATCHERS_ON_GITHUB.value(watchers),
+        NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(dependents));
+  }
+
   @Test
   public void testWithNegativeStars() {
     assertThrows(
@@ -124,12 +131,5 @@ public class ProjectPopularityScoreTest {
   public void testDescription() {
     assertNotNull(SCORE.description());
     assertFalse(SCORE.description().isEmpty());
-  }
-
-  private static Set<Value<?>> values(int stars, int watchers, int dependents) {
-    return setOf(
-        NUMBER_OF_GITHUB_STARS.value(stars),
-        NUMBER_OF_WATCHERS_ON_GITHUB.value(watchers),
-        NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(dependents));
   }
 }

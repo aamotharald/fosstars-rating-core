@@ -16,7 +16,8 @@ public class GitHubAdvisoryEntry {
   @JsonProperty("data")
   private Data data;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("data")
   public Data getData() {

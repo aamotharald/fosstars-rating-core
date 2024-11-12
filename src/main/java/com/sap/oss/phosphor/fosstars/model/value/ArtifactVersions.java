@@ -27,6 +27,27 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
   private final Set<ArtifactVersion> elements;
 
   /**
+   * Initializes a set of versions.
+   *
+   * @param versions A set of versions.
+   */
+  @JsonCreator
+  public ArtifactVersions(@JsonProperty("elements") Set<ArtifactVersion> versions) {
+    Objects.requireNonNull(versions, "versions can't be null!");
+    this.elements = new TreeSet<>(ArtifactVersion.RELEASE_DATE_VERSION_COMPARISON);
+    this.elements.addAll(versions);
+  }
+
+  /**
+   * Initializes a set of versions.
+   *
+   * @param versions A number of versions.
+   */
+  public ArtifactVersions(ArtifactVersion... versions) {
+    this(setOf(versions));
+  }
+
+  /**
    * Creates a collection of versions.
    *
    * @param versions The versions.
@@ -46,24 +67,18 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
   }
 
   /**
-   * Initializes a set of versions.
+   * Sort artifact versions hold by ArtifactVersions by release date.
    *
-   * @param versions A set of versions.
+   * @param artifactVersions the artifact versions
+   * @return sorted collection of ArtifactVersion
    */
-  @JsonCreator
-  public ArtifactVersions(@JsonProperty("elements") Set<ArtifactVersion> versions) {
-    Objects.requireNonNull(versions, "versions can't be null!");
-    this.elements = new TreeSet<>(ArtifactVersion.RELEASE_DATE_VERSION_COMPARISON);
-    this.elements.addAll(versions);
-  }
+  public static Collection<ArtifactVersion> sortByReleaseDate(
+      Value<ArtifactVersions> artifactVersions) {
 
-  /**
-   * Initializes a set of versions.
-   *
-   * @param versions A number of versions.
-   */
-  public ArtifactVersions(ArtifactVersion... versions) {
-    this(setOf(versions));
+    if (artifactVersions.isUnknown()) {
+      return Collections.emptyList();
+    }
+    return artifactVersions.get().sortByReleaseDate();
   }
 
   /**
@@ -128,21 +143,6 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
   }
 
   /**
-   * Sort artifact versions hold by ArtifactVersions by release date.
-   *
-   * @param artifactVersions the artifact versions
-   * @return sorted collection of ArtifactVersion
-   */
-  public static Collection<ArtifactVersion> sortByReleaseDate(
-      Value<ArtifactVersions> artifactVersions) {
-
-    if (artifactVersions.isUnknown()) {
-      return Collections.emptyList();
-    }
-    return artifactVersions.get().sortByReleaseDate();
-  }
-
-  /**
    * Filter {@link ArtifactVersions} by major version.
    *
    * @param version The {@link SemanticVersion}.
@@ -193,7 +193,7 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
     if (this == o) {
       return true;
     }
-    if (o instanceof ArtifactVersions == false) {
+    if (!(o instanceof ArtifactVersions)) {
       return false;
     }
     ArtifactVersions other = (ArtifactVersions) o;

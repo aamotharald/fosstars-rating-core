@@ -43,29 +43,6 @@ public class ProjectPopularityScore extends FeatureBasedScore {
         NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB);
   }
 
-  @Override
-  public ScoreValue calculate(Value<?>... values) {
-    Value<Integer> stars =
-        findValue(values, NUMBER_OF_GITHUB_STARS, "Hey! You have to give me a number of stars!");
-    Value<Integer> watchers =
-        findValue(
-            values, NUMBER_OF_WATCHERS_ON_GITHUB, "Hey! You have to give me a number of watchers!");
-    Value<Integer> dependents =
-        findValue(
-            values,
-            NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB,
-            "Hey! You have to give me a number of dependents!");
-
-    if (allUnknown(stars, watchers, dependents)) {
-      return scoreValue(MIN, stars, watchers, dependents).makeUnknown();
-    }
-
-    return scoreValue(MIN, stars, watchers, dependents)
-        .increase(subScoreFor(stars, BEST_STARS_AMOUNT))
-        .increase(subScoreFor(watchers, BEST_WATCHERS_AMOUNT))
-        .increase(subScoreFor(dependents, BEST_DEPENDENTS_AMOUNT));
-  }
-
   /**
    * Calculates a sub-score for a value.
    *
@@ -89,5 +66,28 @@ public class ProjectPopularityScore extends FeatureBasedScore {
     }
 
     return MAX;
+  }
+
+  @Override
+  public ScoreValue calculate(Value<?>... values) {
+    Value<Integer> stars =
+        findValue(values, NUMBER_OF_GITHUB_STARS, "Hey! You have to give me a number of stars!");
+    Value<Integer> watchers =
+        findValue(
+            values, NUMBER_OF_WATCHERS_ON_GITHUB, "Hey! You have to give me a number of watchers!");
+    Value<Integer> dependents =
+        findValue(
+            values,
+            NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB,
+            "Hey! You have to give me a number of dependents!");
+
+    if (allUnknown(stars, watchers, dependents)) {
+      return scoreValue(MIN, stars, watchers, dependents).makeUnknown();
+    }
+
+    return scoreValue(MIN, stars, watchers, dependents)
+        .increase(subScoreFor(stars, BEST_STARS_AMOUNT))
+        .increase(subScoreFor(watchers, BEST_WATCHERS_AMOUNT))
+        .increase(subScoreFor(dependents, BEST_DEPENDENTS_AMOUNT));
   }
 }

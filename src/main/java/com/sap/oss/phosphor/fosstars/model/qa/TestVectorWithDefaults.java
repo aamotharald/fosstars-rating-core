@@ -104,7 +104,7 @@ public class TestVectorWithDefaults implements TestVector {
     if (this == o) {
       return true;
     }
-    if (o instanceof TestVectorWithDefaults == false) {
+    if (!(o instanceof TestVectorWithDefaults)) {
       return false;
     }
     TestVectorWithDefaults that = (TestVectorWithDefaults) o;

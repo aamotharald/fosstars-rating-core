@@ -18,16 +18,6 @@ public class PositiveIntegerFeature extends AbstractFeature<Integer> {
     super(name);
   }
 
-  @Override
-  public IntegerValue value(Integer object) {
-    return new IntegerValue(this, check(object));
-  }
-
-  @Override
-  public Value<Integer> parse(String string) {
-    return value(Integer.valueOf(string));
-  }
-
   /**
    * Checks if an integer is more or equal to 0.
    *
@@ -39,5 +29,15 @@ public class PositiveIntegerFeature extends AbstractFeature<Integer> {
     }
 
     return n;
+  }
+
+  @Override
+  public IntegerValue value(Integer object) {
+    return new IntegerValue(this, check(object));
+  }
+
+  @Override
+  public Value<Integer> parse(String string) {
+    return value(Integer.valueOf(string));
   }
 }

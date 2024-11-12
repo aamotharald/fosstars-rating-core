@@ -17,16 +17,6 @@ import java.util.Optional;
  */
 public class SecurityRiskIntroducedByOss extends AbstractRating {
 
-  /** A set of labels for the rating. */
-  public enum OssSecurityRiskLabel implements Label {
-    NOTE,
-    LOW,
-    MEDIUM,
-    HIGH,
-    CRITICAL,
-    UNCLEAR
-  }
-
   /** A matrix for determining a risk label based on impact (rows) and likelihood (columns). */
   private static final OssSecurityRiskLabel[][] RISK_MATRIX =
       new OssSecurityRiskLabel[][] {
@@ -58,6 +48,24 @@ public class SecurityRiskIntroducedByOss extends AbstractRating {
    */
   public SecurityRiskIntroducedByOss(CalculatedSecurityRiskIntroducedByOss score) {
     super("Security risk introduced by an open source project", score);
+  }
+
+  /**
+   * Get an index in the risk matrix for a score value that contains likelihood or impact.
+   *
+   * @param value The score value.
+   * @return An index in the risk matrix.
+   */
+  private static int indexFor(ScoreValue value) {
+    if (value.get() < MEDIUM_THRESHOLD) {
+      return 0;
+    }
+
+    if (value.get() < HIGH_THRESHOLD) {
+      return 1;
+    }
+
+    return 2;
   }
 
   /**
@@ -103,21 +111,13 @@ public class SecurityRiskIntroducedByOss extends AbstractRating {
     return RISK_MATRIX[indexFor(impact.get())][indexFor(likelihood.get())];
   }
 
-  /**
-   * Get an index in the risk matrix for a score value that contains likelihood or impact.
-   *
-   * @param value The score value.
-   * @return An index in the risk matrix.
-   */
-  private static int indexFor(ScoreValue value) {
-    if (value.get() < MEDIUM_THRESHOLD) {
-      return 0;
-    }
-
-    if (value.get() < HIGH_THRESHOLD) {
-      return 1;
-    }
-
-    return 2;
+  /** A set of labels for the rating. */
+  public enum OssSecurityRiskLabel implements Label {
+    NOTE,
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL,
+    UNCLEAR
   }
 }

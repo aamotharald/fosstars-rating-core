@@ -10,6 +10,15 @@ import java.util.Objects;
 public final class UnknownValue<T> extends AbstractValue<T, UnknownValue<T>> {
 
   /**
+   * Initializes an unknown value for a feature.
+   *
+   * @param feature The feature.
+   */
+  public UnknownValue(@JsonProperty("feature") Feature<T> feature) {
+    super(feature);
+  }
+
+  /**
    * This factory method returns an unknown values of a specified feature.
    *
    * @param feature The feature.
@@ -20,18 +29,9 @@ public final class UnknownValue<T> extends AbstractValue<T, UnknownValue<T>> {
     return new UnknownValue<>(feature);
   }
 
-  /**
-   * Initializes an unknown value for a feature.
-   *
-   * @param feature The feature.
-   */
-  public UnknownValue(@JsonProperty("feature") Feature<T> feature) {
-    super(feature);
-  }
-
   @Override
   @JsonIgnore
-  public final boolean isUnknown() {
+  public boolean isUnknown() {
     return true;
   }
 
@@ -42,7 +42,7 @@ public final class UnknownValue<T> extends AbstractValue<T, UnknownValue<T>> {
   }
 
   @Override
-  public final T get() {
+  public T get() {
     throw new IllegalStateException(
         "It's an unknown value, get() method is not supposed to be called!");
   }
@@ -53,12 +53,12 @@ public final class UnknownValue<T> extends AbstractValue<T, UnknownValue<T>> {
   }
 
   @Override
-  public final Value<T> processIfKnown(Processor<T> processor) {
+  public Value<T> processIfKnown(Processor<T> processor) {
     return this;
   }
 
   @Override
-  public final Value<T> processIfUnknown(Runnable processor) {
+  public Value<T> processIfUnknown(Runnable processor) {
     Objects.requireNonNull(processor, "Processor can't be null!");
     processor.run();
     return this;

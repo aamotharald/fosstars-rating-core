@@ -30,6 +30,17 @@ public class ScoreWeights implements Tunable {
   private final Map<Class<? extends Score>, Weight> values;
 
   /**
+   * Initializes a new collection of weights.
+   *
+   * @param values The weights.
+   */
+  @JsonCreator
+  public ScoreWeights(@JsonProperty("values") Map<Class<? extends Score>, Weight> values) {
+    Objects.requireNonNull(values, "Weights can't be null!");
+    this.values = new HashMap<>(values);
+  }
+
+  /**
    * Creates an empty collection of weights.
    *
    * @return An empty collection of weights.
@@ -62,17 +73,6 @@ public class ScoreWeights implements Tunable {
   public static ScoreWeights createFor(Set<Score> scores) {
     Objects.requireNonNull(scores, "Scores can't be null!");
     return createFor(scores.toArray(new Score[0]));
-  }
-
-  /**
-   * Initializes a new collection of weights.
-   *
-   * @param values The weights.
-   */
-  @JsonCreator
-  public ScoreWeights(@JsonProperty("values") Map<Class<? extends Score>, Weight> values) {
-    Objects.requireNonNull(values, "Weights can't be null!");
-    this.values = new HashMap<>(values);
   }
 
   /**
@@ -157,7 +157,7 @@ public class ScoreWeights implements Tunable {
     if (this == o) {
       return true;
     }
-    if (o instanceof ScoreWeights == false) {
+    if (!(o instanceof ScoreWeights)) {
       return false;
     }
     ScoreWeights weights = (ScoreWeights) o;

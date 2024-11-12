@@ -49,6 +49,66 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
   }
 
   /**
+   * Build a string that shows an actual value of a score value. The method takes care about unknown
+   * and not-applicable score values.
+   *
+   * @param scoreValue The score value.
+   * @return A string that represents the score value.
+   */
+  public static MarkdownString actualValueOf(ScoreValue scoreValue) {
+    if (scoreValue.isNotApplicable()) {
+      return Markdown.string("N/A");
+    }
+
+    if (scoreValue.isUnknown()) {
+      return Markdown.string("unknown");
+    }
+
+    return Markdown.string(formatted(scoreValue.get()));
+  }
+
+  /**
+   * Prints a link for a vulnerability if possible.
+   *
+   * @param vulnerability The vulnerability.
+   * @return A link for the vulnerability if available, or its identifier otherwise.
+   */
+  private static MarkdownElement linkFor(Vulnerability vulnerability) {
+    if (vulnerability.id().startsWith("CVE-")) {
+      String url = format("https://nvd.nist.gov/vuln/detail/%s", vulnerability.id());
+      return Markdown.link().to(url).withCaption(vulnerability.id());
+    }
+
+    return Markdown.string(vulnerability.id());
+  }
+
+  /**
+   * Builds a string with explanations for a score value if they are available.
+   *
+   * @param scoreValue The score value.
+   * @return A formatted string.
+   */
+  static MarkdownElement explanationOf(ScoreValue scoreValue) {
+    List<MarkdownElement> explanations =
+        scoreValue.explanation().stream().map(Markdown::string).collect(toList());
+    return Markdown.join(explanations).delimitedBy(NEW_LINE);
+  }
+
+  /**
+   * Looks for sub-score values that were used in a specified score value.
+   *
+   * @param scoreValue The score value.
+   * @return A list of sub-score values.
+   */
+  private static List<ScoreValue> usedSubScoreValuesIn(ScoreValue scoreValue) {
+    return scoreValue.usedValues().stream()
+        .filter(value -> value instanceof ScoreValue)
+        .map(ScoreValue.class::cast)
+        .sorted(Collections.reverseOrder(Comparator.comparingDouble(ScoreValue::weight)))
+        .collect(Collectors.toList());
+  }
+
+  /**
    * Returns a header for the advice section.
    *
    * @return A header for the advice section.
@@ -124,29 +184,9 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
     return Markdown.link().to(link.url).withCaption(link.name);
   }
 
-  /**
-   * Build a string that shows an actual value of a score value. The method takes care about unknown
-   * and not-applicable score values.
-   *
-   * @param scoreValue The score value.
-   * @return A string that represents the score value.
-   */
-  public static MarkdownString actualValueOf(ScoreValue scoreValue) {
-    if (scoreValue.isNotApplicable()) {
-      return Markdown.string("N/A");
-    }
-
-    if (scoreValue.isUnknown()) {
-      return Markdown.string("unknown");
-    }
-
-    return Markdown.string(formatted(scoreValue.get()));
-  }
-
   @Override
   public String actualValueOf(Value<?> value) {
-    if (!value.isUnknown() && value.get() instanceof Vulnerabilities) {
-      Vulnerabilities vulnerabilities = (Vulnerabilities) value.get();
+    if (!value.isUnknown() && value.get() instanceof Vulnerabilities vulnerabilities) {
       if (vulnerabilities.isEmpty()) {
         return "Not found";
       }
@@ -187,8 +227,7 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
         continue;
       }
 
-      if (value.get() instanceof Vulnerabilities) {
-        Vulnerabilities vulnerabilities = (Vulnerabilities) value.get();
+      if (value.get() instanceof Vulnerabilities vulnerabilities) {
         for (Vulnerability vulnerability : vulnerabilities) {
           uniqueVulnerabilities.add(vulnerability);
         }
@@ -213,47 +252,6 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
     }
 
     return Markdown.orderedListOf(elements);
-  }
-
-  /**
-   * Prints a link for a vulnerability if possible.
-   *
-   * @param vulnerability The vulnerability.
-   * @return A link for the vulnerability if available, or its identifier otherwise.
-   */
-  private static MarkdownElement linkFor(Vulnerability vulnerability) {
-    if (vulnerability.id().startsWith("CVE-")) {
-      String url = format("https://nvd.nist.gov/vuln/detail/%s", vulnerability.id());
-      return Markdown.link().to(url).withCaption(vulnerability.id());
-    }
-
-    return Markdown.string(vulnerability.id());
-  }
-
-  /**
-   * Builds a string with explanations for a score value if they are available.
-   *
-   * @param scoreValue The score value.
-   * @return A formatted string.
-   */
-  static MarkdownElement explanationOf(ScoreValue scoreValue) {
-    List<MarkdownElement> explanations =
-        scoreValue.explanation().stream().map(Markdown::string).collect(toList());
-    return Markdown.join(explanations).delimitedBy(NEW_LINE);
-  }
-
-  /**
-   * Looks for sub-score values that were used in a specified score value.
-   *
-   * @param scoreValue The score value.
-   * @return A list of sub-score values.
-   */
-  private static List<ScoreValue> usedSubScoreValuesIn(ScoreValue scoreValue) {
-    return scoreValue.usedValues().stream()
-        .filter(value -> value instanceof ScoreValue)
-        .map(ScoreValue.class::cast)
-        .sorted(Collections.reverseOrder(Comparator.comparingDouble(ScoreValue::weight)))
-        .collect(Collectors.toList());
   }
 
   /**

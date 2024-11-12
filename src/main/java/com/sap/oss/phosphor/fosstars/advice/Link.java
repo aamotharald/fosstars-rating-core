@@ -40,8 +40,7 @@ public class Link {
       return true;
     }
 
-    if (o instanceof Link) {
-      Link link = (Link) o;
+    if (o instanceof Link link) {
       return Objects.equals(name, link.name) && Objects.equals(url, link.url);
     }
 

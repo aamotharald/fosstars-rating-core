@@ -61,35 +61,6 @@ public class UsesGithubForDevelopment extends CachedSingleFeatureGitHubDataProvi
     super(fetcher);
   }
 
-  @Override
-  protected Feature<Boolean> supportedFeature() {
-    return USES_GITHUB_FOR_DEVELOPMENT;
-  }
-
-  @Override
-  protected Value<Boolean> fetchValueFor(GitHubProject project) {
-    logger.info("Figuring out if the project uses GitHub for development ...");
-    return usesGithubForDevelopment(project);
-  }
-
-  /**
-   * Checks if a project uses GitHub for development.
-   *
-   * @param project The project to be checked.
-   * @return A value of {@link OssFeatures#USES_GITHUB_FOR_DEVELOPMENT}.
-   */
-  private Value<Boolean> usesGithubForDevelopment(GitHubProject project) {
-    try {
-      GHRepository repository = fetcher.repositoryFor(project);
-
-      return USES_GITHUB_FOR_DEVELOPMENT.value(
-          usesGitHubForDevelopment(repository, CONFIDENCE_THRESHOLD));
-    } catch (IOException e) {
-      logger.warn("Couldn't fetch data, something went wrong!", e);
-      return USES_GITHUB_FOR_DEVELOPMENT.unknown();
-    }
-  }
-
   /**
    * The method checks if it looks like that a project uses GitHub for development. The method runs
    * a number of checks for the project. If most of the checks pass, then the method concludes that
@@ -162,6 +133,35 @@ public class UsesGithubForDevelopment extends CachedSingleFeatureGitHubDataProvi
       return contents != null && !contents.isEmpty();
     } catch (IOException e) {
       return false;
+    }
+  }
+
+  @Override
+  protected Feature<Boolean> supportedFeature() {
+    return USES_GITHUB_FOR_DEVELOPMENT;
+  }
+
+  @Override
+  protected Value<Boolean> fetchValueFor(GitHubProject project) {
+    logger.info("Figuring out if the project uses GitHub for development ...");
+    return usesGithubForDevelopment(project);
+  }
+
+  /**
+   * Checks if a project uses GitHub for development.
+   *
+   * @param project The project to be checked.
+   * @return A value of {@link OssFeatures#USES_GITHUB_FOR_DEVELOPMENT}.
+   */
+  private Value<Boolean> usesGithubForDevelopment(GitHubProject project) {
+    try {
+      GHRepository repository = fetcher.repositoryFor(project);
+
+      return USES_GITHUB_FOR_DEVELOPMENT.value(
+          usesGitHubForDevelopment(repository, CONFIDENCE_THRESHOLD));
+    } catch (IOException e) {
+      logger.warn("Couldn't fetch data, something went wrong!", e);
+      return USES_GITHUB_FOR_DEVELOPMENT.unknown();
     }
   }
 }

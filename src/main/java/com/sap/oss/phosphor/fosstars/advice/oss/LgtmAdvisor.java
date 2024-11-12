@@ -28,26 +28,6 @@ public class LgtmAdvisor extends AbstractOssAdvisor {
     super(OssAdviceContentYamlStorage.DEFAULT, contextFactory);
   }
 
-  @Override
-  protected List<Advice> adviceFor(
-      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
-      throws MalformedURLException {
-
-    Optional<Value<LgtmGrade>> value =
-        findValue(usedValues, WORST_LGTM_GRADE)
-            .filter(LgtmAdvisor::isKnown)
-            .filter(LgtmAdvisor::notTheBest);
-
-    if (!value.isPresent()) {
-      return emptyList();
-    }
-
-    return adviceStorage.adviceFor(value.get().feature(), context).stream()
-        .map(content -> new SimpleAdvice(subject, value.get(), content))
-        .map(Advice.class::cast)
-        .collect(Collectors.toList());
-  }
-
   /**
    * Checks if a value is known.
    *
@@ -66,5 +46,25 @@ public class LgtmAdvisor extends AbstractOssAdvisor {
    */
   private static boolean notTheBest(Value<LgtmGrade> value) {
     return value.get() != A_PLUS;
+  }
+
+  @Override
+  protected List<Advice> adviceFor(
+      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
+      throws MalformedURLException {
+
+    Optional<Value<LgtmGrade>> value =
+        findValue(usedValues, WORST_LGTM_GRADE)
+            .filter(LgtmAdvisor::isKnown)
+            .filter(LgtmAdvisor::notTheBest);
+
+    if (!value.isPresent()) {
+      return emptyList();
+    }
+
+    return adviceStorage.adviceFor(value.get().feature(), context).stream()
+        .map(content -> new SimpleAdvice(subject, value.get(), content))
+        .map(Advice.class::cast)
+        .collect(Collectors.toList());
   }
 }

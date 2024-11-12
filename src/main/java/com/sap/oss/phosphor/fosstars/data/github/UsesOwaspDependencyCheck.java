@@ -68,18 +68,6 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
     super(fetcher);
   }
 
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return setOf(OWASP_DEPENDENCY_CHECK_USAGE, OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD);
-  }
-
-  @Override
-  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
-    logger.info("Figuring out if the project uses OWASP Dependency Check ...");
-    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
-    return selectBetter(checkMaven(repository), checkGradle(repository));
-  }
-
   private static ValueSet selectBetter(ValueSet firstSet, ValueSet secondSet) {
     OwaspDependencyCheckUsage firstUsage =
         firstSet.of(OWASP_DEPENDENCY_CHECK_USAGE).map(Value::get).orElse(NOT_USED);
@@ -319,7 +307,7 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
    * @return The value of the configuration if found.
    */
   private static Optional<String> parameter(String name, Object configuration) {
-    if (configuration instanceof Xpp3Dom == false) {
+    if (!(configuration instanceof Xpp3Dom)) {
       return Optional.empty();
     }
 
@@ -344,6 +332,18 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
   /** Creates a new visitor for searching OWASP Dependency Check in a POM file. */
   private static Visitor withVisitor() {
     return new Visitor();
+  }
+
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return setOf(OWASP_DEPENDENCY_CHECK_USAGE, OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD);
+  }
+
+  @Override
+  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
+    logger.info("Figuring out if the project uses OWASP Dependency Check ...");
+    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
+    return selectBetter(checkMaven(repository), checkGradle(repository));
   }
 
   /** A visitor for searching OWASP Dependency Check in a POM file. */

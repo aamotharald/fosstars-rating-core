@@ -41,8 +41,7 @@ public abstract class MarkdownList extends AbstractMarkdownElement {
     StringBuilder content = new StringBuilder();
     String indent = repeat(" ", prefix.length());
     for (MarkdownElement element : elements) {
-      if (element instanceof GroupedMarkdownElements) {
-        GroupedMarkdownElements nestedElements = (GroupedMarkdownElements) element;
+      if (element instanceof GroupedMarkdownElements nestedElements) {
         Iterator<MarkdownElement> iterator = nestedElements.get().iterator();
         if (!iterator.hasNext()) {
           continue;

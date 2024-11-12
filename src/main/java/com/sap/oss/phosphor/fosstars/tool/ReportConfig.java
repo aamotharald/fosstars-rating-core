@@ -5,14 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A config for reporting. */
 public class ReportConfig {
 
-  /** Types of reports. */
-  public enum ReportType {
-    MARKDOWN,
-    JSON,
-    ISSUES,
-    JSON_REPORT
-  }
-
   /** A type of a report. */
   final ReportType type;
 
@@ -37,5 +29,13 @@ public class ReportConfig {
     this.type = type;
     this.where = where;
     this.source = source;
+  }
+
+  /** Types of reports. */
+  public enum ReportType {
+    MARKDOWN,
+    JSON,
+    ISSUES,
+    JSON_REPORT
   }
 }

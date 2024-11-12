@@ -106,7 +106,7 @@ public class AverageCompositeScore extends AbstractScore {
     if (this == o) {
       return true;
     }
-    if (o instanceof AverageCompositeScore == false) {
+    if (!(o instanceof AverageCompositeScore)) {
       return false;
     }
     if (!super.equals(o)) {

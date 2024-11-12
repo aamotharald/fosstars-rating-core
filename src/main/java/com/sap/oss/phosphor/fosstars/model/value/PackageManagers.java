@@ -20,25 +20,6 @@ public class PackageManagers implements Iterable<PackageManager> {
   private final Set<PackageManager> packageManagers;
 
   /**
-   * Creates an empty set of package managers.
-   *
-   * @return An empty set of package managers.
-   */
-  public static PackageManagers empty() {
-    return new PackageManagers();
-  }
-
-  /**
-   * Initializes a set of package managers.
-   *
-   * @param entries A number of package managers.
-   * @return A new set of package managers.
-   */
-  public static PackageManagers from(PackageManager... entries) {
-    return new PackageManagers(entries);
-  }
-
-  /**
    * Initializes a set of package managers.
    *
    * @param packageManagers A set of package managers.
@@ -57,6 +38,25 @@ public class PackageManagers implements Iterable<PackageManager> {
    */
   public PackageManagers(PackageManager... packageManagers) {
     this(setOf(packageManagers));
+  }
+
+  /**
+   * Creates an empty set of package managers.
+   *
+   * @return An empty set of package managers.
+   */
+  public static PackageManagers empty() {
+    return new PackageManagers();
+  }
+
+  /**
+   * Initializes a set of package managers.
+   *
+   * @param entries A number of package managers.
+   * @return A new set of package managers.
+   */
+  public static PackageManagers from(PackageManager... entries) {
+    return new PackageManagers(entries);
   }
 
   /**
@@ -140,7 +140,7 @@ public class PackageManagers implements Iterable<PackageManager> {
     if (this == o) {
       return true;
     }
-    if (o instanceof PackageManagers == false) {
+    if (!(o instanceof PackageManagers)) {
       return false;
     }
     PackageManagers that = (PackageManagers) o;

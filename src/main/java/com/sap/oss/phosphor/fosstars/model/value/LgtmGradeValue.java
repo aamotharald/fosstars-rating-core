@@ -38,7 +38,7 @@ public class LgtmGradeValue extends AbstractKnownValue<LgtmGrade> {
     if (this == o) {
       return true;
     }
-    if (o instanceof LgtmGradeValue == false) {
+    if (!(o instanceof LgtmGradeValue)) {
       return false;
     }
     if (!super.equals(o)) {

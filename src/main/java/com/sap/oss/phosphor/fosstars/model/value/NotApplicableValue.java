@@ -8,6 +8,15 @@ import com.sap.oss.phosphor.fosstars.model.Feature;
 public final class NotApplicableValue<T> extends AbstractKnownValue<T> {
 
   /**
+   * Initializes a not-applicable value for a feature.
+   *
+   * @param feature The feature.
+   */
+  public NotApplicableValue(@JsonProperty("feature") Feature<T> feature) {
+    super(feature);
+  }
+
+  /**
    * This factory method returns a not-applicable value of a specified feature.
    *
    * @param feature The feature.
@@ -18,23 +27,14 @@ public final class NotApplicableValue<T> extends AbstractKnownValue<T> {
     return new NotApplicableValue<>(feature);
   }
 
-  /**
-   * Initializes a not-applicable value for a feature.
-   *
-   * @param feature The feature.
-   */
-  public NotApplicableValue(@JsonProperty("feature") Feature<T> feature) {
-    super(feature);
-  }
-
   @Override
   @JsonIgnore
-  public final boolean isNotApplicable() {
+  public boolean isNotApplicable() {
     return true;
   }
 
   @Override
-  public final T get() {
+  public T get() {
     throw new UnsupportedOperationException(
         "It's a not-applicable value, get() method is not supposed to be called!");
   }

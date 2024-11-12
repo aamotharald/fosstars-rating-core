@@ -10,6 +10,18 @@ import com.sap.oss.phosphor.fosstars.model.Visitor;
 /** The visitor tries to make objects immutable if they implement the {@link Tunable} interface. */
 public class MakeImmutable implements Visitor {
 
+  /**
+   * Checks if an object implements the {@link Tunable} interface, and if so, try to make it
+   * immutable.
+   *
+   * @param object The object to be examined.
+   */
+  private static void tryToMakeImmutable(Object object) {
+    if (object instanceof Tunable tunable) {
+      tunable.makeImmutable();
+    }
+  }
+
   @Override
   public void visit(Rating rating) {
     tryToMakeImmutable(rating);
@@ -28,18 +40,5 @@ public class MakeImmutable implements Visitor {
   @Override
   public void visit(Parameter parameter) {
     tryToMakeImmutable(parameter);
-  }
-
-  /**
-   * Checks if an object implements the {@link Tunable} interface, and if so, try to make it
-   * immutable.
-   *
-   * @param object The object to be examined.
-   */
-  private static void tryToMakeImmutable(Object object) {
-    if (object instanceof Tunable) {
-      Tunable tunable = (Tunable) object;
-      tunable.makeImmutable();
-    }
   }
 }

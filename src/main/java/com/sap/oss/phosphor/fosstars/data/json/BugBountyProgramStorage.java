@@ -34,6 +34,16 @@ public class BugBountyProgramStorage extends AbstractJsonStorage {
   }
 
   /**
+   * Loads a {@link BugBountyProgramStorage}.
+   *
+   * @return The loaded storage.
+   * @throws IOException If something went wrong.
+   */
+  public static BugBountyProgramStorage load() throws IOException {
+    return load(RESOURCE_PATH, BugBountyProgramStorage.class);
+  }
+
+  /**
    * Checks if a project has a bug bounty program.
    *
    * @param project The project to be checked.
@@ -57,15 +67,5 @@ public class BugBountyProgramStorage extends AbstractJsonStorage {
     }
 
     return false;
-  }
-
-  /**
-   * Loads a {@link BugBountyProgramStorage}.
-   *
-   * @return The loaded storage.
-   * @throws IOException If something went wrong.
-   */
-  public static BugBountyProgramStorage load() throws IOException {
-    return load(RESOURCE_PATH, BugBountyProgramStorage.class);
   }
 }

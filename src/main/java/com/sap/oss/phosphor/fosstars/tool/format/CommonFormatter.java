@@ -117,6 +117,12 @@ public abstract class CommonFormatter implements Formatter {
   private static final Map<Class<? extends Feature<?>>, String> FEATURE_CLASS_TO_NAME =
       new HashMap<>();
 
+  /** Maps a feature to its shorter name which should be used in output. */
+  private static final Map<Feature<?>, String> FEATURE_TO_NAME = new HashMap<>();
+
+  /** A formatter for doubles. */
+  private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
+
   static {
     add(OssSecurityScore.class, "Security of project");
     add(CommunityCommitmentScore.class, "Community commitment");
@@ -142,25 +148,6 @@ public abstract class CommonFormatter implements Formatter {
         "Vulnerability discovery and security testing");
     add(SecurityReviewScore.class, "Security reviews");
   }
-
-  /**
-   * Add a caption for a feature class to {@link #FEATURE_CLASS_TO_NAME}.
-   *
-   * @param clazz The feature class.
-   * @param caption The caption.
-   * @throws IllegalArgumentException If a caption for the feature has already been added.
-   */
-  private static void add(Class<? extends Feature<?>> clazz, String caption) {
-    if (FEATURE_CLASS_TO_NAME.containsKey(clazz)) {
-      throw new IllegalArgumentException(
-          String.format(
-              "Oops! This feature class has already been added: %s", clazz.getSimpleName()));
-    }
-    FEATURE_CLASS_TO_NAME.put(clazz, caption);
-  }
-
-  /** Maps a feature to its shorter name which should be used in output. */
-  private static final Map<Feature<?>, String> FEATURE_TO_NAME = new HashMap<>();
 
   static {
     add(HAS_SECURITY_TEAM, "Does it have a security team?");
@@ -248,24 +235,6 @@ public abstract class CommonFormatter implements Formatter {
     add(USES_MYPY_SCAN_CHECKS, "Does it run MyPy scans on all commits?");
   }
 
-  /**
-   * Add a caption for a feature to {@link #FEATURE_TO_NAME}.
-   *
-   * @param feature The feature.
-   * @param caption The caption.
-   * @throws IllegalArgumentException If a caption for the feature has already been added.
-   */
-  private static void add(Feature<?> feature, String caption) {
-    if (FEATURE_TO_NAME.containsKey(feature)) {
-      throw new IllegalArgumentException(
-          String.format("Oops! This feature has already been added: %s", feature.name()));
-    }
-    FEATURE_TO_NAME.put(feature, caption);
-  }
-
-  /** A formatter for doubles. */
-  private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
-
   static {
     DECIMAL_FORMAT.setMinimumFractionDigits(1);
     DECIMAL_FORMAT.setMaximumFractionDigits(2);
@@ -281,6 +250,37 @@ public abstract class CommonFormatter implements Formatter {
    */
   protected CommonFormatter(Advisor advisor) {
     this.advisor = Objects.requireNonNull(advisor, "Oh no! Advisor is null!");
+  }
+
+  /**
+   * Add a caption for a feature class to {@link #FEATURE_CLASS_TO_NAME}.
+   *
+   * @param clazz The feature class.
+   * @param caption The caption.
+   * @throws IllegalArgumentException If a caption for the feature has already been added.
+   */
+  private static void add(Class<? extends Feature<?>> clazz, String caption) {
+    if (FEATURE_CLASS_TO_NAME.containsKey(clazz)) {
+      throw new IllegalArgumentException(
+          String.format(
+              "Oops! This feature class has already been added: %s", clazz.getSimpleName()));
+    }
+    FEATURE_CLASS_TO_NAME.put(clazz, caption);
+  }
+
+  /**
+   * Add a caption for a feature to {@link #FEATURE_TO_NAME}.
+   *
+   * @param feature The feature.
+   * @param caption The caption.
+   * @throws IllegalArgumentException If a caption for the feature has already been added.
+   */
+  private static void add(Feature<?> feature, String caption) {
+    if (FEATURE_TO_NAME.containsKey(feature)) {
+      throw new IllegalArgumentException(
+          String.format("Oops! This feature has already been added: %s", feature.name()));
+    }
+    FEATURE_TO_NAME.put(feature, caption);
   }
 
   /**
@@ -316,6 +316,31 @@ public abstract class CommonFormatter implements Formatter {
   }
 
   /**
+   * Loads a resource.
+   *
+   * @param resource A name of the resource.
+   * @param clazz A class for loading the resource.
+   * @return The content of the resource.
+   */
+  static String loadFrom(String resource, Class<?> clazz) {
+    try (InputStream is = clazz.getResourceAsStream(resource)) {
+      return IOUtils.toString(is, StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw new UncheckedIOException("Holy moly! Could not load template!", e);
+    }
+  }
+
+  /**
+   * Formats a double.
+   *
+   * @param n The double to be formatted.
+   * @return A formatted string.
+   */
+  static String formatted(double n) {
+    return DECIMAL_FORMAT.format(n);
+  }
+
+  /**
    * Figures out how a name of a feature should be printed out.
    *
    * @param feature The feature.
@@ -348,47 +373,18 @@ public abstract class CommonFormatter implements Formatter {
       return "unknown";
     }
 
-    if (value instanceof BooleanValue) {
-      BooleanValue booleanValue = (BooleanValue) value;
+    if (value instanceof BooleanValue booleanValue) {
       return booleanValue.get() ? "Yes" : "No";
     }
 
-    if (value instanceof OwaspDependencyCheckUsageValue) {
-      OwaspDependencyCheckUsageValue usageValue = (OwaspDependencyCheckUsageValue) value;
+    if (value instanceof OwaspDependencyCheckUsageValue usageValue) {
       return StringUtils.capitalize(usageValue.get().toString().replace("_", " ").toLowerCase());
     }
 
-    if (value instanceof OwaspDependencyCheckCvssThresholdValue) {
-      OwaspDependencyCheckCvssThresholdValue threshold =
-          (OwaspDependencyCheckCvssThresholdValue) value;
+    if (value instanceof OwaspDependencyCheckCvssThresholdValue threshold) {
       return threshold.specified() ? String.valueOf(threshold.get()) : "Not specified";
     }
 
     return value.get().toString();
-  }
-
-  /**
-   * Loads a resource.
-   *
-   * @param resource A name of the resource.
-   * @param clazz A class for loading the resource.
-   * @return The content of the resource.
-   */
-  static String loadFrom(String resource, Class<?> clazz) {
-    try (InputStream is = clazz.getResourceAsStream(resource)) {
-      return IOUtils.toString(is, StandardCharsets.UTF_8);
-    } catch (IOException e) {
-      throw new UncheckedIOException("Holy moly! Could not load template!", e);
-    }
-  }
-
-  /**
-   * Formats a double.
-   *
-   * @param n The double to be formatted.
-   * @return A formatted string.
-   */
-  static String formatted(double n) {
-    return DECIMAL_FORMAT.format(n);
   }
 }

@@ -44,21 +44,11 @@ public class NvdEntryMatcher implements Matcher {
   /** Instance of {@link JaroWinklerSimilarity}. */
   private static final JaroWinklerSimilarity JWS = new JaroWinklerSimilarity();
 
-  /** A project to be checked. */
-  private final GitHubProject project;
-
   /** A black list of words, which should not be present when checking reference URLs. */
   private static final List<String> STOP_WORDS = Collections.singletonList("wiki");
 
-  /**
-   * Creates a new matcher for a project.
-   *
-   * @param project The project.
-   * @return The new matcher.
-   */
-  public static NvdEntryMatcher entriesFor(GitHubProject project) {
-    return new NvdEntryMatcher(project);
-  }
+  /** A project to be checked. */
+  private final GitHubProject project;
 
   /**
    * Initializes a new matcher.
@@ -69,35 +59,14 @@ public class NvdEntryMatcher implements Matcher {
     this.project = Objects.requireNonNull(project, "Null is not a project!");
   }
 
-  @Override
-  public boolean match(NvdEntry entry) {
-    Objects.requireNonNull(entry, "NVD entry can't be null!");
-
-    Configurations configurations = entry.getConfigurations();
-    CVE cve = entry.getCve();
-
-    if (match(configurations, cve, project)) {
-      return true;
-    }
-
-    if (cve == null) {
-      LOGGER.warn("No CVE in NVD entry");
-      return false;
-    }
-
-    CveMetaData meta = cve.getCveDataMeta();
-    if (meta == null) {
-      LOGGER.warn("No metadata in NVD entry");
-      return false;
-    }
-
-    String cveId = meta.getId();
-    if (cveId == null) {
-      LOGGER.warn("No CVE ID in NVD entry");
-      return false;
-    }
-
-    return match(cve.getAffects(), project);
+  /**
+   * Creates a new matcher for a project.
+   *
+   * @param project The project.
+   * @return The new matcher.
+   */
+  public static NvdEntryMatcher entriesFor(GitHubProject project) {
+    return new NvdEntryMatcher(project);
   }
 
   /**
@@ -366,5 +335,36 @@ public class NvdEntryMatcher implements Matcher {
    */
   private static boolean notStopWord(String word) {
     return word != null && !STOP_WORDS.contains(word);
+  }
+
+  @Override
+  public boolean match(NvdEntry entry) {
+    Objects.requireNonNull(entry, "NVD entry can't be null!");
+
+    Configurations configurations = entry.getConfigurations();
+    CVE cve = entry.getCve();
+
+    if (match(configurations, cve, project)) {
+      return true;
+    }
+
+    if (cve == null) {
+      LOGGER.warn("No CVE in NVD entry");
+      return false;
+    }
+
+    CveMetaData meta = cve.getCveDataMeta();
+    if (meta == null) {
+      LOGGER.warn("No metadata in NVD entry");
+      return false;
+    }
+
+    String cveId = meta.getId();
+    if (cveId == null) {
+      LOGGER.warn("No CVE ID in NVD entry");
+      return false;
+    }
+
+    return match(cve.getAffects(), project);
   }
 }

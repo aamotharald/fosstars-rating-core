@@ -19,6 +19,7 @@ import java.util.Map;
 public class ProjectActivityScoreExample extends FeatureBasedScore {
 
   private static final Map<Interval, Double> NUMBER_OF_COMMITS_TO_POINTS = new HashMap<>();
+  private static final Map<Interval, Double> NUMBER_OF_CONTRIBUTORS_TO_POINTS = new HashMap<>();
 
   static {
     NUMBER_OF_COMMITS_TO_POINTS.put(
@@ -28,8 +29,6 @@ public class ProjectActivityScoreExample extends FeatureBasedScore {
     NUMBER_OF_COMMITS_TO_POINTS.put(
         DoubleInterval.init().from(30).openLeft().positiveInfinity().make(), 5.0);
   }
-
-  private static final Map<Interval, Double> NUMBER_OF_CONTRIBUTORS_TO_POINTS = new HashMap<>();
 
   static {
     NUMBER_OF_CONTRIBUTORS_TO_POINTS.put(

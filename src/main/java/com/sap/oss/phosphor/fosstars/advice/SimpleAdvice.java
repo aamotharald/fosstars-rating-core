@@ -69,8 +69,7 @@ public class SimpleAdvice implements Advice {
       return true;
     }
 
-    if (o instanceof SimpleAdvice) {
-      SimpleAdvice that = (SimpleAdvice) o;
+    if (o instanceof SimpleAdvice that) {
       return Objects.equals(subject, that.subject)
           && Objects.equals(value, that.value)
           && Objects.equals(content, that.content);

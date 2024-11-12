@@ -3,6 +3,7 @@ package com.sap.oss.phosphor.fosstars.model.qa;
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures;
@@ -64,7 +65,7 @@ public class TestVectorsTest {
     assertFalse(vectors.isEmpty());
     assertEquals(2, vectors.size());
     for (TestVector vector : vectors) {
-      assertTrue(vector instanceof TestVectorWithDefaults);
+      assertInstanceOf(TestVectorWithDefaults.class, vector);
     }
 
     assertEquals(firstVector, ((TestVectorWithDefaults) vectors.get(0)).originalVector());

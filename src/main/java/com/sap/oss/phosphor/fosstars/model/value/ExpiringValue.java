@@ -145,7 +145,7 @@ public class ExpiringValue<T> implements Value<T> {
     if (this == o) {
       return true;
     }
-    if (o instanceof ExpiringValue == false) {
+    if (!(o instanceof ExpiringValue)) {
       return false;
     }
     ExpiringValue<?> that = (ExpiringValue<?>) o;

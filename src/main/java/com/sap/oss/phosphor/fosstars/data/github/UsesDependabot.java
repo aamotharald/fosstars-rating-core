@@ -38,11 +38,6 @@ public class UsesDependabot extends AbstractDependencyScanDataProvider {
   /** A pattern to detect commits by Dependabot. */
   private static final String DEPENDABOT_PATTERN = "dependabot";
 
-  @Override
-  protected String getDependencyCheckerPattern() {
-    return DEPENDABOT_PATTERN;
-  }
-
   /**
    * Initializes a data provider.
    *
@@ -50,6 +45,11 @@ public class UsesDependabot extends AbstractDependencyScanDataProvider {
    */
   public UsesDependabot(GitHubDataFetcher fetcher) {
     super(fetcher);
+  }
+
+  @Override
+  protected String getDependencyCheckerPattern() {
+    return DEPENDABOT_PATTERN;
   }
 
   @Override

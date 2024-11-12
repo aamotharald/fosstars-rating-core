@@ -63,6 +63,20 @@ abstract class AbstractReporter<T extends OpenSourceProject> implements Reporter
   }
 
   /**
+   * Loads a resource.
+   *
+   * @param name A name of the resource.
+   * @return The content of the resource.
+   */
+  static String loadFrom(String name, Class<?> clazz) {
+    try (InputStream is = clazz.getResourceAsStream(name)) {
+      return IOUtils.toString(is, StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw new UncheckedIOException("Holy moly! Could not load template!", e);
+    }
+  }
+
+  /**
    * Loads projects from a JSON file. If the file doesn't exist, then the method returns an empty
    * list.
    *
@@ -95,20 +109,6 @@ abstract class AbstractReporter<T extends OpenSourceProject> implements Reporter
     }
     try (InputStream is = Files.newInputStream(extraSourceFileName)) {
       return Json.mapper().readValue(is, LIST_OF_GITHUB_PROJECTS_TYPE);
-    }
-  }
-
-  /**
-   * Loads a resource.
-   *
-   * @param name A name of the resource.
-   * @return The content of the resource.
-   */
-  static String loadFrom(String name, Class<?> clazz) {
-    try (InputStream is = clazz.getResourceAsStream(name)) {
-      return IOUtils.toString(is, StandardCharsets.UTF_8);
-    } catch (IOException e) {
-      throw new UncheckedIOException("Holy moly! Could not load template!", e);
     }
   }
 }

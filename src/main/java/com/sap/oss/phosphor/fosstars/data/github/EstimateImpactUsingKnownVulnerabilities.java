@@ -53,49 +53,6 @@ public class EstimateImpactUsingKnownVulnerabilities extends AbstractDataProvide
     this.infoAboutVulnerabilities = infoAboutVulnerabilities;
   }
 
-  @Override
-  protected EstimateImpactUsingKnownVulnerabilities doUpdate(Subject subject, ValueSet values)
-      throws IOException {
-
-    infoAboutVulnerabilities.update(subject, values);
-    Value<Vulnerabilities> vulnerabilities =
-        values
-            .of(VULNERABILITIES_IN_PROJECT)
-            .orElseThrow(
-                () ->
-                    new IllegalStateException(
-                        "Oops! The underlying provider could not provide info about vulnerabilities!"));
-
-    Impact worstConfidentialityImpact = null;
-    Impact worstIntegrityImpact = null;
-    Impact worstAvailableImpact = null;
-
-    if (vulnerabilities.get().size() >= KNOWN_VULNERABILITIES_THRESHOLD) {
-      logger.info("Found enough vulnerabilities for estimating potential CIA impact");
-      for (Vulnerability vulnerability : vulnerabilities.get()) {
-        if (!vulnerability.cvss().isPresent()) {
-          continue;
-        }
-        worstConfidentialityImpact =
-            set(
-                worstConfidentialityImpact,
-                vulnerability.cvss().get().confidentialityImpact().orElse(null));
-        worstIntegrityImpact =
-            set(worstIntegrityImpact, vulnerability.cvss().get().integrityImpact().orElse(null));
-        worstAvailableImpact =
-            set(worstAvailableImpact, vulnerability.cvss().get().availabilityImpact().orElse(null));
-      }
-    } else {
-      logger.info("Not enough info about vulnerabilities to estimate potential CIA impact");
-    }
-
-    set(CONFIDENTIALITY_IMPACT, worstConfidentialityImpact, values);
-    set(INTEGRITY_IMPACT, worstIntegrityImpact, values);
-    set(AVAILABILITY_IMPACT, worstAvailableImpact, values);
-
-    return this;
-  }
-
   /**
    * Set a feature in a value set.
    *
@@ -138,6 +95,49 @@ public class EstimateImpactUsingKnownVulnerabilities extends AbstractDataProvide
     }
 
     return newImpact.compareTo(currentImpact) <= 0 ? currentImpact : newImpact;
+  }
+
+  @Override
+  protected EstimateImpactUsingKnownVulnerabilities doUpdate(Subject subject, ValueSet values)
+      throws IOException {
+
+    infoAboutVulnerabilities.update(subject, values);
+    Value<Vulnerabilities> vulnerabilities =
+        values
+            .of(VULNERABILITIES_IN_PROJECT)
+            .orElseThrow(
+                () ->
+                    new IllegalStateException(
+                        "Oops! The underlying provider could not provide info about vulnerabilities!"));
+
+    Impact worstConfidentialityImpact = null;
+    Impact worstIntegrityImpact = null;
+    Impact worstAvailableImpact = null;
+
+    if (vulnerabilities.get().size() >= KNOWN_VULNERABILITIES_THRESHOLD) {
+      logger.info("Found enough vulnerabilities for estimating potential CIA impact");
+      for (Vulnerability vulnerability : vulnerabilities.get()) {
+        if (!vulnerability.cvss().isPresent()) {
+          continue;
+        }
+        worstConfidentialityImpact =
+            set(
+                worstConfidentialityImpact,
+                vulnerability.cvss().get().confidentialityImpact().orElse(null));
+        worstIntegrityImpact =
+            set(worstIntegrityImpact, vulnerability.cvss().get().integrityImpact().orElse(null));
+        worstAvailableImpact =
+            set(worstAvailableImpact, vulnerability.cvss().get().availabilityImpact().orElse(null));
+      }
+    } else {
+      logger.info("Not enough info about vulnerabilities to estimate potential CIA impact");
+    }
+
+    set(CONFIDENTIALITY_IMPACT, worstConfidentialityImpact, values);
+    set(INTEGRITY_IMPACT, worstIntegrityImpact, values);
+    set(AVAILABILITY_IMPACT, worstAvailableImpact, values);
+
+    return this;
   }
 
   @Override

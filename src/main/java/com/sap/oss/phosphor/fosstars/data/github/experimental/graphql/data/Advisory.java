@@ -67,7 +67,8 @@ public class Advisory {
   @JsonProperty("withdrawnAt")
   private Object withdrawnAt;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore
+  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("identifiers")
   public List<Identifier> getIdentifiers() {

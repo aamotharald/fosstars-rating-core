@@ -49,6 +49,16 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
   private static final Map<Language, PackageManagers> KNOWN_PACKAGE_MANAGERS =
       new EnumMap<>(Language.class);
 
+  /**
+   * Maps a package manager to a list of its possible config files.
+   *
+   * @see <a
+   *     href="https://help.github.com/en/github/visualizing-repository-data-with-graphs/listing-the-packages-that-a-repository-depends-on">
+   *     Listing the packages that a repository depends on</a>
+   */
+  private static final Map<PackageManager, Predicate<String>[]> CONFIG_FILES_PATTERNS =
+      new EnumMap<>(PackageManager.class);
+
   static {
     register(JAVA, MAVEN, GRADLE);
     register(SCALA, MAVEN);
@@ -61,16 +71,6 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
     register(PHP, COMPOSER);
     register(GO, GOMODULES);
   }
-
-  /**
-   * Maps a package manager to a list of its possible config files.
-   *
-   * @see <a
-   *     href="https://help.github.com/en/github/visualizing-repository-data-with-graphs/listing-the-packages-that-a-repository-depends-on">
-   *     Listing the packages that a repository depends on</a>
-   */
-  private static final Map<PackageManager, Predicate<String>[]> CONFIG_FILES_PATTERNS =
-      new EnumMap<>(PackageManager.class);
 
   static {
     register(MAVEN, "pom.xml"::equals);
@@ -88,6 +88,15 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
     register(RUBYGEMS, "Gemfile.lock"::equals, "Gemfile"::equals, ".gemspec"::endsWith);
     register(COMPOSER, "composer.json"::equals, "composer.lock"::equals);
     register(GOMODULES, "go.mod"::equals, "go.sum"::equals);
+  }
+
+  /**
+   * Initializes a data provider.
+   *
+   * @param fetcher An interface to GitHub.
+   */
+  public PackageManagement(GitHubDataFetcher fetcher) {
+    super(fetcher);
   }
 
   /**
@@ -117,12 +126,36 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
   }
 
   /**
-   * Initializes a data provider.
+   * Checks if a file looks like a config of a specified package manager.
    *
-   * @param fetcher An interface to GitHub.
+   * @param path A path to the file.
+   * @param packageManager The package manager.
+   * @return True if a file looks like a config of the package manager, false otherwise.
    */
-  public PackageManagement(GitHubDataFetcher fetcher) {
-    super(fetcher);
+  static boolean isKnownConfigFile(Path path, PackageManager packageManager) {
+    if (!CONFIG_FILES_PATTERNS.containsKey(packageManager)) {
+      return false;
+    }
+
+    try {
+      if (!Files.isRegularFile(path)) {
+        return false;
+      }
+
+      if (Files.size(path) < ACCEPTABLE_CONFIG_SIZE) {
+        return false;
+      }
+
+      for (Predicate<String> matcher : CONFIG_FILES_PATTERNS.get(packageManager)) {
+        if (matcher.test(path.getFileName().toString())) {
+          return true;
+        }
+      }
+    } catch (IOException e) {
+      return false;
+    }
+
+    return false;
   }
 
   @Override
@@ -165,39 +198,6 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
             });
 
     return PACKAGE_MANAGERS.value(packageManagers);
-  }
-
-  /**
-   * Checks if a file looks like a config of a specified package manager.
-   *
-   * @param path A path to the file.
-   * @param packageManager The package manager.
-   * @return True if a file looks like a config of the package manager, false otherwise.
-   */
-  static boolean isKnownConfigFile(Path path, PackageManager packageManager) {
-    if (!CONFIG_FILES_PATTERNS.containsKey(packageManager)) {
-      return false;
-    }
-
-    try {
-      if (!Files.isRegularFile(path)) {
-        return false;
-      }
-
-      if (Files.size(path) < ACCEPTABLE_CONFIG_SIZE) {
-        return false;
-      }
-
-      for (Predicate<String> matcher : CONFIG_FILES_PATTERNS.get(packageManager)) {
-        if (matcher.test(path.getFileName().toString())) {
-          return true;
-        }
-      }
-    } catch (IOException e) {
-      return false;
-    }
-
-    return false;
   }
 
   /**

@@ -43,7 +43,7 @@ public class DateValue extends AbstractKnownValue<Date> {
     if (this == o) {
       return true;
     }
-    if (o instanceof DateValue == false) {
+    if (!(o instanceof DateValue)) {
       return false;
     }
     if (!super.equals(o)) {

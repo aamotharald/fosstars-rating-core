@@ -22,6 +22,12 @@ public class ProjectActivityScoreTest {
 
   private static final ProjectActivityScore PROJECT_ACTIVITY = new ProjectActivityScore();
 
+  private static Set<Value<?>> values(int commits, int contributors) {
+    return setOf(
+        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(commits),
+        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(contributors));
+  }
+
   @Test
   public void testCalculate() {
     ScoreValue scoreValue =
@@ -111,11 +117,5 @@ public class ProjectActivityScoreTest {
   public void testDescription() {
     assertNotNull(PROJECT_ACTIVITY.description());
     assertFalse(PROJECT_ACTIVITY.description().isEmpty());
-  }
-
-  private static Set<Value<?>> values(int commits, int contributors) {
-    return setOf(
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(commits),
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(contributors));
   }
 }

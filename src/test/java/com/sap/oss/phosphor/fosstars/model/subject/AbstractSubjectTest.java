@@ -14,20 +14,6 @@ import org.junit.jupiter.api.Test;
 
 public class AbstractSubjectTest {
 
-  private static class TestSubject extends AbstractSubject {
-
-    public TestSubject(RatingValue ratingValue, Date ratingValueDate) {
-      super(ratingValue, ratingValueDate);
-    }
-
-    public TestSubject() {}
-
-    @Override
-    public String purl() {
-      return "scheme:type/namespace/name@version?qualifiers#subpath";
-    }
-  }
-
   @Test
   public void testSetAndGet() {
     TestSubject subject = new TestSubject();
@@ -59,5 +45,19 @@ public class AbstractSubjectTest {
         new TestSubject(new RatingValue(new ScoreValue(SECURITY_SCORE_EXAMPLE), OKAY), date);
     assertEquals(firstSubject, secondSubject);
     assertEquals(firstSubject.hashCode(), secondSubject.hashCode());
+  }
+
+  private static class TestSubject extends AbstractSubject {
+
+    public TestSubject(RatingValue ratingValue, Date ratingValueDate) {
+      super(ratingValue, ratingValueDate);
+    }
+
+    public TestSubject() {}
+
+    @Override
+    public String purl() {
+      return "scheme:type/namespace/name@version?qualifiers#subpath";
+    }
   }
 }

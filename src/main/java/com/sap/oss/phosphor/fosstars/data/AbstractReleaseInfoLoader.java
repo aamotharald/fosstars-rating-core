@@ -55,6 +55,47 @@ public abstract class AbstractReleaseInfoLoader implements DataProvider {
   /** A logger. */
   protected final Logger logger = LogManager.getLogger(getClass());
 
+  /**
+   * Update the {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#ARTIFACT_VERSION}
+   * value based on given parameters. If version is not in the set of artifact versions or the
+   * optional version is not the ARTIFACT_VERSION is set to unknown.
+   *
+   * @param version The artifact version.
+   * @param artifactVersions All found artifact versions.
+   * @param values The set of values to be updated.
+   */
+  protected static void updateArtifactVersion(
+      Optional<String> version, Set<ArtifactVersion> artifactVersions, ValueSet values) {
+
+    Value<ArtifactVersion> match =
+        version
+            .flatMap(
+                ver -> artifactVersions.stream().filter(v -> v.version().equals(ver)).findFirst())
+            .map(ARTIFACT_VERSION::value)
+            .orElseGet(ARTIFACT_VERSION::unknown);
+    values.update(match);
+  }
+
+  /**
+   * Converts Epoch time in milliseconds to Local Date.
+   *
+   * @param epoch The DateTime in milliseconds.
+   * @return Local Date.
+   */
+  protected static LocalDateTime convertEpochToLocalDate(Long epoch) {
+    return Instant.ofEpochMilli(epoch).atZone(ZoneId.systemDefault()).toLocalDateTime();
+  }
+
+  /**
+   * Converts string Date to Local Date.
+   *
+   * @param date in String.
+   * @return Local Date.
+   */
+  protected static LocalDateTime convertToLocalDate(String date) {
+    return ZonedDateTime.parse(date).toLocalDateTime();
+  }
+
   /** The method always returns false, so that all child classes can't be interactive. */
   @Override
   public final boolean interactive() {
@@ -109,27 +150,6 @@ public abstract class AbstractReleaseInfoLoader implements DataProvider {
   }
 
   /**
-   * Update the {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#ARTIFACT_VERSION}
-   * value based on given parameters. If version is not in the set of artifact versions or the
-   * optional version is not the ARTIFACT_VERSION is set to unknown.
-   *
-   * @param version The artifact version.
-   * @param artifactVersions All found artifact versions.
-   * @param values The set of values to be updated.
-   */
-  protected static void updateArtifactVersion(
-      Optional<String> version, Set<ArtifactVersion> artifactVersions, ValueSet values) {
-
-    Value<ArtifactVersion> match =
-        version
-            .flatMap(
-                ver -> artifactVersions.stream().filter(v -> v.version().equals(ver)).findFirst())
-            .map(ARTIFACT_VERSION::value)
-            .orElseGet(ARTIFACT_VERSION::unknown);
-    values.update(match);
-  }
-
-  /**
    * Creates an HTTP client.
    *
    * @return An HTTP client.
@@ -144,26 +164,6 @@ public abstract class AbstractReleaseInfoLoader implements DataProvider {
             .setSocketTimeout(timeout * 1000)
             .build();
     return HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-  }
-
-  /**
-   * Converts Epoch time in milliseconds to Local Date.
-   *
-   * @param epoch The DateTime in milliseconds.
-   * @return Local Date.
-   */
-  protected static LocalDateTime convertEpochToLocalDate(Long epoch) {
-    return Instant.ofEpochMilli(epoch).atZone(ZoneId.systemDefault()).toLocalDateTime();
-  }
-
-  /**
-   * Converts string Date to Local Date.
-   *
-   * @param date in String.
-   * @return Local Date.
-   */
-  protected static LocalDateTime convertToLocalDate(String date) {
-    return ZonedDateTime.parse(date).toLocalDateTime();
   }
 
   /**

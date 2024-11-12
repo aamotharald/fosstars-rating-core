@@ -77,7 +77,7 @@ public abstract class FeatureBasedScore extends AbstractScore {
     if (this == o) {
       return true;
     }
-    if (o instanceof FeatureBasedScore == false) {
+    if (!(o instanceof FeatureBasedScore)) {
       return false;
     }
     if (!super.equals(o)) {

@@ -93,7 +93,7 @@ public abstract class AbstractRating implements Rating {
     if (this == o) {
       return true;
     }
-    if (o instanceof AbstractRating == false) {
+    if (!(o instanceof AbstractRating)) {
       return false;
     }
     AbstractRating that = (AbstractRating) o;

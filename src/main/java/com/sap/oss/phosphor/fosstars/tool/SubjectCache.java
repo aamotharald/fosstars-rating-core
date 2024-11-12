@@ -30,6 +30,16 @@ public class SubjectCache {
   private long lifetime = DEFAULT_LIFETIME;
 
   /**
+   * Initializes a new cache. The constructor is used for deserialization.
+   *
+   * @param cache A map with cache entries.
+   */
+  @JsonCreator
+  private SubjectCache(@JsonProperty("cache") Map<String, Subject> cache) {
+    this.cache = cache;
+  }
+
+  /**
    * Creates an empty cache.
    *
    * @return An empty cache.
@@ -39,13 +49,38 @@ public class SubjectCache {
   }
 
   /**
-   * Initializes a new cache. The constructor is used for deserialization.
+   * Load a cache from a file.
    *
-   * @param cache A map with cache entries.
+   * @param filename A path to the file.
+   * @return A loaded cache.
+   * @throws IOException If something went wrong.
    */
-  @JsonCreator
-  private SubjectCache(@JsonProperty("cache") Map<String, Subject> cache) {
-    this.cache = cache;
+  public static SubjectCache load(String filename) throws IOException {
+    return load(Paths.get(filename));
+  }
+
+  /**
+   * Load a cache from a file.
+   *
+   * @param filename A path to the file.
+   * @return A loaded cache.
+   * @throws IOException If something went wrong.
+   */
+  public static SubjectCache load(Path filename) throws IOException {
+    try (InputStream is = Files.newInputStream(filename)) {
+      return load(is);
+    }
+  }
+
+  /**
+   * Load a cache from an input stream.
+   *
+   * @param is The input stream.
+   * @return A loaded cache.
+   * @throws IOException If something went wrong.
+   */
+  public static SubjectCache load(InputStream is) throws IOException {
+    return Json.read(is, SubjectCache.class);
   }
 
   /**
@@ -112,41 +147,6 @@ public class SubjectCache {
       return Optional.empty();
     }
     return Optional.of(ratingValue);
-  }
-
-  /**
-   * Load a cache from a file.
-   *
-   * @param filename A path to the file.
-   * @return A loaded cache.
-   * @throws IOException If something went wrong.
-   */
-  public static SubjectCache load(String filename) throws IOException {
-    return load(Paths.get(filename));
-  }
-
-  /**
-   * Load a cache from a file.
-   *
-   * @param filename A path to the file.
-   * @return A loaded cache.
-   * @throws IOException If something went wrong.
-   */
-  public static SubjectCache load(Path filename) throws IOException {
-    try (InputStream is = Files.newInputStream(filename)) {
-      return load(is);
-    }
-  }
-
-  /**
-   * Load a cache from an input stream.
-   *
-   * @param is The input stream.
-   * @return A loaded cache.
-   * @throws IOException If something went wrong.
-   */
-  public static SubjectCache load(InputStream is) throws IOException {
-    return Json.read(is, SubjectCache.class);
   }
 
   /**

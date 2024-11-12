@@ -59,6 +59,12 @@ public class DependabotScore extends FeatureBasedScore {
    */
   private static final Map<PackageManager, Languages> SUPPORTED_LANGUAGES = new HashMap<>();
 
+  /**
+   * A score value that is returned if it's likely that a project uses the security alerts on
+   * GitHub.
+   */
+  private static final double GITHUB_ALERTS_SCORE_VALUE = 5.0;
+
   static {
     SUPPORTED_LANGUAGES.put(MAVEN, Languages.of(JAVA, SCALA));
     SUPPORTED_LANGUAGES.put(NPM, Languages.of(JAVASCRIPT));
@@ -68,12 +74,6 @@ public class DependabotScore extends FeatureBasedScore {
     SUPPORTED_LANGUAGES.put(RUBYGEMS, Languages.of(RUBY));
     SUPPORTED_LANGUAGES.put(COMPOSER, Languages.of(PHP));
   }
-
-  /**
-   * A score value that is returned if it's likely that a project uses the security alerts on
-   * GitHub.
-   */
-  private static final double GITHUB_ALERTS_SCORE_VALUE = 5.0;
 
   /** Initializes a new score. */
   public DependabotScore() {

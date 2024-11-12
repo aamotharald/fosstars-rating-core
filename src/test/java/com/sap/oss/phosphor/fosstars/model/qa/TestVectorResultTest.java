@@ -17,11 +17,6 @@ import org.junit.jupiter.api.Test;
 
 public class TestVectorResultTest {
 
-  public enum TestLabel implements Label {
-    BAD,
-    GOOD
-  }
-
   private static final Interval ALMOST_MIN =
       DoubleInterval.init().from(Score.MIN).to(0.001).closed().make();
 
@@ -105,5 +100,10 @@ public class TestVectorResultTest {
             new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).set(4.0),
             Status.PASSED,
             "Alles gut!"));
+  }
+
+  public enum TestLabel implements Label {
+    BAD,
+    GOOD
   }
 }

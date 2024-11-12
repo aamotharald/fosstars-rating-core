@@ -14,16 +14,6 @@ import org.junit.jupiter.api.Test;
 
 public class AskAboutSecurityTeamTest {
 
-  @Test
-  public void answerYes() throws IOException {
-    testProvider(true, new AskAboutSecurityTeam(), new TestUserCallback("yes"));
-  }
-
-  @Test
-  public void answerNo() throws IOException {
-    testProvider(false, new AskAboutSecurityTeam(), new TestUserCallback("no"));
-  }
-
   private static void testProvider(
       boolean expected, AskAboutSecurityTeam provider, UserCallback callback) throws IOException {
 
@@ -36,5 +26,15 @@ public class AskAboutSecurityTeamTest {
     assertTrue(values.has(HAS_SECURITY_TEAM));
     assertTrue(values.of(HAS_SECURITY_TEAM).isPresent());
     assertEquals(expected, values.of(HAS_SECURITY_TEAM).get().get());
+  }
+
+  @Test
+  public void answerYes() throws IOException {
+    testProvider(true, new AskAboutSecurityTeam(), new TestUserCallback("yes"));
+  }
+
+  @Test
+  public void answerNo() throws IOException {
+    testProvider(false, new AskAboutSecurityTeam(), new TestUserCallback("no"));
   }
 }
