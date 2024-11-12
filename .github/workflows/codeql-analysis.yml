@@ -28,7 +28,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-#        java-version: 17
+        java-version: 17
 
     - run: mvn clean package -ntp -DskipTests -Dcheckstyle.skip -Dmaven.javadoc.skip=true
       env:
