@@ -70,8 +70,8 @@
 
   <properties>
     <java.version>17</java.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.jackson>2.15.2</version.jackson>
     <version.commons-math3>3.6.1</version.commons-math3>
