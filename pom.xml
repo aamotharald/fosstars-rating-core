@@ -78,7 +78,7 @@
     <version.maven-model>3.9.4</version.maven-model>
     <version.log4j>2.20.0</version.log4j>
     <version.httpclient>4.5.14</version.httpclient>
-    <version.junit>4.13.2</version.junit>
+    <version.junit>5.11.3</version.junit>
     <version.mockito>4.11.0</version.mockito>
     <version.packageurl-java>1.4.1</version.packageurl-java>
     <version.commons-collections4>4.4</version.commons-collections4>
@@ -90,6 +90,7 @@
     <version.javax.annotation-api>1.3.2</version.javax.annotation-api>
     <version.jsoup>1.16.1</version.jsoup>
     <version.okhttp>4.11.0</version.okhttp>
+    <hamcrest.version>3.0</hamcrest.version>
   </properties>
 
   <build>
@@ -142,6 +143,7 @@
         <version>3.1.2</version>
         <configuration>
           <trimStackTrace>false</trimStackTrace>
+          <argLine>-Duser.language=en -Duser.region=US</argLine>
         </configuration>
       </plugin>
       <plugin>
@@ -265,6 +267,20 @@
   </profiles>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${version.junit}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>${hamcrest.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>

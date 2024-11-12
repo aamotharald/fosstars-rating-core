@@ -15,7 +15,7 @@ import com.sap.oss.phosphor.fosstars.model.value.ValueHashSet;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
-import org.junit.AssumptionViolatedException;
+import org.opentest4j.TestAbortedException;
 import org.junit.jupiter.api.Test;
 
 public class AbstractCachingDataProviderTest {
@@ -43,7 +43,7 @@ public class AbstractCachingDataProviderTest {
       assertEquals(1, provider.counter);
 
       ValueSet cachedValues = cache.get(project)
-          .orElseThrow(() -> new AssumptionViolatedException("No cached value!"));
+          .orElseThrow(() -> new TestAbortedException("No cached value!"));
       assertEquals(1, cachedValues.size());
       assertTrue(cachedValues.has(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE));
       assertTrue(cachedValues.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).isPresent());
@@ -75,7 +75,7 @@ public class AbstractCachingDataProviderTest {
     assertTrue(values.of(SECURITY_REVIEW_DONE_EXAMPLE).get().isUnknown());
 
     ValueSet cachedValues = cache.get(project)
-        .orElseThrow(() -> new AssumptionViolatedException("No cached value!"));
+        .orElseThrow(() -> new TestAbortedException("No cached value!"));
     assertEquals(2, cachedValues.size());
     assertTrue(cachedValues.has(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE));
     assertTrue(cachedValues.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).isPresent());
