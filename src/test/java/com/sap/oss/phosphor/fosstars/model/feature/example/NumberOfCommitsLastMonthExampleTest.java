@@ -34,8 +34,8 @@ public class NumberOfCommitsLastMonthExampleTest {
 
   @Test
   public void negative() {
-    assertThrows(IllegalArgumentException.class, () ->
-      NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(-1));
+    assertThrows(
+        IllegalArgumentException.class, () -> NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(-1));
   }
 
   @Test
@@ -43,5 +43,4 @@ public class NumberOfCommitsLastMonthExampleTest {
     Value<Integer> value = NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.unknown();
     assertTrue(value.isUnknown());
   }
-
 }

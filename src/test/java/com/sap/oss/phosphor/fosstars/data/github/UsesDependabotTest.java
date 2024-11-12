@@ -55,8 +55,7 @@ public class UsesDependabotTest extends TestGitHubDataFetcherHolder {
     GHRepository githubRepository = mock(GHRepository.class);
     when(fetcher.github().getRepository(any())).thenReturn(githubRepository);
 
-    testProvider(
-        USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
+    testProvider(USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
   }
 
   @Test
@@ -84,8 +83,7 @@ public class UsesDependabotTest extends TestGitHubDataFetcherHolder {
     GHRepository githubRepository = mock(GHRepository.class);
     when(fetcher.github().getRepository(any())).thenReturn(githubRepository);
 
-    testProvider(
-        USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
+    testProvider(USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
   }
 
   @Test
@@ -112,8 +110,7 @@ public class UsesDependabotTest extends TestGitHubDataFetcherHolder {
     GHRepository githubRepository = mock(GHRepository.class);
     when(fetcher.github().getRepository(any())).thenReturn(githubRepository);
 
-    testProvider(
-        USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
+    testProvider(USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
   }
 
   @Test
@@ -126,8 +123,7 @@ public class UsesDependabotTest extends TestGitHubDataFetcherHolder {
     GHRepository githubRepository = mock(GHRepository.class);
     when(fetcher.github().getRepository(any())).thenReturn(githubRepository);
 
-    testProvider(
-        USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
+    testProvider(USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
   }
 
   @Test
@@ -140,8 +136,7 @@ public class UsesDependabotTest extends TestGitHubDataFetcherHolder {
     GHRepository githubRepository = mock(GHRepository.class);
     when(fetcher.github().getRepository(any())).thenReturn(githubRepository);
 
-    testProvider(
-        USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
+    testProvider(USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
   }
 
   @Test
@@ -170,8 +165,7 @@ public class UsesDependabotTest extends TestGitHubDataFetcherHolder {
     GHRepository githubRepository = mock(GHRepository.class);
     when(fetcher.github().getRepository(any())).thenReturn(githubRepository);
 
-    testProvider(
-        USES_DEPENDABOT.value(false), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
+    testProvider(USES_DEPENDABOT.value(false), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(false));
   }
 
   @Test
@@ -190,10 +184,9 @@ public class UsesDependabotTest extends TestGitHubDataFetcherHolder {
     when(githubRepository.getPullRequests(any()))
         .thenReturn(Collections.singletonList(pullRequest));
 
-    testProvider(
-        USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(true));
+    testProvider(USES_DEPENDABOT.value(true), HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT.value(true));
   }
-  
+
   private void testProvider(Value<Boolean>... expectedValues) throws IOException {
     UsesDependabot provider = new UsesDependabot(fetcher);
     provider.set(new SubjectValueCache());

@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.Set;
 
 /**
- * <p>This data provider checks if an open-source project on GitHub
- * uses Dependabot, and fills out the {@link OssFeatures#USES_DEPENDABOT} feature.</p>
+ * This data provider checks if an open-source project on GitHub uses Dependabot, and fills out the
+ * {@link OssFeatures#USES_DEPENDABOT} feature.
  *
- * <p>First, the provider checks if a repository contains a configuration file for Dependabot.
- * If the config exists, then the provider reports that the projects uses Dependabot.
- * Next, the provider searches for commits from Dependabot in the commit history.
- * If the commits are found, then the provider also reports that the project uses Dependabot.</p>
+ * <p>First, the provider checks if a repository contains a configuration file for Dependabot. If
+ * the config exists, then the provider reports that the projects uses Dependabot. Next, the
+ * provider searches for commits from Dependabot in the commit history. If the commits are found,
+ * then the provider also reports that the project uses Dependabot.
  */
 public class UsesDependabot extends AbstractDependencyScanDataProvider {
 
@@ -27,16 +27,15 @@ public class UsesDependabot extends AbstractDependencyScanDataProvider {
    * A list of locations of a Dependabot configuration file in a repository.
    *
    * @see <a href="https://dependabot.com/docs/config-file/">Dependabot config files</a>
-   * @see <a href="https://docs.github.com/en/free-pro-team@latest/github/managing-security-vulnerabilities/managing-vulnerabilities-in-your-projects-dependencies">Managing vulnerabilities in your project's dependencies</a>
+   * @see <a
+   *     href="https://docs.github.com/en/free-pro-team@latest/github/managing-security-vulnerabilities/managing-vulnerabilities-in-your-projects-dependencies">Managing
+   *     vulnerabilities in your project's dependencies</a>
    */
   private static final String[] DEPENDABOT_CONFIGS = {
-      ".dependabot/config.yml",
-      ".github/dependabot.yml"
+    ".dependabot/config.yml", ".github/dependabot.yml"
   };
 
-  /**
-   * A pattern to detect commits by Dependabot.
-   */
+  /** A pattern to detect commits by Dependabot. */
   private static final String DEPENDABOT_PATTERN = "dependabot";
 
   @Override

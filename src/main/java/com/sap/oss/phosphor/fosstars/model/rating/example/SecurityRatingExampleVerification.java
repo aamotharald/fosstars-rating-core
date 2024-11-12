@@ -20,9 +20,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class implements a verification procedure for {@link SecurityRatingExample}.
- * The class defines a set of test vectors, and provides methods
- * to verify a SecurityRatingExample against those test vectors.
+ * This class implements a verification procedure for {@link SecurityRatingExample}. The class
+ * defines a set of test vectors, and provides methods to verify a SecurityRatingExample against
+ * those test vectors.
  */
 public class SecurityRatingExampleVerification extends RatingVerification {
 
@@ -31,28 +31,28 @@ public class SecurityRatingExampleVerification extends RatingVerification {
   private static final Interval OKAY_SCORE = DoubleInterval.closed(5, 7);
   private static final Interval AWESOME_SCORE = DoubleInterval.closed(9, 10);
 
-  /**
-   * Test vectors for {@link SecurityRatingExample}.
-   */
-  public static final TestVectors TEST_VECTORS = new TestVectors(
-      make(0, 0, false, false, AWFUL_SCORE, AWFUL),
-      make(7, 1, false, true, BAD_SCORE, OKAY),
-      make(100, 20, false, false, BAD_SCORE, OKAY),
-      make(100, 20, true, false, OKAY_SCORE, OKAY),
-      make(100, 20, false, true, OKAY_SCORE, OKAY),
-      make(100, 20, true, true, AWESOME_SCORE, AWESOME)
-  );
+  /** Test vectors for {@link SecurityRatingExample}. */
+  public static final TestVectors TEST_VECTORS =
+      new TestVectors(
+          make(0, 0, false, false, AWFUL_SCORE, AWFUL),
+          make(7, 1, false, true, BAD_SCORE, OKAY),
+          make(100, 20, false, false, BAD_SCORE, OKAY),
+          make(100, 20, true, false, OKAY_SCORE, OKAY),
+          make(100, 20, false, true, OKAY_SCORE, OKAY),
+          make(100, 20, true, true, AWESOME_SCORE, AWESOME));
 
   public SecurityRatingExampleVerification(SecurityRatingExample rating) {
     super(rating, TEST_VECTORS);
   }
 
-  /**
-   * A factory method for a test vector.
-   */
-  private static TestVector make(int numberOfCommits, int numberOfContributors,
-      boolean securityReviewDone, boolean staticAnalysisDone,
-      Interval expectedScore, Label expectedLabel) {
+  /** A factory method for a test vector. */
+  private static TestVector make(
+      int numberOfCommits,
+      int numberOfContributors,
+      boolean securityReviewDone,
+      boolean staticAnalysisDone,
+      Interval expectedScore,
+      Label expectedLabel) {
 
     Set<Value<?>> values = new HashSet<>();
     values.add(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(numberOfCommits));
@@ -61,5 +61,4 @@ public class SecurityRatingExampleVerification extends RatingVerification {
     values.add(STATIC_CODE_ANALYSIS_DONE_EXAMPLE.value(staticAnalysisDone));
     return new StandardTestVector(values, expectedScore, expectedLabel, "unknown");
   }
-
 }

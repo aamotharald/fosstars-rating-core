@@ -77,5 +77,4 @@ public class RiskLikelihoodFactorsTest {
     assertTrue(scoreValue.equals(clone) && clone.equals(scoreValue));
     assertEquals(scoreValue.hashCode(), clone.hashCode());
   }
-
 }

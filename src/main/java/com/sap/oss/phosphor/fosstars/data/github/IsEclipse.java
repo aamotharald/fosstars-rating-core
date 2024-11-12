@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class IsEclipse extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
-  private static final String[] KNOWN_ECLIPSE_ORGANISATIONS = { "eclipse", "eclipse-ee4j" };
+  private static final String[] KNOWN_ECLIPSE_ORGANISATIONS = {"eclipse", "eclipse-ee4j"};
 
   /**
    * Initializes a data provider.

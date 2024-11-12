@@ -26,44 +26,28 @@ import org.apache.commons.text.similarity.LongestCommonSubsequence;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * A data matcher to search for entries in NVD for a GitHub project.
- */
+/** A data matcher to search for entries in NVD for a GitHub project. */
 public class NvdEntryMatcher implements Matcher {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private static final Logger LOGGER = LogManager.getLogger(NvdEntryMatcher.class);
 
-  /**
-   * The threshold for the {@link JaroWinklerSimilarity} check.
-   */
+  /** The threshold for the {@link JaroWinklerSimilarity} check. */
   private static final double JWS_METRIC_THRESHOLD = 0.92;
 
-  /**
-   * The threshold for the {@link LongestCommonSubsequence} check.
-   */
+  /** The threshold for the {@link LongestCommonSubsequence} check. */
   private static final double LCS_METRIC_THRESHOLD = 0.875;
 
-  /**
-   * Instance of {@link LongestCommonSubsequence}.
-   */
+  /** Instance of {@link LongestCommonSubsequence}. */
   private static final LongestCommonSubsequence LCS = new LongestCommonSubsequence();
 
-  /**
-   * Instance of {@link JaroWinklerSimilarity}.
-   */
+  /** Instance of {@link JaroWinklerSimilarity}. */
   private static final JaroWinklerSimilarity JWS = new JaroWinklerSimilarity();
 
-  /**
-   * A project to be checked.
-   */
+  /** A project to be checked. */
   private final GitHubProject project;
 
-  /**
-   * A black list of words, which should not be present when checking reference URLs.
-   */
+  /** A black list of words, which should not be present when checking reference URLs. */
   private static final List<String> STOP_WORDS = Collections.singletonList("wiki");
 
   /**
@@ -89,7 +73,7 @@ public class NvdEntryMatcher implements Matcher {
   public boolean match(NvdEntry entry) {
     Objects.requireNonNull(entry, "NVD entry can't be null!");
 
-    Configurations configurations = entry.getConfigurations(); 
+    Configurations configurations = entry.getConfigurations();
     CVE cve = entry.getCve();
 
     if (match(configurations, cve, project)) {
@@ -117,9 +101,9 @@ public class NvdEntryMatcher implements Matcher {
   }
 
   /**
-   * Checks if {@link Configurations} match the project. Also checks if any
-   * {@link ReferenceLink} from {@link CVE} refers to the project.
-   * 
+   * Checks if {@link Configurations} match the project. Also checks if any {@link ReferenceLink}
+   * from {@link CVE} refers to the project.
+   *
    * @param configurations The configuration to be checked.
    * @param cve The CVE to be checked.
    * @param project The project to be checked.
@@ -136,11 +120,11 @@ public class NvdEntryMatcher implements Matcher {
 
   /**
    * Checks if one of the entries in an {@link Affects} element matches a project.
-   * 
+   *
    * @param affects The {@link Affects} element to be checked.
    * @param project The project.
    * @return Returns true if one of the entries in the {@link Affects} element matches the project,
-   *         false otherwise.
+   *     false otherwise.
    */
   private static boolean match(Affects affects, GitHubProject project) {
     if (affects == null) {
@@ -219,10 +203,10 @@ public class NvdEntryMatcher implements Matcher {
     return checkUrlHost(referenceUrl.getHost(), project)
         && checkUrlPath(referenceUrl.getPath(), project);
   }
-  
+
   /**
    * Checks if one of the references in a {@link CVE} contains refers to a project.
-   * 
+   *
    * @param cve The {@link CVE} to be checked.
    * @param project The project.
    * @return True if a reference to the project is found, false otherwise.
@@ -249,12 +233,12 @@ public class NvdEntryMatcher implements Matcher {
 
   /**
    * Checks if two strings are similar by looking for the longest common sub-sequence.
-   * 
+   *
    * @param one First string.
    * @param two Second string.
    * @return True if the strings are similar, false otherwise.
    * @see <a href="https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/">Longest Common
-   *      Subsequence Problem</a>
+   *     Subsequence Problem</a>
    */
   private static boolean longestCommonSubsequenceCheck(String one, String two) {
     return LCS.apply(one, two) >= (one.length() * LCS_METRIC_THRESHOLD);
@@ -262,12 +246,12 @@ public class NvdEntryMatcher implements Matcher {
 
   /**
    * Checks if two strings are similar by calculating Jaro Winkler Similarity score.
-   * 
+   *
    * @param one First string.
    * @param two Second string.
    * @return True if the strings are similar, false otherwise.
    * @see <a href="https://www.geeksforgeeks.org/jaro-and-jaro-winkler-similarity/">Jaro Winkler
-   *      Similarity</a>
+   *     Similarity</a>
    */
   private static boolean jaroWinklerSimilarityCheck(String one, String two) {
     return JWS.apply(one, two) > JWS_METRIC_THRESHOLD;
@@ -275,14 +259,14 @@ public class NvdEntryMatcher implements Matcher {
 
   /**
    * Checks if a {@link CpeMatch} matches a project.
-   * 
+   *
    * @param cpeMatch The {@link CpeMatch} to be checked.
    * @param referenceMatch Indicates if there is a reference URL similar to project URL.
    * @param project The project.
    * @return True if the {@link CpeMatch} matches the project, false otherwise.
    */
-  private static boolean projectCheck(CpeMatch cpeMatch, boolean referenceMatch,
-      GitHubProject project) {
+  private static boolean projectCheck(
+      CpeMatch cpeMatch, boolean referenceMatch, GitHubProject project) {
 
     Optional<CpeUri> cpeUri = cpeMatch.getCpeUri();
     if (!cpeUri.isPresent()) {
@@ -300,14 +284,14 @@ public class NvdEntryMatcher implements Matcher {
 
   /**
    * Checks if one of the nodes matches with a project.
-   * 
+   *
    * @param nodes The nodes to be checked.
    * @param referenceMatch Indicates if there is a reference URL similar to project URL.
    * @param project The project.
    * @return True a matching node is found, false otherwise.
    */
-  private static boolean parseNodes(List<Node> nodes, boolean referenceMatch,
-      GitHubProject project) {
+  private static boolean parseNodes(
+      List<Node> nodes, boolean referenceMatch, GitHubProject project) {
 
     if (nodes == null) {
       return false;
@@ -338,7 +322,7 @@ public class NvdEntryMatcher implements Matcher {
 
   /**
    * Checks if a host name matches with project's URL host.
-   * 
+   *
    * @param host The host name.
    * @param project The project.
    * @return True if the host name matches with the project, false otherwise.
@@ -368,19 +352,19 @@ public class NvdEntryMatcher implements Matcher {
    * @return True if the path matches with the project, false otherwise.
    */
   private static boolean checkSplitPath(String[] path, GitHubProject project) {
-    return path.length > 2 
+    return path.length > 2
         && path[0].equals(project.organization().name())
-        && path[1].equals(project.name()) 
+        && path[1].equals(project.name())
         && notStopWord(path[2]);
   }
 
   /**
    * Check if a string is not a stop word.
-   * 
+   *
    * @param word The string.
    * @return True if the string is not a stop word, false otherwise.
    */
   private static boolean notStopWord(String word) {
-    return word != null && !STOP_WORDS.contains(word); 
+    return word != null && !STOP_WORDS.contains(word);
   }
 }

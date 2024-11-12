@@ -46,16 +46,18 @@ public class LocalRepositoryTest {
       git.add().addFilepattern(filename).call();
       CommitCommand commit = git.commit();
       commit.setCredentialsProvider(
-              new UsernamePasswordCredentialsProvider("test", "don't tell anyone"));
-      commit.setMessage("Added " + filename)
+          new UsernamePasswordCredentialsProvider("test", "don't tell anyone"));
+      commit
+          .setMessage("Added " + filename)
           .setSign(false)
           .setAuthor("Mr. Test", "test@test.com")
           .setCommitter("Mr. Test", "test@test.com")
           .call();
 
-      LocalRepository localRepository = new LocalRepository(
-          new LocalRepositoryInfo(directory, new Date(), new URL("https://scm/org/test")),
-          repository);
+      LocalRepository localRepository =
+          new LocalRepository(
+              new LocalRepositoryInfo(directory, new Date(), new URL("https://scm/org/test")),
+              repository);
 
       Optional<String> something = localRepository.file("file");
       assertTrue(something.isPresent());
@@ -78,13 +80,13 @@ public class LocalRepositoryTest {
       repository.create();
 
       Files.write(
-          Paths.get(repository.getDirectory().getParent()).resolve("file"),
-          "test".getBytes());
+          Paths.get(repository.getDirectory().getParent()).resolve("file"), "test".getBytes());
       git.add().addFilepattern("README.md").call();
       CommitCommand commit = git.commit();
       commit.setCredentialsProvider(
-              new UsernamePasswordCredentialsProvider("mr.white", "don't tell anyone"));
-      commit.setMessage("Old commit")
+          new UsernamePasswordCredentialsProvider("mr.white", "don't tell anyone"));
+      commit
+          .setMessage("Old commit")
           .setSign(false)
           .setAuthor("Mr. White", "mr.white@test.com")
           .setCommitter("Mr. White", "mr.white@test.com")
@@ -94,21 +96,22 @@ public class LocalRepositoryTest {
       Thread.sleep(1000);
 
       Files.write(
-          Paths.get(repository.getDirectory().getParent()).resolve("file"),
-          "test".getBytes());
+          Paths.get(repository.getDirectory().getParent()).resolve("file"), "test".getBytes());
       git.add().addFilepattern("SECURITY.md").call();
       commit = git.commit();
       commit.setCredentialsProvider(
-              new UsernamePasswordCredentialsProvider("mr.black", "don't tell anyone"));
-      commit.setMessage("Latest commit")
+          new UsernamePasswordCredentialsProvider("mr.black", "don't tell anyone"));
+      commit
+          .setMessage("Latest commit")
           .setSign(false)
           .setAuthor("Mr. Black", "mr.black@test.com")
           .setCommitter("Mr. Black", "mr.black@test.com")
           .call();
 
-      LocalRepository localRepository = new LocalRepository(
-          new LocalRepositoryInfo(directory, new Date(), new URL("https://scm/org/test")),
-          repository);
+      LocalRepository localRepository =
+          new LocalRepository(
+              new LocalRepositoryInfo(directory, new Date(), new URL("https://scm/org/test")),
+              repository);
 
       List<GitCommit> commits = localRepository.commits();
       assertNotNull(commits);
@@ -145,25 +148,32 @@ public class LocalRepositoryTest {
               put("Two.java", "public class Two {}");
               put("Three.java", "public class Three {}");
             }
-            }, "First commit: init", git);
+          },
+          "First commit: init",
+          git);
 
       TestUtils.commit(
           new HashMap<String, String>() {
             {
               put("App.java", "public class App { /* something new */ }");
             }
-            }, "Second commit: updated App", git);
+          },
+          "Second commit: updated App",
+          git);
 
       TestUtils.commit(
           new HashMap<String, String>() {
             {
               put("Other.java", "public class Other {}");
             }
-            }, "Third commit: added Other", git);
+          },
+          "Third commit: added Other",
+          git);
 
-      LocalRepository localRepository = new LocalRepository(
-          new LocalRepositoryInfo(directory, new Date(), new URL("https://scm/org/test")),
-          repository);
+      LocalRepository localRepository =
+          new LocalRepository(
+              new LocalRepositoryInfo(directory, new Date(), new URL("https://scm/org/test")),
+              repository);
 
       List<GitCommit> commits = localRepository.commits();
       assertNotNull(commits);
@@ -174,8 +184,8 @@ public class LocalRepositoryTest {
 
       localRepository = spy(localRepository);
       Date reviewDate = new Date();
-      Predicate<Path> forAllFiles = p -> Files.isRegularFile(p)
-          && !p.toString().contains(File.separator + ".git");
+      Predicate<Path> forAllFiles =
+          p -> Files.isRegularFile(p) && !p.toString().contains(File.separator + ".git");
 
       when(localRepository.firstCommitAfter(reviewDate)).thenReturn(Optional.of(commits.get(0)));
       Double changes = localRepository.changedSince(reviewDate, forAllFiles);

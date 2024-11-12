@@ -39,21 +39,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-/**
- * This data provider returns package managers which are used in a project.
- */
+/** This data provider returns package managers which are used in a project. */
 public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<PackageManagers> {
 
-  /**
-   * A minimal number of characters in a config to consider it valid.
-   */
+  /** A minimal number of characters in a config to consider it valid. */
   private static final int ACCEPTABLE_CONFIG_SIZE = 100;
 
-  /**
-   * Maps a programming language to its package manager.
-   */
-  private static final Map<Language, PackageManagers> KNOWN_PACKAGE_MANAGERS
-      = new EnumMap<>(Language.class);
+  /** Maps a programming language to its package manager. */
+  private static final Map<Language, PackageManagers> KNOWN_PACKAGE_MANAGERS =
+      new EnumMap<>(Language.class);
 
   static {
     register(JAVA, MAVEN, GRADLE);
@@ -71,19 +65,26 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
   /**
    * Maps a package manager to a list of its possible config files.
    *
-   * @see <a href="https://help.github.com/en/github/visualizing-repository-data-with-graphs/listing-the-packages-that-a-repository-depends-on">
-   *      Listing the packages that a repository depends on</a>
+   * @see <a
+   *     href="https://help.github.com/en/github/visualizing-repository-data-with-graphs/listing-the-packages-that-a-repository-depends-on">
+   *     Listing the packages that a repository depends on</a>
    */
-  private static final Map<PackageManager, Predicate<String>[]> CONFIG_FILES_PATTERNS
-      = new EnumMap<>(PackageManager.class);
+  private static final Map<PackageManager, Predicate<String>[]> CONFIG_FILES_PATTERNS =
+      new EnumMap<>(PackageManager.class);
 
   static {
     register(MAVEN, "pom.xml"::equals);
     register(GRADLE, "build.gradle"::equals);
     register(NPM, "package-lock.json"::equals, "package.json"::equals);
     register(YARN, "yarn.lock"::equals, "package.json"::equals);
-    register(DOTNET, ".csproj"::equals, ".vbproj"::equals, ".nuspec"::equals,
-        ".vcxproj"::equals, ".fsproj"::equals, "packages.config"::equals);
+    register(
+        DOTNET,
+        ".csproj"::equals,
+        ".vbproj"::equals,
+        ".nuspec"::equals,
+        ".vcxproj"::equals,
+        ".fsproj"::equals,
+        "packages.config"::equals);
     register(RUBYGEMS, "Gemfile.lock"::equals, "Gemfile"::equals, ".gemspec"::endsWith);
     register(COMPOSER, "composer.json"::equals, "composer.lock"::equals);
     register(GOMODULES, "go.mod"::equals, "go.sum"::equals);
@@ -139,8 +140,8 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
    * Gets a list of package managers that are used in a project.
    *
    * @param project The project.
-   * @return A value of the feature
-   *         {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#PACKAGE_MANAGERS}.
+   * @return A value of the feature {@link
+   *     com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#PACKAGE_MANAGERS}.
    * @throws IOException If something went wrong.
    */
   private Value<PackageManagers> packageManagers(GitHubProject project) throws IOException {
@@ -152,14 +153,16 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
     }
 
     PackageManagers packageManagers = new PackageManagers();
-    GitHubDataFetcher.localRepositoryFor(project).files(Files::isRegularFile)
-        .forEach(path -> {
-          for (PackageManager packageManager : possiblePackageManagers) {
-            if (isKnownConfigFile(path, packageManager)) {
-              packageManagers.add(packageManager);
-            }
-          }
-        });
+    GitHubDataFetcher.localRepositoryFor(project)
+        .files(Files::isRegularFile)
+        .forEach(
+            path -> {
+              for (PackageManager packageManager : possiblePackageManagers) {
+                if (isKnownConfigFile(path, packageManager)) {
+                  packageManagers.add(packageManager);
+                }
+              }
+            });
 
     return PACKAGE_MANAGERS.value(packageManagers);
   }
@@ -200,7 +203,7 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
   /**
    * Returns a programming languages that are used in a project.
    *
-   * @param project  The project.
+   * @param project The project.
    * @return The languages.
    * @throws IOException If something went wrong.
    */
@@ -217,9 +220,7 @@ public class PackageManagement extends CachedSingleFeatureGitHubDataProvider<Pac
     return value.get();
   }
 
-  /**
-   * Creates an instance of {@link ProgrammingLanguages}.
-   */
+  /** Creates an instance of {@link ProgrammingLanguages}. */
   ProgrammingLanguages languagesProvider() {
     return new ProgrammingLanguages(fetcher);
   }

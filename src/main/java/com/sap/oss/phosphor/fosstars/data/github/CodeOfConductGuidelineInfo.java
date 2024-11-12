@@ -27,30 +27,30 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This data provider gathers info about project's code of conduct. more information - https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-code-of-conduct-to-your-project
+ * This data provider gathers info about project's code of conduct. more information -
+ * https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-code-of-conduct-to-your-project
+ *
  * <ul>
- *   <li>{@link OssFeatures#HAS_CODE_OF_CONDUCT}</li>
- *   <li>{@link OssFeatures#HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE}</li>
+ *   <li>{@link OssFeatures#HAS_CODE_OF_CONDUCT}
+ *   <li>{@link OssFeatures#HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE}
  * </ul>
  */
 public class CodeOfConductGuidelineInfo extends GitHubCachingDataProvider {
 
-  /**
-   * A list of files that may be a code of conduct guideline.
-   */
-  private static final List<String> DEFAULT_KNOWN_CODE_OF_CONDUCT_GUIDELINE_FILES
-      = asList("CODE_OF_CONDUCT", "CODE_OF_CONDUCT.md", 
-          "CODE_OF_CONDUCT.txt","code_of_conduct.md",
-              "code_of_conduct","code_of_conduct.txt");
+  /** A list of files that may be a code of conduct guideline. */
+  private static final List<String> DEFAULT_KNOWN_CODE_OF_CONDUCT_GUIDELINE_FILES =
+      asList(
+          "CODE_OF_CONDUCT",
+          "CODE_OF_CONDUCT.md",
+          "CODE_OF_CONDUCT.txt",
+          "code_of_conduct.md",
+          "code_of_conduct",
+          "code_of_conduct.txt");
 
-  /**
-   * A list of paths to code of conduct guidelines.
-   */
+  /** A list of paths to code of conduct guidelines. */
   private final List<String> knownCodeofConductGuidelineFiles = new ArrayList<>();
 
-  /**
-   * A list of patterns that describe required content in code on conduct guidelines.
-   */
+  /** A list of patterns that describe required content in code on conduct guidelines. */
   private final List<Pattern> requiredContentPatterns = new ArrayList<>();
 
   /**
@@ -114,7 +114,8 @@ public class CodeOfConductGuidelineInfo extends GitHubCachingDataProvider {
     requiredContentPatterns.clear();
     requiredContentPatterns.addAll(
         patterns.stream()
-            .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL)).collect(Collectors.toList()));
+            .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL))
+            .collect(Collectors.toList()));
     return this;
   }
 
@@ -130,8 +131,8 @@ public class CodeOfConductGuidelineInfo extends GitHubCachingDataProvider {
     Optional<String> content = lookForCodeOfConductGuideline(project);
     if (!content.isPresent()) {
       return ValueHashSet.from(
-        HAS_CODE_OF_CONDUCT.value(true),
-        HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE.value(true));
+          HAS_CODE_OF_CONDUCT.value(true),
+          HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE.value(true));
     }
 
     ValueSet values = new ValueHashSet();

@@ -22,11 +22,13 @@ public class ProjectSecurityAwarenessScoreTest {
 
   @Test
   public void testWithoutEnoughInfo() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      Set<Value<?>> values = Utils.allUnknown(SCORE.allFeatures());
-      values.remove(HAS_SECURITY_TEAM.unknown());
-      SCORE.calculate(values);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          Set<Value<?>> values = Utils.allUnknown(SCORE.allFeatures());
+          values.remove(HAS_SECURITY_TEAM.unknown());
+          SCORE.calculate(values);
+        });
   }
 
   @Test
@@ -50,5 +52,4 @@ public class ProjectSecurityAwarenessScoreTest {
     assertEquals(Confidence.MAX, scoreValue.confidence(), DELTA);
     scoreValue.usedValues().forEach(usedValue -> assertTrue(values.contains(usedValue)));
   }
-
 }

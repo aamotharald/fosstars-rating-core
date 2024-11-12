@@ -146,7 +146,10 @@ public class TeamsInfoTest extends TestGitHubDataFetcherHolder {
     checkValue(values, HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB, EXPECT_FALSE, HAS_EXPLANATION);
   }
 
-  private static void checkValue(ValueSet values, Feature<Boolean> feature, boolean expected,
+  private static void checkValue(
+      ValueSet values,
+      Feature<Boolean> feature,
+      boolean expected,
       Consumer<Value<Boolean>> additionalCheck) {
 
     Optional<Value<Boolean>> something = values.of(feature);

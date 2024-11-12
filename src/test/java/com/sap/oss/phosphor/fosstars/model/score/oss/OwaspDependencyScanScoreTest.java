@@ -21,20 +21,22 @@ public class OwaspDependencyScanScoreTest {
 
   @Test
   public void testWithUnknown() {
-    ScoreValue value = SCORE.calculate(
-        OWASP_DEPENDENCY_CHECK_USAGE.unknown(),
-        OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.unknown(),
-        PACKAGE_MANAGERS.unknown());
+    ScoreValue value =
+        SCORE.calculate(
+            OWASP_DEPENDENCY_CHECK_USAGE.unknown(),
+            OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.unknown(),
+            PACKAGE_MANAGERS.unknown());
     assertNotNull(value);
     assertTrue(value.isUnknown());
   }
 
   @Test
   public void testCalculate() {
-    ScoreValue value = SCORE.calculate(
-        OWASP_DEPENDENCY_CHECK_USAGE.value(OwaspDependencyCheckUsage.OPTIONAL),
-        OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.value(7.2),
-        PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN)));
+    ScoreValue value =
+        SCORE.calculate(
+            OWASP_DEPENDENCY_CHECK_USAGE.value(OwaspDependencyCheckUsage.OPTIONAL),
+            OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.value(7.2),
+            PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN)));
     assertNotNull(value);
     assertFalse(value.isUnknown());
     assertTrue(Score.INTERVAL.contains(value.get()));
@@ -42,13 +44,15 @@ public class OwaspDependencyScanScoreTest {
 
   @Test
   public void testWithNoUsage() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.unknown()));
   }
 
   @Test
   public void testWithNoThreshold() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(OWASP_DEPENDENCY_CHECK_USAGE.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(OWASP_DEPENDENCY_CHECK_USAGE.unknown()));
   }
 }

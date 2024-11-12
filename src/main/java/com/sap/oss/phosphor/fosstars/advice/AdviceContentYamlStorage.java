@@ -29,32 +29,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * <p>The class provides advice for features. In other words, it maps a feature to a list of
- * {@link AdviceContent}.</p>
+ * The class provides advice for features. In other words, it maps a feature to a list of {@link
+ * AdviceContent}.
  *
- * <p>The storage stores advice in YAML.</p>
+ * <p>The storage stores advice in YAML.
  *
- * <p>Advice in a storage may be generic meaning that they don't contain
- * details that are specific for a particular {@link com.sap.oss.phosphor.fosstars.model.Subject}.
- * To make advice more concrete, the storage takes an {@link AdviceContent} that provides details
- * about a specific subject.</p>
+ * <p>Advice in a storage may be generic meaning that they don't contain details that are specific
+ * for a particular {@link com.sap.oss.phosphor.fosstars.model.Subject}. To make advice more
+ * concrete, the storage takes an {@link AdviceContent} that provides details about a specific
+ * subject.
  */
 public class AdviceContentYamlStorage {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private static final Logger LOGGER = LogManager.getLogger(AdviceContentYamlStorage.class);
 
-  /**
-   * A type reference for deserialization.
-   */
-  private static final TypeReference<Map<String, List<RawAdviceContent>>> TYPE_REFERENCE
-      = new TypeReference<Map<String, List<RawAdviceContent>>>() {};
+  /** A type reference for deserialization. */
+  private static final TypeReference<Map<String, List<RawAdviceContent>>> TYPE_REFERENCE =
+      new TypeReference<Map<String, List<RawAdviceContent>>>() {};
 
-  /**
-   * Maps a feature name to a list of raw advice.
-   */
+  /** Maps a feature name to a list of raw advice. */
   private final Map<String, List<RawAdviceContent>> featureToContent;
 
   /**
@@ -110,19 +104,13 @@ public class AdviceContentYamlStorage {
     throw new IOException(String.format("'%s' not found!", path));
   }
 
-  /**
-   * A link to additional info for an advice.
-   */
+  /** A link to additional info for an advice. */
   static class RawLink {
 
-    /**
-     * A name of the link.
-     */
+    /** A name of the link. */
     public final String name;
 
-    /**
-     * A URL of the link.
-     */
+    /** A URL of the link. */
     public final String url;
 
     /**
@@ -163,25 +151,19 @@ public class AdviceContentYamlStorage {
     }
   }
 
-  /**
-   * A generic advice that is stored in a storage.
-   */
+  /** A generic advice that is stored in a storage. */
   static class RawAdviceContent {
 
     /**
-     * A pattern for looking for variables in an advice.
-     * The format of a variable is "${VARIABLE_NAME}".
+     * A pattern for looking for variables in an advice. The format of a variable is
+     * "${VARIABLE_NAME}".
      */
     private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{([A-Za-z_]+)\\}");
 
-    /**
-     * A text of the advice.
-     */
+    /** A text of the advice. */
     private final String advice;
 
-    /**
-     * A list of additional links for the advice.
-     */
+    /** A list of additional links for the advice. */
     private final List<RawLink> links;
 
     /**
@@ -192,8 +174,7 @@ public class AdviceContentYamlStorage {
      */
     @JsonCreator
     RawAdviceContent(
-        @JsonProperty("advice") String advice,
-        @JsonProperty(value = "links") List<RawLink> links) {
+        @JsonProperty("advice") String advice, @JsonProperty(value = "links") List<RawLink> links) {
 
       Objects.requireNonNull(advice, "Oh no! Advice is null!");
 
@@ -223,10 +204,11 @@ public class AdviceContentYamlStorage {
      */
     Set<String> variables() {
       Set<String> variables = new HashSet<>(variablesIn(advice));
-      links.forEach(link -> {
-        variables.addAll(variablesIn(link.name));
-        variables.addAll(variablesIn(link.url));
-      });
+      links.forEach(
+          link -> {
+            variables.addAll(variablesIn(link.name));
+            variables.addAll(variablesIn(link.url));
+          });
       return variables;
     }
 
@@ -286,9 +268,9 @@ public class AdviceContentYamlStorage {
     private static String resolve(String string, Map<String, Optional<String>> values) {
       for (Map.Entry<String, Optional<String>> entry : values.entrySet()) {
         if (entry.getValue().isPresent()) {
-          string = string.replaceAll(
-              String.format("\\$\\{%s\\}", entry.getKey()),
-              entry.getValue().get());
+          string =
+              string.replaceAll(
+                  String.format("\\$\\{%s\\}", entry.getKey()), entry.getValue().get());
         }
       }
       return string;
@@ -303,8 +285,7 @@ public class AdviceContentYamlStorage {
         return false;
       }
       RawAdviceContent content = (RawAdviceContent) o;
-      return Objects.equals(advice, content.advice)
-          && Objects.equals(links, content.links);
+      return Objects.equals(advice, content.advice) && Objects.equals(links, content.links);
     }
 
     @Override

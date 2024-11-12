@@ -62,5 +62,4 @@ public class LanguagesTest {
     assertNotEquals(one, three);
     assertNotEquals(two, three);
   }
-
 }

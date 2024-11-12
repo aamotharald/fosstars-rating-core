@@ -6,14 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/**
- * A value of a feature which provides a double number.
- */
+/** A value of a feature which provides a double number. */
 public class DoubleValue extends AbstractKnownValue<Double> {
 
-  /**
-   * A double value.
-   */
+  /** A double value. */
   protected final double number;
 
   /**
@@ -24,8 +20,7 @@ public class DoubleValue extends AbstractKnownValue<Double> {
    */
   @JsonCreator
   public DoubleValue(
-      @JsonProperty("feature") Feature<Double> feature,
-      @JsonProperty("number") Double number) {
+      @JsonProperty("feature") Feature<Double> feature, @JsonProperty("number") Double number) {
 
     super(feature);
     Objects.requireNonNull(number, "Oh no! Number is null!");

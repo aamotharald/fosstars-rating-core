@@ -4,15 +4,12 @@ import com.sap.oss.phosphor.fosstars.model.Score;
 import java.util.Objects;
 
 /**
- * This class implements a verification procedure for a {@link Score}.
- * The class loads test vectors and provides methods to verify a {@link Score}
- * against the loaded test vectors.
+ * This class implements a verification procedure for a {@link Score}. The class loads test vectors
+ * and provides methods to verify a {@link Score} against the loaded test vectors.
  */
 public class ScoreVerification extends AbstractVerification {
 
-  /**
-   * A score to be verified.
-   */
+  /** A score to be verified. */
   private final Score score;
 
   /**
@@ -28,13 +25,12 @@ public class ScoreVerification extends AbstractVerification {
   }
 
   /**
-   * Verify the score. The method throws a {@link VerificationFailedException}
-   * if the verification failed.
+   * Verify the score. The method throws a {@link VerificationFailedException} if the verification
+   * failed.
    *
    * @throws VerificationFailedException If the verification failed.
    */
   public final void run() throws VerificationFailedException {
     new ScoreVerifier(score, vectors).verify();
   }
-
 }

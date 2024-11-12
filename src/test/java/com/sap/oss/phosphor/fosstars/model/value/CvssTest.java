@@ -31,16 +31,20 @@ public class CvssTest {
 
   @Test
   public void testWithNegativeValue() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new CVSS.V3(-1.0, HIGH, LOW, NONE);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new CVSS.V3(-1.0, HIGH, LOW, NONE);
+        });
   }
 
   @Test
   public void testWithTooBigValue() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new CVSS.V3(11.0, HIGH, LOW, NONE);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new CVSS.V3(11.0, HIGH, LOW, NONE);
+        });
   }
 
   @Test
@@ -69,14 +73,12 @@ public class CvssTest {
 
   @Test
   public void testCheckWithNegativeValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      CVSS.check(-2.0));
+    assertThrows(IllegalArgumentException.class, () -> CVSS.check(-2.0));
   }
 
   @Test
   public void testCheckWithTooBigValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      CVSS.check(42.0));
+    assertThrows(IllegalArgumentException.class, () -> CVSS.check(42.0));
   }
 
   @Test

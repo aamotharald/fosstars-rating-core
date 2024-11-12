@@ -50,21 +50,24 @@ public class BanditScoreTest {
 
   @Test
   public void testCalculateWithoutUsesBanditChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(RUNS_BANDIT_SCANS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(RUNS_BANDIT_SCANS.unknown(), LANGUAGES.unknown()));
   }
 
   @Test
   public void testCalculateWithoutRunsBanditScanChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(USES_BANDIT_SCAN_CHECKS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(USES_BANDIT_SCAN_CHECKS.unknown(), LANGUAGES.unknown()));
   }
 
   @Test
   public void testCalculateWithAllUnknownValues() {
-    assertTrue(SCORE.calculate(
-        USES_BANDIT_SCAN_CHECKS.unknown(),
-        RUNS_BANDIT_SCANS.unknown(),
-        LANGUAGES.unknown()).isUnknown());
+    assertTrue(
+        SCORE
+            .calculate(
+                USES_BANDIT_SCAN_CHECKS.unknown(), RUNS_BANDIT_SCANS.unknown(), LANGUAGES.unknown())
+            .isUnknown());
   }
 }

@@ -3,9 +3,7 @@ package com.sap.oss.phosphor.fosstars.model;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.sap.oss.phosphor.fosstars.model.rating.NotApplicableLabel;
 
-/**
- * An interface for a label.
- */
+/** An interface for a label. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface Label {
 
@@ -25,8 +23,6 @@ public interface Label {
     return false;
   }
 
-  /**
-   * This is a label for a score value that is marked as not-applicable.
-   */
+  /** This is a label for a score value that is marked as not-applicable. */
   Label NOT_APPLICABLE = new NotApplicableLabel();
 }

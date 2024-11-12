@@ -4,19 +4,13 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-/**
- * A reference (link) to a Markdown header.
- */
+/** A reference (link) to a Markdown header. */
 public class MarkdownHeaderReference extends AbstractMarkdownElement {
 
-  /**
-   * A caption of the reference.
-   */
+  /** A caption of the reference. */
   private final MarkdownElement caption;
 
-  /**
-   * A target header.
-   */
+  /** A target header. */
   private final MarkdownHeader header;
 
   /**

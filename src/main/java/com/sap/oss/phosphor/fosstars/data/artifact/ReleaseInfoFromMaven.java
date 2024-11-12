@@ -16,10 +16,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * This data provider tries to fill out the
- * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}
- * and {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#ARTIFACT_VERSION}
- * features. This data provider gathers release info about {@link MavenArtifact}.
+ * This data provider tries to fill out the {@link
+ * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS} and
+ * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#ARTIFACT_VERSION} features.
+ * This data provider gathers release info about {@link MavenArtifact}.
  */
 public class ReleaseInfoFromMaven extends AbstractReleaseInfoLoader {
 
@@ -46,7 +46,7 @@ public class ReleaseInfoFromMaven extends AbstractReleaseInfoLoader {
 
   /**
    * Main function used for testing purpose only.
-   * 
+   *
    * @param args String array
    * @throws IOException If something goes wrong.
    */

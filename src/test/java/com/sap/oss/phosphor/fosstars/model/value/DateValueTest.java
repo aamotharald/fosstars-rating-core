@@ -60,5 +60,4 @@ public class DateValueTest {
     assertEquals(dateValue, clone);
     assertEquals(dateValue.hashCode(), clone.hashCode());
   }
-
 }

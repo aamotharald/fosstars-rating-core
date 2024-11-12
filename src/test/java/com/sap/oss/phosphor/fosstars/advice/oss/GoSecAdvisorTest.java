@@ -58,6 +58,5 @@ public class GoSecAdvisorTest {
     values.update(USES_GOSEC_WITH_RULES.value(true));
     project.set(rating.calculate(values));
     assertEquals(1, advisor.adviceFor(project).size());
-
   }
 }

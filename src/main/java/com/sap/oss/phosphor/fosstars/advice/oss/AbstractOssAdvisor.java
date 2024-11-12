@@ -22,20 +22,16 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * A base class for advisors for ratings for open-source projects.
- * It gets advice for a feature from an {@link OssAdviceContentYamlStorage}
- * and decides if the advice are applicable for specific feature values.
+ * A base class for advisors for ratings for open-source projects. It gets advice for a feature from
+ * an {@link OssAdviceContentYamlStorage} and decides if the advice are applicable for specific
+ * feature values.
  */
 public abstract class AbstractOssAdvisor implements Advisor {
 
-  /**
-   * A storage with advice for open-source projects.
-   */
+  /** A storage with advice for open-source projects. */
   protected final OssAdviceContentYamlStorage adviceStorage;
 
-  /**
-   * A factory that provides contexts for advice.
-   */
+  /** A factory that provides contexts for advice. */
   protected final OssAdviceContextFactory contextFactory;
 
   /**
@@ -108,8 +104,12 @@ public abstract class AbstractOssAdvisor implements Advisor {
    * @return A list of advice.
    * @throws MalformedURLException If the method couldn't parse URLs.
    */
-  protected <T> List<Advice> adviceForFeature(List<Value<?>> values, Feature<T> feature,
-      Subject subject, AdviceContext context, Predicate<Value<T>> criteria)
+  protected <T> List<Advice> adviceForFeature(
+      List<Value<?>> values,
+      Feature<T> feature,
+      Subject subject,
+      AdviceContext context,
+      Predicate<Value<T>> criteria)
       throws MalformedURLException {
 
     Optional<Value<T>> value = findValue(values, feature).filter(criteria);
@@ -176,14 +176,10 @@ public abstract class AbstractOssAdvisor implements Advisor {
     return Optional.empty();
   }
 
-  /**
-   * A factory that provides advice contexts for open-source projects.
-   */
+  /** A factory that provides advice contexts for open-source projects. */
   public interface OssAdviceContextFactory {
 
-    /**
-     * A factory that provides empty contexts.
-     */
+    /** A factory that provides empty contexts. */
     OssAdviceContextFactory WITH_EMPTY_CONTEXT = subject -> EMPTY_OSS_CONTEXT;
 
     /**
@@ -194,5 +190,4 @@ public abstract class AbstractOssAdvisor implements Advisor {
      */
     OssAdviceContext contextFor(Subject subject);
   }
-
 }

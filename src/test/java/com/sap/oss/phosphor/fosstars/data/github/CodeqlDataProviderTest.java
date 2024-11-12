@@ -64,24 +64,33 @@ public class CodeqlDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithoutCodeqlRuns() throws IOException {
     try (InputStream content = getClass().getResourceAsStream("no-codeql-analysis.yml")) {
-      testCodeqlRuns(".github/workflows/action.yml", content,
-          USES_CODEQL_CHECKS.value(false), RUNS_CODEQL_SCANS.value(false));
+      testCodeqlRuns(
+          ".github/workflows/action.yml",
+          content,
+          USES_CODEQL_CHECKS.value(false),
+          RUNS_CODEQL_SCANS.value(false));
     }
   }
 
   @Test
   public void testWithCodeqlRunsAndChecks() throws IOException {
     try (InputStream content = getClass().getResourceAsStream("codeql-analysis-with-pr.yml")) {
-      testCodeqlRuns(".github/workflows/codeql.yml", content,
-          USES_CODEQL_CHECKS.value(true), RUNS_CODEQL_SCANS.value(true));
+      testCodeqlRuns(
+          ".github/workflows/codeql.yml",
+          content,
+          USES_CODEQL_CHECKS.value(true),
+          RUNS_CODEQL_SCANS.value(true));
     }
   }
 
   @Test
   public void testWithCodeqlRunsButWithoutChecks() throws IOException {
     try (InputStream content = getClass().getResourceAsStream("codeql-analysis-without-pr.yml")) {
-      testCodeqlRuns(".github/workflows/codeql.yml", content,
-          USES_CODEQL_CHECKS.value(false), RUNS_CODEQL_SCANS.value(true));
+      testCodeqlRuns(
+          ".github/workflows/codeql.yml",
+          content,
+          USES_CODEQL_CHECKS.value(false),
+          RUNS_CODEQL_SCANS.value(true));
     }
   }
 
@@ -113,5 +122,4 @@ public class CodeqlDataProviderTest extends TestGitHubDataFetcherHolder {
       throw new UncheckedIOException(e);
     }
   }
-
 }

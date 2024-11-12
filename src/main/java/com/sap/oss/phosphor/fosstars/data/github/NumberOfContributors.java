@@ -19,9 +19,7 @@ import java.util.Set;
  */
 public class NumberOfContributors extends CachedSingleFeatureGitHubDataProvider<Integer> {
 
-  /**
-   * Period of time to be checked.
-   */
+  /** Period of time to be checked. */
   private static final Duration THREE_MONTHS = Duration.ofDays(90);
 
   /**

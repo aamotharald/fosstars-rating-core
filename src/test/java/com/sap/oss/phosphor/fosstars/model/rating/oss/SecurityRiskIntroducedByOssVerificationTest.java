@@ -456,8 +456,8 @@ public class SecurityRiskIntroducedByOssVerificationTest {
             .expectedLabel(MEDIUM)
             .make());
 
-    SecurityRiskIntroducedByOss rating
-        = RatingRepository.INSTANCE.rating(SecurityRiskIntroducedByOss.class);
+    SecurityRiskIntroducedByOss rating =
+        RatingRepository.INSTANCE.rating(SecurityRiskIntroducedByOss.class);
 
     new RatingVerification(rating, vectors).run();
   }

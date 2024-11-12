@@ -10,8 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"advisory", "firstPatchedVersion", "package", "severity", "updatedAt",
-    "vulnerableVersionRange"})
+@JsonPropertyOrder({
+  "advisory",
+  "firstPatchedVersion",
+  "package",
+  "severity",
+  "updatedAt",
+  "vulnerableVersionRange"
+})
 public class Node {
 
   @JsonProperty("advisory")
@@ -32,8 +38,7 @@ public class Node {
   @JsonProperty("vulnerableVersionRange")
   private String vulnerableVersionRange;
 
-  @JsonIgnore
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("advisory")
   public Advisory getAdvisory() {
@@ -104,5 +109,4 @@ public class Node {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
-
 }

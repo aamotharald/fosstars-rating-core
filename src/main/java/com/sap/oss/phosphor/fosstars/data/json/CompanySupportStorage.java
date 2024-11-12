@@ -9,20 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * This class maintains information about open-source projects which are supported by companies.
- */
+/** This class maintains information about open-source projects which are supported by companies. */
 public class CompanySupportStorage extends AbstractJsonStorage {
 
-  /**
-   * Path to a resource which contains the information company support.
-   */
+  /** Path to a resource which contains the information company support. */
   private static final String RESOURCE_PATH =
       "com/sap/oss/phosphor/fosstars/data/CompanySupport.json";
 
-  /**
-   * Maps a project's code repository URL to a list of companies which support the project.
-   */
+  /** Maps a project's code repository URL to a list of companies which support the project. */
   private final Map<String, List<String>> projects;
 
   /**

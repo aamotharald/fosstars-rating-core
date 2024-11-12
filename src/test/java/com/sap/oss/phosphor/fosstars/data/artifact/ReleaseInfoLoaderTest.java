@@ -70,12 +70,18 @@ public class ReleaseInfoLoaderTest extends TestGitHubDataFetcherHolder {
     ValueHashSet values = new ValueHashSet();
     assertEquals(0, values.size());
 
-    doAnswer(invocation -> {
-      Object[] args = invocation.getArguments();
-      ((ValueHashSet) args[1]).update(RELEASED_ARTIFACT_VERSIONS
-          .value(new ArtifactVersions(new ArtifactVersion("1.10.10", LocalDateTime.now()))));
-      return null;
-    }).when(releaseInfoFromMaven).update(MAVEN_ARTIFACT, values);
+    doAnswer(
+            invocation -> {
+              Object[] args = invocation.getArguments();
+              ((ValueHashSet) args[1])
+                  .update(
+                      RELEASED_ARTIFACT_VERSIONS.value(
+                          new ArtifactVersions(
+                              new ArtifactVersion("1.10.10", LocalDateTime.now()))));
+              return null;
+            })
+        .when(releaseInfoFromMaven)
+        .update(MAVEN_ARTIFACT, values);
 
     ReleaseInfoLoader provider =
         new ReleaseInfoLoader(releasesFromGitHub, releaseInfoFromMaven, releaseInfoFromNpm);
@@ -95,12 +101,17 @@ public class ReleaseInfoLoaderTest extends TestGitHubDataFetcherHolder {
     ValueHashSet values = new ValueHashSet();
     assertEquals(0, values.size());
 
-    doAnswer(invocation -> {
-      Object[] args = invocation.getArguments();
-      ((ValueHashSet) args[1]).update(RELEASED_ARTIFACT_VERSIONS
-          .value(new ArtifactVersions(new ArtifactVersion("0.7.1", LocalDateTime.now()))));
-      return null;
-    }).when(releaseInfoFromNpm).update(NPM_ARTIFACT, values);
+    doAnswer(
+            invocation -> {
+              Object[] args = invocation.getArguments();
+              ((ValueHashSet) args[1])
+                  .update(
+                      RELEASED_ARTIFACT_VERSIONS.value(
+                          new ArtifactVersions(new ArtifactVersion("0.7.1", LocalDateTime.now()))));
+              return null;
+            })
+        .when(releaseInfoFromNpm)
+        .update(NPM_ARTIFACT, values);
 
     ReleaseInfoLoader provider =
         new ReleaseInfoLoader(releasesFromGitHub, releaseInfoFromMaven, releaseInfoFromNpm);
@@ -193,24 +204,26 @@ public class ReleaseInfoLoaderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testIfValuesHasFeature() {
-    assertThrows(IOException.class, () -> {
-      ValueHashSet values = new ValueHashSet();
-      ArtifactVersions artifactVersions =
-          new ArtifactVersions(new ArtifactVersion("3.0.0", LocalDateTime.now()));
-      values.update(RELEASED_ARTIFACT_VERSIONS.value(artifactVersions));
+    assertThrows(
+        IOException.class,
+        () -> {
+          ValueHashSet values = new ValueHashSet();
+          ArtifactVersions artifactVersions =
+              new ArtifactVersions(new ArtifactVersion("3.0.0", LocalDateTime.now()));
+          values.update(RELEASED_ARTIFACT_VERSIONS.value(artifactVersions));
 
-      assertEquals(1, values.size());
-      assertTrue(values.has(RELEASED_ARTIFACT_VERSIONS));
-      assertTrue(values.of(RELEASED_ARTIFACT_VERSIONS).isPresent());
-      assertFalse(values.of(RELEASED_ARTIFACT_VERSIONS).get().isUnknown());
-      assertFalse(values.of(RELEASED_ARTIFACT_VERSIONS).get().get().empty());
-      assertEquals(1, values.of(RELEASED_ARTIFACT_VERSIONS).get().get().size());
-      assertTrue(values.of(RELEASED_ARTIFACT_VERSIONS).get().get().get("3.0.0").isPresent());
+          assertEquals(1, values.size());
+          assertTrue(values.has(RELEASED_ARTIFACT_VERSIONS));
+          assertTrue(values.of(RELEASED_ARTIFACT_VERSIONS).isPresent());
+          assertFalse(values.of(RELEASED_ARTIFACT_VERSIONS).get().isUnknown());
+          assertFalse(values.of(RELEASED_ARTIFACT_VERSIONS).get().get().empty());
+          assertEquals(1, values.of(RELEASED_ARTIFACT_VERSIONS).get().get().size());
+          assertTrue(values.of(RELEASED_ARTIFACT_VERSIONS).get().get().get("3.0.0").isPresent());
 
-      ReleaseInfoLoader provider =
-          new ReleaseInfoLoader(releasesFromGitHub, releaseInfoFromMaven, releaseInfoFromNpm);
-      provider.update(NPM_ARTIFACT, values);
-    });
+          ReleaseInfoLoader provider =
+              new ReleaseInfoLoader(releasesFromGitHub, releaseInfoFromMaven, releaseInfoFromNpm);
+          provider.update(NPM_ARTIFACT, values);
+        });
   }
 
   @Test

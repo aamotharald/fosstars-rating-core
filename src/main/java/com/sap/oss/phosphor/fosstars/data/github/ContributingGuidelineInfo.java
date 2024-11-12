@@ -27,28 +27,24 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * This data provider gathers info about project's contributing guidelines.
- * It fills out the following features:
+ * This data provider gathers info about project's contributing guidelines. It fills out the
+ * following features:
+ *
  * <ul>
- *   <li>{@link OssFeatures#HAS_CONTRIBUTING_GUIDELINE}</li>
- *   <li>{@link OssFeatures#HAS_REQUIRED_TEXT_IN_CONTRIBUTING_GUIDELINE}</li>
+ *   <li>{@link OssFeatures#HAS_CONTRIBUTING_GUIDELINE}
+ *   <li>{@link OssFeatures#HAS_REQUIRED_TEXT_IN_CONTRIBUTING_GUIDELINE}
  * </ul>
  */
 public class ContributingGuidelineInfo extends GitHubCachingDataProvider {
 
-  /**
-   * A list of files that may be a contributing guideline.
-   */
-  private static final List<String> DEFAULT_KNOWN_CONTRIBUTING_GUIDELINE_FILES
-      = asList("CONTRIBUTING", "CONTRIBUTING.md", "CONTRIBUTING.txt");
+  /** A list of files that may be a contributing guideline. */
+  private static final List<String> DEFAULT_KNOWN_CONTRIBUTING_GUIDELINE_FILES =
+      asList("CONTRIBUTING", "CONTRIBUTING.md", "CONTRIBUTING.txt");
 
-  /**
-   * A list of paths to contributing guidelines.
-   */
+  /** A list of paths to contributing guidelines. */
   private final List<String> knownContributingGuidelineFiles = new ArrayList<>();
-  /**
-   * A list of patterns that describe required content in contributing guidelines.
-   */
+
+  /** A list of patterns that describe required content in contributing guidelines. */
   private final List<Pattern> requiredContentPatterns = new ArrayList<>();
 
   /**
@@ -112,7 +108,8 @@ public class ContributingGuidelineInfo extends GitHubCachingDataProvider {
     requiredContentPatterns.clear();
     requiredContentPatterns.addAll(
         patterns.stream()
-            .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL)).collect(Collectors.toList()));
+            .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL))
+            .collect(Collectors.toList()));
     return this;
   }
 

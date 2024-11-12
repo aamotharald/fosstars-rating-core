@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-/**
- * This is a helper class that offers methods for serialization and deserialization using JSON.
- */
+/** This is a helper class that offers methods for serialization and deserialization using JSON. */
 public class Json extends Deserialization {
 
   /**
@@ -64,6 +62,7 @@ public class Json extends Deserialization {
     return registerSubTypesIn(
         JsonMapper.builder()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .polymorphicTypeValidator(validator()).build());
+            .polymorphicTypeValidator(validator())
+            .build());
   }
 }

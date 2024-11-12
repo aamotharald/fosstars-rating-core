@@ -7,14 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Weight;
 import java.util.Objects;
 
-/**
- * A mutable weight which should be used during weights adjustment.
- */
+/** A mutable weight which should be used during weights adjustment. */
 public class MutableWeight extends AbstractWeight {
 
-  /**
-   * Weight value.
-   */
+  /** Weight value. */
   private double value;
 
   @JsonCreator

@@ -1,4 +1,3 @@
-
 package com.sap.oss.phosphor.fosstars.data.npmaudit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

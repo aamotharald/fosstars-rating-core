@@ -27,32 +27,35 @@ public class RatingVerificationTest {
     values.add(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0));
     values.add(SECURITY_REVIEW_DONE_EXAMPLE.value(false));
     values.add(STATIC_CODE_ANALYSIS_DONE_EXAMPLE.value(false));
-    StandardTestVector vector = new StandardTestVector(
-        values, DoubleInterval.init().from(0).to(1).closed().make(), AWFUL, "unknown");
+    StandardTestVector vector =
+        new StandardTestVector(
+            values, DoubleInterval.init().from(0).to(1).closed().make(), AWFUL, "unknown");
 
-    RatingVerification verification = new RatingVerification(
-        rating, new TestVectors(vector));
+    RatingVerification verification = new RatingVerification(rating, new TestVectors(vector));
 
     verification.run();
   }
 
   @Test
   public void failedVerification() {
-    assertThrows(VerificationFailedException.class, () -> {
-      SecurityRatingExample rating = RatingRepository.INSTANCE.rating(SecurityRatingExample.class);
+    assertThrows(
+        VerificationFailedException.class,
+        () -> {
+          SecurityRatingExample rating =
+              RatingRepository.INSTANCE.rating(SecurityRatingExample.class);
 
-      Set<Value<?>> values = new HashSet<>();
-      values.add(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(0));
-      values.add(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0));
-      values.add(SECURITY_REVIEW_DONE_EXAMPLE.value(false));
-      values.add(STATIC_CODE_ANALYSIS_DONE_EXAMPLE.value(false));
-      StandardTestVector vector = new StandardTestVector(
-          values, DoubleInterval.init().from(8).to(10).closed().make(), AWESOME, "unknown");
+          Set<Value<?>> values = new HashSet<>();
+          values.add(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(0));
+          values.add(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0));
+          values.add(SECURITY_REVIEW_DONE_EXAMPLE.value(false));
+          values.add(STATIC_CODE_ANALYSIS_DONE_EXAMPLE.value(false));
+          StandardTestVector vector =
+              new StandardTestVector(
+                  values, DoubleInterval.init().from(8).to(10).closed().make(), AWESOME, "unknown");
 
-      RatingVerification verification = new RatingVerification(
-          rating, new TestVectors(vector));
+          RatingVerification verification = new RatingVerification(rating, new TestVectors(vector));
 
-      verification.run();
-    });
+          verification.run();
+        });
   }
 }

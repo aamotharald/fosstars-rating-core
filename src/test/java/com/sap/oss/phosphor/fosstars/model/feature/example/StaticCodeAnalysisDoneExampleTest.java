@@ -37,5 +37,4 @@ public class StaticCodeAnalysisDoneExampleTest {
     Value<Boolean> value = STATIC_CODE_ANALYSIS_DONE_EXAMPLE.unknown();
     assertTrue(value.isUnknown());
   }
-
 }

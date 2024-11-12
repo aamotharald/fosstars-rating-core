@@ -34,25 +34,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The scores assesses how an open-source project uses Dependabot to scan
- * dependencies for known vulnerabilities. It is based on the following features:
+ * The scores assesses how an open-source project uses Dependabot to scan dependencies for known
+ * vulnerabilities. It is based on the following features:
+ *
  * <ul>
- *   <li>{@link OssFeatures#USES_DEPENDABOT}</li>
- *   <li>{@link OssFeatures#USES_GITHUB_FOR_DEVELOPMENT}</li>
- *   <li>{@link OssFeatures#PACKAGE_MANAGERS}</li>
- *   <li>{@link OssFeatures#LANGUAGES}</li>
+ *   <li>{@link OssFeatures#USES_DEPENDABOT}
+ *   <li>{@link OssFeatures#USES_GITHUB_FOR_DEVELOPMENT}
+ *   <li>{@link OssFeatures#PACKAGE_MANAGERS}
+ *   <li>{@link OssFeatures#LANGUAGES}
  * </ul>
  */
 public class DependabotScore extends FeatureBasedScore {
 
   /**
-   * The supported package ecosystems and languages
-   * that GitHub can detect vulnerabilities and dependencies for.
+   * The supported package ecosystems and languages that GitHub can detect vulnerabilities and
+   * dependencies for.
    *
-   * @see <a href="https://help.github.com/en/github/managing-security-vulnerabilities/about-security-alerts-for-vulnerable-dependencies#alerts-and-automated-security-updates-for-vulnerable-dependencies">
-   *   Alerts and automated security updates for vulnerable dependencies</a>
-   * @see <a href="https://help.github.com/en/github/visualizing-repository-data-with-graphs/listing-the-packages-that-a-repository-depends-on#supported-package-ecosystems">
-   *   Supported package ecosystems</a>
+   * @see <a
+   *     href="https://help.github.com/en/github/managing-security-vulnerabilities/about-security-alerts-for-vulnerable-dependencies#alerts-and-automated-security-updates-for-vulnerable-dependencies">
+   *     Alerts and automated security updates for vulnerable dependencies</a>
+   * @see <a
+   *     href="https://help.github.com/en/github/visualizing-repository-data-with-graphs/listing-the-packages-that-a-repository-depends-on#supported-package-ecosystems">
+   *     Supported package ecosystems</a>
    */
   private static final Map<PackageManager, Languages> SUPPORTED_LANGUAGES = new HashMap<>();
 
@@ -67,16 +70,15 @@ public class DependabotScore extends FeatureBasedScore {
   }
 
   /**
-   * A score value that is returned if it's likely
-   * that a project uses the security alerts on GitHub.
+   * A score value that is returned if it's likely that a project uses the security alerts on
+   * GitHub.
    */
   private static final double GITHUB_ALERTS_SCORE_VALUE = 5.0;
 
-  /**
-   * Initializes a new score.
-   */
+  /** Initializes a new score. */
   public DependabotScore() {
-    super("How a project uses Dependabot",
+    super(
+        "How a project uses Dependabot",
         USES_DEPENDABOT,
         USES_GITHUB_FOR_DEVELOPMENT,
         PACKAGE_MANAGERS,
@@ -90,8 +92,8 @@ public class DependabotScore extends FeatureBasedScore {
     Value<Languages> languages = find(LANGUAGES, values);
     Value<PackageManagers> packageManagers = find(PACKAGE_MANAGERS, values);
 
-    ScoreValue scoreValue = scoreValue(Score.MIN,
-        usesDependabot, usesGithub, packageManagers, languages);
+    ScoreValue scoreValue =
+        scoreValue(Score.MIN, usesDependabot, usesGithub, packageManagers, languages);
 
     if (allUnknown(scoreValue.usedValues())) {
       return scoreValue.makeUnknown();
@@ -107,8 +109,9 @@ public class DependabotScore extends FeatureBasedScore {
     // then there is a chance that it takes advantage of security alerts,
     // although we can't tell for sure
     if (usesGithub.orElse(false)) {
-      boolean dependabotCanBeUsed = packageManagers.orElse(PackageManagers.empty()).list().stream()
-          .anyMatch(SUPPORTED_LANGUAGES::containsKey);
+      boolean dependabotCanBeUsed =
+          packageManagers.orElse(PackageManagers.empty()).list().stream()
+              .anyMatch(SUPPORTED_LANGUAGES::containsKey);
 
       // if the project does not use any package ecosystem that is supported by Dependabot,
       // then a score is not applicable
@@ -118,8 +121,8 @@ public class DependabotScore extends FeatureBasedScore {
 
       Languages usedLanguages = languages.orElse(Languages.empty());
       for (PackageManager packageManager : packageManagers.orElse(PackageManagers.empty())) {
-        Languages supportedLanguages
-            = SUPPORTED_LANGUAGES.getOrDefault(packageManager, Languages.empty());
+        Languages supportedLanguages =
+            SUPPORTED_LANGUAGES.getOrDefault(packageManager, Languages.empty());
         if (supportedLanguages.containsAnyOf(usedLanguages)) {
           return scoreValue.set(GITHUB_ALERTS_SCORE_VALUE);
         }

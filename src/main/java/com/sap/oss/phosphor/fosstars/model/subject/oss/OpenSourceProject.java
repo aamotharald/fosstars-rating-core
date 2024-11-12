@@ -3,9 +3,7 @@ package com.sap.oss.phosphor.fosstars.model.subject.oss;
 import com.sap.oss.phosphor.fosstars.model.Subject;
 import java.net.URL;
 
-/**
- * An interface of an open-source project.
- */
+/** An interface of an open-source project. */
 public interface OpenSourceProject extends Subject {
 
   /**

@@ -23,14 +23,14 @@ public class FuzzingScoreTest {
 
   @Test
   public void testWithoutLanguage() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(LANGUAGES.value(Languages.of(CPP))));
+    assertThrows(
+        IllegalArgumentException.class, () -> SCORE.calculate(LANGUAGES.value(Languages.of(CPP))));
   }
 
   @Test
   public void testWithoutOssFuzz() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(FUZZED_IN_OSS_FUZZ.unknown()));
+    assertThrows(
+        IllegalArgumentException.class, () -> SCORE.calculate(FUZZED_IN_OSS_FUZZ.unknown()));
   }
 
   @Test
@@ -40,22 +40,20 @@ public class FuzzingScoreTest {
 
   @Test
   public void testVerification() throws VerificationFailedException, IOException {
-    TestVectors vectors = new TestVectors(
-        newTestVector()
-            .alias("test")
-            .expectUnknownScore()
-            .set(LANGUAGES.unknown())
-            .set(FUZZED_IN_OSS_FUZZ.unknown())
-            .make()
-    );
+    TestVectors vectors =
+        new TestVectors(
+            newTestVector()
+                .alias("test")
+                .expectUnknownScore()
+                .set(LANGUAGES.unknown())
+                .set(FUZZED_IN_OSS_FUZZ.unknown())
+                .make());
 
     Path file = Files.createTempFile(getClass().getName(), "test");
     try {
       vectors.storeToYaml(file);
 
-      ScoreVerification verification = new ScoreVerification(
-          SCORE,
-          TestVectors.loadFromYaml(file));
+      ScoreVerification verification = new ScoreVerification(SCORE, TestVectors.loadFromYaml(file));
 
       verification.run();
     } finally {

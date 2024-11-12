@@ -55,7 +55,7 @@ public class SemanticVersionTest {
     assertFalse(version.isInRange(create(1, 8, 0), create(2, 5, 0)));
     assertFalse(version.isInRange(create(0, 8, 0), create(1, 4, 99)));
   }
-  
+
   @Test
   public void string() {
     SemanticVersion version = create(1, 0, 0);
@@ -63,9 +63,8 @@ public class SemanticVersionTest {
 
     SemanticVersion versionShort = create(1, 59, -1);
     assertEquals("1.59", versionShort.toString());
-    
+
     SemanticVersion versionLong = create(1, 59, 0);
     assertEquals("1.59.0", versionLong.toString());
   }
-
 }

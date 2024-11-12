@@ -7,34 +7,22 @@ import com.sap.oss.phosphor.fosstars.model.Score;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * A base class for test vectors.
- */
+/** A base class for test vectors. */
 public abstract class AbstractTestVector implements TestVector {
 
-  /**
-   * An interval for an expected score.
-   */
+  /** An interval for an expected score. */
   final Interval expectedScore;
 
-  /**
-   * If it's set to true, then an unknown score value is expected.
-   */
+  /** If it's set to true, then an unknown score value is expected. */
   final boolean expectedUnknownScore;
 
-  /**
-   * If it's set to true, then a not-applicable score value is expected.
-   */
+  /** If it's set to true, then a not-applicable score value is expected. */
   final boolean expectedNotApplicableScore;
 
-  /**
-   * An expected label.
-   */
+  /** An expected label. */
   final Label expectedLabel;
 
-  /**
-   * An alias of the test vector.
-   */
+  /** An alias of the test vector. */
   final String alias;
 
   /**
@@ -43,20 +31,23 @@ public abstract class AbstractTestVector implements TestVector {
    * @param expectedScore An interval for an expected score.
    * @param expectedLabel An expected label (can be null).
    * @param alias A alias of the test vector.
-   * @param expectedUnknownScore
-   *        If it's set to true, then an unknown score value is expected.
-   * @param expectedNotApplicableScore
-   *        If it's set to true, then a not-applicable score value is expected.
+   * @param expectedUnknownScore If it's set to true, then an unknown score value is expected.
+   * @param expectedNotApplicableScore If it's set to true, then a not-applicable score value is
+   *     expected.
    */
-  AbstractTestVector(Interval expectedScore, Label expectedLabel, String alias,
+  AbstractTestVector(
+      Interval expectedScore,
+      Label expectedLabel,
+      String alias,
       boolean expectedUnknownScore,
       boolean expectedNotApplicableScore) {
 
     Objects.requireNonNull(alias, "Hey! alias can't be null!");
 
     if (expectedScore == null && !expectedNotApplicableScore && !expectedUnknownScore) {
-      throw new IllegalArgumentException("Hey! Expected score can't be null "
-          + "unless a not-applicable or unknown value is expected!");
+      throw new IllegalArgumentException(
+          "Hey! Expected score can't be null "
+              + "unless a not-applicable or unknown value is expected!");
     }
 
     this.expectedScore = expectedScore;

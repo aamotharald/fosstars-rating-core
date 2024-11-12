@@ -12,9 +12,11 @@ public class FeatureBasedScoreTest {
 
   @Test
   public void testWithScore() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new TestScore("test", ExampleScores.PROJECT_ACTIVITY_SCORE_EXAMPLE);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new TestScore("test", ExampleScores.PROJECT_ACTIVITY_SCORE_EXAMPLE);
+        });
   }
 
   private static class TestScore extends FeatureBasedScore {

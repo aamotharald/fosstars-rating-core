@@ -28,8 +28,8 @@ public class UsesFindSecBugsTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testMavenWithFindSecBugsInProfilesBuild() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("MavenWithFindSecBugsInProfilesBuild.xml")) {
+    try (InputStream is =
+        getClass().getResourceAsStream("MavenWithFindSecBugsInProfilesBuild.xml")) {
 
       checkValue(createProvider(is, "pom.xml"), true);
     }

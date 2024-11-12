@@ -19,28 +19,28 @@ import org.junit.jupiter.api.Test;
 
 public class HandlingUntrustedDataRiskLikelihoodFactorTest {
 
-  private static final HandlingUntrustedDataRiskLikelihoodFactor SCORE
-      = new HandlingUntrustedDataRiskLikelihoodFactor();
+  private static final HandlingUntrustedDataRiskLikelihoodFactor SCORE =
+      new HandlingUntrustedDataRiskLikelihoodFactor();
 
   @Test
   public void testJsonSerialization() throws IOException {
-    HandlingUntrustedDataRiskLikelihoodFactor clone
-        = Json.read(Json.toBytes(SCORE), HandlingUntrustedDataRiskLikelihoodFactor.class);
+    HandlingUntrustedDataRiskLikelihoodFactor clone =
+        Json.read(Json.toBytes(SCORE), HandlingUntrustedDataRiskLikelihoodFactor.class);
     assertTrue(SCORE.equals(clone) && clone.equals(SCORE));
     assertEquals(SCORE.hashCode(), clone.hashCode());
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    HandlingUntrustedDataRiskLikelihoodFactor clone
-        = Yaml.read(Yaml.toBytes(SCORE), HandlingUntrustedDataRiskLikelihoodFactor.class);
+    HandlingUntrustedDataRiskLikelihoodFactor clone =
+        Yaml.read(Yaml.toBytes(SCORE), HandlingUntrustedDataRiskLikelihoodFactor.class);
     assertEquals(clone, SCORE);
   }
 
   @Test
   public void testCalculate() {
-    ScoreValue scoreValue = SCORE.calculate(
-        new EnumValue<>(HANDLING_UNTRUSTED_DATA_LIKELIHOOD, LOW));
+    ScoreValue scoreValue =
+        SCORE.calculate(new EnumValue<>(HANDLING_UNTRUSTED_DATA_LIKELIHOOD, LOW));
     assertFalse(scoreValue.isUnknown());
     assertFalse(scoreValue.isNotApplicable());
     assertTrue(Score.INTERVAL.contains(scoreValue.get()));
@@ -51,8 +51,8 @@ public class HandlingUntrustedDataRiskLikelihoodFactorTest {
 
   @Test
   public void testScoreValueSerialization() throws IOException {
-    ScoreValue scoreValue = SCORE.calculate(
-        new EnumValue<>(HANDLING_UNTRUSTED_DATA_LIKELIHOOD, HIGH));
+    ScoreValue scoreValue =
+        SCORE.calculate(new EnumValue<>(HANDLING_UNTRUSTED_DATA_LIKELIHOOD, HIGH));
     ScoreValue clone = Json.read(Json.toBytes(scoreValue), ScoreValue.class);
     assertTrue(scoreValue.equals(clone) && clone.equals(scoreValue));
     assertEquals(scoreValue.hashCode(), clone.hashCode());

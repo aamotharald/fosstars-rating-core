@@ -12,49 +12,42 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Optional;
 
 /**
- * This rating calculates a security risk introduced by an open source project.
- * The rating is based on {@link CalculatedSecurityRiskIntroducedByOss}
- * score and {@link #RISK_MATRIX};
+ * This rating calculates a security risk introduced by an open source project. The rating is based
+ * on {@link CalculatedSecurityRiskIntroducedByOss} score and {@link #RISK_MATRIX};
  */
-public class SecurityRiskIntroducedByOss extends AbstractRating  {
+public class SecurityRiskIntroducedByOss extends AbstractRating {
 
-  /**
-   * A set of labels for the rating.
-   */
+  /** A set of labels for the rating. */
   public enum OssSecurityRiskLabel implements Label {
-
-    NOTE, LOW, MEDIUM, HIGH, CRITICAL, UNCLEAR
+    NOTE,
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL,
+    UNCLEAR
   }
 
-  /**
-   * A matrix for determining a risk label based on impact (rows) and likelihood (columns).
-   */
-  private static final OssSecurityRiskLabel[][] RISK_MATRIX = new OssSecurityRiskLabel[][] {
-      { OssSecurityRiskLabel.NOTE,    OssSecurityRiskLabel.LOW,     OssSecurityRiskLabel.MEDIUM },
-      { OssSecurityRiskLabel.LOW,     OssSecurityRiskLabel.MEDIUM,  OssSecurityRiskLabel.HIGH },
-      { OssSecurityRiskLabel.MEDIUM,  OssSecurityRiskLabel.HIGH,    OssSecurityRiskLabel.CRITICAL }
-  };
+  /** A matrix for determining a risk label based on impact (rows) and likelihood (columns). */
+  private static final OssSecurityRiskLabel[][] RISK_MATRIX =
+      new OssSecurityRiskLabel[][] {
+        {OssSecurityRiskLabel.NOTE, OssSecurityRiskLabel.LOW, OssSecurityRiskLabel.MEDIUM},
+        {OssSecurityRiskLabel.LOW, OssSecurityRiskLabel.MEDIUM, OssSecurityRiskLabel.HIGH},
+        {OssSecurityRiskLabel.MEDIUM, OssSecurityRiskLabel.HIGH, OssSecurityRiskLabel.CRITICAL}
+      };
 
-  /**
-   * A threshold for the unclear label (confidence).
-   */
+  /** A threshold for the unclear label (confidence). */
   private static final double UNCLEAR_THRESHOLD = 0.8;
 
-  /**
-   * A threshold for medium likelihood or impact.
-   */
+  /** A threshold for medium likelihood or impact. */
   private static final double MEDIUM_THRESHOLD = 5.0;
 
-  /**
-   * A threshold for high likelihood or impact.
-   */
+  /** A threshold for high likelihood or impact. */
   private static final double HIGH_THRESHOLD = 8.0;
 
-  /**
-   * Creates a new rating procedure with default parameters.
-   */
+  /** Creates a new rating procedure with default parameters. */
   SecurityRiskIntroducedByOss() {
-    super("Security risk introduced by an open source project",
+    super(
+        "Security risk introduced by an open source project",
         new CalculatedSecurityRiskIntroducedByOss());
   }
 

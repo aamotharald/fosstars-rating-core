@@ -25,18 +25,18 @@ public class OssRulesOfPlayAdvisorTest {
   public void testAdvice() throws IOException {
     Path path = Files.createTempFile(OssRulesOfPlayAdvisorTest.class.getName(), "test");
     String content =
-          "---\n"
-        + "If a project is compliant with REUSE rules:\n"
-        + "  - advice: Text\n"
-        + "    links:\n"
-        + "      - name: Test link\n"
-        + "        url: https://test.com/path\n"
-        + "If a project has a license:\n"
-        + "  - advice: Add a license";
+        "---\n"
+            + "If a project is compliant with REUSE rules:\n"
+            + "  - advice: Text\n"
+            + "    links:\n"
+            + "      - name: Test link\n"
+            + "        url: https://test.com/path\n"
+            + "If a project has a license:\n"
+            + "  - advice: Add a license";
     Files.write(path, content.getBytes());
     try {
-      OssRulesOfPlayAdvisor advisor
-          = new OssRulesOfPlayAdvisor(path.toString(), WITH_EMPTY_CONTEXT);
+      OssRulesOfPlayAdvisor advisor =
+          new OssRulesOfPlayAdvisor(path.toString(), WITH_EMPTY_CONTEXT);
       GitHubProject project = new GitHubProject("org", "test");
 
       // no advice if no rating value is set

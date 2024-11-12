@@ -25,8 +25,9 @@ public class UnknownValueTest {
 
   @Test
   public void testGet() {
-    assertThrows(IllegalStateException.class, () ->
-      new UnknownValue<>(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).get());
+    assertThrows(
+        IllegalStateException.class,
+        () -> new UnknownValue<>(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).get());
   }
 
   @Test

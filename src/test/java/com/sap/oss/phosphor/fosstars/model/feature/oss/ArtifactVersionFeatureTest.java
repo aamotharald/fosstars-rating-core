@@ -12,8 +12,9 @@ public class ArtifactVersionFeatureTest {
 
   @Test
   public void testParseNotSupported() {
-    assertThrows(UnsupportedOperationException.class, () ->
-      new ArtifactVersionFeature("name").parse("1.2.3"));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> new ArtifactVersionFeature("name").parse("1.2.3"));
   }
 
   @Test

@@ -9,18 +9,19 @@ import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-
 public class IsEclipseTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testProjects() throws IOException {
     IsEclipse provider = new IsEclipse(fetcher);
-    assertTrue(provider.fetchValueFor(
-        GitHubProject.parse("https://github.com/eclipse/jgit")).get());
-    assertTrue(provider.fetchValueFor(
-        GitHubProject.parse("https://github.com/eclipse-ee4j/eclipselink")).get());
-    assertFalse(provider.fetchValueFor(
-        GitHubProject.parse("https://github.com/apache/nifi")).get());
+    assertTrue(
+        provider.fetchValueFor(GitHubProject.parse("https://github.com/eclipse/jgit")).get());
+    assertTrue(
+        provider
+            .fetchValueFor(GitHubProject.parse("https://github.com/eclipse-ee4j/eclipselink"))
+            .get());
+    assertFalse(
+        provider.fetchValueFor(GitHubProject.parse("https://github.com/apache/nifi")).get());
   }
 
   @Test

@@ -24,9 +24,9 @@ public class SubjectCacheTest {
     SubjectCache cache = SubjectCache.empty();
 
     GitHubProject project = new GitHubProject(new GitHubOrganization("netty"), "netty");
-    RatingValue ratingValue = new RatingValue(
-        new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE),
-        SecurityLabelExample.OKAY);
+    RatingValue ratingValue =
+        new RatingValue(
+            new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE), SecurityLabelExample.OKAY);
     project.set(ratingValue);
 
     cache.add(project);
@@ -50,9 +50,9 @@ public class SubjectCacheTest {
     assertEquals(0, cache.size());
 
     GitHubProject project = new GitHubProject(new GitHubOrganization("netty"), "netty");
-    RatingValue ratingValue = new RatingValue(
-        new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE),
-        SecurityLabelExample.OKAY);
+    RatingValue ratingValue =
+        new RatingValue(
+            new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE), SecurityLabelExample.OKAY);
     project.set(ratingValue);
 
     Optional<RatingValue> something = cache.cachedRatingValueFor(project);

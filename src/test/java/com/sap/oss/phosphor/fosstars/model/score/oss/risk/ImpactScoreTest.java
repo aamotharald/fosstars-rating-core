@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Test;
 
 public class ImpactScoreTest {
 
-  private static final EnumFeature<Impact> IMPACT_FEATURE
-      = new EnumFeature<>(Impact.class, "Test impact");
+  private static final EnumFeature<Impact> IMPACT_FEATURE =
+      new EnumFeature<>(Impact.class, "Test impact");
 
   private static final ImpactScore SCORE = new ImpactScore("Test impact score", IMPACT_FEATURE);
 

@@ -8,9 +8,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * The class represents a semantic version (see: https://semver.org/).
- */
+/** The class represents a semantic version (see: https://semver.org/). */
 public class SemanticVersion {
 
   private static final Pattern SEMANTIC_VERSION_PATTERN =
@@ -32,6 +30,7 @@ public class SemanticVersion {
 
   /**
    * Create a SemanticVersion based on given version information.
+   *
    * @param major the major version (positive integer)
    * @param minor the major version (positive integer)
    * @param micro the major version (positive integer)
@@ -42,8 +41,8 @@ public class SemanticVersion {
   }
 
   /**
-   * Parse given version to a Semantic Version.
-   * If version is null or can not be parsed an empty optional is returned.
+   * Parse given version to a Semantic Version. If version is null or can not be parsed an empty
+   * optional is returned.
    *
    * @param version version to parse
    * @return the parsed SemanticVersion or an empty optional
@@ -79,6 +78,7 @@ public class SemanticVersion {
 
   /**
    * Get the major version.
+   *
    * @return the major version
    */
   public int getMajor() {
@@ -87,6 +87,7 @@ public class SemanticVersion {
 
   /**
    * Get the minor version.
+   *
    * @return the minor version
    */
   public int getMinor() {
@@ -95,6 +96,7 @@ public class SemanticVersion {
 
   /**
    * Get the micro version.
+   *
    * @return the micro version
    */
   public int getMicro() {

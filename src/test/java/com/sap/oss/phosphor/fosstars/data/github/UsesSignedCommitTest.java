@@ -56,8 +56,7 @@ public class UsesSignedCommitTest extends TestGitHubDataFetcherHolder {
     assertTrue(values.has(USES_SIGNED_COMMITS));
     assertTrue(values.of(USES_SIGNED_COMMITS).isPresent());
     assertFalse(values.of(USES_SIGNED_COMMITS).get().isUnknown());
-    assertEquals(USES_SIGNED_COMMITS.value(value),
-        values.of(USES_SIGNED_COMMITS).get());
+    assertEquals(USES_SIGNED_COMMITS.value(value), values.of(USES_SIGNED_COMMITS).get());
   }
 
   @Test

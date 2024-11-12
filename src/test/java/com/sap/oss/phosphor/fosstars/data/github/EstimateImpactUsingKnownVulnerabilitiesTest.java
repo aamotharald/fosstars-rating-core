@@ -67,8 +67,9 @@ public class EstimateImpactUsingKnownVulnerabilitiesTest extends TestGitHubDataF
   @Test
   public void testWithoutEnoughVulnerabilities() throws IOException {
     TestVulnerabilitiesProvider mockProvider = new TestVulnerabilitiesProvider();
-    EstimateImpactUsingKnownVulnerabilities provider = new EstimateImpactUsingKnownVulnerabilities(
-        new InfoAboutVulnerabilities(fetcher, mockProvider));
+    EstimateImpactUsingKnownVulnerabilities provider =
+        new EstimateImpactUsingKnownVulnerabilities(
+            new InfoAboutVulnerabilities(fetcher, mockProvider));
     ValueSet values = new ValueHashSet();
 
     for (int i = 0; i < 5; i++) {
@@ -87,8 +88,9 @@ public class EstimateImpactUsingKnownVulnerabilitiesTest extends TestGitHubDataF
   @Test
   public void testWithEnoughVulnerabilities() throws IOException {
     TestVulnerabilitiesProvider mockProvider = new TestVulnerabilitiesProvider();
-    EstimateImpactUsingKnownVulnerabilities provider = new EstimateImpactUsingKnownVulnerabilities(
-        new InfoAboutVulnerabilities(fetcher, mockProvider));
+    EstimateImpactUsingKnownVulnerabilities provider =
+        new EstimateImpactUsingKnownVulnerabilities(
+            new InfoAboutVulnerabilities(fetcher, mockProvider));
     ValueSet values = new ValueHashSet();
 
     for (int i = 0; i < 15; i++) {

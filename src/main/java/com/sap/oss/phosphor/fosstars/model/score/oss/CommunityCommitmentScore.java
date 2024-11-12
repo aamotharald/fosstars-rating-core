@@ -11,39 +11,48 @@ import com.sap.oss.phosphor.fosstars.model.score.FeatureBasedScore;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * <p>The community commitment score depends on the following features.</p>
+ * The community commitment score depends on the following features.
+ *
  * <ul>
- *   <li>If a project is supported by a company</li>
- *   <li>If a project is part of the Apache Software Foundation</li>
- *   <li>If a project is part of the Eclipse Foundation</li>
+ *   <li>If a project is supported by a company
+ *   <li>If a project is part of the Apache Software Foundation
+ *   <li>If a project is part of the Eclipse Foundation
  * </ul>
- * <p>A project gets the maximum score if it's supported by a company
- * and is part of one of the foundations.
- * A project gets the minimum score if it's not supported by a company
- * and doesn't belong to any foundation.</p>
+ *
+ * <p>A project gets the maximum score if it's supported by a company and is part of one of the
+ * foundations. A project gets the minimum score if it's not supported by a company and doesn't
+ * belong to any foundation.
  */
 public class CommunityCommitmentScore extends FeatureBasedScore {
 
-  /**
-   * Initializes a {@link CommunityCommitmentScore}.
-   */
+  /** Initializes a {@link CommunityCommitmentScore}. */
   CommunityCommitmentScore() {
-    super("How well open-source community commits to support an open-source project",
-        SUPPORTED_BY_COMPANY, IS_APACHE, IS_ECLIPSE);
+    super(
+        "How well open-source community commits to support an open-source project",
+        SUPPORTED_BY_COMPANY,
+        IS_APACHE,
+        IS_ECLIPSE);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Boolean> hasResponsibleCompany = findValue(values, SUPPORTED_BY_COMPANY,
-        "Hey! You have to tell me if the project is supported by a company or not!");
-    Value<Boolean> isApacheProject = findValue(values, IS_APACHE,
-        "Hey! Tell me if the project belongs to the Apache Software Foundation!");
-    Value<Boolean> isEclipseProject = findValue(values, IS_ECLIPSE,
-        "Hey! Tell me if the project belongs to the Eclipse Foundation!");
+    Value<Boolean> hasResponsibleCompany =
+        findValue(
+            values,
+            SUPPORTED_BY_COMPANY,
+            "Hey! You have to tell me if the project is supported by a company or not!");
+    Value<Boolean> isApacheProject =
+        findValue(
+            values,
+            IS_APACHE,
+            "Hey! Tell me if the project belongs to the Apache Software Foundation!");
+    Value<Boolean> isEclipseProject =
+        findValue(
+            values, IS_ECLIPSE, "Hey! Tell me if the project belongs to the Eclipse Foundation!");
 
     if (allUnknown(hasResponsibleCompany, isApacheProject, isEclipseProject)) {
-      return scoreValue(
-          MIN, hasResponsibleCompany, isApacheProject, isEclipseProject).makeUnknown();
+      return scoreValue(MIN, hasResponsibleCompany, isApacheProject, isEclipseProject)
+          .makeUnknown();
     }
 
     boolean belongsToApache = !isApacheProject.isUnknown() && isApacheProject.get();

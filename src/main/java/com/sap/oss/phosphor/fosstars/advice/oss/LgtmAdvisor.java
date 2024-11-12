@@ -16,9 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * An advisor for features related to LGTM grade and findings.
- */
+/** An advisor for features related to LGTM grade and findings. */
 public class LgtmAdvisor extends AbstractOssAdvisor {
 
   /**
@@ -35,16 +33,16 @@ public class LgtmAdvisor extends AbstractOssAdvisor {
       Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
       throws MalformedURLException {
 
-    Optional<Value<LgtmGrade>> value = findValue(usedValues, WORST_LGTM_GRADE)
-        .filter(LgtmAdvisor::isKnown)
-        .filter(LgtmAdvisor::notTheBest);
+    Optional<Value<LgtmGrade>> value =
+        findValue(usedValues, WORST_LGTM_GRADE)
+            .filter(LgtmAdvisor::isKnown)
+            .filter(LgtmAdvisor::notTheBest);
 
     if (!value.isPresent()) {
       return emptyList();
     }
 
-    return adviceStorage.adviceFor(value.get().feature(), context)
-        .stream()
+    return adviceStorage.adviceFor(value.get().feature(), context).stream()
         .map(content -> new SimpleAdvice(subject, value.get(), content))
         .map(Advice.class::cast)
         .collect(Collectors.toList());

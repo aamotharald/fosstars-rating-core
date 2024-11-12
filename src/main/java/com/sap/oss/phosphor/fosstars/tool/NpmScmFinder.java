@@ -16,9 +16,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-/**
- * The class takes a name of an NPM package and looks for a URL to its SCM.
- */
+/** The class takes a name of an NPM package and looks for a URL to its SCM. */
 public class NpmScmFinder {
 
   /**

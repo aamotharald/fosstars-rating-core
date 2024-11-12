@@ -10,41 +10,34 @@ import com.sap.oss.phosphor.fosstars.model.score.FeatureBasedScore;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * <p>The project popularity score is currently based on two features.</p>
+ * The project popularity score is currently based on two features.
+ *
  * <ul>
- *   <li>Number of stars on GitHub</li>
- *   <li>Number of watchers on GitHub</li>
- *   <li>Number of projects that use the project</li>
+ *   <li>Number of stars on GitHub
+ *   <li>Number of watchers on GitHub
+ *   <li>Number of projects that use the project
  * </ul>
  */
 public class ProjectPopularityScore extends FeatureBasedScore {
 
-  /**
-   * If a number of stars is more than this value, then the maximum score is returned.
-   */
+  /** If a number of stars is more than this value, then the maximum score is returned. */
   private static final int BEST_STARS_AMOUNT = 10000;
 
-  /**
-   * If a number of watchers is more than this value, then the maximum score is returned.
-   */
+  /** If a number of watchers is more than this value, then the maximum score is returned. */
   private static final int BEST_WATCHERS_AMOUNT = 3000;
 
-  /**
-   * If a number of dependents is more than this value, then the maximum score is returned.
-   */
+  /** If a number of dependents is more than this value, then the maximum score is returned. */
   private static final int BEST_DEPENDENTS_AMOUNT = 15000;
 
-  /**
-   * A description of the score.
-   */
-  private static final String DESCRIPTION
-      = "This scoring function is based on number of stars, watchers and dependent projects.";
+  /** A description of the score. */
+  private static final String DESCRIPTION =
+      "This scoring function is based on number of stars, watchers and dependent projects.";
 
-  /**
-   * Initializes a new score.
-   */
+  /** Initializes a new score. */
   ProjectPopularityScore() {
-    super("Open-source project popularity score", DESCRIPTION,
+    super(
+        "Open-source project popularity score",
+        DESCRIPTION,
         NUMBER_OF_GITHUB_STARS,
         NUMBER_OF_WATCHERS_ON_GITHUB,
         NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB);
@@ -52,12 +45,16 @@ public class ProjectPopularityScore extends FeatureBasedScore {
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Integer> stars = findValue(values, NUMBER_OF_GITHUB_STARS,
-        "Hey! You have to give me a number of stars!");
-    Value<Integer> watchers = findValue(values, NUMBER_OF_WATCHERS_ON_GITHUB,
-        "Hey! You have to give me a number of watchers!");
-    Value<Integer> dependents = findValue(values, NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB,
-        "Hey! You have to give me a number of dependents!");
+    Value<Integer> stars =
+        findValue(values, NUMBER_OF_GITHUB_STARS, "Hey! You have to give me a number of stars!");
+    Value<Integer> watchers =
+        findValue(
+            values, NUMBER_OF_WATCHERS_ON_GITHUB, "Hey! You have to give me a number of watchers!");
+    Value<Integer> dependents =
+        findValue(
+            values,
+            NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB,
+            "Hey! You have to give me a number of dependents!");
 
     if (allUnknown(stars, watchers, dependents)) {
       return scoreValue(MIN, stars, watchers, dependents).makeUnknown();
@@ -73,8 +70,8 @@ public class ProjectPopularityScore extends FeatureBasedScore {
    * Calculates a sub-score for a value.
    *
    * @param value A number of stars.
-   * @param threshold If the value is greater than the threshold,
-   *                  then the max score value is returned.
+   * @param threshold If the value is greater than the threshold, then the max score value is
+   *     returned.
    * @throws IllegalArgumentException If the value is negative.
    */
   private static double subScoreFor(Value<Integer> value, int threshold) {

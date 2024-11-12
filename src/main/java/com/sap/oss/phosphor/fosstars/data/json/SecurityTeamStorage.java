@@ -8,20 +8,14 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * This class maintains information about security teams for open-source projects.
- */
+/** This class maintains information about security teams for open-source projects. */
 public class SecurityTeamStorage extends AbstractJsonStorage {
 
-  /**
-   * Path to a resource which contains the information security teams.
-   */
+  /** Path to a resource which contains the information security teams. */
   private static final String RESOURCE_PATH =
       "com/sap/oss/phosphor/fosstars/data/SecurityTeams.json";
 
-  /**
-   * Maps a project's code repository URL to info about security team.
-   */
+  /** Maps a project's code repository URL to info about security team. */
   private final Map<String, Info> securityTeams;
 
   /**
@@ -29,8 +23,7 @@ public class SecurityTeamStorage extends AbstractJsonStorage {
    *
    * @param securityTeams Information about security teams for open-source projects.
    */
-  public SecurityTeamStorage(
-      @JsonProperty("securityTeams") Map<String, Info> securityTeams) {
+  public SecurityTeamStorage(@JsonProperty("securityTeams") Map<String, Info> securityTeams) {
 
     Objects.requireNonNull(securityTeams, "Security teams can't be null");
     this.securityTeams = securityTeams;
@@ -88,19 +81,13 @@ public class SecurityTeamStorage extends AbstractJsonStorage {
    */
   private static class Info {
 
-    /**
-     * Describes how the security team can be contacted.
-     */
+    /** Describes how the security team can be contacted. */
     private final String contact;
 
-    /**
-     * A link to the team's page.
-     */
+    /** A link to the team's page. */
     private final URL link;
 
-    /**
-     * A number of URLs to open-source projects covered by the security team.
-     */
+    /** A number of URLs to open-source projects covered by the security team. */
     private final URL[] urls;
 
     /**

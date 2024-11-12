@@ -7,10 +7,7 @@ import com.sap.oss.phosphor.fosstars.model.feature.AbstractFeature;
 import com.sap.oss.phosphor.fosstars.model.value.PackageManagers;
 import com.sap.oss.phosphor.fosstars.model.value.PackageManagersValue;
 
-/**
- * This feature contains a set of package managers that are used
- * in an open-source project.
- */
+/** This feature contains a set of package managers that are used in an open-source project. */
 public class PackageManagersFeature extends AbstractFeature<PackageManagers> {
 
   /**

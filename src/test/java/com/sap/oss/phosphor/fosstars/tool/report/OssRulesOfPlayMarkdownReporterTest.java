@@ -34,16 +34,14 @@ public class OssRulesOfPlayMarkdownReporterTest {
 
   @Test
   public void testReport() throws IOException {
-    Path outputDirectory = Files.createTempDirectory(
-        OssRulesOfPlayMarkdownReporterTest.class.getName());
+    Path outputDirectory =
+        Files.createTempDirectory(OssRulesOfPlayMarkdownReporterTest.class.getName());
     try {
       OssRulesOfPlayRating rating = RatingRepository.INSTANCE.rating(OssRulesOfPlayRating.class);
 
       GitHubProject passedProject = new GitHubProject("org", "passed");
       passedProject.set(
-          new RatingValue(
-              new ScoreValue(rating.score()).set(Score.MAX).confidence(10.0),
-              PASSED));
+          new RatingValue(new ScoreValue(rating.score()).set(Score.MAX).confidence(10.0), PASSED));
 
       GitHubProject projectWithWarnings = new GitHubProject("org", "warnings");
       projectWithWarnings.set(
@@ -56,33 +54,43 @@ public class OssRulesOfPlayMarkdownReporterTest {
       GitHubProject failedProject1 = new GitHubProject("org", "failed1");
       failedProject1.set(
           new RatingValue(
-              new ScoreValue(rating.score(), Score.MIN, Weight.MAX, Confidence.MIN, 
-                  Arrays.asList(failedReadme, failedReuse))
-              .set(Score.MIN).confidence(8.0), FAILED));
+              new ScoreValue(
+                      rating.score(),
+                      Score.MIN,
+                      Weight.MAX,
+                      Confidence.MIN,
+                      Arrays.asList(failedReadme, failedReuse))
+                  .set(Score.MIN)
+                  .confidence(8.0),
+              FAILED));
       GitHubProject failedProject2 = new GitHubProject("org2", "failed2");
       failedProject2.set(
           new RatingValue(
-              new ScoreValue(rating.score(), Score.MIN, Weight.MAX, Confidence.MIN, 
-                  Arrays.asList(failedReadme))
-              .set(Score.MIN).confidence(8.0), FAILED));
+              new ScoreValue(
+                      rating.score(),
+                      Score.MIN,
+                      Weight.MAX,
+                      Confidence.MIN,
+                      Arrays.asList(failedReadme))
+                  .set(Score.MIN)
+                  .confidence(8.0),
+              FAILED));
 
       GitHubProject unclearProject = new GitHubProject("org", "unclear");
       unclearProject.set(
           new RatingValue(
-              new ScoreValue(rating.score()).set(Score.MIN).confidence(Confidence.MIN),
-              UNCLEAR));
+              new ScoreValue(rating.score()).set(Score.MIN).confidence(Confidence.MIN), UNCLEAR));
 
-      List<GitHubProject> projects = Arrays.asList(
-          passedProject, projectWithWarnings, failedProject1, failedProject2, unclearProject
-      );
+      List<GitHubProject> projects =
+          Arrays.asList(
+              passedProject, projectWithWarnings, failedProject1, failedProject2, unclearProject);
 
-      OssRulesOfPlayMarkdownReporter reporter
-          = new OssRulesOfPlayMarkdownReporter(
+      OssRulesOfPlayMarkdownReporter reporter =
+          new OssRulesOfPlayMarkdownReporter(
               outputDirectory.toString(), new OssRulesOfPlayAdvisor());
       reporter.runFor(projects);
 
-      Path reportFileName = 
-          outputDirectory.resolve(OssRulesOfPlayMarkdownReporter.REPORT_FILENAME);
+      Path reportFileName = outputDirectory.resolve(OssRulesOfPlayMarkdownReporter.REPORT_FILENAME);
       assertTrue(Files.exists(reportFileName));
 
       String report = new String(Files.readAllBytes(reportFileName));

@@ -51,7 +51,8 @@ public class SnykAdvisorTest {
     values.update(USES_SNYK.value(false));
     project.set(rating.calculate(values));
     assertEquals(1, advisor.adviceFor(project).size());
-    assertEquals("You can create Snyk account and configure your project.",
+    assertEquals(
+        "You can create Snyk account and configure your project.",
         advisor.adviceFor(project).get(0).content().text());
   }
 

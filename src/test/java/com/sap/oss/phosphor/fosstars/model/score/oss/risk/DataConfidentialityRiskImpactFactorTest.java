@@ -19,21 +19,21 @@ import org.junit.jupiter.api.Test;
 
 public class DataConfidentialityRiskImpactFactorTest {
 
-  private static final DataConfidentialityRiskImpactFactor SCORE
-      = new DataConfidentialityRiskImpactFactor();
+  private static final DataConfidentialityRiskImpactFactor SCORE =
+      new DataConfidentialityRiskImpactFactor();
 
   @Test
   public void testJsonSerialization() throws IOException {
-    DataConfidentialityRiskImpactFactor clone
-        = Json.read(Json.toBytes(SCORE), DataConfidentialityRiskImpactFactor.class);
+    DataConfidentialityRiskImpactFactor clone =
+        Json.read(Json.toBytes(SCORE), DataConfidentialityRiskImpactFactor.class);
     assertTrue(SCORE.equals(clone) && clone.equals(SCORE));
     assertEquals(SCORE.hashCode(), clone.hashCode());
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    DataConfidentialityRiskImpactFactor clone
-        = Yaml.read(Yaml.toBytes(SCORE), DataConfidentialityRiskImpactFactor.class);
+    DataConfidentialityRiskImpactFactor clone =
+        Yaml.read(Yaml.toBytes(SCORE), DataConfidentialityRiskImpactFactor.class);
     assertEquals(clone, SCORE);
   }
 

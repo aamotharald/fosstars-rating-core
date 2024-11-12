@@ -15,11 +15,16 @@ import org.junit.jupiter.api.Test;
 public class EnumFeatureTest {
 
   private enum TestEnum {
-    A, B, C
+    A,
+    B,
+    C
   }
 
   private enum AnotherEnum {
-    A, B, C, D
+    A,
+    B,
+    C,
+    D
   }
 
   @Test
@@ -42,13 +47,15 @@ public class EnumFeatureTest {
 
   @Test
   public void testParseInvalid() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      EnumFeature<TestEnum> feature = new EnumFeature<>(TestEnum.class, "test");
-      EnumValue<TestEnum> value = feature.parse("D");
-      assertNotNull(value);
-      assertSame(feature, value.feature());
-      assertSame(TestEnum.A, value.get());
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          EnumFeature<TestEnum> feature = new EnumFeature<>(TestEnum.class, "test");
+          EnumValue<TestEnum> value = feature.parse("D");
+          assertNotNull(value);
+          assertSame(feature, value.feature());
+          assertSame(TestEnum.A, value.get());
+        });
   }
 
   @Test
@@ -79,5 +86,4 @@ public class EnumFeatureTest {
     assertEquals(feature, clone);
     assertEquals(feature.hashCode(), clone.hashCode());
   }
-
 }

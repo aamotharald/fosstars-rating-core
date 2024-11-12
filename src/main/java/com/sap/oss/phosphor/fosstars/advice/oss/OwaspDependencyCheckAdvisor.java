@@ -18,9 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * An advisor for features related to OWASP Dependency Check.
- */
+/** An advisor for features related to OWASP Dependency Check. */
 public class OwaspDependencyCheckAdvisor extends AbstractOssAdvisor {
 
   /**
@@ -37,8 +35,8 @@ public class OwaspDependencyCheckAdvisor extends AbstractOssAdvisor {
       Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
       throws MalformedURLException {
 
-    Optional<ScoreValue> owaspDependencyScanScore
-        = findSubScoreValue(subject, OwaspDependencyScanScore.class);
+    Optional<ScoreValue> owaspDependencyScanScore =
+        findSubScoreValue(subject, OwaspDependencyScanScore.class);
 
     if (!owaspDependencyScanScore.isPresent() || owaspDependencyScanScore.get().isNotApplicable()) {
       return Collections.emptyList();
@@ -47,26 +45,33 @@ public class OwaspDependencyCheckAdvisor extends AbstractOssAdvisor {
     List<Advice> advice = new ArrayList<>();
 
     advice.addAll(
-        adviceForFeature(usedValues, OWASP_DEPENDENCY_CHECK_USAGE, subject, context,
+        adviceForFeature(
+            usedValues,
+            OWASP_DEPENDENCY_CHECK_USAGE,
+            subject,
+            context,
             OwaspDependencyCheckAdvisor::notMandatoryOwaspDependencyCheck));
 
     advice.addAll(
-        adviceForFeature(usedValues, OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD, subject, context,
+        adviceForFeature(
+            usedValues,
+            OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD,
+            subject,
+            context,
             OwaspDependencyCheckAdvisor::noThresholdForOwaspDependencyCheck));
 
     return advice;
   }
 
   /**
-   * Checks if a value is
-   * {@link com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsageValue}
-   * and it is equal to
+   * Checks if a value is {@link
+   * com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsageValue} and it is equal to
    * {@link com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage#MANDATORY}.
    *
    * @param value The value to be checked.
-   * @return True is the value is equal to
-   *         {@link com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage#MANDATORY},
-   *         false otherwise.
+   * @return True is the value is equal to {@link
+   *     com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage#MANDATORY}, false
+   *     otherwise.
    */
   private static boolean notMandatoryOwaspDependencyCheck(Value<?> value) {
     return !value.isUnknown()
@@ -75,8 +80,8 @@ public class OwaspDependencyCheckAdvisor extends AbstractOssAdvisor {
   }
 
   /**
-   * Check if a value is {@link OwaspDependencyCheckCvssThresholdValue}
-   * and a threshold is specified.
+   * Check if a value is {@link OwaspDependencyCheckCvssThresholdValue} and a threshold is
+   * specified.
    *
    * @param value The value to be checked.
    * @return True if the threshold for OWASP Dependency Check is specified.
@@ -87,8 +92,8 @@ public class OwaspDependencyCheckAdvisor extends AbstractOssAdvisor {
     }
 
     if (value instanceof OwaspDependencyCheckCvssThresholdValue) {
-      OwaspDependencyCheckCvssThresholdValue thresholdValue
-          = (OwaspDependencyCheckCvssThresholdValue) value;
+      OwaspDependencyCheckCvssThresholdValue thresholdValue =
+          (OwaspDependencyCheckCvssThresholdValue) value;
       return !thresholdValue.specified();
     }
 

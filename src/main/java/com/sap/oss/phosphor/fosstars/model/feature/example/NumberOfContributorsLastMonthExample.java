@@ -12,9 +12,7 @@ import com.sap.oss.phosphor.fosstars.model.value.IntegerValue;
 @JsonSerialize
 public class NumberOfContributorsLastMonthExample extends AbstractFeature<Integer> {
 
-  /**
-   * Initializes a new feature.
-   */
+  /** Initializes a new feature. */
   NumberOfContributorsLastMonthExample() {
     super("Number of contributors last month (example)");
   }
@@ -31,11 +29,10 @@ public class NumberOfContributorsLastMonthExample extends AbstractFeature<Intege
 
   private static Integer check(Integer n) {
     if (n < 0) {
-      throw new IllegalArgumentException(String.format(
-          "Number of contributors (%d) can't be negative!", n));
+      throw new IllegalArgumentException(
+          String.format("Number of contributors (%d) can't be negative!", n));
     }
 
     return n;
   }
-
 }

@@ -89,8 +89,8 @@ public class SimpleCompositeDataProviderTest {
 
   @Test
   public void testSupportedFeatures() {
-    SimpleCompositeDataProvider provider = SimpleCompositeDataProvider.forFeature(SOMETHING)
-        .withDefaultValue(SOMETHING.value(42));
+    SimpleCompositeDataProvider provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING).withDefaultValue(SOMETHING.value(42));
     assertEquals(1, provider.supportedFeatures().size());
     assertTrue(provider.supportedFeatures().contains(SOMETHING));
   }
@@ -99,22 +99,24 @@ public class SimpleCompositeDataProviderTest {
   public void testUpdate() throws IOException {
     ValueSet values = new ValueHashSet();
 
-    SimpleCompositeDataProvider provider = SimpleCompositeDataProvider.forFeature(SOMETHING)
-        .withDefaultValue(SOMETHING.value(42));
+    SimpleCompositeDataProvider provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING).withDefaultValue(SOMETHING.value(42));
     provider.update(PROJECT, values);
     assertValueIn(values, 42);
 
-    provider = SimpleCompositeDataProvider.forFeature(SOMETHING)
-        .withInteractiveProvider(new TestInteractiveProvider())
-        .withDefaultValue(SOMETHING.value(42));
+    provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING)
+            .withInteractiveProvider(new TestInteractiveProvider())
+            .withDefaultValue(SOMETHING.value(42));
     provider.set(new TestCallback());
     provider.update(PROJECT, values);
     assertValueIn(values, 2);
 
-    provider = SimpleCompositeDataProvider.forFeature(SOMETHING)
-        .withInteractiveProvider(new TestInteractiveProvider())
-        .withNonInteractiveProvider(new TestNonInteractiveProvider())
-        .withDefaultValue(SOMETHING.value(42));
+    provider =
+        SimpleCompositeDataProvider.forFeature(SOMETHING)
+            .withInteractiveProvider(new TestInteractiveProvider())
+            .withNonInteractiveProvider(new TestNonInteractiveProvider())
+            .withDefaultValue(SOMETHING.value(42));
     provider.set(new TestCallback());
     provider.update(PROJECT, values);
     assertValueIn(values, 1);

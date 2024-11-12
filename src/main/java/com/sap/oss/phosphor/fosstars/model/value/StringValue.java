@@ -6,14 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/**
- * A value for a feature that holds a string.
- */
+/** A value for a feature that holds a string. */
 public class StringValue extends AbstractKnownValue<String> {
 
-  /**
-   * Version of an artifact.
-   */
+  /** Version of an artifact. */
   private final String content;
 
   /**
@@ -24,8 +20,7 @@ public class StringValue extends AbstractKnownValue<String> {
    */
   @JsonCreator
   public StringValue(
-      @JsonProperty("feature") Feature<String> feature,
-      @JsonProperty("content") String content) {
+      @JsonProperty("feature") Feature<String> feature, @JsonProperty("content") String content) {
 
     super(feature);
     this.content = Objects.requireNonNull(content, "Content can't be null!");

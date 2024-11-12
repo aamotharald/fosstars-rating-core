@@ -15,14 +15,15 @@ public class MavenScmFinderTest {
 
   @Test
   public void testGitHubUrlParser() throws IOException {
-    List<String> inputSyntaxes = Arrays.asList(
-        "git://github.com/path/to/repo.git/",
-        "ssh://user@github.com/path/to/repo.git/",
-        "https://github.com/path/to/repo.git/",
-        "ftps://github.com/path/to/repo.git/",
-        "https://github.com/path/to/repo.git",
-        "git@github.com:/path/to/repo.git",
-        "git@github.com:path/to/repo.git");
+    List<String> inputSyntaxes =
+        Arrays.asList(
+            "git://github.com/path/to/repo.git/",
+            "ssh://user@github.com/path/to/repo.git/",
+            "https://github.com/path/to/repo.git/",
+            "ftps://github.com/path/to/repo.git/",
+            "https://github.com/path/to/repo.git",
+            "git@github.com:/path/to/repo.git",
+            "git@github.com:path/to/repo.git");
 
     for (String url : inputSyntaxes) {
       Optional<String> parsedUrl = normalizeGitHubProjectPath(url);
@@ -34,9 +35,7 @@ public class MavenScmFinderTest {
   @Test
   public void testNonGitHubUrls() throws IOException {
     List<String> inputSyntaxes =
-        Arrays.asList(
-            "git://xyz.com/path/to/repo.git/",
-            "ssh://user@xyz.com/path/to/repo.git/");
+        Arrays.asList("git://xyz.com/path/to/repo.git/", "ssh://user@xyz.com/path/to/repo.git/");
 
     for (String url : inputSyntaxes) {
       Optional<String> parsedUrl = normalizeGitHubProjectPath(url);
@@ -46,18 +45,21 @@ public class MavenScmFinderTest {
 
   @Test
   public void testNonParseableUrls() {
-    assertThrows(IOException.class, () -> {
-      List<String> inputSyntaxes = Arrays.asList(
-          "github.com/path/to/repo.git/",
-          "git@github.com:.git",
-          "git@github.com:/repo.git");
+    assertThrows(
+        IOException.class,
+        () -> {
+          List<String> inputSyntaxes =
+              Arrays.asList(
+                  "github.com/path/to/repo.git/",
+                  "git@github.com:.git",
+                  "git@github.com:/repo.git");
 
-      for (String url : inputSyntaxes) {
-        normalizeGitHubProjectPath(url);
-      }
-    });
+          for (String url : inputSyntaxes) {
+            normalizeGitHubProjectPath(url);
+          }
+        });
   }
-  
+
   @Test
   public void testGitHubUrlParserWithHyphen() throws IOException {
     String inputSyntax = "git@github.com:codelibs/elasticsearch-module.git";

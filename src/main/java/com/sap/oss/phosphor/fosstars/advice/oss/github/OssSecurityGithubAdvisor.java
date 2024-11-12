@@ -16,14 +16,12 @@ import com.sap.oss.phosphor.fosstars.advice.oss.SigningAdvisor;
 import com.sap.oss.phosphor.fosstars.advice.oss.SnykAdvisor;
 
 /**
- * This is an advisor for open-source projects hosted on GitHub.
- * The advisor is based on multiple advisors for open-source projects.
+ * This is an advisor for open-source projects hosted on GitHub. The advisor is based on multiple
+ * advisors for open-source projects.
  */
 public class OssSecurityGithubAdvisor extends CompositeAdvisor {
 
-  /**
-   * Create a new advisor.
-   */
+  /** Create a new advisor. */
   public OssSecurityGithubAdvisor() {
     super(
         new CodeqlAdvisor(AdviceForGitHubContextFactory.INSTANCE),

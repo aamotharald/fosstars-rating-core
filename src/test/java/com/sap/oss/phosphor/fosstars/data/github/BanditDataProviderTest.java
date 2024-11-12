@@ -66,7 +66,9 @@ public class BanditDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithBanditRunsAndChecks() throws IOException {
     try (InputStream content = getClass().getResourceAsStream("bandit-analysis-with-run.yml")) {
-      testBanditRuns(GITHUB_WORKFLOW_FILENAME, content,
+      testBanditRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_BANDIT_SCANS.value(true),
           USES_BANDIT_SCAN_CHECKS.value(true));
     }
@@ -74,9 +76,11 @@ public class BanditDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithBanditRunsAndMultipleJobs() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "bandit-analysis-with-multiple-jobs.yml")) {
-      testBanditRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("bandit-analysis-with-multiple-jobs.yml")) {
+      testBanditRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_BANDIT_SCANS.value(true),
           USES_BANDIT_SCAN_CHECKS.value(false));
     }
@@ -84,9 +88,11 @@ public class BanditDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithNoBanditRunsButInstallBandit() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "bandit-analysis-with-no-bandit-run.yml")) {
-      testBanditRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("bandit-analysis-with-no-bandit-run.yml")) {
+      testBanditRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_BANDIT_SCANS.value(false),
           USES_BANDIT_SCAN_CHECKS.value(false));
     }
@@ -94,9 +100,11 @@ public class BanditDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithNoBanditRunsButInstallsBanditAndUsesBandit() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "bandit-analysis-with-no-bandit-run-but-uses-bandit.yml")) {
-      testBanditRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("bandit-analysis-with-no-bandit-run-but-uses-bandit.yml")) {
+      testBanditRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_BANDIT_SCANS.value(false),
           USES_BANDIT_SCAN_CHECKS.value(false));
     }

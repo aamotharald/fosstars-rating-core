@@ -20,16 +20,16 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * This data provider tries to fill out the
- * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}
- * and {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#ARTIFACT_VERSION}
- * feature. This data provider gathers release info about {@link NpmArtifact}.
+ * This data provider tries to fill out the {@link
+ * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS} and
+ * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#ARTIFACT_VERSION} feature.
+ * This data provider gathers release info about {@link NpmArtifact}.
  */
 public class ReleaseInfoFromNpm extends AbstractReleaseInfoLoader {
 
   /**
    * Gathers release information about NPM artifacts.
-   * 
+   *
    * @param npmArtifact A {@link NpmArtifact}.
    * @return A {@link JsonNode} containing the NPM artifact release information.
    * @throws IOException If something goes wrong.

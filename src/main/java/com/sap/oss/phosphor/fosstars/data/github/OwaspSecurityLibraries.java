@@ -23,28 +23,21 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 
 /**
- * The data provider checks if a project uses security libraries offered by OWASP.
- * It fills out the following features:
+ * The data provider checks if a project uses security libraries offered by OWASP. It fills out the
+ * following features:
+ *
  * <ul>
- *   <li>
- *     {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_OWASP_ESAPI}
- *   </li>
- *   <li>
- *     {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_OWASP_JAVA_ENCODER}
- *   </li>
- *   <li>
- *     {@link
- *     com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_OWASP_JAVA_HTML_SANITIZER}
- *   </li>
+ *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_OWASP_ESAPI}
+ *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_OWASP_JAVA_ENCODER}
+ *   <li>{@link
+ *       com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_OWASP_JAVA_HTML_SANITIZER}
  * </ul>
  */
 public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
 
-  /**
-   * A set of supported scopes for dependencies.
-   */
-  private static final Set<String> SUPPORTED_GRADLE_SCOPES
-      = setOf("implementation", "compile", "runtime");
+  /** A set of supported scopes for dependencies. */
+  private static final Set<String> SUPPORTED_GRADLE_SCOPES =
+      setOf("implementation", "compile", "runtime");
 
   /**
    * Initializes a data provider.
@@ -156,8 +149,8 @@ public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
    * @return True if the library is found, false otherwise.
    */
   private static boolean foundOwaspJavaEncoderInGradle(List<String> file) {
-    return hasDependencyInGradle(file,
-        "org.owasp.encoder:encoder", "org.owasp.encoder:encoder-jsp");
+    return hasDependencyInGradle(
+        file, "org.owasp.encoder:encoder", "org.owasp.encoder:encoder-jsp");
   }
 
   /**
@@ -167,8 +160,8 @@ public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
    * @return True if the library is found, false otherwise.
    */
   private static boolean foundOwaspJavaHtmlSanitizerInGradle(List<String> file) {
-    return hasDependencyInGradle(file,
-        "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer");
+    return hasDependencyInGradle(
+        file, "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer");
   }
 
   /**
@@ -217,31 +210,21 @@ public class OwaspSecurityLibraries extends GitHubCachingDataProvider {
     return false;
   }
 
-  /**
-   * Creates a new visitor for searching OWASP ESAPI in a POM file.
-   */
+  /** Creates a new visitor for searching OWASP ESAPI in a POM file. */
   private static Visitor withVisitor() {
     return new Visitor();
   }
 
-  /**
-   * A visitor for searching security libraries in a POM file.
-   */
+  /** A visitor for searching security libraries in a POM file. */
   private static class Visitor extends AbstractModelVisitor {
 
-    /**
-     * This flag shows whether OWASP ESAPI was found in a POM file or not.
-     */
+    /** This flag shows whether OWASP ESAPI was found in a POM file or not. */
     private boolean foundOwaspEsapi = false;
 
-    /**
-     * This flag shows whether OWASP Java Encoder was found in a POM file or not.
-     */
+    /** This flag shows whether OWASP Java Encoder was found in a POM file or not. */
     private boolean foundOwaspJavaEncoder = false;
 
-    /**
-     * This flag shows whether OWASP Java HTML Sanitizer was found in a POM file or not.
-     */
+    /** This flag shows whether OWASP Java HTML Sanitizer was found in a POM file or not. */
     private boolean foundOwaspJavaHtmlSanitizer = false;
 
     @Override

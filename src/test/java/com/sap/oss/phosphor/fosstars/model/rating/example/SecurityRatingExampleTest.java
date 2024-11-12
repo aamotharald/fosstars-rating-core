@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class SecurityRatingExampleTest {
 
   @Test
-  public void testSerializeAndDeserialize() throws IOException  {
+  public void testSerializeAndDeserialize() throws IOException {
     SecurityRatingExample rating = new SecurityRatingExample();
     SecurityRatingExample clone = Json.read(Json.toBytes(rating), SecurityRatingExample.class);
     assertEquals(rating, clone);
@@ -140,5 +140,4 @@ public class SecurityRatingExampleTest {
       weights++;
     }
   }
-
 }

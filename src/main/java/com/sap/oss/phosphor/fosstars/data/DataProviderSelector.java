@@ -79,30 +79,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * The class selects data providers that gather data for calculating a rating.
- */
+/** The class selects data providers that gather data for calculating a rating. */
 public class DataProviderSelector {
 
-  /**
-   * This is a composite data provider
-   * that tries to figure out how much a subject is used.
-   */
-  private static final SimpleCompositeDataProvider PROJECT_USAGE_PROVIDER
-      = SimpleCompositeDataProvider.forFeature(PROJECT_USAGE)
+  /** This is a composite data provider that tries to figure out how much a subject is used. */
+  private static final SimpleCompositeDataProvider PROJECT_USAGE_PROVIDER =
+      SimpleCompositeDataProvider.forFeature(PROJECT_USAGE)
           .withInteractiveProvider(
               AskOptions.forFeature(PROJECT_USAGE)
                   .withQuestion("How many components use it?")
                   .withOptions(Quantity.class))
-          .withDefaultValue(PROJECT_USAGE.value(A_LOT)
-              .explain("Assume that the subject is used a lot (the worst case)"));
+          .withDefaultValue(
+              PROJECT_USAGE
+                  .value(A_LOT)
+                  .explain("Assume that the subject is used a lot (the worst case)"));
 
   /**
-   * This is a composite data provider
-   * that tries to figure out what kind of functionality a subject provides.
+   * This is a composite data provider that tries to figure out what kind of functionality a subject
+   * provides.
    */
-  private static final SimpleCompositeDataProvider FUNCTIONALITY_PROVIDER
-      = SimpleCompositeDataProvider.forFeature(FUNCTIONALITY)
+  private static final SimpleCompositeDataProvider FUNCTIONALITY_PROVIDER =
+      SimpleCompositeDataProvider.forFeature(FUNCTIONALITY)
           .withInteractiveProvider(
               AskOptions.forFeature(FUNCTIONALITY)
                   .withQuestion("What kind of functionality does it provide?")
@@ -110,42 +107,40 @@ public class DataProviderSelector {
           .withDefaultValue(FUNCTIONALITY.value(OTHER).explain("Just an assumption"));
 
   /**
-   * This is a composite data provider
-   * that tries to figure out what kind of functionality a subject provides.
+   * This is a composite data provider that tries to figure out what kind of functionality a subject
+   * provides.
    */
-  private static final SimpleCompositeDataProvider HANDLING_UNTRUSTED_DATA_LIKELIHOOD_PROVIDER
-      = SimpleCompositeDataProvider.forFeature(HANDLING_UNTRUSTED_DATA_LIKELIHOOD)
+  private static final SimpleCompositeDataProvider HANDLING_UNTRUSTED_DATA_LIKELIHOOD_PROVIDER =
+      SimpleCompositeDataProvider.forFeature(HANDLING_UNTRUSTED_DATA_LIKELIHOOD)
           .withInteractiveProvider(
               AskOptions.forFeature(HANDLING_UNTRUSTED_DATA_LIKELIHOOD)
                   .withQuestion("How likely does it handle untrusted data?")
                   .withOptions(Likelihood.class))
-          .withDefaultValue(HANDLING_UNTRUSTED_DATA_LIKELIHOOD.value(HIGH)
-              .explain("Assumed the worst case"));
+          .withDefaultValue(
+              HANDLING_UNTRUSTED_DATA_LIKELIHOOD.value(HIGH).explain("Assumed the worst case"));
 
   /**
    * This is a composite data provider that tries to figure out whether a subject is adopted or not.
    */
-  private static final SimpleCompositeDataProvider IS_ADOPTED_PROVIDER
-      = SimpleCompositeDataProvider.forFeature(IS_ADOPTED)
+  private static final SimpleCompositeDataProvider IS_ADOPTED_PROVIDER =
+      SimpleCompositeDataProvider.forFeature(IS_ADOPTED)
           .withInteractiveProvider(new AskYesOrNo(IS_ADOPTED, "Is it adopted by any team?"))
           .withDefaultValue(IS_ADOPTED.no().explain("Assumed that it is not adopted"));
 
   /**
-   * This is a composite data provider
-   * that tries to figure out what kind of data a subject processes.
+   * This is a composite data provider that tries to figure out what kind of data a subject
+   * processes.
    */
-  private static final SimpleCompositeDataProvider DATA_CONFIDENTIALITY_PROVIDER
-      = SimpleCompositeDataProvider.forFeature(DATA_CONFIDENTIALITY)
+  private static final SimpleCompositeDataProvider DATA_CONFIDENTIALITY_PROVIDER =
+      SimpleCompositeDataProvider.forFeature(DATA_CONFIDENTIALITY)
           .withInteractiveProvider(
               AskOptions.forFeature(DATA_CONFIDENTIALITY)
                   .withQuestion("What kind of data does it process?")
                   .withOptions(DataConfidentialityType.class))
-          .withDefaultValue(DATA_CONFIDENTIALITY.value(CONFIDENTIAL)
-              .explain("Assumed the worst case"));
+          .withDefaultValue(
+              DATA_CONFIDENTIALITY.value(CONFIDENTIAL).explain("Assumed the worst case"));
 
-  /**
-   * A list of available data providers.
-   */
+  /** A list of available data providers. */
   private final List<DataProvider> providers;
 
   /**
@@ -160,100 +155,101 @@ public class DataProviderSelector {
     requireNonNull(nvd, "Oops! NVD can't be null!");
 
     InfoAboutVulnerabilities infoAboutVulnerabilities = new InfoAboutVulnerabilities(fetcher, nvd);
-    EstimateImpactUsingKnownVulnerabilities estimateImpactUsingKnownVulnerabilities
-        = new EstimateImpactUsingKnownVulnerabilities(infoAboutVulnerabilities);
+    EstimateImpactUsingKnownVulnerabilities estimateImpactUsingKnownVulnerabilities =
+        new EstimateImpactUsingKnownVulnerabilities(infoAboutVulnerabilities);
 
-    SimpleCompositeDataProvider confidentialityImpactProvider
-        = SimpleCompositeDataProvider.forFeature(CONFIDENTIALITY_IMPACT)
-              .withNonInteractiveProvider(estimateImpactUsingKnownVulnerabilities)
-              .withInteractiveProvider(
-                  AskOptions.forFeature(CONFIDENTIALITY_IMPACT)
-                      .withQuestion("What is potential data confidentiality impact "
-                          + "in case of a security problem?")
-                      .withOptions(Impact.class))
-              .withDefaultValue(CONFIDENTIALITY_IMPACT.value(Impact.HIGH)
-                  .explain("Assumed the worst case"));
+    SimpleCompositeDataProvider confidentialityImpactProvider =
+        SimpleCompositeDataProvider.forFeature(CONFIDENTIALITY_IMPACT)
+            .withNonInteractiveProvider(estimateImpactUsingKnownVulnerabilities)
+            .withInteractiveProvider(
+                AskOptions.forFeature(CONFIDENTIALITY_IMPACT)
+                    .withQuestion(
+                        "What is potential data confidentiality impact "
+                            + "in case of a security problem?")
+                    .withOptions(Impact.class))
+            .withDefaultValue(
+                CONFIDENTIALITY_IMPACT.value(Impact.HIGH).explain("Assumed the worst case"));
 
-    SimpleCompositeDataProvider integrityImpactProvider
-        = SimpleCompositeDataProvider.forFeature(INTEGRITY_IMPACT)
-              .withNonInteractiveProvider(estimateImpactUsingKnownVulnerabilities)
-              .withInteractiveProvider(
-                  AskOptions.forFeature(INTEGRITY_IMPACT)
-                      .withQuestion(
-                          "What is potential data integrity impact in case of a security problem?")
-                      .withOptions(Impact.class))
-              .withDefaultValue(INTEGRITY_IMPACT.value(Impact.HIGH)
-                  .explain("Assumed the worst case"));
+    SimpleCompositeDataProvider integrityImpactProvider =
+        SimpleCompositeDataProvider.forFeature(INTEGRITY_IMPACT)
+            .withNonInteractiveProvider(estimateImpactUsingKnownVulnerabilities)
+            .withInteractiveProvider(
+                AskOptions.forFeature(INTEGRITY_IMPACT)
+                    .withQuestion(
+                        "What is potential data integrity impact in case of a security problem?")
+                    .withOptions(Impact.class))
+            .withDefaultValue(
+                INTEGRITY_IMPACT.value(Impact.HIGH).explain("Assumed the worst case"));
 
-    SimpleCompositeDataProvider availabilityImpactProvider
-        = SimpleCompositeDataProvider.forFeature(AVAILABILITY_IMPACT)
-              .withNonInteractiveProvider(estimateImpactUsingKnownVulnerabilities)
-              .withInteractiveProvider(
-                  AskOptions.forFeature(AVAILABILITY_IMPACT)
-                      .withQuestion(
-                          "What is potential availability impact in case of a security problem?")
-                      .withOptions(Impact.class))
-              .withDefaultValue(AVAILABILITY_IMPACT.value(Impact.HIGH)
-                  .explain("Assumed the worst case"));
+    SimpleCompositeDataProvider availabilityImpactProvider =
+        SimpleCompositeDataProvider.forFeature(AVAILABILITY_IMPACT)
+            .withNonInteractiveProvider(estimateImpactUsingKnownVulnerabilities)
+            .withInteractiveProvider(
+                AskOptions.forFeature(AVAILABILITY_IMPACT)
+                    .withQuestion(
+                        "What is potential availability impact in case of a security problem?")
+                    .withOptions(Impact.class))
+            .withDefaultValue(
+                AVAILABILITY_IMPACT.value(Impact.HIGH).explain("Assumed the worst case"));
 
-    providers = Arrays.asList(
-        new NumberOfCommits(fetcher),
-        new NumberOfContributors(fetcher),
-        new NumberOfStars(fetcher),
-        new NumberOfWatchers(fetcher),
-        new HasSecurityTeam(fetcher),
-        new HasCompanySupport(fetcher),
-        new HasSecurityPolicy(fetcher),
-        new HasBugBountyProgram(fetcher),
-        infoAboutVulnerabilities,
-        new IsApache(fetcher),
-        new IsEclipse(fetcher),
-        new CodeqlDataProvider(fetcher),
-        new BanditDataProvider(fetcher),
-        new GoSecDataProvider(fetcher),
-        new UsesSignedCommits(fetcher),
-        new UsesDependabot(fetcher),
-        new UsesSnyk(fetcher),
-        new ProgrammingLanguages(fetcher),
-        new PackageManagement(fetcher),
-        new UsesNoHttpTool(fetcher),
-        new UsesGithubForDevelopment(fetcher),
-        new UsesOwaspDependencyCheck(fetcher),
-        new UsesSanitizers(fetcher),
-        new UsesFindSecBugs(fetcher),
-        new FuzzedInOssFuzz(fetcher),
-        new SignsJarArtifacts(fetcher),
-        new OwaspSecurityLibraries(fetcher),
-        new UseReuseDataProvider(fetcher),
-        new ReleasesFromGitHub(fetcher),
-        new ReleaseInfoFromMaven(),
-        new ReleaseInfoFromNpm(),
-        new LicenseInfo(fetcher),
-        new ReadmeInfo(fetcher),
-        new TeamsInfo(fetcher),
-        new ContributingGuidelineInfo(fetcher),
-        new VulnerabilityAlertsInfo(fetcher),
-        new SecurityReviewsFromOpenSSF(fetcher),
-        new CodeOfConductGuidelineInfo(fetcher),
-        new NumberOfDependentProjectOnGitHub(fetcher),
-        new VulnerabilitiesFromOwaspDependencyCheck(),
-        new VulnerabilitiesFromNpmAudit(nvd),
-        new HasExecutableBinaries(fetcher),
-        new PylintDataProvider(fetcher),
-        new MyPyDataProvider(fetcher),
-        PROJECT_USAGE_PROVIDER,
-        FUNCTIONALITY_PROVIDER,
-        HANDLING_UNTRUSTED_DATA_LIKELIHOOD_PROVIDER,
-        IS_ADOPTED_PROVIDER,
-        DATA_CONFIDENTIALITY_PROVIDER,
-        confidentialityImpactProvider,
-        integrityImpactProvider,
-        availabilityImpactProvider,
+    providers =
+        Arrays.asList(
+            new NumberOfCommits(fetcher),
+            new NumberOfContributors(fetcher),
+            new NumberOfStars(fetcher),
+            new NumberOfWatchers(fetcher),
+            new HasSecurityTeam(fetcher),
+            new HasCompanySupport(fetcher),
+            new HasSecurityPolicy(fetcher),
+            new HasBugBountyProgram(fetcher),
+            infoAboutVulnerabilities,
+            new IsApache(fetcher),
+            new IsEclipse(fetcher),
+            new CodeqlDataProvider(fetcher),
+            new BanditDataProvider(fetcher),
+            new GoSecDataProvider(fetcher),
+            new UsesSignedCommits(fetcher),
+            new UsesDependabot(fetcher),
+            new UsesSnyk(fetcher),
+            new ProgrammingLanguages(fetcher),
+            new PackageManagement(fetcher),
+            new UsesNoHttpTool(fetcher),
+            new UsesGithubForDevelopment(fetcher),
+            new UsesOwaspDependencyCheck(fetcher),
+            new UsesSanitizers(fetcher),
+            new UsesFindSecBugs(fetcher),
+            new FuzzedInOssFuzz(fetcher),
+            new SignsJarArtifacts(fetcher),
+            new OwaspSecurityLibraries(fetcher),
+            new UseReuseDataProvider(fetcher),
+            new ReleasesFromGitHub(fetcher),
+            new ReleaseInfoFromMaven(),
+            new ReleaseInfoFromNpm(),
+            new LicenseInfo(fetcher),
+            new ReadmeInfo(fetcher),
+            new TeamsInfo(fetcher),
+            new ContributingGuidelineInfo(fetcher),
+            new VulnerabilityAlertsInfo(fetcher),
+            new SecurityReviewsFromOpenSSF(fetcher),
+            new CodeOfConductGuidelineInfo(fetcher),
+            new NumberOfDependentProjectOnGitHub(fetcher),
+            new VulnerabilitiesFromOwaspDependencyCheck(),
+            new VulnerabilitiesFromNpmAudit(nvd),
+            new HasExecutableBinaries(fetcher),
+            new PylintDataProvider(fetcher),
+            new MyPyDataProvider(fetcher),
+            PROJECT_USAGE_PROVIDER,
+            FUNCTIONALITY_PROVIDER,
+            HANDLING_UNTRUSTED_DATA_LIKELIHOOD_PROVIDER,
+            IS_ADOPTED_PROVIDER,
+            DATA_CONFIDENTIALITY_PROVIDER,
+            confidentialityImpactProvider,
+            integrityImpactProvider,
+            availabilityImpactProvider,
 
-        // currently, interactive data provider have to be added to the end, see issue #133
-        new AskAboutSecurityTeam(),
-        new AskAboutUnpatchedVulnerabilities()
-    );
+            // currently, interactive data provider have to be added to the end, see issue #133
+            new AskAboutSecurityTeam(),
+            new AskAboutUnpatchedVulnerabilities());
   }
 
   /**
@@ -271,8 +267,8 @@ public class DataProviderSelector {
 
   /**
    * Look for a data provider that can accept a config, and pass the config to this data provider.
-   * The following condition is used to select a data provider:
-   * provider's simple or canonical class name is equal to the config's name without the extension.
+   * The following condition is used to select a data provider: provider's simple or canonical class
+   * name is equal to the config's name without the extension.
    *
    * @param path A config file.
    * @throws IOException If something went wrong.

@@ -11,30 +11,20 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-/**
- * Maven artifact.
- */
+/** Maven artifact. */
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class MavenArtifact extends AbstractSubject implements Artifact {
 
-  /**
-   * Maven artifact's group id.
-   */
+  /** Maven artifact's group id. */
   private final String group;
 
-  /**
-   * Maven artifact's artifact id.
-   */
+  /** Maven artifact's artifact id. */
   private final String artifact;
 
-  /**
-   * Maven artifact's version.
-   */
+  /** Maven artifact's version. */
   private final String version;
 
-  /**
-   * Maven artifact's GitHub project.
-   */
+  /** Maven artifact's GitHub project. */
   private final GitHubProject project;
 
   /**
@@ -52,10 +42,12 @@ public class MavenArtifact extends AbstractSubject implements Artifact {
       @JsonProperty("version") @Nullable String version,
       @JsonProperty("project") @Nullable GitHubProject project) {
 
-    this.group = Objects.requireNonNull(group,
-        "Oh no! You gave me a null instead of a Maven group identifier!");
-    this.artifact = Objects.requireNonNull(artifact,
-        "Oh no! You gave me a null instead of a Maven artifact identifier!");
+    this.group =
+        Objects.requireNonNull(
+            group, "Oh no! You gave me a null instead of a Maven group identifier!");
+    this.artifact =
+        Objects.requireNonNull(
+            artifact, "Oh no! You gave me a null instead of a Maven artifact identifier!");
 
     this.version = version;
     this.project = project;

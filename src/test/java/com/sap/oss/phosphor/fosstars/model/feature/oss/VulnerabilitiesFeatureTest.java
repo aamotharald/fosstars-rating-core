@@ -19,25 +19,29 @@ public class VulnerabilitiesFeatureTest {
   public void value() {
     VulnerabilitiesFeature feature = new VulnerabilitiesFeature("test");
     assertNotNull(feature.name());
-    Value<Vulnerabilities> value = feature.value(
-        new Vulnerabilities(
-            newVulnerability("1")
-                .description("test")
-                .set(new CVSS.V3(5.1, Impact.HIGH, Impact.LOW, Impact.NONE))
-                .set(UNPATCHED)
-                .make()));
+    Value<Vulnerabilities> value =
+        feature.value(
+            new Vulnerabilities(
+                newVulnerability("1")
+                    .description("test")
+                    .set(new CVSS.V3(5.1, Impact.HIGH, Impact.LOW, Impact.NONE))
+                    .set(UNPATCHED)
+                    .make()));
     assertNotNull(value);
     assertFalse(value.isUnknown());
     Vulnerabilities vulnerabilities = value.get();
     assertNotNull(vulnerabilities);
     assertNotNull(vulnerabilities.entries());
     assertEquals(1, vulnerabilities.entries().size());
-    assertTrue(vulnerabilities.entries().contains(
-        newVulnerability("1")
-            .description("test")
-            .set(new CVSS.V3(5.1, Impact.HIGH, Impact.LOW, Impact.NONE))
-            .set(UNPATCHED)
-            .make()));
+    assertTrue(
+        vulnerabilities
+            .entries()
+            .contains(
+                newVulnerability("1")
+                    .description("test")
+                    .set(new CVSS.V3(5.1, Impact.HIGH, Impact.LOW, Impact.NONE))
+                    .set(UNPATCHED)
+                    .make()));
   }
 
   @Test

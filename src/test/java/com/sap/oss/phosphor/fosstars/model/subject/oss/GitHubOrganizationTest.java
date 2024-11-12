@@ -50,11 +50,10 @@ public class GitHubOrganizationTest {
     GitHubOrganization org = new GitHubOrganization("test");
     List<GitHubOrganization> list = Collections.singletonList(org);
     ObjectMapper mapper = Json.mapper();
-    TypeReference<List<GitHubOrganization>> typeReference
-        = new TypeReference<List<GitHubOrganization>>() {};
+    TypeReference<List<GitHubOrganization>> typeReference =
+        new TypeReference<List<GitHubOrganization>>() {};
     byte[] bytes = mapper.writerFor(typeReference).writeValueAsBytes(list);
     List<GitHubOrganization> clone = mapper.readValue(bytes, typeReference);
     assertEquals(list, clone);
   }
-
 }

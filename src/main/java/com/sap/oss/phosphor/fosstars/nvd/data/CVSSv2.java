@@ -8,30 +8,28 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * JSON Schema for Common Vulnerability Scoring System version 2.0
- */
+/** JSON Schema for Common Vulnerability Scoring System version 2.0 */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "version",
-    "vectorString",
-    "accessVector",
-    "accessComplexity",
-    "authentication",
-    "confidentialityImpact",
-    "integrityImpact",
-    "availabilityImpact",
-    "baseScore",
-    "exploitability",
-    "remediationLevel",
-    "reportConfidence",
-    "temporalScore",
-    "collateralDamagePotential",
-    "targetDistribution",
-    "confidentialityRequirement",
-    "integrityRequirement",
-    "availabilityRequirement",
-    "environmentalScore"
+  "version",
+  "vectorString",
+  "accessVector",
+  "accessComplexity",
+  "authentication",
+  "confidentialityImpact",
+  "integrityImpact",
+  "availabilityImpact",
+  "baseScore",
+  "exploitability",
+  "remediationLevel",
+  "reportConfidence",
+  "temporalScore",
+  "collateralDamagePotential",
+  "targetDistribution",
+  "confidentialityRequirement",
+  "integrityRequirement",
+  "availabilityRequirement",
+  "environmentalScore"
 })
 public class CVSSv2 {
 
@@ -123,7 +121,6 @@ public class CVSSv2 {
   }
 
   public enum AccessComplexityType {
-
     HIGH("HIGH"),
     MEDIUM("MEDIUM"),
     LOW("LOW");
@@ -161,11 +158,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum AccessVectorType {
-
     NETWORK("NETWORK"),
     ADJACENT_NETWORK("ADJACENT_NETWORK"),
     LOCAL("LOCAL");
@@ -203,11 +198,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum AuthenticationType {
-
     MULTIPLE("MULTIPLE"),
     SINGLE("SINGLE"),
     NONE("NONE");
@@ -245,11 +238,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum CiaRequirementType {
-
     LOW("LOW"),
     MEDIUM("MEDIUM"),
     HIGH("HIGH"),
@@ -291,7 +282,6 @@ public class CVSSv2 {
   }
 
   public enum CiaType {
-
     NONE("NONE"),
     PARTIAL("PARTIAL"),
     COMPLETE("COMPLETE");
@@ -329,11 +319,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum CollateralDamagePotentialType {
-
     NONE("NONE"),
     LOW("LOW"),
     LOW_MEDIUM("LOW_MEDIUM"),
@@ -341,8 +329,8 @@ public class CVSSv2 {
     HIGH("HIGH"),
     NOT_DEFINED("NOT_DEFINED");
 
-    private static final Map<String, CVSSv2.CollateralDamagePotentialType> CONSTANTS
-        = new HashMap<>();
+    private static final Map<String, CVSSv2.CollateralDamagePotentialType> CONSTANTS =
+        new HashMap<>();
 
     static {
       for (CVSSv2.CollateralDamagePotentialType c : values()) {
@@ -375,11 +363,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ExploitabilityType {
-
     UNPROVEN("UNPROVEN"),
     PROOF_OF_CONCEPT("PROOF_OF_CONCEPT"),
     FUNCTIONAL("FUNCTIONAL"),
@@ -419,11 +405,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum RemediationLevelType {
-
     OFFICIAL_FIX("OFFICIAL_FIX"),
     TEMPORARY_FIX("TEMPORARY_FIX"),
     WORKAROUND("WORKAROUND"),
@@ -463,11 +447,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ReportConfidenceType {
-
     UNCONFIRMED("UNCONFIRMED"),
     UNCORROBORATED("UNCORROBORATED"),
     CONFIRMED("CONFIRMED"),
@@ -506,11 +488,9 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum TargetDistributionType {
-
     NONE("NONE"),
     LOW("LOW"),
     MEDIUM("MEDIUM"),
@@ -550,15 +530,10 @@ public class CVSSv2 {
     public String value() {
       return this.value;
     }
-
   }
 
-
-  /**
-   * CVSS Version.
-   */
+  /** CVSS Version. */
   public enum Version {
-
     _2_0("2.0");
 
     private static final Map<String, CVSSv2.Version> CONSTANTS = new HashMap<>();
@@ -595,5 +570,4 @@ public class CVSSv2 {
       return this.value;
     }
   }
-
 }

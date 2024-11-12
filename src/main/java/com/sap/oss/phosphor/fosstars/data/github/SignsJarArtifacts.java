@@ -18,10 +18,11 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 
 /**
- * <p>This data provider checks if an open-source project signs its JAR artifacts. In particular,
- * the data provider checks if a project uses
- * <a href="http://maven.apache.org/plugins/maven-gpg-plugin/">Maven GPG plugin</a>.</p>
- * <p>The provider fills out the {@link OssFeatures#SIGNS_ARTIFACTS} feature.</p>
+ * This data provider checks if an open-source project signs its JAR artifacts. In particular, the
+ * data provider checks if a project uses <a
+ * href="http://maven.apache.org/plugins/maven-gpg-plugin/">Maven GPG plugin</a>.
+ *
+ * <p>The provider fills out the {@link OssFeatures#SIGNS_ARTIFACTS} feature.
  */
 public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
@@ -79,16 +80,12 @@ public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boo
         && "maven-gpg-plugin".equals(plugin.getArtifactId());
   }
 
-  /**
-   * Creates a new visitor for searching for Maven GPG plugin in a build section of a POM file.
-   */
+  /** Creates a new visitor for searching for Maven GPG plugin in a build section of a POM file. */
   private static Visitor withVisitor() {
     return new Visitor();
   }
 
-  /**
-   * A visitor for searching for Maven GPG plugin in a build section of a POM file.
-   */
+  /** A visitor for searching for Maven GPG plugin in a build section of a POM file. */
   private static class Visitor extends AbstractModelVisitor {
 
     /**
@@ -102,7 +99,5 @@ public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boo
         result = true;
       }
     }
-
   }
-
 }

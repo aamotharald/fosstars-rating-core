@@ -20,20 +20,19 @@ import org.junit.jupiter.api.Test;
 
 public class SecurityRiskIntroducedByOssTest {
 
-  private static final SecurityRiskIntroducedByOss RATING
-      = new SecurityRiskIntroducedByOss();
+  private static final SecurityRiskIntroducedByOss RATING = new SecurityRiskIntroducedByOss();
 
   @Test
   public void testJsonSerialization() throws IOException {
-    SecurityRiskIntroducedByOss clone
-        = Json.read(Json.toBytes(RATING), SecurityRiskIntroducedByOss.class);
+    SecurityRiskIntroducedByOss clone =
+        Json.read(Json.toBytes(RATING), SecurityRiskIntroducedByOss.class);
     assertEquals(RATING, clone);
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    SecurityRiskIntroducedByOss clone
-        = Yaml.read(Yaml.toBytes(RATING), SecurityRiskIntroducedByOss.class);
+    SecurityRiskIntroducedByOss clone =
+        Yaml.read(Yaml.toBytes(RATING), SecurityRiskIntroducedByOss.class);
     assertEquals(RATING, clone);
   }
 

@@ -20,18 +20,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
-/**
- * The class creates an instance of {@link GitHubDataFetcher} for tests.
- */
+/** The class creates an instance of {@link GitHubDataFetcher} for tests. */
 public class TestGitHubDataFetcherHolder {
 
   static {
     System.setProperty(REPOSITORIES_BASE_PATH_PROPERTY, ".fosstars/test_repositories");
   }
 
-  /**
-   * An instance of {@link GitHubDataFetcher} for tests.
-   */
+  /** An instance of {@link GitHubDataFetcher} for tests. */
   protected TestGitHubDataFetcher fetcher;
 
   /**
@@ -52,10 +48,11 @@ public class TestGitHubDataFetcherHolder {
   @AfterEach
   public void cleanup() throws IOException {
     List<Path> deletedPaths = new ArrayList<>();
-    fetcher.cleanup((url, repository, total) -> {
-      deletedPaths.add(repository.path());
-      return true;
-    });
+    fetcher.cleanup(
+        (url, repository, total) -> {
+          deletedPaths.add(repository.path());
+          return true;
+        });
 
     for (Path deletedPath : deletedPaths) {
       assertFalse(Files.exists(deletedPath));
@@ -66,9 +63,7 @@ public class TestGitHubDataFetcherHolder {
 
   public static class TestGitHubDataFetcher extends GitHubDataFetcher {
 
-    /**
-     * Test class constructor.
-     */
+    /** Test class constructor. */
     public TestGitHubDataFetcher(GitHub github) throws IOException {
       super(github, "test token");
     }
@@ -92,24 +87,25 @@ public class TestGitHubDataFetcherHolder {
     public static void addForTesting(GitHubProject project, LocalRepository repository) {
       LOCAL_REPOSITORIES.put(project.scm(), repository);
     }
-    
+
     /**
      * Add a new project to be considered while loading repository.
-     *  
+     *
      * @param project The {@link GitHubProject}.
      * @param projectDir The local {@link Path} for the {@link GitHubProject}.
      */
     static void addRepositoryInfoForTesting(GitHubProject project, Path projectDir) {
       LOCAL_REPOSITORIES.remove(project.scm());
-      LOCAL_REPOSITORIES_INFO.put(project.scm(),
+      LOCAL_REPOSITORIES_INFO.put(
+          project.scm(),
           new LocalRepositoryInfo(projectDir, Date.from(Instant.now()), project.scm()));
     }
 
     /**
      * Returns a resolved valid directory path of the project.
-     *  
+     *
      * @param project of type {@link GitHubProject}.
-     * @return path of type {@link Path}. 
+     * @return path of type {@link Path}.
      */
     static Path directoryFor(GitHubProject project) {
       return REPOSITORIES_BASE_PATH.resolve(project.name());

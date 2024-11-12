@@ -52,9 +52,10 @@ public class RiskImpactScoreVerificationTest {
             .expectedScore(DoubleInterval.closed(9, 10))
             .make());
 
-    Optional<RiskImpactScore> score = TestUtils.find(
-        RiskImpactScore.class,
-        RatingRepository.INSTANCE.rating(SecurityRiskIntroducedByOss.class));
+    Optional<RiskImpactScore> score =
+        TestUtils.find(
+            RiskImpactScore.class,
+            RatingRepository.INSTANCE.rating(SecurityRiskIntroducedByOss.class));
 
     if (!score.isPresent()) {
       fail("Could not find the score!");

@@ -7,18 +7,21 @@ import com.sap.oss.phosphor.fosstars.model.weight.ImmutableWeight;
 import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
 
 /**
- * <p>The score shows how an open-source project uses static analysis for security testing.</p>
- * <p>It's based on the following sub-scores:</p>
+ * The score shows how an open-source project uses static analysis for security testing.
+ *
+ * <p>It's based on the following sub-scores:
+ *
  * <ul>
- *   <li>{@link CodeqlScore}</li>
- *   <li>{@link FindSecBugsScore}</li>
- *   <li>{@link BanditScore}</li>
- *   <li>{@link PylintScore}</li>
- *   <li>{@link MyPyScore}</li>
- *   <li>{@link GoSecScore}</li>
+ *   <li>{@link CodeqlScore}
+ *   <li>{@link FindSecBugsScore}
+ *   <li>{@link BanditScore}
+ *   <li>{@link PylintScore}
+ *   <li>{@link MyPyScore}
+ *   <li>{@link GoSecScore}
  * </ul>
+ *
  * <p>The above sub-scores may not apply to all projects. The score considers only the sub-scores
- * that is applicable to a particular project.</p>
+ * that is applicable to a particular project.
  */
 public class StaticAnalysisScore extends WeightedCompositeScore {
 
@@ -37,13 +40,17 @@ public class StaticAnalysisScore extends WeightedCompositeScore {
         .set(GoSecScore.class, new ImmutableWeight(0.3));
   }
 
-  /**
-   * Initializes a new score.
-   */
+  /** Initializes a new score. */
   public StaticAnalysisScore() {
-    super("How a project uses static analysis for security testing",
-        setOf(new CodeqlScore(), new FindSecBugsScore(), new BanditScore(),
-            new PylintScore(), new MyPyScore(), new GoSecScore()),
+    super(
+        "How a project uses static analysis for security testing",
+        setOf(
+            new CodeqlScore(),
+            new FindSecBugsScore(),
+            new BanditScore(),
+            new PylintScore(),
+            new MyPyScore(),
+            new GoSecScore()),
         initWeights());
   }
 }

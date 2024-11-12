@@ -28,19 +28,15 @@ public class NumberOfContributorsLastMonthExampleTest {
 
   @Test
   public void positive() {
-    assertEquals(
-        Integer.valueOf(0),
-        NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0).get());
-    assertEquals(
-        Integer.valueOf(1),
-        NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(1).get());
+    assertEquals(Integer.valueOf(0), NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0).get());
+    assertEquals(Integer.valueOf(1), NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(1).get());
     assertFalse(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0).isUnknown());
   }
 
   @Test
   public void negative() {
-    assertThrows(IllegalArgumentException.class, () ->
-      NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(-1));
+    assertThrows(
+        IllegalArgumentException.class, () -> NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(-1));
   }
 
   @Test
@@ -48,5 +44,4 @@ public class NumberOfContributorsLastMonthExampleTest {
     Value<Integer> value = NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.unknown();
     assertTrue(value.isUnknown());
   }
-
 }

@@ -19,10 +19,8 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testBasicFunctionality() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
     ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(7));
 
     assertScore(
@@ -31,21 +29,18 @@ public class ArtifactVersionUpToDateScoreTest {
         setOf(
             RELEASED_ARTIFACT_VERSIONS.value(
                 ArtifactVersions.of(version100, version110, version120)),
-            ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()))
-        ));
+            ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()))));
   }
 
   @Test
   public void testCurrentVersionUnknown() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
     ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(7));
 
     ArtifactVersionUpToDateScore score = new ArtifactVersionUpToDateScore();
-    Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
-        ArtifactVersions.of(version100, version110, version120));
+    Value<ArtifactVersions> versions =
+        RELEASED_ARTIFACT_VERSIONS.value(ArtifactVersions.of(version100, version110, version120));
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
@@ -54,15 +49,13 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testCurrentReleasedVersion() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
     ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(7));
 
     ArtifactVersionUpToDateScore score = new ArtifactVersionUpToDateScore();
-    Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
-        ArtifactVersions.of(version100, version110, version120));
+    Value<ArtifactVersions> versions =
+        RELEASED_ARTIFACT_VERSIONS.value(ArtifactVersions.of(version100, version110, version120));
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
@@ -71,15 +64,13 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testTwoMonthOldVersionButNewerAvailable() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
     ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(7));
 
     ArtifactVersionUpToDateScore score = new ArtifactVersionUpToDateScore();
-    Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
-        ArtifactVersions.of(version100, version110, version120));
+    Value<ArtifactVersions> versions =
+        RELEASED_ARTIFACT_VERSIONS.value(ArtifactVersions.of(version100, version110, version120));
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
@@ -88,14 +79,12 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testTwoMonthOldVersion() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(2));
 
     ArtifactVersionUpToDateScore score = new ArtifactVersionUpToDateScore();
-    Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
-        ArtifactVersions.of(version100, version110));
+    Value<ArtifactVersions> versions =
+        RELEASED_ARTIFACT_VERSIONS.value(ArtifactVersions.of(version100, version110));
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
@@ -104,14 +93,12 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testEightMonthOldVersion() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(8));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(8));
 
     ArtifactVersionUpToDateScore score = new ArtifactVersionUpToDateScore();
-    Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
-        ArtifactVersions.of(version100, version110));
+    Value<ArtifactVersions> versions =
+        RELEASED_ARTIFACT_VERSIONS.value(ArtifactVersions.of(version100, version110));
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
@@ -120,12 +107,11 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testFourteenMonthOldVersion() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
 
     ArtifactVersionUpToDateScore score = new ArtifactVersionUpToDateScore();
-    Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
-        ArtifactVersions.of(version100));
+    Value<ArtifactVersions> versions =
+        RELEASED_ARTIFACT_VERSIONS.value(ArtifactVersions.of(version100));
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
@@ -134,14 +120,12 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testFourteenMonthOldVersionNewerAvailable() {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(8));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(8));
 
     ArtifactVersionUpToDateScore score = new ArtifactVersionUpToDateScore();
-    Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
-        ArtifactVersions.of(version100, version110));
+    Value<ArtifactVersions> versions =
+        RELEASED_ARTIFACT_VERSIONS.value(ArtifactVersions.of(version100, version110));
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
@@ -150,7 +134,7 @@ public class ArtifactVersionUpToDateScoreTest {
 
   @Test
   public void testWithNoInfo() {
-    assertThrows(IllegalArgumentException.class, () ->
-      new ArtifactVersionUpToDateScore().calculate());
+    assertThrows(
+        IllegalArgumentException.class, () -> new ArtifactVersionUpToDateScore().calculate());
   }
 }

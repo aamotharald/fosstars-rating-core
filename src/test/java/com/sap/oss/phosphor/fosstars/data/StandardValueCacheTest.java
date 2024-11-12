@@ -96,8 +96,8 @@ public class StandardValueCacheTest {
     Value<Integer> value = NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0);
     Date inTwoSecond = new Date(System.currentTimeMillis() + 2 * 1000);
     cache.put("test", value, inTwoSecond);
-    Optional<Value<Integer>> something
-        = cache.get("test", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE);
+    Optional<Value<Integer>> something =
+        cache.get("test", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE);
     assertTrue(something.isPresent());
     Thread.sleep(5000); // sleep for 5 seconds
     something = cache.get("test", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE);

@@ -20,36 +20,31 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHTeam;
 
 /**
- * This data provider gathers info about project's teams on GitHub.
- * It fills out the following features:
+ * This data provider gathers info about project's teams on GitHub. It fills out the following
+ * features:
+ *
  * <ul>
- *   <li>{@link OssFeatures#HAS_ENOUGH_TEAMS_ON_GITHUB}</li>
- *   <li>{@link OssFeatures#HAS_ADMIN_TEAM_ON_GITHUB}</li>
- *   <li>{@link OssFeatures#HAS_ENOUGH_ADMINS_ON_GITHUB}</li>
- *   <li>{@link OssFeatures#HAS_TEAM_WITH_PUSH_PRIVILEGES_ON_GITHUB}</li>
- *   <li>{@link OssFeatures#HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB}</li>
+ *   <li>{@link OssFeatures#HAS_ENOUGH_TEAMS_ON_GITHUB}
+ *   <li>{@link OssFeatures#HAS_ADMIN_TEAM_ON_GITHUB}
+ *   <li>{@link OssFeatures#HAS_ENOUGH_ADMINS_ON_GITHUB}
+ *   <li>{@link OssFeatures#HAS_TEAM_WITH_PUSH_PRIVILEGES_ON_GITHUB}
+ *   <li>{@link OssFeatures#HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB}
  * </ul>
  */
 public class TeamsInfo extends GitHubCachingDataProvider {
 
-  /**
-   * A list of permissions that allows pushing to a repository on GitHub.
-   */
+  /** A list of permissions that allows pushing to a repository on GitHub. */
   private static final List<String> PUSH_PRIVILEGES = Arrays.asList("admin", "push");
 
-  /**
-   * A minimal number of teams to fulfill {@link OssFeatures#HAS_ENOUGH_TEAMS_ON_GITHUB}.
-   */
+  /** A minimal number of teams to fulfill {@link OssFeatures#HAS_ENOUGH_TEAMS_ON_GITHUB}. */
   private int minTeams = 2;
 
-  /**
-   * A minimal number of admins to fulfill {@link OssFeatures#HAS_ADMIN_TEAM_ON_GITHUB}.
-   */
+  /** A minimal number of admins to fulfill {@link OssFeatures#HAS_ADMIN_TEAM_ON_GITHUB}. */
   private int minAdmins = 2;
 
   /**
-   * A minimal number of members in a team
-   * to fulfill {@link OssFeatures#HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB}.
+   * A minimal number of members in a team to fulfill {@link
+   * OssFeatures#HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB}.
    */
   private int minMembers = 2;
 
@@ -93,8 +88,8 @@ public class TeamsInfo extends GitHubCachingDataProvider {
   }
 
   /**
-   * Set a minimal number of members in a team
-   * to fulfill {@link OssFeatures#HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB}.
+   * Set a minimal number of members in a team to fulfill {@link
+   * OssFeatures#HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB}.
    *
    * @param n The number.
    * @return This data provider.
@@ -125,16 +120,24 @@ public class TeamsInfo extends GitHubCachingDataProvider {
     GHRepository repository = fetcher.repositoryFor(project);
     ValueSet values = new ValueHashSet();
 
-    values.update(HAS_ENOUGH_TEAMS_ON_GITHUB.value(repository.getTeams().size() >= minTeams)
-        .explainIf(false, "The project should have at least %d teams", minTeams));
-    values.update(HAS_ADMIN_TEAM_ON_GITHUB.value(false)
-        .explain("The project does not have an admin team"));
-    values.update(HAS_ENOUGH_ADMINS_ON_GITHUB.value(false)
-        .explain("The project should have at least %n admins", minAdmins));
-    values.update(HAS_TEAM_WITH_PUSH_PRIVILEGES_ON_GITHUB.value(false)
-        .explain("The project does not have a team with push privileges"));
-    values.update(HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB.value(false)
-        .explain("The project should have at least %d team members", minMembers));
+    values.update(
+        HAS_ENOUGH_TEAMS_ON_GITHUB
+            .value(repository.getTeams().size() >= minTeams)
+            .explainIf(false, "The project should have at least %d teams", minTeams));
+    values.update(
+        HAS_ADMIN_TEAM_ON_GITHUB.value(false).explain("The project does not have an admin team"));
+    values.update(
+        HAS_ENOUGH_ADMINS_ON_GITHUB
+            .value(false)
+            .explain("The project should have at least %n admins", minAdmins));
+    values.update(
+        HAS_TEAM_WITH_PUSH_PRIVILEGES_ON_GITHUB
+            .value(false)
+            .explain("The project does not have a team with push privileges"));
+    values.update(
+        HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB
+            .value(false)
+            .explain("The project should have at least %d team members", minMembers));
 
     for (GHTeam team : repository.getTeams()) {
       if ("admin".equals(team.getPermission())) {
@@ -153,5 +156,4 @@ public class TeamsInfo extends GitHubCachingDataProvider {
 
     return values;
   }
-
 }

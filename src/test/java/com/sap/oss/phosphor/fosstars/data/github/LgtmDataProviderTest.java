@@ -151,5 +151,4 @@ public class LgtmDataProviderTest extends TestGitHubDataFetcherHolder {
       assertTrue(values.of(WORST_LGTM_GRADE).get().isUnknown());
     }
   }
-
 }

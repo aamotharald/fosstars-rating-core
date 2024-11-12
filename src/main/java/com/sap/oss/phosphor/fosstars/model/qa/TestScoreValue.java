@@ -9,29 +9,19 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import java.util.List;
 import java.util.function.Predicate;
 
-/**
- * A score value for a test vector.
- */
+/** A score value for a test vector. */
 public class TestScoreValue implements Value<Double> {
 
-  /**
-   * A class name of a score which the value is for.
-   */
+  /** A class name of a score which the value is for. */
   private final String scoreClassName;
 
-  /**
-   * A score value.
-   */
+  /** A score value. */
   private final Double value;
 
-  /**
-   * Shows whether or not the value is unknown.
-   */
+  /** Shows whether or not the value is unknown. */
   private final boolean isUnknown;
 
-  /**
-   * Shows whether or not the value is N/A.
-   */
+  /** Shows whether or not the value is N/A. */
   private final boolean isNotApplicable;
 
   /**

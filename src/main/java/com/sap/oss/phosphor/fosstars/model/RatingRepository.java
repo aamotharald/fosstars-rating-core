@@ -33,14 +33,10 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * This is a repository for all available ratings.
- */
+/** This is a repository for all available ratings. */
 public class RatingRepository {
 
-  /**
-   * An interface of a factory that can create a rating.
-   */
+  /** An interface of a factory that can create a rating. */
   private interface RatingFactory {
 
     /**
@@ -52,24 +48,16 @@ public class RatingRepository {
     Rating create() throws IOException;
   }
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private static final Logger LOGGER = LogManager.getLogger(RatingRepository.class);
 
-  /**
-   * Singleton.
-   */
+  /** Singleton. */
   public static final RatingRepository INSTANCE = new RatingRepository();
 
-  /**
-   * A mapping from a version to a rating.
-   */
+  /** A mapping from a version to a rating. */
   private final Map<Class<? extends Rating>, Rating> ratings = new HashMap<>();
 
-  /**
-   * This constructor loads all available ratings.
-   */
+  /** This constructor loads all available ratings. */
   private RatingRepository() {
     register(this::securityRatingExample);
     register(this::ossSecurityRating);
@@ -98,24 +86,30 @@ public class RatingRepository {
    */
   private OssSecurityRating ossSecurityRating() throws IOException {
     OssSecurityScore ossSecurityScore = new OssSecurityScore();
-    ossSecurityScore.weights().update(
-        loadScoreWeights("com/sap/oss/phosphor/fosstars/model/score/oss/"
-            + "OssSecurityScoreWeights.yml"));
+    ossSecurityScore
+        .weights()
+        .update(
+            loadScoreWeights(
+                "com/sap/oss/phosphor/fosstars/model/score/oss/" + "OssSecurityScoreWeights.yml"));
 
     Optional<ProjectSecurityTestingScore> projectSecurityTestingScore =
         ossSecurityScore.subScore(ProjectSecurityTestingScore.class);
     if (!projectSecurityTestingScore.isPresent()) {
-      throw new IllegalStateException(
-          "Oh no! Could not find the project security testing score!");
+      throw new IllegalStateException("Oh no! Could not find the project security testing score!");
     }
 
-    projectSecurityTestingScore.get().weights().update(
-        loadScoreWeights("com/sap/oss/phosphor/fosstars/model/score/oss/"
-            + "ProjectSecurityTestingScoreWeights.yml"));
+    projectSecurityTestingScore
+        .get()
+        .weights()
+        .update(
+            loadScoreWeights(
+                "com/sap/oss/phosphor/fosstars/model/score/oss/"
+                    + "ProjectSecurityTestingScoreWeights.yml"));
 
-    Thresholds thresholds = load(
-        "com/sap/oss/phosphor/fosstars/model/rating/oss/OssSecurityRatingThresholds.json",
-        Thresholds.class);
+    Thresholds thresholds =
+        load(
+            "com/sap/oss/phosphor/fosstars/model/rating/oss/OssSecurityRatingThresholds.json",
+            Thresholds.class);
 
     return new OssSecurityRating(ossSecurityScore, thresholds);
   }
@@ -138,16 +132,20 @@ public class RatingRepository {
     OssSecurityScore ossSecurityScore = rating(OssSecurityRating.class).score();
 
     ArtifactVersionSecurityScore artifactVersionSecurityScore = new ArtifactVersionSecurityScore();
-    artifactVersionSecurityScore.weights().update(
-        loadScoreWeights("com/sap/oss/phosphor/fosstars/model/score/oss/"
-            + "OssArtifactSecurityScoreWeights.json"));
+    artifactVersionSecurityScore
+        .weights()
+        .update(
+            loadScoreWeights(
+                "com/sap/oss/phosphor/fosstars/model/score/oss/"
+                    + "OssArtifactSecurityScoreWeights.json"));
 
     OssArtifactSecurityScore ossArtifactSecurityScore =
         new OssArtifactSecurityScore(artifactVersionSecurityScore, ossSecurityScore);
 
-    OssArtifactSecurityRating.Thresholds thresholds = load(
-        "com/sap/oss/phosphor/fosstars/model/rating/oss/OssArtifactSecurityRatingThresholds.json",
-        OssArtifactSecurityRating.Thresholds.class);
+    OssArtifactSecurityRating.Thresholds thresholds =
+        load(
+            "com/sap/oss/phosphor/fosstars/model/rating/oss/OssArtifactSecurityRatingThresholds.json",
+            OssArtifactSecurityRating.Thresholds.class);
 
     return new OssArtifactSecurityRating(ossArtifactSecurityScore, thresholds);
   }
@@ -159,12 +157,12 @@ public class RatingRepository {
    */
   private SecurityRiskIntroducedByOss securityRiskIntroducedByOssRating() {
     OssSecurityScore ossSecurityScore = rating(OssSecurityRating.class).score();
-    RiskLikelihoodCoefficient likelihoodCoefficient
-        = new RiskLikelihoodCoefficient(ossSecurityScore, new AdoptedRiskLikelihoodFactor());
-    RiskLikelihoodScore likelihoodScore
-        = new RiskLikelihoodScore(likelihoodCoefficient, new RiskLikelihoodFactors());
-    CalculatedSecurityRiskIntroducedByOss risk
-        = new CalculatedSecurityRiskIntroducedByOss(likelihoodScore, new RiskImpactScore());
+    RiskLikelihoodCoefficient likelihoodCoefficient =
+        new RiskLikelihoodCoefficient(ossSecurityScore, new AdoptedRiskLikelihoodFactor());
+    RiskLikelihoodScore likelihoodScore =
+        new RiskLikelihoodScore(likelihoodCoefficient, new RiskLikelihoodFactors());
+    CalculatedSecurityRiskIntroducedByOss risk =
+        new CalculatedSecurityRiskIntroducedByOss(likelihoodScore, new RiskImpactScore());
     return new SecurityRiskIntroducedByOss(risk);
   }
 
@@ -189,8 +187,8 @@ public class RatingRepository {
   }
 
   /**
-   * Calls a rating factory to create a rating,
-   * and then registers the created rating in the repository.
+   * Calls a rating factory to create a rating, and then registers the created rating in the
+   * repository.
    *
    * @param factory The rating factory.
    */
@@ -258,11 +256,10 @@ public class RatingRepository {
   }
 
   /**
-   * Loads a serialized object from a resource specified by a path. First, the method checks
-   * if the path points to an existing file,
-   * and if so, the method tries to load the object from the file.
-   * If the path doesn't point to an existing file,
-   * then the method tries to load the object from a resource.
+   * Loads a serialized object from a resource specified by a path. First, the method checks if the
+   * path points to an existing file, and if so, the method tries to load the object from the file.
+   * If the path doesn't point to an existing file, then the method tries to load the object from a
+   * resource.
    *
    * @param path The path to a stored rating.
    * @param clazz The class of the object to be loaded.

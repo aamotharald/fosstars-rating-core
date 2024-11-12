@@ -20,9 +20,7 @@ public class AbstractSubjectTest {
       super(ratingValue, ratingValueDate);
     }
 
-    public TestSubject() {
-
-    }
+    public TestSubject() {}
 
     @Override
     public String purl() {
@@ -55,12 +53,10 @@ public class AbstractSubjectTest {
     assertNotEquals(firstSubject, secondSubject);
 
     Date date = new Date();
-    firstSubject = new TestSubject(
-        new RatingValue(new ScoreValue(SECURITY_SCORE_EXAMPLE), OKAY),
-        date);
-    secondSubject = new TestSubject(
-        new RatingValue(new ScoreValue(SECURITY_SCORE_EXAMPLE), OKAY),
-        date);
+    firstSubject =
+        new TestSubject(new RatingValue(new ScoreValue(SECURITY_SCORE_EXAMPLE), OKAY), date);
+    secondSubject =
+        new TestSubject(new RatingValue(new ScoreValue(SECURITY_SCORE_EXAMPLE), OKAY), date);
     assertEquals(firstSubject, secondSubject);
     assertEquals(firstSubject.hashCode(), secondSubject.hashCode());
   }

@@ -9,9 +9,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * A set of security reviews.
- */
+/** A set of security reviews. */
 public class SecurityReviews implements Set<SecurityReview> {
 
   /**
@@ -23,17 +21,11 @@ public class SecurityReviews implements Set<SecurityReview> {
     return new SecurityReviews();
   }
 
-  /**
-   * Security reviews.
-   */
+  /** Security reviews. */
   private final Set<SecurityReview> elements = new HashSet<>();
 
-  /**
-   * Create an empty set of security reviews.
-   */
-  public SecurityReviews() {
-
-  }
+  /** Create an empty set of security reviews. */
+  public SecurityReviews() {}
 
   /**
    * Create a set of security reviews.

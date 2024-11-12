@@ -28,5 +28,4 @@ public class LanguageTest {
     assertEquals(CPP, Language.parse("C++"));
     assertEquals(C, Language.parse("C"));
   }
-
 }

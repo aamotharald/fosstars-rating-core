@@ -7,9 +7,7 @@ import com.sap.oss.phosphor.fosstars.model.Score;
 import com.sap.oss.phosphor.fosstars.model.Tunable;
 import com.sap.oss.phosphor.fosstars.model.Visitor;
 
-/**
- * The visitor tries to make objects immutable if they implement the {@link Tunable} interface.
- */
+/** The visitor tries to make objects immutable if they implement the {@link Tunable} interface. */
 public class MakeImmutable implements Visitor {
 
   @Override
@@ -33,8 +31,8 @@ public class MakeImmutable implements Visitor {
   }
 
   /**
-   * Checks if an object implements the {@link Tunable} interface, and if so,
-   * try to make it immutable.
+   * Checks if an object implements the {@link Tunable} interface, and if so, try to make it
+   * immutable.
    *
    * @param object The object to be examined.
    */

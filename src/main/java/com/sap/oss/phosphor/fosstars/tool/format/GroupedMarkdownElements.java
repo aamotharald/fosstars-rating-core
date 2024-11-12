@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>A group of Markdown elements.</p>
- * <p>A group may be used in a multiline element of a Markdown list.
- * For example:</p>
+ * A group of Markdown elements.
+ *
+ * <p>A group may be used in a multiline element of a Markdown list. For example:
+ *
  * <pre>
  *   1.  First element of the group.
  *       Second element of the group.
@@ -21,9 +22,7 @@ import java.util.List;
  */
 public class GroupedMarkdownElements extends AbstractMarkdownElement {
 
-  /**
-   * Elements of the group.
-   */
+  /** Elements of the group. */
   private final List<MarkdownElement> elements;
 
   /**

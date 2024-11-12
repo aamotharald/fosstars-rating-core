@@ -15,13 +15,15 @@ public class OssAdviceContentYamlStorageTest {
 
   @Test
   public void testDefault() throws MalformedURLException {
-    List<AdviceContent> advice = OssAdviceContentYamlStorage.DEFAULT.adviceFor(
-            USES_CODEQL_CHECKS, EMPTY_OSS_CONTEXT);
+    List<AdviceContent> advice =
+        OssAdviceContentYamlStorage.DEFAULT.adviceFor(USES_CODEQL_CHECKS, EMPTY_OSS_CONTEXT);
     assertFalse(advice.isEmpty());
     assertFalse(advice.get(0).text().isEmpty());
     assertFalse(advice.get(0).links().isEmpty());
 
-    assertTrue(OssAdviceContentYamlStorage.DEFAULT.adviceFor(
-        NUMBER_OF_COLLABORATORS, EMPTY_OSS_CONTEXT).isEmpty());
+    assertTrue(
+        OssAdviceContentYamlStorage.DEFAULT
+            .adviceFor(NUMBER_OF_COLLABORATORS, EMPTY_OSS_CONTEXT)
+            .isEmpty());
   }
 }

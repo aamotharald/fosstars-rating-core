@@ -3,12 +3,12 @@ package com.sap.oss.phosphor.fosstars.model;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
- * An interface for a feature.
- * All implementations must:
+ * An interface for a feature. All implementations must:
+ *
  * <ul>
- *   <li>provide equals() and hashCode() methods.</li>
- *   <li>be stateless</li>
- *   <li>support serialization to JSON with Jackson</li>
+ *   <li>provide equals() and hashCode() methods.
+ *   <li>be stateless
+ *   <li>support serialization to JSON with Jackson
  * </ul>
  *
  * @param <T> Type of data of a feature
@@ -24,8 +24,8 @@ public interface Feature<T> {
   String name();
 
   /**
-   * Tries to convert an object to a feature value.
-   * Throws an exception if the object can't be converted.
+   * Tries to convert an object to a feature value. Throws an exception if the object can't be
+   * converted.
    *
    * @param object The object to be converted to a value.
    * @return An instance of {@link Value} initialized with the object.
@@ -34,8 +34,8 @@ public interface Feature<T> {
   Value<T> value(T object);
 
   /**
-   * Tries to convert a string to a feature value.
-   * Throws an exception if the object can't be converted.
+   * Tries to convert a string to a feature value. Throws an exception if the object can't be
+   * converted.
    *
    * @param string The string to be converted.
    * @return An instance of {@link Value} initialized with the object.

@@ -13,44 +13,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * The class holds a score value produced by {@link Score}.
- */
+/** The class holds a score value produced by {@link Score}. */
 public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Confidence {
 
-  /**
-   * A score.
-   */
+  /** A score. */
   private final Score score;
 
-  /**
-   * A score value.
-   */
+  /** A score value. */
   private double value;
 
-  /**
-   * A confidence.
-   */
+  /** A confidence. */
   private double confidence;
 
-  /**
-   * A weight of the score.
-   */
+  /** A weight of the score. */
   private double weight;
 
-  /**
-   * A list of values which were used to build the score value.
-   */
+  /** A list of values which were used to build the score value. */
   private final List<Value<?>> usedValues;
 
-  /**
-   * A flag that tells if the score value is unknown.
-   */
+  /** A flag that tells if the score value is unknown. */
   private boolean isUnknown;
 
-  /**
-   * A flag that tells if the score value is not applicable.
-   */
+  /** A flag that tells if the score value is not applicable. */
   private boolean isNotApplicable;
 
   /**
@@ -175,8 +159,8 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
   }
 
   /**
-   * Get a list of feature values that are used in the score value
-   * or in its underlying score values.
+   * Get a list of feature values that are used in the score value or in its underlying score
+   * values.
    *
    * @return A list of feature values.
    */
@@ -185,8 +169,7 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
   }
 
   /**
-   * Get a list of feature values that are used in a score value
-   * or in its underlying score values.
+   * Get a list of feature values that are used in a score value or in its underlying score values.
    *
    * @param scoreValue The score value to be checked.
    * @return A list of feature values.
@@ -295,9 +278,8 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
   }
 
   /**
-   * Increase the score with a specified value.
-   * If the resulting score value is more than {@link Score#MAX},
-   * then the score value is set to {@link Score#MAX}.
+   * Increase the score with a specified value. If the resulting score value is more than {@link
+   * Score#MAX}, then the score value is set to {@link Score#MAX}.
    *
    * @param delta The value (must be positive).
    * @return This ScoreValue instance.
@@ -315,9 +297,8 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
   }
 
   /**
-   * Decrease the score with a specified value.
-   * In the resulting score value is less than {@link Score#MIN},
-   * then the score value is set to {@link Score#MIN}.
+   * Decrease the score with a specified value. In the resulting score value is less than {@link
+   * Score#MIN}, then the score value is set to {@link Score#MIN}.
    *
    * @param delta The value (must be positive).
    * @return This ScoreValue instance.
@@ -395,9 +376,11 @@ public class ScoreValue extends AbstractValue<Double, ScoreValue> implements Con
     ScoreValue that = (ScoreValue) o;
     return Double.compare(that.value, value) == 0
         && Double.compare(that.confidence, confidence) == 0
-        && Double.compare(that.weight, weight) == 0 && isUnknown == that.isUnknown
+        && Double.compare(that.weight, weight) == 0
+        && isUnknown == that.isUnknown
         && isNotApplicable == that.isNotApplicable
-        && score.equals(that.score) && usedValues.equals(that.usedValues);
+        && score.equals(that.score)
+        && usedValues.equals(that.usedValues);
   }
 
   @Override

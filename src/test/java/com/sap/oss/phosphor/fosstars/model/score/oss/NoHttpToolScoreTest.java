@@ -21,14 +21,12 @@ public class NoHttpToolScoreTest {
 
   @Test
   public void testWithoutUsesNoHttpValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(PACKAGE_MANAGERS.unknown()));
+    assertThrows(IllegalArgumentException.class, () -> SCORE.calculate(PACKAGE_MANAGERS.unknown()));
   }
 
   @Test
   public void testWithoutPackageManagersValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(USES_NOHTTP.unknown()));
+    assertThrows(IllegalArgumentException.class, () -> SCORE.calculate(USES_NOHTTP.unknown()));
   }
 
   @Test
@@ -38,22 +36,20 @@ public class NoHttpToolScoreTest {
 
   @Test
   public void testVerification() throws VerificationFailedException, IOException {
-    TestVectors vectors = new TestVectors(
-        newTestVector()
-            .alias("test")
-            .expectUnknownScore()
-            .set(USES_NOHTTP.unknown())
-            .set(PACKAGE_MANAGERS.unknown())
-            .make()
-    );
+    TestVectors vectors =
+        new TestVectors(
+            newTestVector()
+                .alias("test")
+                .expectUnknownScore()
+                .set(USES_NOHTTP.unknown())
+                .set(PACKAGE_MANAGERS.unknown())
+                .make());
 
     Path file = Files.createTempFile("NoHttpToolScoreTestVectors", "test");
     try {
       vectors.storeToYaml(file);
 
-      ScoreVerification verification = new ScoreVerification(
-          SCORE,
-          TestVectors.loadFromYaml(file));
+      ScoreVerification verification = new ScoreVerification(SCORE, TestVectors.loadFromYaml(file));
 
       verification.run();
     } finally {

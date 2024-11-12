@@ -13,21 +13,14 @@ import com.sap.oss.phosphor.fosstars.nvd.data.NvdEntry;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * This data provider looks for vulnerabilities in NVD.
- */
+/** This data provider looks for vulnerabilities in NVD. */
 public class VulnerabilitiesFromNvd extends CachedSingleFeatureGitHubDataProvider<Vulnerabilities> {
 
-  /**
-   * A feature that hold info about vulnerabilities in the NVD.
-   */
-  private static final Feature<Vulnerabilities> VULNERABILITIES_IN_NVD
-      = new VulnerabilitiesFeature(
-      "Info about vulnerabilities in an open-source project from NVD");
+  /** A feature that hold info about vulnerabilities in the NVD. */
+  private static final Feature<Vulnerabilities> VULNERABILITIES_IN_NVD =
+      new VulnerabilitiesFeature("Info about vulnerabilities in an open-source project from NVD");
 
-  /**
-   * An interface to NVD.
-   */
+  /** An interface to NVD. */
   private final NVD nvd;
 
   /**
@@ -55,7 +48,9 @@ public class VulnerabilitiesFromNvd extends CachedSingleFeatureGitHubDataProvide
       vulnerabilities.add(Vulnerability.Builder.from(entry).make());
     }
 
-    logger.info("Found {} {}", vulnerabilities.size(),
+    logger.info(
+        "Found {} {}",
+        vulnerabilities.size(),
         vulnerabilities.size() == 1 ? "vulnerability" : "vulnerabilities");
     return VULNERABILITIES_IN_NVD.value(vulnerabilities);
   }

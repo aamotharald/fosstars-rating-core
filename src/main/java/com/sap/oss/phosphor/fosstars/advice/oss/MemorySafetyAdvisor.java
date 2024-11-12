@@ -18,16 +18,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * An advisor for features related to memory sanitizers.
- */
+/** An advisor for features related to memory sanitizers. */
 public class MemorySafetyAdvisor extends AbstractOssAdvisor {
 
-  /**
-   * A list of features that are covered by the advisor.
-   */
-  private static final List<Feature<Boolean>> FEATURES = Arrays.asList(
-      USES_ADDRESS_SANITIZER, USES_MEMORY_SANITIZER, USES_UNDEFINED_BEHAVIOR_SANITIZER);
+  /** A list of features that are covered by the advisor. */
+  private static final List<Feature<Boolean>> FEATURES =
+      Arrays.asList(
+          USES_ADDRESS_SANITIZER, USES_MEMORY_SANITIZER, USES_UNDEFINED_BEHAVIOR_SANITIZER);
 
   /**
    * Create a new advisor.
@@ -43,8 +40,8 @@ public class MemorySafetyAdvisor extends AbstractOssAdvisor {
       Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
       throws MalformedURLException {
 
-    Optional<ScoreValue> memorySafetyTestingScoreValue
-        = findSubScoreValue(subject, MemorySafetyTestingScore.class);
+    Optional<ScoreValue> memorySafetyTestingScoreValue =
+        findSubScoreValue(subject, MemorySafetyTestingScore.class);
 
     if (!memorySafetyTestingScoreValue.isPresent()) {
       return Collections.emptyList();

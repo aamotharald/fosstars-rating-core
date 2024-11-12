@@ -18,23 +18,29 @@ import org.junit.jupiter.api.Test;
 public class TestVectorResultTest {
 
   public enum TestLabel implements Label {
-    BAD, GOOD
+    BAD,
+    GOOD
   }
 
-  private static final Interval ALMOST_MIN
-      = DoubleInterval.init().from(Score.MIN).to(0.001).closed().make();
+  private static final Interval ALMOST_MIN =
+      DoubleInterval.init().from(Score.MIN).to(0.001).closed().make();
 
   @Test
   public void smoke() {
-    StandardTestVector vector = newTestVector()
-        .set(allUnknown(OssFeatures.HAS_SECURITY_TEAM))
-        .expectedScore(ALMOST_MIN)
-        .expectedLabel(TestLabel.BAD)
-        .alias("bad")
-        .make();
-    TestVectorResult testVectorResult = new TestVectorResult(
-        vector, 0, new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).set(0.5),
-        Status.FAILED, "Alles kaputt!");
+    StandardTestVector vector =
+        newTestVector()
+            .set(allUnknown(OssFeatures.HAS_SECURITY_TEAM))
+            .expectedScore(ALMOST_MIN)
+            .expectedLabel(TestLabel.BAD)
+            .alias("bad")
+            .make();
+    TestVectorResult testVectorResult =
+        new TestVectorResult(
+            vector,
+            0,
+            new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).set(0.5),
+            Status.FAILED,
+            "Alles kaputt!");
     assertEquals(0, testVectorResult.index);
     assertEquals(Status.FAILED, testVectorResult.status);
     assertEquals("Alles kaputt!", testVectorResult.message);
@@ -74,19 +80,30 @@ public class TestVectorResultTest {
     assertNotEquals(sameTestVector.hashCode(), differentTestVector.hashCode());
 
     assertEquals(
-        new TestVectorResult(testVector, 0,
+        new TestVectorResult(
+            testVector,
+            0,
             new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).set(4.0),
-            Status.PASSED,"Alles gut!"),
-        new TestVectorResult(testVector, 0,
+            Status.PASSED,
+            "Alles gut!"),
+        new TestVectorResult(
+            testVector,
+            0,
             new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).set(4.0),
-            Status.PASSED,"Alles gut!"));
+            Status.PASSED,
+            "Alles gut!"));
     assertEquals(
-        new TestVectorResult(testVector, 0,
+        new TestVectorResult(
+            testVector,
+            0,
             new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).set(4.0),
-            Status.PASSED,"Alles gut!"),
-        new TestVectorResult(sameTestVector, 0,
+            Status.PASSED,
+            "Alles gut!"),
+        new TestVectorResult(
+            sameTestVector,
+            0,
             new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).set(4.0),
-            Status.PASSED,"Alles gut!"));
+            Status.PASSED,
+            "Alles gut!"));
   }
-
 }

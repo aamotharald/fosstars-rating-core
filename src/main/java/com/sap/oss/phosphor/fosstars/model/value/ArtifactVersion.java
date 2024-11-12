@@ -27,42 +27,32 @@ import org.apache.maven.artifact.versioning.ComparableVersion;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public class ArtifactVersion {
 
-  /**
-   * An empty artifact version (immutable).
-   */
+  /** An empty artifact version (immutable). */
   public static final ArtifactVersion EMPTY = new ArtifactVersion("", LocalDateTime.MIN);
 
-  /**
-   * Comparator for artifact versions release date and version.
-   */
-  static final Comparator<ArtifactVersion> RELEASE_DATE_VERSION_COMPARISON = (a, b) -> {
-    final int compareDate = b.releaseDate().compareTo(a.releaseDate());
-    if (compareDate != 0) {
-      return compareDate;
-    }
+  /** Comparator for artifact versions release date and version. */
+  static final Comparator<ArtifactVersion> RELEASE_DATE_VERSION_COMPARISON =
+      (a, b) -> {
+        final int compareDate = b.releaseDate().compareTo(a.releaseDate());
+        if (compareDate != 0) {
+          return compareDate;
+        }
 
-    final ComparableVersion aVersion = new ComparableVersion(a.version());
-    final ComparableVersion bVersion = new ComparableVersion(b.version());
-    return bVersion.compareTo(aVersion);
-  };
+        final ComparableVersion aVersion = new ComparableVersion(a.version());
+        final ComparableVersion bVersion = new ComparableVersion(b.version());
+        return bVersion.compareTo(aVersion);
+      };
 
-  /**
-   * A version of the artifact.
-   */
+  /** A version of the artifact. */
   private final String version;
 
-  /**
-   * When the artifact was released.
-   */
+  /** When the artifact was released. */
   @JsonDeserialize(using = LocalDateDeserializer.class)
   @JsonSerialize(using = LocalDateSerializer.class)
   private final LocalDateTime releaseDate;
 
-  /**
-   * A semantic version if available.
-   */
-  @JsonIgnore
-  private final Optional<SemanticVersion> semanticVersion;
+  /** A semantic version if available. */
+  @JsonIgnore private final Optional<SemanticVersion> semanticVersion;
 
   /**
    * Initialize an artifact version based on version tag and release date.
@@ -143,9 +133,7 @@ public class ArtifactVersion {
     return Objects.hash(version, releaseDate);
   }
 
-  /**
-   * LocalDate to Date deserializer used by Jackson Databind for JSON parsing.
-   */
+  /** LocalDate to Date deserializer used by Jackson Databind for JSON parsing. */
   private static class LocalDateDeserializer extends StdDeserializer<LocalDateTime> {
 
     private static final long serialVersionUID = 1L;
@@ -161,9 +149,7 @@ public class ArtifactVersion {
     }
   }
 
-  /**
-   * LocalDate to Date serializer used by Jackson Databind for JSON writing.
-   */
+  /** LocalDate to Date serializer used by Jackson Databind for JSON writing. */
   private static class LocalDateSerializer extends StdSerializer<LocalDateTime> {
 
     private static final long serialVersionUID = 1L;

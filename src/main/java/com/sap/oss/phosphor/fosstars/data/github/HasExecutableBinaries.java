@@ -17,13 +17,43 @@ import java.util.List;
  */
 public class HasExecutableBinaries extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
-  /**
-   * List of file extensions deemed as executable binaries.
-   */
-  static final List<String> FILE_EXTENSIONS = Arrays.asList(".crx", ".deb", ".dex", ".dey", ".elf",
-      ".o", ".so", ".iso", ".class", ".jar", ".bundle", ".dylib", ".lib", ".msi", ".acm", ".ax",
-      ".cpl", ".dll", ".drv", ".efi", ".exe", ".mui", ".ocx", ".scr", ".sys", ".tsp", ".pyc",
-      ".pyo", ".par", ".rpm", ".swf", ".torrent", ".cab", ".whl");
+  /** List of file extensions deemed as executable binaries. */
+  static final List<String> FILE_EXTENSIONS =
+      Arrays.asList(
+          ".crx",
+          ".deb",
+          ".dex",
+          ".dey",
+          ".elf",
+          ".o",
+          ".so",
+          ".iso",
+          ".class",
+          ".jar",
+          ".bundle",
+          ".dylib",
+          ".lib",
+          ".msi",
+          ".acm",
+          ".ax",
+          ".cpl",
+          ".dll",
+          ".drv",
+          ".efi",
+          ".exe",
+          ".mui",
+          ".ocx",
+          ".scr",
+          ".sys",
+          ".tsp",
+          ".pyc",
+          ".pyo",
+          ".par",
+          ".rpm",
+          ".swf",
+          ".torrent",
+          ".cab",
+          ".whl");
 
   /**
    * Predicate to confirm if there is a file in open-source project with the executable binary
@@ -56,7 +86,7 @@ public class HasExecutableBinaries extends CachedSingleFeatureGitHubDataProvider
 
   /**
    * Fetch the locally cloned repository.
-   * 
+   *
    * @param project The GitHub project.
    * @return {@link LocalRepository} clone repository.
    * @throws IOException If something went wrong.
@@ -67,7 +97,7 @@ public class HasExecutableBinaries extends CachedSingleFeatureGitHubDataProvider
 
   /**
    * Check if the file represented by the path is a executable binary file.
-   * 
+   *
    * @param path The file path.
    * @return true if the executable binary file type is found, otherwise false.
    */

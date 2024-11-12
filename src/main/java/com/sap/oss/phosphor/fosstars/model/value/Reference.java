@@ -5,19 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.URL;
 import java.util.Objects;
 
-/**
- * The class holds a link to additional information about vulnerability.
- */
+/** The class holds a link to additional information about vulnerability. */
 public class Reference {
 
-  /**
-   * A URL to a document which contains information about a vulnerability.
-   */
+  /** A URL to a document which contains information about a vulnerability. */
   private final URL url;
 
-  /**
-   * A description for the reference.
-   */
+  /** A description for the reference. */
   private final String description;
 
   /**
@@ -26,8 +20,7 @@ public class Reference {
    * @param description A description for the reference.
    * @param url A URL to a document which contains information about a vulnerability.
    */
-  public Reference(
-      @JsonProperty("description") String description, @JsonProperty("url") URL url) {
+  public Reference(@JsonProperty("description") String description, @JsonProperty("url") URL url) {
     Objects.requireNonNull(url, "Hey! URL must not be null!");
     this.description = description;
     this.url = url;
@@ -62,8 +55,7 @@ public class Reference {
       return false;
     }
     Reference reference = (Reference) o;
-    return Objects.equals(description, reference.description)
-        && Objects.equals(url, reference.url);
+    return Objects.equals(description, reference.description) && Objects.equals(url, reference.url);
   }
 
   @Override

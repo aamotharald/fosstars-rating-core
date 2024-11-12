@@ -4,14 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/**
- * Impact scores for a vulnerability as found on NVD.
- */
+/** Impact scores for a vulnerability as found on NVD. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "baseMetricV3",
-    "baseMetricV2"
-})
+@JsonPropertyOrder({"baseMetricV3", "baseMetricV2"})
 public class Impact {
 
   @JsonProperty("baseMetricV3")

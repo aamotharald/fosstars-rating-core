@@ -35,19 +35,13 @@ import java.util.Set;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 
-/**
- * This handler calculates {@link OssSecurityRating}.
- */
+/** This handler calculates {@link OssSecurityRating}. */
 public class OssProjectSecurityRatingHandler extends AbstractHandler {
 
-  /**
-   * An advisor for calculated security ratings.
-   */
+  /** An advisor for calculated security ratings. */
   private static final Advisor OSS_SECURITY_GITHUB_ADVISOR = new OssSecurityGithubAdvisor();
 
-  /**
-   * Initializes a handler.
-   */
+  /** Initializes a handler. */
   public OssProjectSecurityRatingHandler() {
     super(RatingRepository.INSTANCE.rating(OssSecurityRating.class));
   }
@@ -75,22 +69,24 @@ public class OssProjectSecurityRatingHandler extends AbstractHandler {
    */
   @Override
   void processNpm(String name) throws IOException {
-    process(name, identifier -> {
-      Optional<String> scm = new NpmScmFinder().scmForNpm(identifier);
-      if (!scm.isPresent()) {
-        throw new IOException("Oh no! Could not find a URL to SCM!");
-      }
+    process(
+        name,
+        identifier -> {
+          Optional<String> scm = new NpmScmFinder().scmForNpm(identifier);
+          if (!scm.isPresent()) {
+            throw new IOException("Oh no! Could not find a URL to SCM!");
+          }
 
-      String url = scm.get();
-      logger.info("SCM is {}", url);
+          String url = scm.get();
+          logger.info("SCM is {}", url);
 
-      if (!isOnGitHub(url)) {
-        logger.info("But unfortunately, I can work only with projects that stay on GitHub ...");
-        return Optional.empty();
-      }
+          if (!isOnGitHub(url)) {
+            logger.info("But unfortunately, I can work only with projects that stay on GitHub ...");
+            return Optional.empty();
+          }
 
-      return Optional.of(GitHubProject.parse(url));
-    });
+          return Optional.of(GitHubProject.parse(url));
+        });
   }
 
   @Override
@@ -125,11 +121,14 @@ public class OssProjectSecurityRatingHandler extends AbstractHandler {
       if (!"markdown".equals(reportType)) {
         throw new IllegalArgumentException("Oops! Only Markdown report is supported!");
       }
-      Reporter<GitHubProject> reporter = new OssSecurityRatingMarkdownReporter(
-          reportFile, rating(), OSS_SECURITY_GITHUB_ADVISOR);
+      Reporter<GitHubProject> reporter =
+          new OssSecurityRatingMarkdownReporter(reportFile, rating(), OSS_SECURITY_GITHUB_ADVISOR);
 
-      String cacheFile = String.join(File.separator,
-          baseDirectory, format("%s_cache.json", rating.getClass().getCanonicalName()));
+      String cacheFile =
+          String.join(
+              File.separator,
+              baseDirectory,
+              format("%s_cache.json", rating.getClass().getCanonicalName()));
 
       process(projects, singletonList(reporter), cacheFile);
     }
@@ -142,16 +141,18 @@ public class OssProjectSecurityRatingHandler extends AbstractHandler {
    * @throws IOException If something went wrong.
    */
   private void process(GAV coordinates) throws IOException {
-    process(coordinates.toString(), gav -> {
-      Optional<GitHubProject> project = new MavenScmFinder().findGithubProjectFor(coordinates);
-      if (!project.isPresent()) {
-        throw new IOException("Oh no! Could not find SCM on GitHub for the artifact!");
-      }
+    process(
+        coordinates.toString(),
+        gav -> {
+          Optional<GitHubProject> project = new MavenScmFinder().findGithubProjectFor(coordinates);
+          if (!project.isPresent()) {
+            throw new IOException("Oh no! Could not find SCM on GitHub for the artifact!");
+          }
 
-      logger.info("SCM is {}", project.get().scm());
+          logger.info("SCM is {}", project.get().scm());
 
-      return project;
-    });
+          return project;
+        });
   }
 
   /**
@@ -194,12 +195,12 @@ public class OssProjectSecurityRatingHandler extends AbstractHandler {
         return Optional.of(new MergedJsonReporter(reportConfig.where));
       case MARKDOWN:
         return Optional.of(
-            new OssSecurityRatingMarkdownReporter(reportConfig.where, reportConfig.source,
-                rating(), OSS_SECURITY_GITHUB_ADVISOR));
+            new OssSecurityRatingMarkdownReporter(
+                reportConfig.where, reportConfig.source, rating(), OSS_SECURITY_GITHUB_ADVISOR));
       case JSON_REPORT:
         return Optional.of(
-            new OssSecurityRatingJsonReporter(reportConfig.where, reportConfig.source,
-                rating(), OSS_SECURITY_GITHUB_ADVISOR));
+            new OssSecurityRatingJsonReporter(
+                reportConfig.where, reportConfig.source, rating(), OSS_SECURITY_GITHUB_ADVISOR));
       default:
         logger.warn("Oops! That's an unknown type of report: {}", reportConfig.type);
         return Optional.empty();
@@ -216,8 +217,8 @@ public class OssProjectSecurityRatingHandler extends AbstractHandler {
   }
 
   /**
-   * A functional interface of a resolves that resolves an identifier
-   * to something of a specified result type.
+   * A functional interface of a resolves that resolves an identifier to something of a specified
+   * result type.
    *
    * @param <R> A type of the result.
    */
@@ -239,8 +240,7 @@ public class OssProjectSecurityRatingHandler extends AbstractHandler {
 
     @Override
     public void accept(Dependency dependency, Set<Location> locations) {
-      dependencies.add(
-          new GAV(dependency.getGroupId(), dependency.getArtifactId(), NO_VERSION));
+      dependencies.add(new GAV(dependency.getGroupId(), dependency.getArtifactId(), NO_VERSION));
     }
 
     List<GAV> dependencies() {

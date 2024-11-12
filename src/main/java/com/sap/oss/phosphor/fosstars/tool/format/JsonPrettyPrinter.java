@@ -24,25 +24,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * The class prints a pretty rating value in JSON.
- */
+/** The class prints a pretty rating value in JSON. */
 public class JsonPrettyPrinter extends CommonFormatter {
 
-  /**
-   * Object Mapper for Json.
-   */
+  /** Object Mapper for Json. */
   private static final ObjectMapper mapper = new ObjectMapper();
 
-  /**
-   * A logger.
-   */
-  private static final Logger LOGGER
-      = LogManager.getLogger(JsonPrettyPrinter.class);
+  /** A logger. */
+  private static final Logger LOGGER = LogManager.getLogger(JsonPrettyPrinter.class);
 
-  /**
-   * A formatter for doubles.
-   */
+  /** A formatter for doubles. */
   private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
 
   static {
@@ -86,7 +77,8 @@ public class JsonPrettyPrinter extends CommonFormatter {
    */
   private List<Advices> adviceFor(Subject subject) {
     try {
-      return advisor.adviceFor(subject).stream().map(JsonPrettyPrinter::from)
+      return advisor.adviceFor(subject).stream()
+          .map(JsonPrettyPrinter::from)
           .collect(Collectors.toList());
     } catch (IOException e) {
       LOGGER.warn("Oops! Could not collect advices!", e);
@@ -109,14 +101,12 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * Format a rating value.
    *
    * @param ratingValue The rating value.
-   * @param subject     The subject.
+   * @param subject The subject.
    * @return A formatted rating value.
    */
   private static Rating from(RatingValue ratingValue, Subject subject) {
     ScoreValue scoreValue = ratingValue.scoreValue();
-    Rating rating = new Rating()
-        .purl(subject.purl())
-        .label(ratingValue.label().name());
+    Rating rating = new Rating().purl(subject.purl()).label(ratingValue.label().name());
     Score score = from(scoreValue);
     rating.score(score);
     return rating;
@@ -129,11 +119,12 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * @return the serializable Score.
    */
   private static Score from(ScoreValue scoreValue) {
-    Score score = new Score()
-        .name(scoreValue.score().name())
-        .value(tellMeActualValueOf(scoreValue))
-        .confidence(printValue(scoreValue.confidence()))
-        .weight(printValue(scoreValue.weight()));
+    Score score =
+        new Score()
+            .name(scoreValue.score().name())
+            .value(tellMeActualValueOf(scoreValue))
+            .confidence(printValue(scoreValue.confidence()))
+            .weight(printValue(scoreValue.weight()));
     from(scoreValue, score);
     return score;
   }
@@ -154,7 +145,7 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * Extract Sub scores from the score value.
    *
    * @param scoreValue The score value to be printed.
-   * @param score      Tells if the score is a top-level score in the rating.
+   * @param score Tells if the score is a top-level score in the rating.
    */
   private static void from(ScoreValue scoreValue, Score score) {
     for (Value<?> usedValue : scoreValue.usedValues()) {
@@ -210,7 +201,6 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * @return A formatted string with the number and max value.
    */
   public static String printValue(double value) {
-    return String.format("%-4s",
-        DECIMAL_FORMAT.format(value));
+    return String.format("%-4s", DECIMAL_FORMAT.format(value));
   }
 }

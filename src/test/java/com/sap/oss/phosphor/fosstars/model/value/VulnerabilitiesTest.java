@@ -50,13 +50,13 @@ public class VulnerabilitiesTest {
         newVulnerability("https://bugtracker/2")
             .description("test")
             .set(new CVSS.V2(5.0, Impact.COMPLETE, Impact.PARTIAL, Impact.NONE))
-            .references(Arrays.asList(
-                new Reference("text1", new URL("https://vuln.com/1")),
-                new Reference("text2", new URL("https://vuln.com/2"))))
+            .references(
+                Arrays.asList(
+                    new Reference("text1", new URL("https://vuln.com/1")),
+                    new Reference("text2", new URL("https://vuln.com/2"))))
             .set(Resolution.PATCHED)
             .introduced(new Date())
             .fixed(new Date())
             .make());
   }
-
 }

@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.StringValue;
 
-/**
- * This feature holds a string.
- */
+/** This feature holds a string. */
 public class StringFeature extends AbstractFeature<String> {
 
   /**

@@ -30,15 +30,16 @@ public class DependencyScanScoreTest {
 
   @Test
   public void testCalculate() {
-    ScoreValue scoreValue = SCORE.calculate(setOf(
-        OWASP_DEPENDENCY_CHECK_USAGE.value(MANDATORY),
-        OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.value(7.0),
-        USES_GITHUB_FOR_DEVELOPMENT.value(true),
-        USES_DEPENDABOT.value(true),
-        USES_SNYK.value(false),
-        LANGUAGES.value(Languages.of(JAVA)),
-        PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN))
-    ));
+    ScoreValue scoreValue =
+        SCORE.calculate(
+            setOf(
+                OWASP_DEPENDENCY_CHECK_USAGE.value(MANDATORY),
+                OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.value(7.0),
+                USES_GITHUB_FOR_DEVELOPMENT.value(true),
+                USES_DEPENDABOT.value(true),
+                USES_SNYK.value(false),
+                LANGUAGES.value(Languages.of(JAVA)),
+                PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN))));
 
     assertTrue(Score.INTERVAL.contains(scoreValue.get()));
     assertEquals(3, scoreValue.usedValues().size());
@@ -53,8 +54,6 @@ public class DependencyScanScoreTest {
 
   @Test
   public void testCalculateWithNoInfo() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate());
+    assertThrows(IllegalArgumentException.class, () -> SCORE.calculate());
   }
-
 }

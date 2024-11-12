@@ -7,9 +7,7 @@ import com.sap.oss.phosphor.fosstars.model.feature.AbstractFeature;
 import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersions;
 import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersionsValue;
 
-/**
- * This feature contains a set of versions of the artifact released by the open-source project.
- */
+/** This feature contains a set of versions of the artifact released by the open-source project. */
 public class ArtifactVersionsFeature extends AbstractFeature<ArtifactVersions> {
 
   /**

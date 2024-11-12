@@ -59,8 +59,7 @@ public class OssRulesOfPlayScoreTest {
 
   @Test
   public void testCalculateWithNoValues() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate());
+    assertThrows(IllegalArgumentException.class, () -> SCORE.calculate());
   }
 
   // the test cases below implement verification procedure for the score
@@ -140,5 +139,4 @@ public class OssRulesOfPlayScoreTest {
     OssRulesOfPlayScore.RECOMMENDED_FALSE.forEach(feature -> values.update(feature.value(false)));
     return values;
   }
-
 }

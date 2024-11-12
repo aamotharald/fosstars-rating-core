@@ -58,7 +58,6 @@ public class SnykDependencyScanScoreTest {
 
   @Test
   public void testWithNoInfo() {
-    assertThrows(IllegalArgumentException.class, () ->
-      new DependencyScanScore().calculate());
+    assertThrows(IllegalArgumentException.class, () -> new DependencyScanScore().calculate());
   }
 }

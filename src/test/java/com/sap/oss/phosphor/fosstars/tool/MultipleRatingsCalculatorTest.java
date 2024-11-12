@@ -26,12 +26,12 @@ public class MultipleRatingsCalculatorTest extends TestGitHubDataFetcherHolder {
   public void testCalculateFor() {
     Rating rating = RatingRepository.INSTANCE.rating(OssSecurityRating.class);
 
-    SingleRatingCalculator singleRatingCalculator
-        = new SingleRatingCalculator(rating, Collections.emptyList());
+    SingleRatingCalculator singleRatingCalculator =
+        new SingleRatingCalculator(rating, Collections.emptyList());
     singleRatingCalculator.set(NoUserCallback.INSTANCE);
 
-    MultipleRatingsCalculator multipleRatingsCalculator
-        = new MultipleRatingsCalculator(singleRatingCalculator);
+    MultipleRatingsCalculator multipleRatingsCalculator =
+        new MultipleRatingsCalculator(singleRatingCalculator);
     multipleRatingsCalculator = spy(multipleRatingsCalculator);
 
     GitHubProject apacheNiFi = new GitHubProject("apache", "nifi");

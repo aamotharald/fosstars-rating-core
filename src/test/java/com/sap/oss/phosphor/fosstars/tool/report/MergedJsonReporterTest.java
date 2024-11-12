@@ -22,15 +22,14 @@ public class MergedJsonReporterTest {
     try {
       Files.write(path, "[]".getBytes());
 
-      List<GitHubProject> projects = asList(
-          new GitHubProject("org", "test"),
-          new GitHubProject("org", "project"));
+      List<GitHubProject> projects =
+          asList(new GitHubProject("org", "test"), new GitHubProject("org", "project"));
 
       MergedJsonReporter reporter = new MergedJsonReporter(path.toString());
       reporter.runFor(projects);
 
-      List<GitHubProject> clone
-          = Json.mapper().readValue(path.toFile(), LIST_OF_GITHUB_PROJECTS_TYPE);
+      List<GitHubProject> clone =
+          Json.mapper().readValue(path.toFile(), LIST_OF_GITHUB_PROJECTS_TYPE);
 
       assertEquals(projects.size(), clone.size());
       for (GitHubProject project : projects) {

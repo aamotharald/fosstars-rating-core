@@ -9,14 +9,10 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractVerifier implements Verifier {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private final Logger logger = LogManager.getLogger(getClass());
 
-  /**
-   * A list of test vectors.
-   */
+  /** A list of test vectors. */
   final TestVectors vectors;
 
   /**
@@ -76,22 +72,30 @@ public abstract class AbstractVerifier implements Verifier {
 
     // first, check if the test vector expects a not-applicable score value
     if (vector.expectsNotApplicableScore() && scoreValue.isNotApplicable()) {
-      return new TestVectorResult(vector, index, scoreValue,
-          Status.PASSED, "Ok, score is N/A as expected");
+      return new TestVectorResult(
+          vector, index, scoreValue, Status.PASSED, "Ok, score is N/A as expected");
     }
     if (vector.expectsNotApplicableScore() && !scoreValue.isNotApplicable()) {
-      return new TestVectorResult(vector, index, scoreValue,
-          Status.FAILED, "Expected N/A score, but got a real score value");
+      return new TestVectorResult(
+          vector,
+          index,
+          scoreValue,
+          Status.FAILED,
+          "Expected N/A score, but got a real score value");
     }
 
     // next, check if the test vector expects an unknown score value
     if (vector.expectsUnknownScore() && scoreValue.isUnknown()) {
-      return new TestVectorResult(vector, index, scoreValue,
-          Status.PASSED, "Ok, score is unknown as expected");
+      return new TestVectorResult(
+          vector, index, scoreValue, Status.PASSED, "Ok, score is unknown as expected");
     }
     if (vector.expectsUnknownScore() && !scoreValue.isUnknown()) {
-      return new TestVectorResult(vector, index, scoreValue,
-          Status.FAILED, "Expected an unknown score, but got a real score value");
+      return new TestVectorResult(
+          vector,
+          index,
+          scoreValue,
+          Status.FAILED,
+          "Expected an unknown score, but got a real score value");
     }
 
     // now we know that the test vector expects a real score value
@@ -99,27 +103,28 @@ public abstract class AbstractVerifier implements Verifier {
 
     // then, check if the score value is N/A
     if (scoreValue.isNotApplicable()) {
-      String message = String.format(
-          "Expected a score in interval %s got N/A", vector.expectedScore());
+      String message =
+          String.format("Expected a score in interval %s got N/A", vector.expectedScore());
       return new TestVectorResult(vector, index, scoreValue, Status.FAILED, message);
     }
 
     // then, check if the score value is unknown
     if (scoreValue.isUnknown()) {
-      String message = String.format(
-          "Expected a score in interval %s got unknown", vector.expectedScore());
+      String message =
+          String.format("Expected a score in interval %s got unknown", vector.expectedScore());
       return new TestVectorResult(vector, index, scoreValue, Status.FAILED, message);
     }
 
     // finally, check if the score value belongs to the expected interval
     if (!vector.expectedScore().contains(scoreValue.get())) {
-      String message = String.format(
-          "Expected a score in the interval %s but %s returned",
-          vector.expectedScore(), scoreValue.get());
+      String message =
+          String.format(
+              "Expected a score in the interval %s but %s returned",
+              vector.expectedScore(), scoreValue.get());
       return new TestVectorResult(vector, index, scoreValue, Status.FAILED, message);
     }
 
-    return new TestVectorResult(vector, index, scoreValue,
-        Status.PASSED, "Ok, got an expected score value");
+    return new TestVectorResult(
+        vector, index, scoreValue, Status.PASSED, "Ok, got an expected score value");
   }
 }

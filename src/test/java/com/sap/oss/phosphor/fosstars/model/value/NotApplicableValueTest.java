@@ -26,8 +26,9 @@ public class NotApplicableValueTest {
 
   @Test
   public void testGet() {
-    assertThrows(UnsupportedOperationException.class, () ->
-      NotApplicableValue.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).get());
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> NotApplicableValue.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).get());
   }
 
   @Test
@@ -39,8 +40,8 @@ public class NotApplicableValueTest {
     assertTrue(one.equals(two) && two.equals(one));
     assertEquals(one.hashCode(), two.hashCode());
 
-    NotApplicableValue<Integer> three
-        = NotApplicableValue.of(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE);
+    NotApplicableValue<Integer> three =
+        NotApplicableValue.of(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE);
     assertNotEquals(one, three);
 
     UnknownValue<Integer> four = UnknownValue.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE);

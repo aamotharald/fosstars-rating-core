@@ -155,5 +155,4 @@ public class PackageManagementTest extends TestGitHubDataFetcherHolder {
     assertTrue(languages.get().contains(JAVA));
     assertTrue(languages.get().contains(OTHER));
   }
-
 }

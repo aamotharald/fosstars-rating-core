@@ -22,21 +22,15 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * An advisor for {@link com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating}.
- */
+/** An advisor for {@link com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating}. */
 public class OssRulesOfPlayAdvisor extends AbstractOssAdvisor {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private static final Logger LOGGER = LogManager.getLogger(OssRulesOfPlayAdvisor.class);
 
-  /**
-   * OSS Rules of Play rating.
-   */
-  private static final OssRulesOfPlayRating RATING
-      = RatingRepository.INSTANCE.rating(OssRulesOfPlayRating.class);
+  /** OSS Rules of Play rating. */
+  private static final OssRulesOfPlayRating RATING =
+      RatingRepository.INSTANCE.rating(OssRulesOfPlayRating.class);
 
   /**
    * Create a new advisor.

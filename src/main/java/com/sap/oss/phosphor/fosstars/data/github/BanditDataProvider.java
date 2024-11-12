@@ -20,24 +20,23 @@ import java.util.regex.Pattern;
 /**
  * The data provider gathers info about how a project uses Bandit for static analysis. In
  * particular, it tries to fill out the following features:
+ *
  * <ul>
- *  <li>{@link OssFeatures#RUNS_BANDIT_SCANS}</li>
- *  <li>{@link OssFeatures#USES_BANDIT_SCAN_CHECKS}</li>
+ *   <li>{@link OssFeatures#RUNS_BANDIT_SCANS}
+ *   <li>{@link OssFeatures#USES_BANDIT_SCAN_CHECKS}
  * </ul>
  */
 public class BanditDataProvider extends AbstractStaticScanToolsDataProvider {
 
-  /**
-   * A Predicate to check the any step in a GitHub action that triggers analysis with Bandit.
-   */
+  /** A Predicate to check the any step in a GitHub action that triggers analysis with Bandit. */
   private static final Map<String, Predicate<String>> MATCH_BANDIT_PREDICATE = new HashMap<>();
 
   static {
     {
-      MATCH_BANDIT_PREDICATE.put("uses",
-          step -> Pattern.compile(".*bandit.*$", Pattern.DOTALL).matcher(step).matches());
-      MATCH_BANDIT_PREDICATE.put("run",
-          step -> Pattern.compile("^.*bandit .*$", Pattern.DOTALL).matcher(step).matches());
+      MATCH_BANDIT_PREDICATE.put(
+          "uses", step -> Pattern.compile(".*bandit.*$", Pattern.DOTALL).matcher(step).matches());
+      MATCH_BANDIT_PREDICATE.put(
+          "run", step -> Pattern.compile("^.*bandit .*$", Pattern.DOTALL).matcher(step).matches());
     }
   }
 

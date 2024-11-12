@@ -49,5 +49,4 @@ public class ScoreVerificationTest {
       fail("Verification failed");
     }
   }
-
 }

@@ -34,8 +34,7 @@ public class DependabotScoreTest {
             USES_GITHUB_FOR_DEVELOPMENT.value(true),
             USES_DEPENDABOT.value(true),
             LANGUAGES.value(Languages.of(JAVA)),
-            PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN))
-        ));
+            PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN))));
   }
 
   @Test
@@ -47,7 +46,6 @@ public class DependabotScoreTest {
 
   @Test
   public void testWithNoInfo() {
-    assertThrows(IllegalArgumentException.class, () ->
-      new DependencyScanScore().calculate());
+    assertThrows(IllegalArgumentException.class, () -> new DependencyScanScore().calculate());
   }
 }

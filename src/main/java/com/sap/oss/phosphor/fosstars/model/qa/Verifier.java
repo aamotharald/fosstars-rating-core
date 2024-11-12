@@ -3,8 +3,8 @@ package com.sap.oss.phosphor.fosstars.model.qa;
 import java.util.List;
 
 /**
- * This is an interface of a verifier which can verify scores and ratings.
- * The verification is based on test vectors.
+ * This is an interface of a verifier which can verify scores and ratings. The verification is based
+ * on test vectors.
  *
  * @see TestVector
  * @see TestVectorResult

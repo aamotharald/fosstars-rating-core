@@ -6,8 +6,7 @@ import com.sap.oss.phosphor.fosstars.model.ValueSet;
 import java.util.Optional;
 
 /**
- * This is an interface of a cache that stores feature values
- * for a specific type of objects.
+ * This is an interface of a cache that stores feature values for a specific type of objects.
  *
  * @param <K> The type of objects.
  */

@@ -11,25 +11,17 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-/**
- * NPM package artifact.
- */
+/** NPM package artifact. */
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class NpmArtifact extends AbstractSubject implements Artifact {
 
-  /**
-   * NPM package identifier.
-   */
+  /** NPM package identifier. */
   private final String identifier;
 
-  /**
-   * NPM package version.
-   */
+  /** NPM package version. */
   private final String version;
 
-  /**
-   * NPM package's GitHub project.
-   */
+  /** NPM package's GitHub project. */
   private final GitHubProject project;
 
   /**
@@ -45,8 +37,9 @@ public class NpmArtifact extends AbstractSubject implements Artifact {
       @JsonProperty("version") @Nullable String version,
       @JsonProperty("project") @Nullable GitHubProject project) {
 
-    this.identifier = Objects.requireNonNull(identifier,
-        "Oh no! You gave me a null instead of an NPM identifier!");
+    this.identifier =
+        Objects.requireNonNull(
+            identifier, "Oh no! You gave me a null instead of an NPM identifier!");
 
     this.version = version;
     this.project = project;

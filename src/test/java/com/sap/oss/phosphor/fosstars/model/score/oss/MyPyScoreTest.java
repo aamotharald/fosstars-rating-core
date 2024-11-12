@@ -50,21 +50,24 @@ public class MyPyScoreTest {
 
   @Test
   public void testCalculateWithoutUsesMyPyChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(RUNS_MYPY_SCANS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(RUNS_MYPY_SCANS.unknown(), LANGUAGES.unknown()));
   }
 
   @Test
   public void testCalculateWithoutRunsMyPyScanChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(USES_MYPY_SCAN_CHECKS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(USES_MYPY_SCAN_CHECKS.unknown(), LANGUAGES.unknown()));
   }
 
   @Test
   public void testCalculateWithAllUnknownValues() {
-    assertTrue(SCORE.calculate(
-        USES_MYPY_SCAN_CHECKS.unknown(),
-        RUNS_MYPY_SCANS.unknown(),
-        LANGUAGES.unknown()).isUnknown());
+    assertTrue(
+        SCORE
+            .calculate(
+                USES_MYPY_SCAN_CHECKS.unknown(), RUNS_MYPY_SCANS.unknown(), LANGUAGES.unknown())
+            .isUnknown());
   }
 }

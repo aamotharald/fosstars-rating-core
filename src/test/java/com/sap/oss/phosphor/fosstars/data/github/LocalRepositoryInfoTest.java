@@ -13,13 +13,12 @@ public class LocalRepositoryInfoTest {
 
   @Test
   public void testSerialization() throws IOException {
-    LocalRepositoryInfo info = new LocalRepositoryInfo(
-        Paths.get("."), new Date(), new URL("https://scm/org/test"));
-    LocalRepositoryInfo clone = Json.mapper().readValue(
-        Json.toBytes(info), LocalRepositoryInfo.class);
+    LocalRepositoryInfo info =
+        new LocalRepositoryInfo(Paths.get("."), new Date(), new URL("https://scm/org/test"));
+    LocalRepositoryInfo clone =
+        Json.mapper().readValue(Json.toBytes(info), LocalRepositoryInfo.class);
     assertEquals(info.updated(), clone.updated());
     assertEquals(info.path().toAbsolutePath(), clone.path().toAbsolutePath());
     assertEquals(info.url(), clone.url());
   }
-
 }

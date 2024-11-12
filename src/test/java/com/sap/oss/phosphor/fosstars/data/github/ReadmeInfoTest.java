@@ -27,7 +27,7 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testSupportedFeatures() throws IOException {
-    Set<Feature<?>> features =  new ReadmeInfo(fetcher).supportedFeatures();
+    Set<Feature<?>> features = new ReadmeInfo(fetcher).supportedFeatures();
     assertEquals(2, features.size());
     assertTrue(features.contains(HAS_README));
     assertTrue(features.contains(INCOMPLETE_README));
@@ -44,13 +44,16 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
     provider.set(NoValueCache.create());
 
     when(localRepository.readTextFrom(fileName))
-        .thenReturn(Optional.of(String.join("\n",
-            "This is ", fileName,
-            "",
-            "# Mandatory header",
-            "",
-            "Don't trouble trouble till trouble troubles you."
-        )));
+        .thenReturn(
+            Optional.of(
+                String.join(
+                    "\n",
+                    "This is ",
+                    fileName,
+                    "",
+                    "# Mandatory header",
+                    "",
+                    "Don't trouble trouble till trouble troubles you.")));
     ValueSet values = provider.fetchValuesFor(project);
     Value<Boolean> value = checkValue(values, HAS_README, true);
     assertTrue(value.explanation().isEmpty());
@@ -58,11 +61,7 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
     assertTrue(value.explanation().isEmpty());
 
     when(localRepository.readTextFrom(fileName))
-        .thenReturn(Optional.of(String.join("\n",
-            "This is ", fileName,
-            "",
-            "# Another header"
-        )));
+        .thenReturn(Optional.of(String.join("\n", "This is ", fileName, "", "# Another header")));
     values = provider.fetchValuesFor(project);
     value = checkValue(values, HAS_README, true);
     assertTrue(value.explanation().isEmpty());
@@ -71,14 +70,17 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
     assertTrue(value.explanation().get(0).contains("Mandatory header"));
 
     when(localRepository.readTextFrom(fileName))
-        .thenReturn(Optional.of(String.join("\n",
-            "This is ", fileName,
-            "",
-            "# Mandatory header",
-            "",
-            "Prohibited phrase",
-            ""
-        )));
+        .thenReturn(
+            Optional.of(
+                String.join(
+                    "\n",
+                    "This is ",
+                    fileName,
+                    "",
+                    "# Mandatory header",
+                    "",
+                    "Prohibited phrase",
+                    "")));
     values = provider.fetchValuesFor(project);
     value = checkValue(values, HAS_README, true);
     assertTrue(value.explanation().isEmpty());
@@ -113,7 +115,7 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
     readMeTestGen("readme.rst");
     readMeTestGen("README.rst");
   }
-  
+
   @Test
   public void testLowercaseReadme() throws IOException {
     readMeTestGen("readme.md");
@@ -131,9 +133,7 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
     provider.set(NoValueCache.create());
 
     when(localRepository.readTextFrom(fileName))
-        .thenReturn(Optional.of(String.join("\n",
-            "This is ", fileName
-        )));
+        .thenReturn(Optional.of(String.join("\n", "This is ", fileName)));
     ValueSet values = provider.fetchValuesFor(project);
     assertTrue(checkValue(values, HAS_README, true).get());
   }
@@ -148,22 +148,23 @@ public class ReadmeInfoTest extends TestGitHubDataFetcherHolder {
   public void testReadmeTxt() throws IOException {
     readMeTestGen("README.txt");
     readMeTestGen("readme.txt");
-  }  
+  }
 
   @Test
   public void testReadmeCapital() throws IOException {
     readMeTestGen("README.MD");
     readMeTestGen("readme.MD");
-  } 
+  }
 
   @Test
   public void testLoadingDefaultConfig() throws IOException {
     Path config = Paths.get(String.format("%s.config.yml", ReadmeInfo.class.getSimpleName()));
-    String content = "---\n"
-        + "requiredContentPatterns:\n"
-        + "  - \"one two\"\n"
-        + "  - \"three\"\n"
-        + "  - \"[Tt]est\"\n";
+    String content =
+        "---\n"
+            + "requiredContentPatterns:\n"
+            + "  - \"one two\"\n"
+            + "  - \"three\"\n"
+            + "  - \"[Tt]est\"\n";
     Files.write(config, content.getBytes());
     try {
       ReadmeInfo provider = new ReadmeInfo(fetcher);

@@ -7,21 +7,17 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 /**
- * A Markdown template with parameters.
- * The template is filled out with the parameters while rendering.
+ * A Markdown template with parameters. The template is filled out with the parameters while
+ * rendering.
  *
  * @see String#format(String, Object...)
  */
 public class MarkdownTemplate extends AbstractMarkdownElement {
 
-  /**
-   * A template.
-   */
+  /** A template. */
   private final String template;
 
-  /**
-   * A list of parameters.
-   */
+  /** A list of parameters. */
   private final List<MarkdownElement> parameters;
 
   /**

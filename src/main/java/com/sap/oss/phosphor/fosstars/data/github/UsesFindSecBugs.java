@@ -19,10 +19,10 @@ import org.apache.maven.model.ReportPlugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 /**
- * <p>This data provider checks if an open-source project uses
- * <a href="https://find-sec-bugs.github.io/">FindSecBugs</a>.</p>
+ * This data provider checks if an open-source project uses <a
+ * href="https://find-sec-bugs.github.io/">FindSecBugs</a>.
  *
- * <p>The provider fills out the {@link OssFeatures#USES_FIND_SEC_BUGS} feature.</p>
+ * <p>The provider fills out the {@link OssFeatures#USES_FIND_SEC_BUGS} feature.
  */
 public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
@@ -54,7 +54,8 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
    * @param repository The repository.
    * @return True if the project uses FindSecBugs, false otherwise.
    * @throws IOException If something went wrong
-   * @see <a href="https://github.com/find-sec-bugs/find-sec-bugs/wiki/Maven-configuration">Maven configuration</a>
+   * @see <a href="https://github.com/find-sec-bugs/find-sec-bugs/wiki/Maven-configuration">Maven
+   *     configuration</a>
    */
   private boolean checkMaven(LocalRepository repository) throws IOException {
     Optional<InputStream> content = repository.read("pom.xml");
@@ -128,8 +129,8 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
    * Checks if an element is FindSecBugs.
    *
    * @param element The element to be checked.
-   * @return True if an element is
-   *         the "com.h3xstream.findsecbugs:findsecbugs-plugin" plugin, false otherwise.
+   * @return True if an element is the "com.h3xstream.findsecbugs:findsecbugs-plugin" plugin, false
+   *     otherwise.
    */
   private static boolean isFindSecBugs(Xpp3Dom element) {
     if (!"plugin".equals(element.getName())) {
@@ -166,21 +167,15 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
     return false;
   }
 
-  /**
-   * Creates a visitor for searching FindSecBugs in a POM file.
-   */
+  /** Creates a visitor for searching FindSecBugs in a POM file. */
   private static Visitor withVisitor() {
     return new Visitor();
   }
 
-  /**
-   * A visitor for searching FindSecBugs in a POM file.
-   */
+  /** A visitor for searching FindSecBugs in a POM file. */
   private static class Visitor extends AbstractModelVisitor {
 
-    /**
-     * A visitor for searching FindSecBugs in a POM file.
-     */
+    /** A visitor for searching FindSecBugs in a POM file. */
     private boolean result = false;
 
     @Override
@@ -197,5 +192,4 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
       }
     }
   }
-
 }

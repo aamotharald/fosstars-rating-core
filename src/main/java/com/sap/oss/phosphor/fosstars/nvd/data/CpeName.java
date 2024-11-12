@@ -4,15 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/**
- * CPE name.
- */
+/** CPE name. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "cpe22Uri",
-    "cpe23Uri",
-    "lastModifiedDate"
-})
+@JsonPropertyOrder({"cpe22Uri", "cpe23Uri", "lastModifiedDate"})
 public class CpeName {
 
   @JsonProperty("cpe22Uri")

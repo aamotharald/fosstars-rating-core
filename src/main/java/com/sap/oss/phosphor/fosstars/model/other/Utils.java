@@ -22,9 +22,7 @@ import org.apache.commons.io.FileUtils;
 public class Utils {
 
   // don't allow creating instances of this class
-  private Utils() {
-
-  }
+  private Utils() {}
 
   /**
    * Converts a number of objects to a set. An exception is thrown if there is any duplicate.
@@ -40,8 +38,8 @@ public class Utils {
     for (T object : objects) {
       boolean added = set.add(object);
       if (!added) {
-        throw new IllegalArgumentException(String.format(
-            "You're supposed to give me unique objects! Found a dup: %s", object));
+        throw new IllegalArgumentException(
+            String.format("You're supposed to give me unique objects! Found a dup: %s", object));
       }
     }
     return set;
@@ -134,8 +132,8 @@ public class Utils {
    * @param errorMessage The error message for an exception
    * @param <T> Type of the value.
    * @return The value of the specified feature.
-   * @throws IllegalArgumentException with the specified error message
-   *                                  if no value was found for the specified feature.
+   * @throws IllegalArgumentException with the specified error message if no value was found for the
+   *     specified feature.
    */
   public static <T> Value<T> findValue(
       Set<Value<?>> values, Feature<T> feature, String errorMessage) {
@@ -151,8 +149,8 @@ public class Utils {
    * @param errorMessage The error message for an exception
    * @param <T> Type of the value.
    * @return The value of the specified feature.
-   * @throws IllegalArgumentException with the specified error message
-   *                                  if no value was found for the specified feature.
+   * @throws IllegalArgumentException with the specified error message if no value was found for the
+   *     specified feature.
    */
   public static <T> Value<T> findValue(Value<?>[] values, Feature<T> feature, String errorMessage) {
     Optional<Value<T>> value = findValue(values, feature);
@@ -169,7 +167,7 @@ public class Utils {
    * @return An instance of {@link java.util.Date}
    */
   public static Date date(String string) {
-    int[] formats = { DateFormat.SHORT, DateFormat.MEDIUM, DateFormat.LONG, DateFormat.FULL };
+    int[] formats = {DateFormat.SHORT, DateFormat.MEDIUM, DateFormat.LONG, DateFormat.FULL};
     for (int format : formats) {
       try {
         return DateFormat.getDateInstance(format, Locale.US).parse(string);
@@ -184,10 +182,8 @@ public class Utils {
       // no luck
     }
 
-    throw new IllegalArgumentException(String.format(
-        "Couldn't parse date '%s'", string));
+    throw new IllegalArgumentException(String.format("Couldn't parse date '%s'", string));
   }
-
 
   /**
    * Force delete list of folders.

@@ -15,8 +15,8 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 /**
- * This data provider looks for a number of projects that use a specified project on GitHub.
- * It fills out the {@link OssFeatures#NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB} feature.
+ * This data provider looks for a number of projects that use a specified project on GitHub. It
+ * fills out the {@link OssFeatures#NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB} feature.
  */
 public class NumberOfDependentProjectOnGitHub
     extends CachedSingleFeatureGitHubDataProvider<Integer> {
@@ -100,8 +100,8 @@ public class NumberOfDependentProjectOnGitHub
     String url = args.length > 1 ? args[1] : "https://github.com/FasterXML/jackson-databind";
     GitHubProject project = GitHubProject.parse(url);
     GitHub github = new GitHubBuilder().withOAuthToken(token).build();
-    NumberOfDependentProjectOnGitHub provider
-        = new NumberOfDependentProjectOnGitHub(new GitHubDataFetcher(github, token));
+    NumberOfDependentProjectOnGitHub provider =
+        new NumberOfDependentProjectOnGitHub(new GitHubDataFetcher(github, token));
     System.out.println(provider.fetchValueFor(project));
   }
 }

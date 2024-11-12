@@ -24,8 +24,8 @@ public class MavenArtifactTest {
     assertTrue(jar.project().isPresent());
     assertEquals(project, jar.project().get());
 
-    MavenArtifact jarWithoutProject
-        = new MavenArtifact("com.sap.oss.phosphor", "artifact", "1.2.3", null);
+    MavenArtifact jarWithoutProject =
+        new MavenArtifact("com.sap.oss.phosphor", "artifact", "1.2.3", null);
     assertEquals("com.sap.oss.phosphor", jarWithoutProject.group());
     assertEquals("artifact", jarWithoutProject.artifact());
     assertTrue(jarWithoutProject.version().isPresent());
@@ -33,8 +33,8 @@ public class MavenArtifactTest {
     assertEquals("pkg:maven/com.sap.oss.phosphor/artifact@1.2.3", jarWithoutProject.purl());
     assertFalse(jarWithoutProject.project().isPresent());
 
-    MavenArtifact jarWithoutVersion
-        = new MavenArtifact("com.sap.oss.phosphor", "artifact", null, null);
+    MavenArtifact jarWithoutVersion =
+        new MavenArtifact("com.sap.oss.phosphor", "artifact", null, null);
     assertEquals("com.sap.oss.phosphor", jarWithoutVersion.group());
     assertEquals("artifact", jarWithoutVersion.artifact());
     assertFalse(jarWithoutVersion.version().isPresent());

@@ -14,34 +14,22 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * The class calculates ratings for multiple subjects.
- */
+/** The class calculates ratings for multiple subjects. */
 public class MultipleRatingsCalculator implements RatingCalculator {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private static final Logger LOGGER = LogManager.getLogger(MultipleRatingsCalculator.class);
 
-  /**
-   * A calculator that calculates a rating for a single subject.
-   */
+  /** A calculator that calculates a rating for a single subject. */
   private final RatingCalculator calculator;
 
-  /**
-   * A cache of processed subjects.
-   */
+  /** A cache of processed subjects. */
   private SubjectCache subjectCache = SubjectCache.empty();
 
-  /**
-   * A filename where the cache of subjects should be stored.
-   */
+  /** A filename where the cache of subjects should be stored. */
   private String subjectCacheFile;
 
-  /**
-   * A list of subjects for which a rating couldn't be calculated.
-   */
+  /** A list of subjects for which a rating couldn't be calculated. */
   private final List<Subject> failedSubjects = new ArrayList<>();
 
   /**
@@ -114,8 +102,8 @@ public class MultipleRatingsCalculator implements RatingCalculator {
   }
 
   /**
-   * Calculates ratings for multiple subjects.
-   * First, the method checks if a rating value for a subject is already available in cache.
+   * Calculates ratings for multiple subjects. First, the method checks if a rating value for a
+   * subject is already available in cache.
    *
    * @param subjects The subjects.
    * @return The same calculator.
@@ -126,8 +114,8 @@ public class MultipleRatingsCalculator implements RatingCalculator {
   }
 
   /**
-   * Calculates ratings for multiple subjects.
-   * First, the method checks if a rating value for a subject is already available in cache.
+   * Calculates ratings for multiple subjects. First, the method checks if a rating value for a
+   * subject is already available in cache.
    *
    * @param subjects The subjects.
    * @return The same calculator.
@@ -163,5 +151,4 @@ public class MultipleRatingsCalculator implements RatingCalculator {
   public List<Subject> failedSubjects() {
     return new ArrayList<>(failedSubjects);
   }
-
 }

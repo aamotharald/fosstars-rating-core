@@ -22,5 +22,4 @@ public class LgtmGradeFeatureTest {
     assertEquals(feature, clone);
     assertEquals(feature.hashCode(), clone.hashCode());
   }
-
 }

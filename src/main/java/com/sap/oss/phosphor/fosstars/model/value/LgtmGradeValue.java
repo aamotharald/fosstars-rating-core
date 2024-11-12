@@ -8,9 +8,7 @@ import java.util.Objects;
 
 public class LgtmGradeValue extends AbstractKnownValue<LgtmGrade> {
 
-  /**
-   * The value.
-   */
+  /** The value. */
   private final LgtmGrade value;
 
   /**
@@ -21,8 +19,7 @@ public class LgtmGradeValue extends AbstractKnownValue<LgtmGrade> {
    */
   @JsonCreator
   public LgtmGradeValue(
-      @JsonProperty("feature") Feature<LgtmGrade> feature,
-      @JsonProperty("value") LgtmGrade value) {
+      @JsonProperty("feature") Feature<LgtmGrade> feature, @JsonProperty("value") LgtmGrade value) {
 
     super(feature);
 

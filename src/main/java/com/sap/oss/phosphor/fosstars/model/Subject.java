@@ -8,20 +8,14 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * A subject for which a rating or a score may be calculated.
- */
+/** A subject for which a rating or a score may be calculated. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface Subject {
 
-  /**
-   * Shows that there is no rating value assigned to a subject.
-   */
+  /** Shows that there is no rating value assigned to a subject. */
   RatingValue NO_RATING_VALUE = null;
 
-  /**
-   * Shows that the date when a rating value was assigned is unknown.
-   */
+  /** Shows that the date when a rating value was assigned is unknown. */
   Date NO_RATING_DATE = null;
 
   /**

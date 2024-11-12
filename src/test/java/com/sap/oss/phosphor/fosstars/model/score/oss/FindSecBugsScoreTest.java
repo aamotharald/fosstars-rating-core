@@ -24,14 +24,13 @@ public class FindSecBugsScoreTest {
 
   @Test
   public void testWithoutUsesFindSecBugs() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(LANGUAGES.unknown()));
+    assertThrows(IllegalArgumentException.class, () -> SCORE.calculate(LANGUAGES.unknown()));
   }
 
   @Test
   public void testWithoutLanguagesValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(USES_FIND_SEC_BUGS.unknown()));
+    assertThrows(
+        IllegalArgumentException.class, () -> SCORE.calculate(USES_FIND_SEC_BUGS.unknown()));
   }
 
   @Test
@@ -43,22 +42,20 @@ public class FindSecBugsScoreTest {
 
   @Test
   public void testVerification() throws VerificationFailedException, IOException {
-    TestVectors vectors = new TestVectors(
-        newTestVector()
-            .alias("test")
-            .expectedScore(Score.INTERVAL)
-            .set(USES_FIND_SEC_BUGS.value(true))
-            .set(LANGUAGES.value(Languages.of(JAVA)))
-            .make()
-    );
+    TestVectors vectors =
+        new TestVectors(
+            newTestVector()
+                .alias("test")
+                .expectedScore(Score.INTERVAL)
+                .set(USES_FIND_SEC_BUGS.value(true))
+                .set(LANGUAGES.value(Languages.of(JAVA)))
+                .make());
 
     Path file = Files.createTempFile(getClass().getName(), "test");
     try {
       vectors.storeToYaml(file);
 
-      ScoreVerification verification = new ScoreVerification(
-          SCORE,
-          TestVectors.loadFromYaml(file));
+      ScoreVerification verification = new ScoreVerification(SCORE, TestVectors.loadFromYaml(file));
 
       verification.run();
     } finally {

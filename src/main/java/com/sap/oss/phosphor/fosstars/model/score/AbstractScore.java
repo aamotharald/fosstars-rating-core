@@ -22,32 +22,20 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * A base class for scores.
- */
+/** A base class for scores. */
 public abstract class AbstractScore implements Score {
 
-  /**
-   * No description.
-   */
+  /** No description. */
   static final String EMPTY_DESCRIPTION = "";
 
-  /**
-   * Score name.
-   */
+  /** Score name. */
   private final String name;
 
-  /**
-   * Description.
-   */
-  @JsonIgnore
-  private final String description;
+  /** Description. */
+  @JsonIgnore private final String description;
 
-  /**
-   * A logger.
-   */
-  @JsonIgnore
-  protected final Logger logger = LogManager.getLogger(getClass());
+  /** A logger. */
+  @JsonIgnore protected final Logger logger = LogManager.getLogger(getClass());
 
   /**
    * Initializes a new score.
@@ -163,14 +151,13 @@ public abstract class AbstractScore implements Score {
         return subScore;
       }
     }
-    throw new IllegalArgumentException(String.format(
-        "Sub-score %s not found", clazz.getCanonicalName()));
+    throw new IllegalArgumentException(
+        String.format("Sub-score %s not found", clazz.getCanonicalName()));
   }
 
   /**
-   * Collect all features which are used by a specified score and its sub-scores.
-   * The method browses the underlying sub-scores recursively and adds features
-   * to a specified set.
+   * Collect all features which are used by a specified score and its sub-scores. The method browses
+   * the underlying sub-scores recursively and adds features to a specified set.
    *
    * @param score The score.
    * @param allFeatures A set of features to be filled out.
@@ -185,8 +172,8 @@ public abstract class AbstractScore implements Score {
   }
 
   /**
-   * Initializes a score value for the score.
-   * The method adjusts the specified score value so that it fits to the valid range [0, 10].
+   * Initializes a score value for the score. The method adjusts the specified score value so that
+   * it fits to the valid range [0, 10].
    *
    * @param value The score value.
    * @param usedValues The values which were used to produce the score value.
@@ -202,8 +189,8 @@ public abstract class AbstractScore implements Score {
   }
 
   /**
-   * Initializes a score value for the score.
-   * The method adjusts the specified score value so that it fits to the valid range [0, 10].
+   * Initializes a score value for the score. The method adjusts the specified score value so that
+   * it fits to the valid range [0, 10].
    *
    * @param value The score value.
    * @param usedValues The values which were used to produce the score value.
@@ -211,11 +198,7 @@ public abstract class AbstractScore implements Score {
    */
   protected ScoreValue scoreValue(double value, List<Value<?>> usedValues) {
     return new ScoreValue(
-        this,
-        Score.adjust(value),
-        Weight.MAX,
-        Confidence.make(usedValues),
-        usedValues);
+        this, Score.adjust(value), Weight.MAX, Confidence.make(usedValues), usedValues);
   }
 
   /**
@@ -254,10 +237,10 @@ public abstract class AbstractScore implements Score {
   }
 
   /**
-   * The method calculates a value for a specified score if the value is not available.
-   * First, the method checks if the set of values already contains a value for the specified score.
-   * If yes, the method just returns the existing value.
-   * Otherwise, the method tries to calculate a value of the specified score.
+   * The method calculates a value for a specified score if the value is not available. First, the
+   * method checks if the set of values already contains a value for the specified score. If yes,
+   * the method just returns the existing value. Otherwise, the method tries to calculate a value of
+   * the specified score.
    *
    * @param score The score.
    * @param values The set of values.
@@ -278,8 +261,8 @@ public abstract class AbstractScore implements Score {
       return (ScoreValue) value;
     }
 
-    throw new IllegalArgumentException(String.format(
-        "Hey! I expected a ScoreValue for a score but got %s!", value.getClass()));
+    throw new IllegalArgumentException(
+        String.format("Hey! I expected a ScoreValue for a score but got %s!", value.getClass()));
   }
 
   /**

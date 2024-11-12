@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.IntegerValue;
 
-/**
- * A feature which holds a positive integer (more or equal to 0).
- */
+/** A feature which holds a positive integer (more or equal to 0). */
 public class PositiveIntegerFeature extends AbstractFeature<Integer> {
 
   /**

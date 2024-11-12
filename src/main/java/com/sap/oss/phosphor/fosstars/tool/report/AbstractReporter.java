@@ -28,21 +28,16 @@ import org.apache.logging.log4j.Logger;
  */
 abstract class AbstractReporter<T extends OpenSourceProject> implements Reporter<T> {
 
-  /**
-   * A type reference of a list of {@link GitHubProject}s for deserialization.
-   */
-  static final TypeReference<List<GitHubProject>> LIST_OF_GITHUB_PROJECTS_TYPE
-      = new TypeReference<List<GitHubProject>>() {};
+  /** A type reference of a list of {@link GitHubProject}s for deserialization. */
+  static final TypeReference<List<GitHubProject>> LIST_OF_GITHUB_PROJECTS_TYPE =
+      new TypeReference<List<GitHubProject>>() {};
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   final Logger logger = LogManager.getLogger(getClass());
 
   /**
-   * Merges two lists of projects. The merge is based on URLs.
-   * If there are two projects with the same URLs,
-   * then the method uses the project from the first list.
+   * Merges two lists of projects. The merge is based on URLs. If there are two projects with the
+   * same URLs, then the method uses the project from the first list.
    *
    * @param projects The first list of projects.
    * @param extraProjects The second list of projects.
@@ -68,8 +63,8 @@ abstract class AbstractReporter<T extends OpenSourceProject> implements Reporter
   }
 
   /**
-   * Loads projects from a JSON file.
-   * If the file doesn't exist, then the method returns an empty list.
+   * Loads projects from a JSON file. If the file doesn't exist, then the method returns an empty
+   * list.
    *
    * @param extraSourceFileName A path to the file.
    * @return A list of loaded extra projects.
@@ -83,8 +78,8 @@ abstract class AbstractReporter<T extends OpenSourceProject> implements Reporter
   }
 
   /**
-   * Loads projects from a JSON file.
-   * If the file doesn't exist, then the method returns an empty list.
+   * Loads projects from a JSON file. If the file doesn't exist, then the method returns an empty
+   * list.
    *
    * @param extraSourceFileName A path to the file.
    * @return A list of loaded extra projects.
@@ -116,5 +111,4 @@ abstract class AbstractReporter<T extends OpenSourceProject> implements Reporter
       throw new UncheckedIOException("Holy moly! Could not load template!", e);
     }
   }
-
 }

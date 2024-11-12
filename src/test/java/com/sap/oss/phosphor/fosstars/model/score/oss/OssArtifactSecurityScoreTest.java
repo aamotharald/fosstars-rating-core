@@ -52,12 +52,12 @@ public class OssArtifactSecurityScoreTest {
     ScoreValue scoreValue = score.calculate(Utils.allUnknown(score.allFeatures()));
     assertTrue(scoreValue.isUnknown());
   }
-  
+
   @Test
   public void testCalculateOssSecurityScoreUnknown() {
     Score ossSecurityScore = new OssSecurityScore();
     Set<Value<?>> values = Utils.allUnknown(ossSecurityScore.allFeatures());
-    
+
     OssArtifactSecurityScore ossArtifactSecurityScore = new OssArtifactSecurityScore();
     values.add(RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)));
     values.add(ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())));
@@ -70,9 +70,10 @@ public class OssArtifactSecurityScoreTest {
   @Test
   public void testCalculateWithCurrentVersion() {
     OssArtifactSecurityScore score = new OssArtifactSecurityScore();
-    Set<Value<?>> values = getDefaultValues(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())));
+    Set<Value<?>> values =
+        getDefaultValues(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(3.5, 4.5).contains(scoreValue.get()));
@@ -83,9 +84,10 @@ public class OssArtifactSecurityScoreTest {
   @Test
   public void testCalculateWithOldVersion() {
     OssArtifactSecurityScore score = new OssArtifactSecurityScore();
-    Set<Value<?>> values = getDefaultValues(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now())));
+    Set<Value<?>> values =
+        getDefaultValues(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now())));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(3.5, 4.5).contains(scoreValue.get()));
@@ -96,9 +98,10 @@ public class OssArtifactSecurityScoreTest {
   @Test
   public void testCalculateWithCurrentAndV200() {
     OssArtifactSecurityScore score = new OssArtifactSecurityScore();
-    Set<Value<?>> values = getDefaultValues(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())));
+    Set<Value<?>> values =
+        getDefaultValues(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(4, 5).contains(scoreValue.get()));
@@ -109,9 +112,10 @@ public class OssArtifactSecurityScoreTest {
   @Test
   public void testCalculateWithV200Used() {
     OssArtifactSecurityScore score = new OssArtifactSecurityScore();
-    Set<Value<?>> values = getDefaultValues(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())));
+    Set<Value<?>> values =
+        getDefaultValues(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(4, 5).contains(scoreValue.get()));
@@ -124,10 +128,11 @@ public class OssArtifactSecurityScoreTest {
     OssArtifactSecurityScore score = new OssArtifactSecurityScore();
     Vulnerability vulnerability = createBasicVulnerability();
 
-    Set<Value<?>> values = getDefaultValues(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())));
+    Set<Value<?>> values =
+        getDefaultValues(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(4, 5).contains(scoreValue.get()));
@@ -140,10 +145,11 @@ public class OssArtifactSecurityScoreTest {
     OssArtifactSecurityScore score = new OssArtifactSecurityScore();
     Vulnerability vulnerability = TestUtils.createBasicVulnerability(10.0, "2.0.0", "2.0.0");
 
-    Set<Value<?>> values = getDefaultValues(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())));
+    Set<Value<?>> values =
+        getDefaultValues(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(0, 1).contains(scoreValue.get()));
@@ -167,12 +173,9 @@ public class OssArtifactSecurityScoreTest {
   }
 
   private static ArtifactVersions testArtifactVersions(boolean with2xx) {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version101 =
-        new ArtifactVersion("1.0.1", LocalDateTime.now().minusMonths(13));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(6));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version101 = new ArtifactVersion("1.0.1", LocalDateTime.now().minusMonths(13));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(6));
     ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(72));
     if (with2xx) {
       ArtifactVersion version200 = new ArtifactVersion("2.0.0", LocalDateTime.now().minusDays(7));

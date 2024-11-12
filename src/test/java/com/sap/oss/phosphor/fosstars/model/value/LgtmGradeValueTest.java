@@ -24,5 +24,4 @@ public class LgtmGradeValueTest {
     assertEquals(a, clone);
     assertEquals(a.hashCode(), clone.hashCode());
   }
-
 }

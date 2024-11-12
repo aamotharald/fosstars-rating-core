@@ -6,9 +6,7 @@ import com.sap.oss.phosphor.fosstars.model.Feature;
 import com.sap.oss.phosphor.fosstars.model.Value;
 import java.util.Objects;
 
-/**
- * An unknown value for a feature.
- */
+/** An unknown value for a feature. */
 public final class UnknownValue<T> extends AbstractValue<T, UnknownValue<T>> {
 
   /**

@@ -9,9 +9,7 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import java.net.MalformedURLException;
 import java.util.List;
 
-/**
- * An advisor for features related to signing.
- */
+/** An advisor for features related to signing. */
 public class SigningAdvisor extends AbstractOssAdvisor {
 
   /**

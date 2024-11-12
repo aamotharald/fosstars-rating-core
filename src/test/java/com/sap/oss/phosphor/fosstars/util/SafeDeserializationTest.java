@@ -32,5 +32,4 @@ public class SafeDeserializationTest {
     Json.mapper().readValue(Json.toBytes(entity), Entity.class);
     Yaml.mapper().readValue(Json.toBytes(entity), Entity.class);
   }
-
 }

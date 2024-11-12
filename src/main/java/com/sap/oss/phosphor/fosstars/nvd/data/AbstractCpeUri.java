@@ -2,24 +2,16 @@ package com.sap.oss.phosphor.fosstars.nvd.data;
 
 import java.util.Objects;
 
-/**
- * An abstract class for CPE URIs.
- */
+/** An abstract class for CPE URIs. */
 public abstract class AbstractCpeUri implements CpeUri {
 
-  /**
-   * The vendor of the project.
-   */
+  /** The vendor of the project. */
   private final String vendor;
 
-  /**
-   * The product of the project.
-   */
+  /** The product of the project. */
   private final String product;
 
-  /**
-   * Public constructor.
-   */
+  /** Public constructor. */
   AbstractCpeUri(String cpeUri, int vendorIndex, int productIndex) {
     Objects.requireNonNull(cpeUri, "The uri cannot be null");
 
@@ -36,17 +28,13 @@ public abstract class AbstractCpeUri implements CpeUri {
     this.product = splitContent[productIndex];
   }
 
-  /**
-   * Gets the vendor from the CPE URI.
-   */
+  /** Gets the vendor from the CPE URI. */
   @Override
   public String getVendor() {
     return vendor;
   }
 
-  /**
-   * Gets the product from the CPE URI.
-   */
+  /** Gets the product from the CPE URI. */
   @Override
   public String getProduct() {
     return product;

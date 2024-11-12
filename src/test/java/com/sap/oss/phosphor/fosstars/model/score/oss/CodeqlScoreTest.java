@@ -50,13 +50,15 @@ public class CodeqlScoreTest {
 
   @Test
   public void testCalculateWithoutUsesCodeqlChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(RUNS_CODEQL_SCANS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(RUNS_CODEQL_SCANS.unknown(), LANGUAGES.unknown()));
   }
 
   @Test
   public void testCalculateWithoutRunsCodeqlChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(USES_CODEQL_CHECKS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(USES_CODEQL_CHECKS.unknown(), LANGUAGES.unknown()));
   }
 }

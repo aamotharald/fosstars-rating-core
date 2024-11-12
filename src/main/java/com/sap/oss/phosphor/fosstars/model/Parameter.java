@@ -1,8 +1,6 @@
 package com.sap.oss.phosphor.fosstars.model;
 
-/**
- * The interface represents a tunable parameter of a score or rating.
- */
+/** The interface represents a tunable parameter of a score or rating. */
 public interface Parameter {
 
   /**

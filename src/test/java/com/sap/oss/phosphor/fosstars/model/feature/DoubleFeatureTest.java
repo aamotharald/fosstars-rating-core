@@ -55,7 +55,6 @@ public class DoubleFeatureTest {
 
   @Test
   public void parseInvalidDouble() {
-    assertThrows(NumberFormatException.class, () ->
-      new DoubleFeature("test").parse("a"));
+    assertThrows(NumberFormatException.class, () -> new DoubleFeature("test").parse("a"));
   }
 }

@@ -20,8 +20,7 @@ public class ApplicationTest {
 
   @Test
   public void testNoParameters() {
-    assertThrows(IllegalArgumentException.class, () ->
-      new Application().run());
+    assertThrows(IllegalArgumentException.class, () -> new Application().run());
   }
 
   @Test
@@ -61,27 +60,21 @@ public class ApplicationTest {
       assertEquals(3, mainConfig.finderConfig.organizationConfigs.size());
       assertThat(
           mainConfig.finderConfig.organizationConfigs,
-          hasItem(
-              new OrganizationConfig("apache", Arrays.asList("incubator", "incubating"), 0)));
+          hasItem(new OrganizationConfig("apache", Arrays.asList("incubator", "incubating"), 0)));
       assertThat(
           mainConfig.finderConfig.organizationConfigs,
-          hasItem(
-              new OrganizationConfig("eclipse", Collections.singletonList("incubator"), 0)));
+          hasItem(new OrganizationConfig("eclipse", Collections.singletonList("incubator"), 0)));
       assertThat(
           mainConfig.finderConfig.organizationConfigs,
-          hasItem(
-              new OrganizationConfig("spring-projects", EMPTY_EXCLUDE_LIST, 0)));
+          hasItem(new OrganizationConfig("spring-projects", EMPTY_EXCLUDE_LIST, 0)));
       assertNotNull(mainConfig.finderConfig.projectConfigs);
       assertEquals(2, mainConfig.finderConfig.projectConfigs.size());
       assertThat(
           mainConfig.finderConfig.projectConfigs,
-          hasItem(
-              new ProjectConfig("FasterXML", "jackson-databind")));
+          hasItem(new ProjectConfig("FasterXML", "jackson-databind")));
       assertThat(
           mainConfig.finderConfig.projectConfigs,
-          hasItem(
-              new ProjectConfig("FasterXML", "jackson-dataformat-xml")));
+          hasItem(new ProjectConfig("FasterXML", "jackson-dataformat-xml")));
     }
   }
-
 }

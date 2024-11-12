@@ -19,28 +19,27 @@ import org.junit.jupiter.api.Test;
 
 public class FunctionalityRiskLikelihoodFactorTest {
 
-  private static final FunctionalityRiskLikelihoodFactor SCORE
-      = new FunctionalityRiskLikelihoodFactor();
+  private static final FunctionalityRiskLikelihoodFactor SCORE =
+      new FunctionalityRiskLikelihoodFactor();
 
   @Test
   public void testJsonSerialization() throws IOException {
-    FunctionalityRiskLikelihoodFactor clone
-        = Json.read(Json.toBytes(SCORE), FunctionalityRiskLikelihoodFactor.class);
+    FunctionalityRiskLikelihoodFactor clone =
+        Json.read(Json.toBytes(SCORE), FunctionalityRiskLikelihoodFactor.class);
     assertTrue(SCORE.equals(clone) && clone.equals(SCORE));
     assertEquals(SCORE.hashCode(), clone.hashCode());
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    FunctionalityRiskLikelihoodFactor clone
-        = Yaml.read(Yaml.toBytes(SCORE), FunctionalityRiskLikelihoodFactor.class);
+    FunctionalityRiskLikelihoodFactor clone =
+        Yaml.read(Yaml.toBytes(SCORE), FunctionalityRiskLikelihoodFactor.class);
     assertEquals(clone, SCORE);
   }
 
   @Test
   public void testCalculate() {
-    ScoreValue scoreValue = SCORE.calculate(
-        new EnumValue<>(FUNCTIONALITY, SDK));
+    ScoreValue scoreValue = SCORE.calculate(new EnumValue<>(FUNCTIONALITY, SDK));
     assertFalse(scoreValue.isUnknown());
     assertFalse(scoreValue.isNotApplicable());
     assertTrue(Score.INTERVAL.contains(scoreValue.get()));
@@ -51,8 +50,7 @@ public class FunctionalityRiskLikelihoodFactorTest {
 
   @Test
   public void testScoreValueSerialization() throws IOException {
-    ScoreValue scoreValue = SCORE.calculate(
-        new EnumValue<>(FUNCTIONALITY, SECURITY));
+    ScoreValue scoreValue = SCORE.calculate(new EnumValue<>(FUNCTIONALITY, SECURITY));
     ScoreValue clone = Json.read(Json.toBytes(scoreValue), ScoreValue.class);
     assertTrue(scoreValue.equals(clone) && clone.equals(scoreValue));
     assertEquals(scoreValue.hashCode(), clone.hashCode());

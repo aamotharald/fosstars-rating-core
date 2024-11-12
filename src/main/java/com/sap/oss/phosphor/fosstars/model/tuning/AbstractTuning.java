@@ -9,24 +9,16 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * This is a base class for tuning procedures.
- */
+/** This is a base class for tuning procedures. */
 public abstract class AbstractTuning {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   final Logger logger = LogManager.getLogger(getClass());
 
-  /**
-   * An object to be tuned.
-   */
+  /** An object to be tuned. */
   final Tunable object;
 
-  /**
-   * A verifier to be used.
-   */
+  /** A verifier to be used. */
   final Verifier verifier;
 
   /**
@@ -43,8 +35,7 @@ public abstract class AbstractTuning {
   /**
    * Runs tuning.
    *
-   * @throws VerificationFailedException If some test vectors still fail
-   *                                     after the tuning was done.
+   * @throws VerificationFailedException If some test vectors still fail after the tuning was done.
    */
   public final void run() throws VerificationFailedException {
     runTuning();
@@ -68,14 +59,11 @@ public abstract class AbstractTuning {
     if (success) {
       logger.info("Gut gemacht, all test vectors passed!");
     } else {
-      logger.warn("{} test vector{} failed!",
-          results.size(), results.size() == 1 ? "" : "s");
+      logger.warn("{} test vector{} failed!", results.size(), results.size() == 1 ? "" : "s");
       throw new VerificationFailedException("Some test vectors failed!");
     }
   }
 
-  /**
-   * Runs an optimization algorithm.
-   */
+  /** Runs an optimization algorithm. */
   abstract void runTuning();
 }

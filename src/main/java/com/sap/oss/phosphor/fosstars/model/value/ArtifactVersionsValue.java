@@ -6,14 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/**
- * A value for a feature that holds versions for an artifact.
- */
+/** A value for a feature that holds versions for an artifact. */
 public class ArtifactVersionsValue extends AbstractKnownValue<ArtifactVersions> {
 
-  /**
-   * Versions of an artifact.
-   */
+  /** Versions of an artifact. */
   private final ArtifactVersions artifactVersions;
 
   /**

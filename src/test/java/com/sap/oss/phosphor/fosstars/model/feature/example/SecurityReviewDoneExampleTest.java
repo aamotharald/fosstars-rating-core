@@ -37,5 +37,4 @@ public class SecurityReviewDoneExampleTest {
     Value<Boolean> value = SECURITY_REVIEW_DONE_EXAMPLE.unknown();
     assertTrue(value.isUnknown());
   }
-
 }

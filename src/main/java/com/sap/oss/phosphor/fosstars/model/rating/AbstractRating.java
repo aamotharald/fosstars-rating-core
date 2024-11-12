@@ -13,19 +13,13 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * A base class for ratings.
- */
+/** A base class for ratings. */
 public abstract class AbstractRating implements Rating {
 
-  /**
-   * Rating name.
-   */
+  /** Rating name. */
   private final String name;
 
-  /**
-   * A score which is used in the raging.
-   */
+  /** A score which is used in the raging. */
   private final Score score;
 
   /**
@@ -110,5 +104,4 @@ public abstract class AbstractRating implements Rating {
   public int hashCode() {
     return Objects.hash(score);
   }
-
 }

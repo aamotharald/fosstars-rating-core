@@ -50,7 +50,7 @@ public class ArtifactVersionTest {
   }
 
   @Test
-  public void testJsonSerialization() throws IOException  {
+  public void testJsonSerialization() throws IOException {
     ArtifactVersion version = new ArtifactVersion("2.0.2", LocalDateTime.now());
     ArtifactVersion clone = Json.read(Json.toBytes(version), ArtifactVersion.class);
     assertTrue(version.equals(clone) && clone.equals(version));
@@ -58,7 +58,7 @@ public class ArtifactVersionTest {
   }
 
   @Test
-  public void testYamlSerialization() throws IOException  {
+  public void testYamlSerialization() throws IOException {
     ArtifactVersion version = new ArtifactVersion("MIGHTY-1.2", LocalDateTime.now());
     ArtifactVersion clone = Yaml.read(Yaml.toBytes(version), ArtifactVersion.class);
     assertTrue(version.equals(clone) && clone.equals(version));

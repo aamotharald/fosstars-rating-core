@@ -20,23 +20,24 @@ import java.util.regex.Pattern;
 /**
  * The data provider gathers info about how a project uses Mypy for static analysis. In particular,
  * it tries to fill out the following features:
+ *
  * <ul>
- *   <li>{@link OssFeatures#RUNS_MYPY_SCANS}</li>
- *   <li>{@link OssFeatures#USES_MYPY_SCAN_CHECKS}</li>
+ *   <li>{@link OssFeatures#RUNS_MYPY_SCANS}
+ *   <li>{@link OssFeatures#USES_MYPY_SCAN_CHECKS}
  * </ul>
  */
 public class MyPyDataProvider extends AbstractStaticScanToolsDataProvider {
 
-  /**
-   * A predicate to check if the any step of a GitHub action that triggers analysis with Mypy.
-   */
+  /** A predicate to check if the any step of a GitHub action that triggers analysis with Mypy. */
   private static final Map<String, Predicate<String>> MATCH_PYLINT_PREDICATE_MAP = new HashMap<>();
 
   static {
-    MATCH_PYLINT_PREDICATE_MAP.put("uses", step -> Pattern
-        .compile("^.*mypy-github-action.*$", Pattern.DOTALL).matcher(step).matches());
-    MATCH_PYLINT_PREDICATE_MAP.put("run",
-        step -> Pattern.compile("^.*mypy .*$", Pattern.DOTALL).matcher(step).matches());
+    MATCH_PYLINT_PREDICATE_MAP.put(
+        "uses",
+        step ->
+            Pattern.compile("^.*mypy-github-action.*$", Pattern.DOTALL).matcher(step).matches());
+    MATCH_PYLINT_PREDICATE_MAP.put(
+        "run", step -> Pattern.compile("^.*mypy .*$", Pattern.DOTALL).matcher(step).matches());
     MATCH_PYLINT_PREDICATE_MAP.putAll(preCommitHookContextMap(hook -> hook.contains("mypy")));
   }
 

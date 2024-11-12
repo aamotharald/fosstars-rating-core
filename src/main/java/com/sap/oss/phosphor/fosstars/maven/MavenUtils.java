@@ -23,9 +23,7 @@ import org.apache.maven.model.Reporting;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-/**
- * The class contains useful methods for working with Maven.
- */
+/** The class contains useful methods for working with Maven. */
 public class MavenUtils {
 
   /**
@@ -112,7 +110,8 @@ public class MavenUtils {
       return;
     }
 
-    pluginManagement.getPlugins()
+    pluginManagement
+        .getPlugins()
         .forEach(plugin -> visitor.accept(plugin, in(locations, MANAGEMENT)));
   }
 
@@ -238,8 +237,7 @@ public class MavenUtils {
    * @param rest An array of locations to be added to the resulting set.
    * @return A set of locations that contains all passed locations.
    */
-  private static EnumSet<Location> in(
-      EnumSet<Location> locations, Location... rest) {
+  private static EnumSet<Location> in(EnumSet<Location> locations, Location... rest) {
 
     EnumSet<Location> set = EnumSet.copyOf(locations);
     set.addAll(Arrays.asList(rest));

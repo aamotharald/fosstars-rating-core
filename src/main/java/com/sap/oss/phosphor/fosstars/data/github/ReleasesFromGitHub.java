@@ -20,9 +20,7 @@ import org.kohsuke.github.GHRelease;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHTag;
 
-/**
- * This data provider collects version information from GitHub releases.
- */
+/** This data provider collects version information from GitHub releases. */
 public class ReleasesFromGitHub extends CachedSingleFeatureGitHubDataProvider<ArtifactVersions> {
 
   /**
@@ -49,16 +47,18 @@ public class ReleasesFromGitHub extends CachedSingleFeatureGitHubDataProvider<Ar
     Set<ArtifactVersion> artifactVersions;
     if (releases.isEmpty()) {
       logger.info("No release information found. Let's try to extract version info from tags ...");
-      artifactVersions = repo.listTags().toList().stream()
-          .filter(tag -> SemanticVersion.isSemanticVersion(tag.getName()))
-          .map(this::createArtifactVersion)
-          .filter(Objects::nonNull)
-          .collect(Collectors.toSet());
+      artifactVersions =
+          repo.listTags().toList().stream()
+              .filter(tag -> SemanticVersion.isSemanticVersion(tag.getName()))
+              .map(this::createArtifactVersion)
+              .filter(Objects::nonNull)
+              .collect(Collectors.toSet());
     } else {
-      artifactVersions = releases.stream()
-        .filter(Objects::nonNull)
-        .map(r -> new ArtifactVersion(r.getName(), convertToLocalDate(r.getPublished_at())))
-        .collect(Collectors.toSet());
+      artifactVersions =
+          releases.stream()
+              .filter(Objects::nonNull)
+              .map(r -> new ArtifactVersion(r.getName(), convertToLocalDate(r.getPublished_at())))
+              .collect(Collectors.toSet());
     }
 
     return RELEASED_ARTIFACT_VERSIONS.value(new ArtifactVersions(artifactVersions));
@@ -66,8 +66,8 @@ public class ReleasesFromGitHub extends CachedSingleFeatureGitHubDataProvider<Ar
 
   private ArtifactVersion createArtifactVersion(GHTag tag) {
     try {
-      return new ArtifactVersion(tag.getName(),
-          convertToLocalDate(tag.getCommit().getCommitDate()));
+      return new ArtifactVersion(
+          tag.getName(), convertToLocalDate(tag.getCommit().getCommitDate()));
     } catch (IOException e) {
       logger.warn("Could not create artifact version!", e);
       return null;
@@ -81,8 +81,6 @@ public class ReleasesFromGitHub extends CachedSingleFeatureGitHubDataProvider<Ar
    * @return The time as LocalDateTime.
    */
   private static LocalDateTime convertToLocalDate(Date date) {
-    return date.toInstant()
-        .atZone(ZoneId.systemDefault())
-        .toLocalDateTime();
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
   }
 }

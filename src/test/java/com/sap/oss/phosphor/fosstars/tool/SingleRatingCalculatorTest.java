@@ -22,10 +22,9 @@ public class SingleRatingCalculatorTest extends TestGitHubDataFetcherHolder {
   public void testCalculateFor() {
     GitHubProject project = new GitHubProject("test", "project");
 
-    SingleRatingCalculator calculator
-        = new SingleRatingCalculator(
-            RatingRepository.INSTANCE.rating(OssSecurityRating.class),
-            Collections.emptyList());
+    SingleRatingCalculator calculator =
+        new SingleRatingCalculator(
+            RatingRepository.INSTANCE.rating(OssSecurityRating.class), Collections.emptyList());
     calculator.set(NoUserCallback.INSTANCE);
 
     assertFalse(project.ratingValue().isPresent());

@@ -20,23 +20,29 @@ public class MutableWeightTest {
 
   @Test
   public void testZero() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new MutableWeight(0);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new MutableWeight(0);
+        });
   }
 
   @Test
   public void testNegative() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new MutableWeight(-1);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new MutableWeight(-1);
+        });
   }
 
   @Test
   public void testTooBig() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new MutableWeight(2);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new MutableWeight(2);
+        });
   }
 
   @Test

@@ -42,64 +42,40 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * A base class for command-line handlers.
- */
+/** A base class for command-line handlers. */
 public abstract class AbstractHandler implements Handler {
 
-  /**
-   * No configuration file.
-   */
+  /** No configuration file. */
   static final Config NO_CONFIG = null;
 
-  /**
-   * Maps a command-line option for subjects to a processor.
-   */
+  /** Maps a command-line option for subjects to a processor. */
   final Map<String, Processor> router = new HashMap<>();
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   final Logger logger = LogManager.getLogger(getClass());
 
-  /**
-   * An interface to NVD.
-   */
+  /** An interface to NVD. */
   final NVD nvd = new NVD();
 
-  /**
-   * A rating that the handler calculates.
-   */
+  /** A rating that the handler calculates. */
   final Rating rating;
 
-  /**
-   * Parsed command-line parameters.
-   */
+  /** Parsed command-line parameters. */
   CommandLine commandLine;
 
-  /**
-   * A list of configs for data providers.
-   */
+  /** A list of configs for data providers. */
   List<String> withDataProviderConfigs = emptyList();
 
-  /**
-   * An interface to GitHub.
-   */
+  /** An interface to GitHub. */
   GitHubDataFetcher fetcher;
 
-  /**
-   * A user callback.
-   */
+  /** A user callback. */
   UserCallback callback = NoUserCallback.INSTANCE;
 
-  /**
-   * A cache of values for subjects.
-   */
+  /** A cache of values for subjects. */
   SubjectValueCache cache = new SubjectValueCache();
 
-  /**
-   * A base directory.
-   */
+  /** A base directory. */
   String baseDirectory = "./";
 
   /**
@@ -124,21 +100,22 @@ public abstract class AbstractHandler implements Handler {
    */
   SingleRatingCalculator calculator() throws IOException {
     List<DataProvider> providers = dataProviderSelector().providersFor(rating);
-    SingleRatingCalculator calculator
-        = new SingleRatingCalculator(rating, providers).set(cache).set(callback);
+    SingleRatingCalculator calculator =
+        new SingleRatingCalculator(rating, providers).set(cache).set(callback);
 
     if (commandLine.hasOption("cleanup")) {
-      calculator.doAfter(subject -> {
-        if (subject instanceof GitHubProject) {
-          GitHubProject project = (GitHubProject) subject;
-          CleanupStrategy processedRepository = (url, info, total) -> project.scm().equals(url);
-          try {
-            fetcher.cleanup(processedRepository);
-          } catch (IOException e) {
-            logger.warn("Oops! Could not clean up!", e);
-          }
-        }
-      });
+      calculator.doAfter(
+          subject -> {
+            if (subject instanceof GitHubProject) {
+              GitHubProject project = (GitHubProject) subject;
+              CleanupStrategy processedRepository = (url, info, total) -> project.scm().equals(url);
+              try {
+                fetcher.cleanup(processedRepository);
+              } catch (IOException e) {
+                logger.warn("Oops! Could not clean up!", e);
+              }
+            }
+          });
     }
 
     return calculator;
@@ -211,14 +188,16 @@ public abstract class AbstractHandler implements Handler {
 
   @Override
   public final Handler run() throws Exception {
-    List<String> options = router.keySet().stream()
-        .filter(option -> commandLine.hasOption(option))
-        .collect(Collectors.toList());
+    List<String> options =
+        router.keySet().stream()
+            .filter(option -> commandLine.hasOption(option))
+            .collect(Collectors.toList());
 
     if (options.isEmpty()) {
-      throw new IllegalArgumentException(format(
-          "You have to give me one of the following options: %s",
-          String.join(", ", router.keySet())));
+      throw new IllegalArgumentException(
+          format(
+              "You have to give me one of the following options: %s",
+              String.join(", ", router.keySet())));
     }
 
     if (options.size() > 1) {
@@ -282,8 +261,11 @@ public abstract class AbstractHandler implements Handler {
    * @param projectCacheFile A path to projects cache.
    * @throws IOException If something went wrong.
    */
-  void process(List<GitHubProject> projects, List<Reporter<GitHubProject>> reporters,
-      String projectCacheFile) throws IOException {
+  void process(
+      List<GitHubProject> projects,
+      List<Reporter<GitHubProject>> reporters,
+      String projectCacheFile)
+      throws IOException {
 
     logger.info("Starting calculating ratings ...");
     MultipleRatingsCalculator multipleRatingsCalculator =
@@ -296,8 +278,10 @@ public abstract class AbstractHandler implements Handler {
 
     List<Subject> failedSubjects = multipleRatingsCalculator.failedSubjects();
     if (!failedSubjects.isEmpty()) {
-      logger.warn("Ratings couldn't be calculated for {} project{}",
-          failedSubjects.size(), failedSubjects.size() == 1 ? "" : "s");
+      logger.warn(
+          "Ratings couldn't be calculated for {} project{}",
+          failedSubjects.size(),
+          failedSubjects.size() == 1 ? "" : "s");
       for (GitHubProject project : projects) {
         logger.info("    {}", project.scm());
       }
@@ -394,9 +378,8 @@ public abstract class AbstractHandler implements Handler {
     final List<Reporter<GitHubProject>> reporters = makeReporters(config);
 
     logger.info("Look for projects ...");
-    List<GitHubProject> projects = new GitHubProjectFinder(fetcher.github())
-        .set(config.finderConfig)
-        .run();
+    List<GitHubProject> projects =
+        new GitHubProjectFinder(fetcher.github()).set(config.finderConfig).run();
     logger.info("Found {} project{}", projects.size(), projects.size() > 1 ? "s" : "");
     for (GitHubProject project : projects) {
       logger.info("  {}", project.scm());
@@ -417,8 +400,8 @@ public abstract class AbstractHandler implements Handler {
   }
 
   /**
-   * Loads a cache of projects from a file.
-   * If the file doesn't exist, then the method returns an empty cache.
+   * Loads a cache of projects from a file. If the file doesn't exist, then the method returns an
+   * empty cache.
    *
    * @param filename A path to the file.
    * @return A loaded cache of projects.
@@ -446,8 +429,8 @@ public abstract class AbstractHandler implements Handler {
   }
 
   /**
-   * Create a reporter from a config.
-   * The method returns a list with only {@link Reporter#dummy()} if the config is null.
+   * Create a reporter from a config. The method returns a list with only {@link Reporter#dummy()}
+   * if the config is null.
    *
    * @param config The config.
    * @return A reporter.
@@ -496,9 +479,7 @@ public abstract class AbstractHandler implements Handler {
 
       logger.info("Storing a report to {} ({})", file, type);
 
-      Files.write(
-          Paths.get(file),
-          formatter.print(subject).getBytes(StandardCharsets.UTF_8));
+      Files.write(Paths.get(file), formatter.print(subject).getBytes(StandardCharsets.UTF_8));
     }
 
     if (commandLine.hasOption("raw-rating-file")) {
@@ -523,9 +504,7 @@ public abstract class AbstractHandler implements Handler {
     throw new IllegalArgumentException(format("Unsupported output type: %s", type));
   }
 
-  /**
-   * A processor that runs rating calculation for a subject identifier by a string.
-   */
+  /** A processor that runs rating calculation for a subject identifier by a string. */
   private interface Processor {
 
     /**

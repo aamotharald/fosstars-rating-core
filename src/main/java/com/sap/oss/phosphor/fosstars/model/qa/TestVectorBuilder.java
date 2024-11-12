@@ -16,34 +16,22 @@ import java.util.Set;
  */
 public class TestVectorBuilder {
 
-  /**
-   * A set of feature values.
-   */
+  /** A set of feature values. */
   private final Set<Value<?>> values = new HashSet<>();
 
-  /**
-   * An interval for an expected score.
-   */
+  /** An interval for an expected score. */
   private Interval expectedScore;
 
-  /**
-   * If it's set to true, then an unknown score value is expected.
-   */
+  /** If it's set to true, then an unknown score value is expected. */
   private boolean expectUnknownScore = false;
 
-  /**
-   * If it's set to true, then a not-applicable score value is expected.
-   */
+  /** If it's set to true, then a not-applicable score value is expected. */
   private boolean expectNotApplicableScore = false;
 
-  /**
-   * An expected label.
-   */
+  /** An expected label. */
   private Label expectedLabel = TestVector.NO_LABEL;
 
-  /**
-   * An alias.
-   */
+  /** An alias. */
   private String alias;
 
   /**
@@ -65,12 +53,8 @@ public class TestVectorBuilder {
     return newTestVector().alias(alias);
   }
 
-  /**
-   * Private constructor. Please use the {@link #newTestVector()} method to create an instance.
-   */
-  private TestVectorBuilder() {
-
-  }
+  /** Private constructor. Please use the {@link #newTestVector()} method to create an instance. */
+  private TestVectorBuilder() {}
 
   /**
    * Set an expected interval for a score.
@@ -152,8 +136,9 @@ public class TestVectorBuilder {
     Objects.requireNonNull(value, "Hey! You have to give me a feature value but not null");
     boolean added = values.add(value);
     if (!added) {
-      throw new IllegalArgumentException(String.format(
-          "Hey! You set the same value for the feature '%s'", value.feature().name()));
+      throw new IllegalArgumentException(
+          String.format(
+              "Hey! You set the same value for the feature '%s'", value.feature().name()));
     }
     return this;
   }
@@ -177,8 +162,9 @@ public class TestVectorBuilder {
    */
   public StandardTestVector make() {
     if (expectedScore == null && !expectNotApplicableScore && !expectUnknownScore) {
-      throw new IllegalArgumentException("Hey! Expected score can't be null "
-          + "unless a not-applicable or unknown value is expected!");
+      throw new IllegalArgumentException(
+          "Hey! Expected score can't be null "
+              + "unless a not-applicable or unknown value is expected!");
     }
 
     if (values.isEmpty()) {
@@ -186,8 +172,12 @@ public class TestVectorBuilder {
           "Oh no! Looks like you forgot to give me features values!");
     }
 
-    return new StandardTestVector(Collections.unmodifiableSet(values), expectedScore, expectedLabel,
-        alias, expectUnknownScore, expectNotApplicableScore);
+    return new StandardTestVector(
+        Collections.unmodifiableSet(values),
+        expectedScore,
+        expectedLabel,
+        alias,
+        expectUnknownScore,
+        expectNotApplicableScore);
   }
-
 }

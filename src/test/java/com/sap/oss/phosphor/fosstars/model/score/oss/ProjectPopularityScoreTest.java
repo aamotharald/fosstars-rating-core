@@ -23,36 +23,43 @@ public class ProjectPopularityScoreTest {
 
   @Test
   public void testWithNegativeStars() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(
-          NUMBER_OF_GITHUB_STARS.value(-1),
-          NUMBER_OF_WATCHERS_ON_GITHUB.value(1),
-          NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            SCORE.calculate(
+                NUMBER_OF_GITHUB_STARS.value(-1),
+                NUMBER_OF_WATCHERS_ON_GITHUB.value(1),
+                NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
   }
 
   @Test
   public void testWithNegativeWatchers() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(
-          NUMBER_OF_GITHUB_STARS.value(1),
-          NUMBER_OF_WATCHERS_ON_GITHUB.value(-1),
-          NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            SCORE.calculate(
+                NUMBER_OF_GITHUB_STARS.value(1),
+                NUMBER_OF_WATCHERS_ON_GITHUB.value(-1),
+                NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
   }
 
   @Test
   public void testWithoutStars() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(
-          NUMBER_OF_WATCHERS_ON_GITHUB.value(1),
-          NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            SCORE.calculate(
+                NUMBER_OF_WATCHERS_ON_GITHUB.value(1),
+                NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
   }
 
   @Test
   public void testWithoutWatchers() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(
-          NUMBER_OF_GITHUB_STARS.value(1),
-          NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            SCORE.calculate(
+                NUMBER_OF_GITHUB_STARS.value(1), NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(10)));
   }
 
   @Test
@@ -62,14 +69,18 @@ public class ProjectPopularityScoreTest {
 
   @Test
   public void testCalculate() {
-    assertScore(Score.MIN,
-        SCORE, setOf(
+    assertScore(
+        Score.MIN,
+        SCORE,
+        setOf(
             NUMBER_OF_GITHUB_STARS.value(0),
             NUMBER_OF_WATCHERS_ON_GITHUB.value(0),
             NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(0)));
 
-    assertScore(MAX,
-        SCORE, setOf(
+    assertScore(
+        MAX,
+        SCORE,
+        setOf(
             NUMBER_OF_GITHUB_STARS.value(Integer.MAX_VALUE),
             NUMBER_OF_WATCHERS_ON_GITHUB.value(Integer.MAX_VALUE),
             NUMBER_OF_DEPENDENT_PROJECTS_ON_GITHUB.value(Integer.MAX_VALUE)));

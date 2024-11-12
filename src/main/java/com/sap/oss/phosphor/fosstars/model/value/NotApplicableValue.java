@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 
-/**
- * A not-applicable value of a feature.
- */
+/** A not-applicable value of a feature. */
 public final class NotApplicableValue<T> extends AbstractKnownValue<T> {
 
   /**

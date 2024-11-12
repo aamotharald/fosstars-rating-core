@@ -7,24 +7,16 @@ import static java.util.stream.Collectors.joining;
 import com.sap.oss.phosphor.fosstars.data.UserCallback;
 import java.util.EnumSet;
 
-/**
- * Ask a question and offers options from an enum.
- */
+/** Ask a question and offers options from an enum. */
 public class SelectFromEnum<T extends Enum<T>> {
 
-  /**
-   * A callback to interact with a user.
-   */
+  /** A callback to interact with a user. */
   private final UserCallback callback;
 
-  /**
-   * A question for a user.
-   */
+  /** A question for a user. */
   private final String question;
 
-  /**
-   * A class of an enum with options.
-   */
+  /** A class of an enum with options. */
   private final Class<T> enumClass;
 
   /**
@@ -54,8 +46,13 @@ public class SelectFromEnum<T extends Enum<T>> {
     while (true) {
       EnumSet<T> options = EnumSet.allOf(enumClass);
       callback.say(format("[?] %s", question));
-      callback.say(format("    Options: %s",
-          options.stream().map(Enum::toString).map(String::toLowerCase).collect(joining(", "))));
+      callback.say(
+          format(
+              "    Options: %s",
+              options.stream()
+                  .map(Enum::toString)
+                  .map(String::toLowerCase)
+                  .collect(joining(", "))));
       reply = callback.ask();
       reply = reply.trim().toLowerCase();
       if (reply.isEmpty()) {
@@ -71,5 +68,4 @@ public class SelectFromEnum<T extends Enum<T>> {
       callback.say(format("[!] What the heck is '%s'? Please try again?%n", reply));
     }
   }
-
 }

@@ -18,24 +18,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * A collection of test vectors.
- */
+/** A collection of test vectors. */
 public class TestVectors implements Iterable<TestVector> {
 
-  /**
-   * No default values.
-   */
+  /** No default values. */
   private static final Set<Value<?>> NO_DEFAULTS = Collections.emptySet();
 
-  /**
-   * A list of test vectors.
-   */
+  /** A list of test vectors. */
   private final List<TestVector> elements;
 
-  /**
-   * A set of default values.
-   */
+  /** A set of default values. */
   private final Set<Value<?>> defaults;
 
   /**
@@ -113,17 +105,13 @@ public class TestVectors implements Iterable<TestVector> {
     return elements.size();
   }
 
-  /**
-   * This getter is to make Jackson happy.
-   */
+  /** This getter is to make Jackson happy. */
   @JsonGetter("elements")
   private List<TestVector> elements() {
     return new ArrayList<>(elements);
   }
 
-  /**
-   * This getter is to make Jackson happy.
-   */
+  /** This getter is to make Jackson happy. */
   @JsonGetter("defaults")
   private Set<Value<?>> defaults() {
     return new HashSet<>(defaults);
@@ -138,8 +126,7 @@ public class TestVectors implements Iterable<TestVector> {
       return false;
     }
     TestVectors that = (TestVectors) o;
-    return Objects.equals(elements, that.elements)
-        && Objects.equals(defaults, that.defaults);
+    return Objects.equals(elements, that.elements) && Objects.equals(defaults, that.defaults);
   }
 
   @Override
@@ -152,9 +139,7 @@ public class TestVectors implements Iterable<TestVector> {
     return vectorsWithDefaults().iterator();
   }
 
-  /**
-   * Wraps the original test vectors into {@link TestVectorWithDefaults}.
-   */
+  /** Wraps the original test vectors into {@link TestVectorWithDefaults}. */
   private List<TestVector> vectorsWithDefaults() {
     List<TestVector> list = new ArrayList<>();
     for (TestVector vector : elements) {
@@ -200,5 +185,4 @@ public class TestVectors implements Iterable<TestVector> {
     Objects.requireNonNull(filename, "Filename can't be null!");
     Files.write(filename, Yaml.toBytes(this));
   }
-
 }

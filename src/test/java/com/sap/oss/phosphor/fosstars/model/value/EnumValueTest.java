@@ -15,7 +15,9 @@ import org.junit.jupiter.api.Test;
 public class EnumValueTest {
 
   private enum TestEnum {
-    A, B, C
+    A,
+    B,
+    C
   }
 
   @Test
@@ -68,5 +70,4 @@ public class EnumValueTest {
     assertEquals(a, clone);
     assertEquals(a.hashCode(), clone.hashCode());
   }
-
 }

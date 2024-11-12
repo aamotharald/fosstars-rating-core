@@ -18,33 +18,41 @@ public class ImmutableWeightTest {
 
   @Test
   public void testZero() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new ImmutableWeight(0);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new ImmutableWeight(0);
+        });
   }
 
   @Test
   public void testNegative() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new ImmutableWeight(-1);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new ImmutableWeight(-1);
+        });
   }
 
   @Test
   public void testTooBig() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new ImmutableWeight(2);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          new ImmutableWeight(2);
+        });
   }
 
   @Test
   public void testUpdate() {
-    assertThrows(UnsupportedOperationException.class, () -> {
-      ImmutableWeight weight = new ImmutableWeight(0.5);
-      assertTrue(weight.isImmutable());
-      assertEquals(0.5, weight.value(), 0.001);
-      weight.value(0.9);
-    });
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> {
+          ImmutableWeight weight = new ImmutableWeight(0.5);
+          assertTrue(weight.isImmutable());
+          assertEquals(0.5, weight.value(), 0.001);
+          weight.value(0.9);
+        });
   }
 
   @Test

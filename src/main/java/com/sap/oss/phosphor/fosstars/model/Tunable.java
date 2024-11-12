@@ -2,9 +2,7 @@ package com.sap.oss.phosphor.fosstars.model;
 
 import java.util.List;
 
-/**
- * This interface describes an entity which may be tuned.
- */
+/** This interface describes an entity which may be tuned. */
 public interface Tunable {
 
   /**
@@ -21,8 +19,6 @@ public interface Tunable {
    */
   boolean isImmutable();
 
-  /**
-   * Make the entity immutable.
-   */
+  /** Make the entity immutable. */
   void makeImmutable();
 }

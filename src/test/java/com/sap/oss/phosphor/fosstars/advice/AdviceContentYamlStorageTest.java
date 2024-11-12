@@ -27,11 +27,12 @@ public class AdviceContentYamlStorageTest {
 
   @Test
   public void testLoadFromResource() throws IOException {
-    AdviceContentYamlStorage storage = AdviceContentYamlStorage.loadFrom(
-        "com/sap/oss/phosphor/fosstars/advice/AdviceContentStorageTest.yml");
+    AdviceContentYamlStorage storage =
+        AdviceContentYamlStorage.loadFrom(
+            "com/sap/oss/phosphor/fosstars/advice/AdviceContentStorageTest.yml");
 
-    List<AdviceContent> advice = storage.adviceFor(
-        SECURITY_REVIEW_DONE_EXAMPLE, OssAdviceContext.EMPTY_ADVICE_CONTEXT);
+    List<AdviceContent> advice =
+        storage.adviceFor(SECURITY_REVIEW_DONE_EXAMPLE, OssAdviceContext.EMPTY_ADVICE_CONTEXT);
 
     assertEquals(2, advice.size());
     for (int i = 0; i < 2; i++) {
@@ -56,22 +57,22 @@ public class AdviceContentYamlStorageTest {
   public void testLoadFromFile() throws IOException {
     String path = "TestAdvice.yml";
     String content =
-          "---\n"
-        + "Security review status (example):\n"
-        + "  - advice: test1\n"
-        + "    links: []\n"
-        + "  - advice: test2\n"
-        + "Static code analysis status (example):\n"
-        + "  - advice: test3\n"
-        + "    links:\n"
-        + "      - name: link5\n"
-        + "        url: https://test/5\n";
+        "---\n"
+            + "Security review status (example):\n"
+            + "  - advice: test1\n"
+            + "    links: []\n"
+            + "  - advice: test2\n"
+            + "Static code analysis status (example):\n"
+            + "  - advice: test3\n"
+            + "    links:\n"
+            + "      - name: link5\n"
+            + "        url: https://test/5\n";
     Files.write(Paths.get(path), content.getBytes());
     try {
       AdviceContentYamlStorage storage = AdviceContentYamlStorage.loadFrom(path);
 
-      List<AdviceContent> advice = storage.adviceFor(
-          SECURITY_REVIEW_DONE_EXAMPLE, OssAdviceContext.EMPTY_ADVICE_CONTEXT);
+      List<AdviceContent> advice =
+          storage.adviceFor(SECURITY_REVIEW_DONE_EXAMPLE, OssAdviceContext.EMPTY_ADVICE_CONTEXT);
 
       assertEquals(2, advice.size());
       for (int i = 0; i < advice.size(); i++) {
@@ -93,17 +94,17 @@ public class AdviceContentYamlStorageTest {
 
   @Test
   public void testWithNotExistingPath() {
-    assertThrows(IOException.class, () ->
-      AdviceContentYamlStorage.loadFrom("does_not_exist.yml"));
+    assertThrows(IOException.class, () -> AdviceContentYamlStorage.loadFrom("does_not_exist.yml"));
   }
 
   @Test
   public void testRawContentVariables() {
-    RawAdviceContent content = new RawAdviceContent(
-        "Test ${FIRST_VARIABLE} variable",
-        asList(
-            new RawLink("First link ${SECOND_VARIABLE}}", "https://test"),
-            new RawLink("Second link", "${THIRD_VARIABLE}}")));
+    RawAdviceContent content =
+        new RawAdviceContent(
+            "Test ${FIRST_VARIABLE} variable",
+            asList(
+                new RawLink("First link ${SECOND_VARIABLE}}", "https://test"),
+                new RawLink("Second link", "${THIRD_VARIABLE}}")));
 
     Set<String> variables = content.variables();
     assertEquals(3, variables.size());
@@ -114,11 +115,12 @@ public class AdviceContentYamlStorageTest {
 
   @Test
   public void testYamlSerialization() throws IOException {
-    RawAdviceContent fullContent = new RawAdviceContent(
-        "Test",
-        asList(
-            new RawLink("First", "https://test/first"),
-            new RawLink("Second", "https://test/second")));
+    RawAdviceContent fullContent =
+        new RawAdviceContent(
+            "Test",
+            asList(
+                new RawLink("First", "https://test/first"),
+                new RawLink("Second", "https://test/second")));
     RawAdviceContent clone = Yaml.read(Yaml.toBytes(fullContent), RawAdviceContent.class);
     assertEquals(fullContent, clone);
 

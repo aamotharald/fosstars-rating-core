@@ -1,8 +1,6 @@
 package com.sap.oss.phosphor.fosstars.data;
 
-/**
- * An interface which allows communicating with a user.
- */
+/** An interface which allows communicating with a user. */
 public interface UserCallback {
 
   /**

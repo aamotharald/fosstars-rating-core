@@ -110,16 +110,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.util.Precision;
 
-/**
- * The class contains common methods for formatters.
- */
+/** The class contains common methods for formatters. */
 public abstract class CommonFormatter implements Formatter {
 
-  /**
-   * Maps a class of feature to its shorter name which should be used in output.
-   */
-  private static final Map<Class<? extends Feature<?>>, String> FEATURE_CLASS_TO_NAME
-      = new HashMap<>();
+  /** Maps a class of feature to its shorter name which should be used in output. */
+  private static final Map<Class<? extends Feature<?>>, String> FEATURE_CLASS_TO_NAME =
+      new HashMap<>();
 
   static {
     add(OssSecurityScore.class, "Security of project");
@@ -141,7 +137,8 @@ public abstract class CommonFormatter implements Formatter {
     add(BanditScore.class, "Bandit score");
     add(GoSecScore.class, "GoSec score");
     add(FindSecBugsScore.class, "FindSecBugs score");
-    add(VulnerabilityDiscoveryAndSecurityTestingScore.class,
+    add(
+        VulnerabilityDiscoveryAndSecurityTestingScore.class,
         "Vulnerability discovery and security testing");
     add(SecurityReviewScore.class, "Security reviews");
   }
@@ -155,15 +152,14 @@ public abstract class CommonFormatter implements Formatter {
    */
   private static void add(Class<? extends Feature<?>> clazz, String caption) {
     if (FEATURE_CLASS_TO_NAME.containsKey(clazz)) {
-      throw new IllegalArgumentException(String.format(
-          "Oops! This feature class has already been added: %s", clazz.getSimpleName()));
+      throw new IllegalArgumentException(
+          String.format(
+              "Oops! This feature class has already been added: %s", clazz.getSimpleName()));
     }
     FEATURE_CLASS_TO_NAME.put(clazz, caption);
   }
 
-  /**
-   * Maps a feature to its shorter name which should be used in output.
-   */
+  /** Maps a feature to its shorter name which should be used in output. */
   private static final Map<Feature<?>, String> FEATURE_TO_NAME = new HashMap<>();
 
   static {
@@ -194,17 +190,18 @@ public abstract class CommonFormatter implements Formatter {
     add(USES_GOSEC_SCAN_CHECKS, "Does it run GoSec scans on all pull requests?");
     add(FUZZED_IN_OSS_FUZZ, "Is it included to OSS-Fuzz?");
     add(OWASP_DEPENDENCY_CHECK_USAGE, "How is OWASP Dependency Check used?");
-    add(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD,
+    add(
+        OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD,
         "What is the threshold for OWASP Dependency Check?");
     add(USES_REUSE, "Does the project use REUSE?");
     add(README_HAS_REUSE_INFO, "Does README mention REUSE?");
     add(HAS_REUSE_LICENSES, "Does it have LICENSES directory with licenses?");
     add(REGISTERED_IN_REUSE, "Is it registered in REUSE?");
     add(IS_REUSE_COMPLIANT, "Is it compliant with REUSE rules?");
-    add(HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT,
+    add(
+        HAS_OPEN_PULL_REQUEST_FROM_DEPENDABOT,
         "Does the project have open pull requests from Dependabot?");
-    add(HAS_OPEN_PULL_REQUEST_FROM_SNYK,
-        "Does the project have open pull requests from Snyk?");
+    add(HAS_OPEN_PULL_REQUEST_FROM_SNYK, "Does the project have open pull requests from Snyk?");
     add(PACKAGE_MANAGERS, "Package managers");
     add(LANGUAGES, "Programming languages");
     add(RUNS_CODEQL_SCANS, "Does it run CodeQL scans?");
@@ -215,16 +212,19 @@ public abstract class CommonFormatter implements Formatter {
     add(HAS_README, "Does it have a README file?");
     add(INCOMPLETE_README, "Is README incomplete?");
     add(HAS_CONTRIBUTING_GUIDELINE, "Does it have a contributing guideline?");
-    add(HAS_REQUIRED_TEXT_IN_CONTRIBUTING_GUIDELINE,
+    add(
+        HAS_REQUIRED_TEXT_IN_CONTRIBUTING_GUIDELINE,
         "Does the contributing guideline have required text?");
     add(HAS_CODE_OF_CONDUCT, "Does it have a code of conduct guideline?");
-    add(HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE,
-            "Does the code of conduct guideline have required text?");
+    add(
+        HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE,
+        "Does the code of conduct guideline have required text?");
     add(HAS_ADMIN_TEAM_ON_GITHUB, "Does it have an admin team on GitHub?");
     add(HAS_ENOUGH_ADMINS_ON_GITHUB, "Does it have enough admins on GitHub?");
     add(HAS_ENOUGH_TEAMS_ON_GITHUB, "Does it have enough teams on GitHub?");
     add(HAS_ENOUGH_TEAM_MEMBERS_ON_GITHUB, "Does teams have enough members on GitHub?");
-    add(HAS_TEAM_WITH_PUSH_PRIVILEGES_ON_GITHUB,
+    add(
+        HAS_TEAM_WITH_PUSH_PRIVILEGES_ON_GITHUB,
         "Does it have a team with push privileges on GitHub?");
     add(HAS_UNRESOLVED_VULNERABILITY_ALERTS, "Does it have unresolved vulnerability alerts?");
     add(ENABLED_VULNERABILITY_ALERTS_ON_GITHUB, "Are vulnerability alerts enabled?");
@@ -234,10 +234,12 @@ public abstract class CommonFormatter implements Formatter {
     add(HANDLING_UNTRUSTED_DATA_LIKELIHOOD, "How likely does it handle untrusted data?");
     add(IS_ADOPTED, "Is it adopted by any team?");
     add(DATA_CONFIDENTIALITY, "What kind of data does it process?");
-    add(CONFIDENTIALITY_IMPACT,
+    add(
+        CONFIDENTIALITY_IMPACT,
         "What is potential confidentiality impact in case of a security problem?");
     add(INTEGRITY_IMPACT, "What is potential integrity impact in case of a security problem?");
-    add(AVAILABILITY_IMPACT,
+    add(
+        AVAILABILITY_IMPACT,
         "What is potential availability impact in case of a security problem?");
     add(HAS_EXECUTABLE_BINARIES, "Does it have executable binaries?");
     add(RUNS_PYLINT_SCANS, "Does it run Pylint scans?");
@@ -261,9 +263,7 @@ public abstract class CommonFormatter implements Formatter {
     FEATURE_TO_NAME.put(feature, caption);
   }
 
-  /**
-   * A formatter for doubles.
-   */
+  /** A formatter for doubles. */
   private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
 
   static {
@@ -271,9 +271,7 @@ public abstract class CommonFormatter implements Formatter {
     DECIMAL_FORMAT.setMaximumFractionDigits(2);
   }
 
-  /**
-   * An advisor for calculated ratings.
-   */
+  /** An advisor for calculated ratings. */
   protected final Advisor advisor;
 
   /**
@@ -357,13 +355,12 @@ public abstract class CommonFormatter implements Formatter {
 
     if (value instanceof OwaspDependencyCheckUsageValue) {
       OwaspDependencyCheckUsageValue usageValue = (OwaspDependencyCheckUsageValue) value;
-      return StringUtils.capitalize(
-          usageValue.get().toString().replace("_", " ").toLowerCase());
+      return StringUtils.capitalize(usageValue.get().toString().replace("_", " ").toLowerCase());
     }
 
     if (value instanceof OwaspDependencyCheckCvssThresholdValue) {
-      OwaspDependencyCheckCvssThresholdValue threshold
-          = (OwaspDependencyCheckCvssThresholdValue) value;
+      OwaspDependencyCheckCvssThresholdValue threshold =
+          (OwaspDependencyCheckCvssThresholdValue) value;
       return threshold.specified() ? String.valueOf(threshold.get()) : "Not specified";
     }
 

@@ -3,9 +3,7 @@ package com.sap.oss.phosphor.fosstars.advice;
 import com.sap.oss.phosphor.fosstars.model.Subject;
 import com.sap.oss.phosphor.fosstars.model.Value;
 
-/**
- * An advice about a subject's rating, score or feature value.
- */
+/** An advice about a subject's rating, score or feature value. */
 public interface Advice {
 
   /**

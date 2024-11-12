@@ -13,14 +13,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-/**
- * A set of package managers.
- */
+/** A set of package managers. */
 public class PackageManagers implements Iterable<PackageManager> {
 
-  /**
-   * A set of package managers.
-   */
+  /** A set of package managers. */
   private final Set<PackageManager> packageManagers;
 
   /**
@@ -48,8 +44,7 @@ public class PackageManagers implements Iterable<PackageManager> {
    * @param packageManagers A set of package managers.
    */
   @JsonCreator
-  public PackageManagers(
-      @JsonProperty("packageManagers") Set<PackageManager> packageManagers) {
+  public PackageManagers(@JsonProperty("packageManagers") Set<PackageManager> packageManagers) {
 
     Objects.requireNonNull(packageManagers, "Package managers can't be null!");
     this.packageManagers = new TreeSet<>(packageManagers);

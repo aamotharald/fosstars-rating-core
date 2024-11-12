@@ -5,14 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.feature.oss.SecurityReviewsFeature;
 import java.util.Objects;
 
-/**
- * A value that holds security reviews.
- */
+/** A value that holds security reviews. */
 public class SecurityReviewsValue extends AbstractKnownValue<SecurityReviews> {
 
-  /**
-   * A set of security reviews.
-   */
+  /** A set of security reviews. */
   private final SecurityReviews reviews;
 
   /**

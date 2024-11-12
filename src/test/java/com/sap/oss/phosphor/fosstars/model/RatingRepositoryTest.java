@@ -34,23 +34,21 @@ public class RatingRepositoryTest {
 
   @Test
   public void testGetByVersionAndClassWrongClass() {
-    assertThrows(IllegalArgumentException.class, () ->
-      RatingRepository.INSTANCE.rating(TestRating.class));
+    assertThrows(
+        IllegalArgumentException.class, () -> RatingRepository.INSTANCE.rating(TestRating.class));
   }
 
   @Test
   public void testNoDuplicateScores() {
     OssSecurityRating ossSecurityRating = RatingRepository.INSTANCE.rating(OssSecurityRating.class);
     assertNotNull(ossSecurityRating);
-    OssArtifactSecurityRating ossArtifactSecurityRating
-        = RatingRepository.INSTANCE.rating(OssArtifactSecurityRating.class);
+    OssArtifactSecurityRating ossArtifactSecurityRating =
+        RatingRepository.INSTANCE.rating(OssArtifactSecurityRating.class);
     assertNotNull(ossArtifactSecurityRating);
     assertSame(ossSecurityRating.score(), ossArtifactSecurityRating.score().ossSecurityScore());
   }
 
-  /**
-   * Class used for tests.
-   */
+  /** Class used for tests. */
   private static class TestRating extends AbstractRating {
 
     public TestRating(Score score) {

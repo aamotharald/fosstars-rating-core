@@ -6,16 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "ID",
-    "ASSIGNER"
-})
+@JsonPropertyOrder({"ID", "ASSIGNER"})
 // the properties below are ignored because they are not used
 // that saves a bit of memory
 // when they become necessary, then can be enabled
-@JsonIgnoreProperties({
-    "assigner"
-})
+@JsonIgnoreProperties({"assigner"})
 public class CveMetaData {
 
   @JsonProperty("ID")
@@ -33,5 +28,4 @@ public class CveMetaData {
   public void setId(String id) {
     this.id = id;
   }
-
 }

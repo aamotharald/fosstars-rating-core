@@ -15,32 +15,27 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * This data provider tries to fill out the
- * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}
- * feature. It is based on one of the following data providers:
+ * This data provider tries to fill out the {@link
+ * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS} feature.
+ * It is based on one of the following data providers:
+ *
  * <ul>
- * <li>{@link ReleaseInfoFromMaven}</li>
- * <li>{@link ReleaseInfoFromNpm}</li>
- * <li>{@link ReleasesFromGitHub} if
- * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}
- * feature could not be filled up from one of the above-mentioned data providers.</li>
+ *   <li>{@link ReleaseInfoFromMaven}
+ *   <li>{@link ReleaseInfoFromNpm}
+ *   <li>{@link ReleasesFromGitHub} if {@link
+ *       com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}
+ *       feature could not be filled up from one of the above-mentioned data providers.
  * </ul>
  */
 public class ReleaseInfoLoader extends AbstractReleaseInfoLoader {
 
-  /**
-   * A {@link ReleasesFromGitHub} data provider.
-   */
+  /** A {@link ReleasesFromGitHub} data provider. */
   private final ReleasesFromGitHub releasesFromGitHub;
 
-  /**
-   * A {@link ReleaseInfoFromMaven} data provider.
-   */
+  /** A {@link ReleaseInfoFromMaven} data provider. */
   private final ReleaseInfoFromMaven releaseInfoFromMaven;
 
-  /**
-   * A {@link ReleaseInfoFromNpm} data provider.
-   */
+  /** A {@link ReleaseInfoFromNpm} data provider. */
   private final ReleaseInfoFromNpm releaseInfoFromNpm;
 
   /**
@@ -50,14 +45,19 @@ public class ReleaseInfoLoader extends AbstractReleaseInfoLoader {
    * @param releaseInfoFromMaven A {@link ReleaseInfoFromMaven} data provider.
    * @param releaseInfoFromNpm A {@link ReleaseInfoFromNpm} data provider.
    */
-  public ReleaseInfoLoader(ReleasesFromGitHub releasesFromGitHub,
-      ReleaseInfoFromMaven releaseInfoFromMaven, ReleaseInfoFromNpm releaseInfoFromNpm) {
-    this.releasesFromGitHub = Objects.requireNonNull(releasesFromGitHub,
-        "Oh no! You gave me a null instead of a ReleasesFromGitHub!");
-    this.releaseInfoFromMaven = Objects.requireNonNull(releaseInfoFromMaven,
-        "Oh no! You gave me a null instead of a ReleaseInfoFromMaven!");
-    this.releaseInfoFromNpm = Objects.requireNonNull(releaseInfoFromNpm,
-        "Oh no! You gave me a null instead of a ReleaseInfoFromNpm!");
+  public ReleaseInfoLoader(
+      ReleasesFromGitHub releasesFromGitHub,
+      ReleaseInfoFromMaven releaseInfoFromMaven,
+      ReleaseInfoFromNpm releaseInfoFromNpm) {
+    this.releasesFromGitHub =
+        Objects.requireNonNull(
+            releasesFromGitHub, "Oh no! You gave me a null instead of a ReleasesFromGitHub!");
+    this.releaseInfoFromMaven =
+        Objects.requireNonNull(
+            releaseInfoFromMaven, "Oh no! You gave me a null instead of a ReleaseInfoFromMaven!");
+    this.releaseInfoFromNpm =
+        Objects.requireNonNull(
+            releaseInfoFromNpm, "Oh no! You gave me a null instead of a ReleaseInfoFromNpm!");
   }
 
   @Override
@@ -106,13 +106,13 @@ public class ReleaseInfoLoader extends AbstractReleaseInfoLoader {
   }
 
   /**
-   * Checks if the values contain the known feature
-   * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}.
+   * Checks if the values contain the known feature {@link
+   * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RELEASED_ARTIFACT_VERSIONS}.
    *
    * @param values The {@link ValueSet}.
-   * @return true if the values has the feature
-   *          {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures
-   *          #RELEASED_ARTIFACT_VERSIONS}. Otherwise false.
+   * @return true if the values has the feature {@link
+   *     com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures #RELEASED_ARTIFACT_VERSIONS}.
+   *     Otherwise false.
    */
   private static boolean hasFeatureIn(ValueSet values) {
     return values.of(RELEASED_ARTIFACT_VERSIONS).isPresent()

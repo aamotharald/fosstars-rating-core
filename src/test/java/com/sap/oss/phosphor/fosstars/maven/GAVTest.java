@@ -32,20 +32,18 @@ public class GAVTest {
         GAV.parse("com.test.group:something:1.0.0"));
 
     assertEquals(
-        new GAV("com.test.group", "something", null),
-        GAV.parse("com.test.group:something"));
+        new GAV("com.test.group", "something", null), GAV.parse("com.test.group:something"));
   }
 
   @Test
   public void testParseTooBig() {
-    assertThrows(IllegalArgumentException.class, () ->
-      GAV.parse("com.test.group:artifact:10.0.0:something"));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> GAV.parse("com.test.group:artifact:10.0.0:something"));
   }
 
   @Test
   public void testParseTooSmall() {
-    assertThrows(IllegalArgumentException.class, () ->
-      GAV.parse("com.test.group"));
+    assertThrows(IllegalArgumentException.class, () -> GAV.parse("com.test.group"));
   }
-
 }

@@ -38,41 +38,26 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.extras.okhttp3.OkHttpGitHubConnector;
 
-/**
- * This is a command-line tool for calculating ratings.
- */
+/** This is a command-line tool for calculating ratings. */
 public class Application {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private static final Logger LOGGER = LogManager.getLogger(Application.class);
 
-  /**
-   * A directory where the tool stores stuff.
-   */
+  /** A directory where the tool stores stuff. */
   private static final String FOSSTARS_DIRECTORY = ".fosstars";
 
-  /**
-   * A path to cache.
-   */
-  private static final String SUBJECT_VALUE_CACHE_FILE
-      = FOSSTARS_DIRECTORY + File.separator + "github_project_value_cache.json";
+  /** A path to cache. */
+  private static final String SUBJECT_VALUE_CACHE_FILE =
+      FOSSTARS_DIRECTORY + File.separator + "github_project_value_cache.json";
 
-  /**
-   * A usage message.
-   */
-  private static final String USAGE =
-      "java -jar fosstars-github-rating-calc.jar [options]";
+  /** A usage message. */
+  private static final String USAGE = "java -jar fosstars-github-rating-calc.jar [options]";
 
-  /**
-   * A list of handlers for specific ratings.
-   */
+  /** A list of handlers for specific ratings. */
   private final Handler[] handlers;
 
-  /**
-   * The default handler.
-   */
+  /** The default handler. */
   private final Handler defaultHandler;
 
   /**
@@ -97,12 +82,13 @@ public class Application {
    * @throws IOException If something went wrong.
    */
   public Application() throws IOException {
-    handlers = new Handler[] {
-        new OssProjectSecurityRatingHandler(),
-        new OssArtifactSecurityRatingHandler(),
-        new OssRulesOfPlayRatingHandler(),
-        new SecurityRiskIntroducedByOssHandler()
-    };
+    handlers =
+        new Handler[] {
+          new OssProjectSecurityRatingHandler(),
+          new OssArtifactSecurityRatingHandler(),
+          new OssRulesOfPlayRatingHandler(),
+          new SecurityRiskIntroducedByOssHandler()
+        };
     defaultHandler = handlers[0];
   }
 
@@ -113,17 +99,20 @@ public class Application {
    */
   private Options commandLineOptions() {
     Options options = new Options();
-    options.addOption("h", "help", false,
-        "Print this message.");
-    options.addOption("i", "interactive", false,
-        "Ask a question if a feature can't be automatically gathered.");
+    options.addOption("h", "help", false, "Print this message.");
+    options.addOption(
+        "i", "interactive", false, "Ask a question if a feature can't be automatically gathered.");
     options.addOption(
         Option.builder("r")
             .longOpt("rating")
             .hasArg()
-            .desc(format("A rating to use: %s (default is %s).",
-                Arrays.stream(handlers).map(Handler::supportedRatingName).collect(joining(", ")),
-                defaultHandler.supportedRatingName()))
+            .desc(
+                format(
+                    "A rating to use: %s (default is %s).",
+                    Arrays.stream(handlers)
+                        .map(Handler::supportedRatingName)
+                        .collect(joining(", ")),
+                    defaultHandler.supportedRatingName()))
             .build());
     options.addOption(
         Option.builder("t")
@@ -132,10 +121,7 @@ public class Application {
             .desc("An access token for the GitHub API.")
             .build());
     options.addOption(
-        Option.builder("v")
-            .longOpt("verbose")
-            .desc("Print all the details.")
-            .build());
+        Option.builder("v").longOpt("verbose").desc("Print all the details.").build());
     options.addOption(
         Option.builder()
             .longOpt("report-file")
@@ -177,42 +163,23 @@ public class Application {
 
     OptionGroup group = new OptionGroup();
     group.addOption(
-        Option.builder("u")
-            .hasArg()
-            .longOpt("url")
-            .desc("A URL to project's SCM")
-            .build());
+        Option.builder("u").hasArg().longOpt("url").desc("A URL to project's SCM").build());
     group.addOption(
         Option.builder("g")
             .hasArg()
             .longOpt("gav")
-            .desc("GAV coordinates of a jar artifact in the format 'G:A:V' or 'G:A' "
-                + "where G is a group id, A is an artifact if, and V is an optional version.")
+            .desc(
+                "GAV coordinates of a jar artifact in the format 'G:A:V' or 'G:A' "
+                    + "where G is a group id, A is an artifact if, and V is an optional version.")
             .build());
     group.addOption(
-        Option.builder("n")
-            .hasArg()
-            .longOpt("npm")
-            .desc("A name of NPM package.")
-            .build());
+        Option.builder("n").hasArg().longOpt("npm").desc("A name of NPM package.").build());
     group.addOption(
-        Option.builder("p")
-            .hasArg()
-            .longOpt("purl")
-            .desc("The PURL of a project.")
-            .build());
+        Option.builder("p").hasArg().longOpt("purl").desc("The PURL of a project.").build());
     group.addOption(
-        Option.builder("c")
-            .longOpt("config")
-            .hasArg()
-            .desc("A path to a config file.")
-            .build());
+        Option.builder("c").longOpt("config").hasArg().desc("A path to a config file.").build());
     group.addOption(
-        Option.builder("pom")
-            .hasArg()
-            .longOpt("pom")
-            .desc("A path to a Maven POM file.")
-            .build());
+        Option.builder("pom").hasArg().longOpt("pom").desc("A path to a Maven POM file.").build());
     options.addOptionGroup(group);
 
     for (Handler handler : handlers) {
@@ -280,16 +247,16 @@ public class Application {
 
     String rating = commandLine.getOptionValue("r", "default");
     Handler handler = handlerFor(rating);
-    UserCallback callback = commandLine.hasOption("interactive")
-        ? new Terminal() : NoUserCallback.INSTANCE;
+    UserCallback callback =
+        commandLine.hasOption("interactive") ? new Terminal() : NoUserCallback.INSTANCE;
 
     String githubToken = commandLine.getOptionValue("token", "");
 
-    GitHubDataFetcher fetcher
-        = new GitHubDataFetcher(connectToGithub(githubToken, callback), githubToken);
+    GitHubDataFetcher fetcher =
+        new GitHubDataFetcher(connectToGithub(githubToken, callback), githubToken);
 
-    List<String> withConfigs = asList(
-        commandLine.getOptionValue("data-provider-configs", "").split(","));
+    List<String> withConfigs =
+        asList(commandLine.getOptionValue("data-provider-configs", "").split(","));
 
     Path path = Paths.get(FOSSTARS_DIRECTORY);
     if (!Files.exists(path)) {
@@ -298,7 +265,8 @@ public class Application {
 
     SubjectValueCache cache = loadValueCache();
     try {
-      handler.configureDataProviders(withConfigs)
+      handler
+          .configureDataProviders(withConfigs)
           .baseDirectory(FOSSTARS_DIRECTORY)
           .configureDataProviders(withConfigs)
           .set(cache)
@@ -344,8 +312,8 @@ public class Application {
     }
 
     if (commandLine.hasOption("report-type")
-        && !asList("text", "markdown", "json").contains(
-        commandLine.getOptionValue("report-type"))) {
+        && !asList("text", "markdown", "json")
+            .contains(commandLine.getOptionValue("report-type"))) {
 
       throw new IllegalArgumentException(
           format("Unknown report type: %s", commandLine.getOptionValue("report-type")));
@@ -387,8 +355,7 @@ public class Application {
           LOGGER.info("Okay ...");
           break;
         default:
-          throw new IllegalArgumentException(
-              format("Not sure what I can do with '%s'", answer));
+          throw new IllegalArgumentException(format("Not sure what I can do with '%s'", answer));
       }
     }
 
@@ -410,9 +377,7 @@ public class Application {
 
     try {
       LOGGER.info("Now, let's try to use GitHub settings from environment variables");
-      return GitHubBuilder.fromEnvironment()
-          .withConnector(okHttpGitHubConnector())
-          .build();
+      return GitHubBuilder.fromEnvironment().withConnector(okHttpGitHubConnector()).build();
     } catch (IOException e) {
       LOGGER.warn("Could not connect to GitHub", e);
 
@@ -438,13 +403,15 @@ public class Application {
 
   /**
    * Create a {@link OkHttpGitHubConnector}.
+   *
    * @return {@link OkHttpGitHubConnector}.
    */
   private static OkHttpGitHubConnector okHttpGitHubConnector() {
-    OkHttpClient client = new OkHttpClient.Builder()
-        .connectTimeout(60, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS)
-        .build();
+    OkHttpClient client =
+        new OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .build();
     return new OkHttpGitHubConnector(client);
   }
 }

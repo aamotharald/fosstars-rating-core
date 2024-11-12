@@ -7,8 +7,8 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import java.util.Objects;
 
 /**
- * A base class for known features values.
- * Unknown values can be created with {@link Feature#unknown()} and {@link UnknownValue}.
+ * A base class for known features values. Unknown values can be created with {@link
+ * Feature#unknown()} and {@link UnknownValue}.
  *
  * @param <T> Type of data.
  */

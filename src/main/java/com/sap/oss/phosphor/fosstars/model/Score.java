@@ -6,30 +6,23 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Set;
 
 /**
- * <p>This is an interface for a score.
- * A score can be based on features and other scores (sub-scores).
- * A score takes a number of features, and calculates a score values based on them.
- * The score value has to belong to the interval [0, 10].</p>
+ * This is an interface for a score. A score can be based on features and other scores (sub-scores).
+ * A score takes a number of features, and calculates a score values based on them. The score value
+ * has to belong to the interval [0, 10].
  *
- * <p>A score itself is a feature which holds a score value (a double in the range [0, 10])
- * for a specific score.</p>
+ * <p>A score itself is a feature which holds a score value (a double in the range [0, 10]) for a
+ * specific score.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface Score extends Feature<Double> {
 
-  /**
-   * The minimum value of a score.
-   */
+  /** The minimum value of a score. */
   double MIN = 0.00;
 
-  /**
-   * The maximum value of a score.
-   */
+  /** The maximum value of a score. */
   double MAX = 10.0;
 
-  /**
-   * A valid interval for a score value.
-   */
+  /** A valid interval for a score value. */
   Interval INTERVAL = DoubleInterval.init().from(0).to(10).closed().make();
 
   /**
@@ -72,8 +65,8 @@ public interface Score extends Feature<Double> {
    *
    * @param values A set of values.
    * @return A score value.
-   * @throws IllegalArgumentException If the provided values don't contain required features
-   *                                  which are used by the score.
+   * @throws IllegalArgumentException If the provided values don't contain required features which
+   *     are used by the score.
    */
   ScoreValue calculate(Set<Value<?>> values);
 
@@ -82,8 +75,8 @@ public interface Score extends Feature<Double> {
    *
    * @param values A number of values.
    * @return A score value.
-   * @throws IllegalArgumentException If the provided values don't contain required features
-   *                                  which are used by the score.
+   * @throws IllegalArgumentException If the provided values don't contain required features which
+   *     are used by the score.
    */
   ScoreValue calculate(Value<?>... values);
 
@@ -92,8 +85,8 @@ public interface Score extends Feature<Double> {
    *
    * @param values A set of values.
    * @return A score value.
-   * @throws IllegalArgumentException If the provided values don't contain required features
-   *                                  which are used by the score.
+   * @throws IllegalArgumentException If the provided values don't contain required features which
+   *     are used by the score.
    */
   ScoreValue calculate(ValueSet values);
 
@@ -123,9 +116,8 @@ public interface Score extends Feature<Double> {
    * Checks if a score is in the valid range, and returns an adjusted value if necessary.
    *
    * @param value A score to be checked.
-   * @return {@link #MIN} if the score is less than {@link Score#MIN},
-   *         {@link #MAX} if the score is greater than {@link Score#MAX},
-   *         or the original score otherwise.
+   * @return {@link #MIN} if the score is less than {@link Score#MIN}, {@link #MAX} if the score is
+   *     greater than {@link Score#MAX}, or the original score otherwise.
    */
   static double adjust(double value) {
     if (value < Score.MIN) {

@@ -20,19 +20,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * A collection of weights for scores.
- */
+/** A collection of weights for scores. */
 public class ScoreWeights implements Tunable {
 
-  /**
-   * The default weight for sub-scores.
-   */
+  /** The default weight for sub-scores. */
   static final double DEFAULT_WEIGHT = 1.0;
 
-  /**
-   * Maps a score type to its weight.
-   */
+  /** Maps a score type to its weight. */
   private final Map<Class<? extends Score>, Weight> values;
 
   /**
@@ -141,7 +135,7 @@ public class ScoreWeights implements Tunable {
    */
   public void update(ScoreWeights weights) {
     Objects.requireNonNull(weights, "Oh no! Weights is null!");
-    for (Map.Entry<Class<? extends  Score>, Weight> entry : weights.values.entrySet()) {
+    for (Map.Entry<Class<? extends Score>, Weight> entry : weights.values.entrySet()) {
       Class<? extends Score> scoreClass = entry.getKey();
       if (!this.values.containsKey(scoreClass)) {
         throw new IllegalArgumentException(
@@ -152,9 +146,7 @@ public class ScoreWeights implements Tunable {
     }
   }
 
-  /**
-   * This method exists to make Jackson happy.
-   */
+  /** This method exists to make Jackson happy. */
   @JsonGetter("values")
   private Map<Class<?>, Weight> values() {
     return new HashMap<>(values);

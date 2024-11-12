@@ -49,8 +49,9 @@ public class VulnerabilitiesFromOwaspDependencyCheckTest {
     Vulnerabilities vulnerabilities = values.of(VULNERABILITIES_IN_ARTIFACT).get().get();
     assertEquals(3, vulnerabilities.size());
 
-    assertTrue(vulnerabilities.entries().stream()
-        .anyMatch(vulnerability -> "CVE-2018-11307".equals(vulnerability.id())));
+    assertTrue(
+        vulnerabilities.entries().stream()
+            .anyMatch(vulnerability -> "CVE-2018-11307".equals(vulnerability.id())));
   }
 
   @Test
@@ -102,15 +103,17 @@ public class VulnerabilitiesFromOwaspDependencyCheckTest {
 
   @Test
   public void tesArtifactHasNoVersion() {
-    assertThrows(IOException.class, () -> {
-      VulnerabilitiesFromOwaspDependencyCheck provider =
-          new VulnerabilitiesFromOwaspDependencyCheck();
+    assertThrows(
+        IOException.class,
+        () -> {
+          VulnerabilitiesFromOwaspDependencyCheck provider =
+              new VulnerabilitiesFromOwaspDependencyCheck();
 
-      ValueHashSet values = new ValueHashSet();
-      assertEquals(0, values.size());
+          ValueHashSet values = new ValueHashSet();
+          assertEquals(0, values.size());
 
-      provider.update(new MavenArtifact("group", "artifact", null, null), values);
-    });
+          provider.update(new MavenArtifact("group", "artifact", null, null), values);
+        });
   }
 
   @Test

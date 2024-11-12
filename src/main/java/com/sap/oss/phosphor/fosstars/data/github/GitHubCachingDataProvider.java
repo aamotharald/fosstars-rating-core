@@ -10,14 +10,12 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * This is a base class for data providers that would like to check the cache
- * before trying to fetch values for a project on GitHub.
+ * This is a base class for data providers that would like to check the cache before trying to fetch
+ * values for a project on GitHub.
  */
 public abstract class GitHubCachingDataProvider extends AbstractCachingDataProvider {
 
-  /**
-   * An interface to GitHub.
-   */
+  /** An interface to GitHub. */
   protected final GitHubDataFetcher fetcher;
 
   /**
@@ -26,8 +24,8 @@ public abstract class GitHubCachingDataProvider extends AbstractCachingDataProvi
    * @param fetcher An interface to GitHub.
    */
   public GitHubCachingDataProvider(GitHubDataFetcher fetcher) {
-    this.fetcher = Objects.requireNonNull(
-        fetcher, "Oh no! You gave me a null instead of a GitHub fetcher!");
+    this.fetcher =
+        Objects.requireNonNull(fetcher, "Oh no! You gave me a null instead of a GitHub fetcher!");
   }
 
   @Override

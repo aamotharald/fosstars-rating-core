@@ -29,63 +29,41 @@ import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.io.IOUtils;
 
-/**
- * This reporter takes a number of projects and generates a markdown report.
- */
+/** This reporter takes a number of projects and generates a markdown report. */
 public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubProject> {
 
-  /**
-   * No extra projects.
-   */
+  /** No extra projects. */
   protected static final String NO_EXTRA_SOURCE = null;
 
-  /**
-   * This value shows that a number of stars is unknown.
-   */
+  /** This value shows that a number of stars is unknown. */
   private static final int UNKNOWN_NUMBER_OF_STARS = -1;
 
-  /**
-   * A file where a report is going to be stored.
-   */
+  /** A file where a report is going to be stored. */
   protected static final String REPORT_FILENAME = "README.md";
 
-  /**
-   * A resource with a template for the report.
-   */
-  private static final String PROJECT_DETAILS_TEMPLATE_RESOURCE
-      = "MarkdownProjectDetailsTemplate.md";
+  /** A resource with a template for the report. */
+  private static final String PROJECT_DETAILS_TEMPLATE_RESOURCE =
+      "MarkdownProjectDetailsTemplate.md";
 
-  /**
-   * A template for the report.
-   */
-  private static final String PROJECT_DETAILS_TEMPLATE
-      = loadFrom(PROJECT_DETAILS_TEMPLATE_RESOURCE, OssSecurityRatingMarkdownReporter.class);
+  /** A template for the report. */
+  private static final String PROJECT_DETAILS_TEMPLATE =
+      loadFrom(PROJECT_DETAILS_TEMPLATE_RESOURCE, OssSecurityRatingMarkdownReporter.class);
 
-  /**
-   * A template for a table row in the report.
-   */
-  protected static final String PROJECT_LINE_TEMPLATE
-      = "| %NAME% | %STARS% | %SCORE% | %LABEL% | %CONFIDENCE% | %DATE% |";
+  /** A template for a table row in the report. */
+  protected static final String PROJECT_LINE_TEMPLATE =
+      "| %NAME% | %STARS% | %SCORE% | %LABEL% | %CONFIDENCE% | %DATE% |";
 
-  /**
-   * A template for links in Markdown.
-   */
+  /** A template for links in Markdown. */
   protected static final String LINK_TEMPLATE = "[%s](%s)";
-  
-  /**
-   * A length of line in a project name.
-   */
+
+  /** A length of line in a project name. */
   private static final int NAME_LINE_LENGTH = 42;
 
-  /**
-   * A date formatter.
-   */
-  protected static final SimpleDateFormat DATE_FORMAT
-      = new SimpleDateFormat("MMM d, yyyy", Locale.US);
+  /** A date formatter. */
+  protected static final SimpleDateFormat DATE_FORMAT =
+      new SimpleDateFormat("MMM d, yyyy", Locale.US);
 
-  /**
-   * A formatter for doubles.
-   */
+  /** A formatter for doubles. */
   private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
 
   static {
@@ -93,29 +71,19 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
     DECIMAL_FORMAT.setMaximumFractionDigits(2);
   }
 
-  /**
-   * This string is printed out if something is unknown.
-   */
+  /** This string is printed out if something is unknown. */
   protected static final String UNKNOWN = "Unknown";
 
-  /**
-   * An output directory.
-   */
+  /** An output directory. */
   private final Path outputDirectory;
 
-  /**
-   * A list of extra projects which should be added to the report.
-   */
+  /** A list of extra projects which should be added to the report. */
   private final List<GitHubProject> extraProjects;
 
-  /**
-   * A formatter for rating values.
-   */
+  /** A formatter for rating values. */
   private final Formatter formatter;
 
-  /**
-   * A rating used in a report.
-   */
+  /** A rating used in a report. */
   private final OssSecurityRating rating;
 
   /**
@@ -124,9 +92,8 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
    * @param outputDirectory An output directory.
    * @param rating A rating.
    * @param advisor An advisor for calculated ratings.
-   * @throws IOException If something went wrong
-   *                     (for example, the output directory doesn't exist,
-   *                     or the extra projects couldn't be loaded).
+   * @throws IOException If something went wrong (for example, the output directory doesn't exist,
+   *     or the extra projects couldn't be loaded).
    */
   public OssSecurityRatingMarkdownReporter(
       String outputDirectory, OssSecurityRating rating, Advisor advisor) throws IOException {
@@ -141,14 +108,17 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
    * @param extraSourceFileName A JSON file with serialized extra projects.
    * @param rating A rating.
    * @param advisor An advisor for calculated ratings.
-   * @throws IOException If something went wrong
-   *                     (for example, the output directory doesn't exist,
-   *                     or the extra projects couldn't be loaded).
+   * @throws IOException If something went wrong (for example, the output directory doesn't exist,
+   *     or the extra projects couldn't be loaded).
    */
   public OssSecurityRatingMarkdownReporter(
       String outputDirectory, String extraSourceFileName, OssSecurityRating rating, Advisor advisor)
       throws IOException {
-    this(outputDirectory, extraSourceFileName, rating, advisor,
+    this(
+        outputDirectory,
+        extraSourceFileName,
+        rating,
+        advisor,
         new OssSecurityRatingMarkdownFormatter(advisor));
   }
 
@@ -160,12 +130,14 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
    * @param rating A rating.
    * @param advisor An advisor for calculated ratings.
    * @param formatter A formatter that can be leveraged to get the appropriate output.
-   * @throws IOException If something went wrong
-   *                     (for example, the output directory doesn't exist,
-   *                     or the extra projects couldn't be loaded).
+   * @throws IOException If something went wrong (for example, the output directory doesn't exist,
+   *     or the extra projects couldn't be loaded).
    */
   public OssSecurityRatingMarkdownReporter(
-      String outputDirectory, String extraSourceFileName, OssSecurityRating rating, Advisor advisor,
+      String outputDirectory,
+      String extraSourceFileName,
+      OssSecurityRating rating,
+      Advisor advisor,
       Formatter formatter)
       throws IOException {
 
@@ -182,8 +154,7 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
       Files.createDirectories(directory);
     }
     if (!Files.isDirectory(directory)) {
-      throw new IOException(
-          String.format("Oops! Output directory doesn't exist: %s", directory));
+      throw new IOException(String.format("Oops! Output directory doesn't exist: %s", directory));
     }
 
     this.outputDirectory = directory;
@@ -212,24 +183,28 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
         Files.createDirectories(organizationDirectory);
       }
 
-      String relativePathToDetails = String.format("%s/%s",
-          project.organization().name(), writeReport(project, projectPath, organizationDirectory));
+      String relativePathToDetails =
+          String.format(
+              "%s/%s",
+              project.organization().name(),
+              writeReport(project, projectPath, organizationDirectory));
 
       String labelLink = String.format(LINK_TEMPLATE, labelOf(project), relativePathToDetails);
       String nameLink = String.format(LINK_TEMPLATE, nameOf(project), relativePathToDetails);
 
       Integer numberOfStars = stars.get(project);
-      String numberOfStarsString
-          = numberOfStars != null && numberOfStars >= 0 ? numberOfStars.toString() : UNKNOWN;
+      String numberOfStarsString =
+          numberOfStars != null && numberOfStars >= 0 ? numberOfStars.toString() : UNKNOWN;
       String numberOfStarsLink = String.format(LINK_TEMPLATE, numberOfStarsString, project.scm());
 
-      String line = PROJECT_LINE_TEMPLATE
-          .replace("%NAME%", nameLink)
-          .replace("%STARS%", numberOfStarsLink)
-          .replace("%SCORE%", scoreOf(project))
-          .replace("%LABEL%", labelLink)
-          .replace("%CONFIDENCE%", confidenceOf(project))
-          .replace("%DATE%", lastUpdateOf(project));
+      String line =
+          PROJECT_LINE_TEMPLATE
+              .replace("%NAME%", nameLink)
+              .replace("%STARS%", numberOfStarsLink)
+              .replace("%SCORE%", scoreOf(project))
+              .replace("%LABEL%", labelLink)
+              .replace("%CONFIDENCE%", confidenceOf(project))
+              .replace("%DATE%", lastUpdateOf(project));
       projectsTable.append(line).append("\n");
 
       statistics.add(project);
@@ -243,33 +218,30 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
   /**
    * Write the report of the associated project.
    *
-   * @param project               The GitHub project to get the rating.
-   * @param projectPath           The path to the project output.
+   * @param project The GitHub project to get the rating.
+   * @param projectPath The path to the project output.
    * @param organizationDirectory The path of the organization folder to write the projects'
-   *                              reports.
+   *     reports.
    * @return The file name of the report.
    */
-  protected String writeReport(GitHubProject project, String projectPath,
-      Path organizationDirectory)
-      throws IOException {
-    String details = PROJECT_DETAILS_TEMPLATE
-        .replace("%PROJECT_URL%", project.scm().toString())
-        .replace("%UPDATED_DATE%",
-            project.ratingValueDate().map(DATE_FORMAT::format).orElse(UNKNOWN))
-        .replace("%PROJECT_NAME%", projectPath)
-        .replace("%DETAILS%", detailsOf(project));
+  protected String writeReport(
+      GitHubProject project, String projectPath, Path organizationDirectory) throws IOException {
+    String details =
+        PROJECT_DETAILS_TEMPLATE
+            .replace("%PROJECT_URL%", project.scm().toString())
+            .replace(
+                "%UPDATED_DATE%",
+                project.ratingValueDate().map(DATE_FORMAT::format).orElse(UNKNOWN))
+            .replace("%PROJECT_NAME%", projectPath)
+            .replace("%DETAILS%", detailsOf(project));
 
     String projectReportFilename = String.format("%s.md", project.name());
-    Files.write(
-        organizationDirectory.resolve(projectReportFilename),
-        details.getBytes());
+    Files.write(organizationDirectory.resolve(projectReportFilename), details.getBytes());
 
     return projectReportFilename;
   }
 
-  /**
-   * Return the formatter to be used to generate the project details.
-   */
+  /** Return the formatter to be used to generate the project details. */
   protected Formatter formatter() {
     return formatter;
   }
@@ -281,8 +253,7 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
    * @return A name of the project.
    */
   protected static String nameOf(GitHubProject project) {
-    return insert("<br>", NAME_LINE_LENGTH,
-        project.scm().getPath().replaceFirst("/", ""));
+    return insert("<br>", NAME_LINE_LENGTH, project.scm().getPath().replaceFirst("/", ""));
   }
 
   /**
@@ -319,8 +290,9 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
    * @throws IOException If something went wrong.
    */
   protected String buildReportWith(String table, Statistics statistics) throws IOException {
-    try (InputStream is = OssSecurityRatingMarkdownReporter.class
-        .getResourceAsStream("OssSecurityRatingMarkdownReporterMainTemplate.md")) {
+    try (InputStream is =
+        OssSecurityRatingMarkdownReporter.class.getResourceAsStream(
+            "OssSecurityRatingMarkdownReporterMainTemplate.md")) {
 
       String template = IOUtils.toString(is, StandardCharsets.UTF_8);
       return template
@@ -331,22 +303,14 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
           .replace("%NUMBER_GOOD_RATINGS%", String.valueOf(statistics.goodRatings))
           .replace("%NUMBER_UNKNOWN_RATINGS%", String.valueOf(statistics.unknownRatings))
           .replace("%NUMBER_UNCLEAR_RATINGS%", String.valueOf(statistics.unclearRatings))
-          .replace("%PERCENT_BAD_RATINGS%",
-              printPercent(statistics.badRatingsPercent()))
-          .replace("%PERCENT_MODERATE_RATINGS%",
-              printPercent(statistics.moderateRatingsPercent()))
-          .replace("%PERCENT_GOOD_RATINGS%",
-              printPercent(statistics.goodRatingsPercent()))
-          .replace("%PERCENT_UNCLEAR_RATINGS%",
-              printPercent(statistics.unclearRatingsPercent()))
-          .replace("%PERCENT_UNKNOWN_RATINGS%",
-              printPercent(statistics.unknownRatingsPercent()))
-          .replaceAll("%MODERATE_THRESHOLD%",
-              format(rating.thresholds().forModerate()))
-          .replaceAll("%GOOD_THRESHOLD%",
-              format(rating.thresholds().forGood()))
-          .replaceAll("%UNCLEAR_THRESHOLD%",
-              format(rating.thresholds().forUnclear()));
+          .replace("%PERCENT_BAD_RATINGS%", printPercent(statistics.badRatingsPercent()))
+          .replace("%PERCENT_MODERATE_RATINGS%", printPercent(statistics.moderateRatingsPercent()))
+          .replace("%PERCENT_GOOD_RATINGS%", printPercent(statistics.goodRatingsPercent()))
+          .replace("%PERCENT_UNCLEAR_RATINGS%", printPercent(statistics.unclearRatingsPercent()))
+          .replace("%PERCENT_UNKNOWN_RATINGS%", printPercent(statistics.unknownRatingsPercent()))
+          .replaceAll("%MODERATE_THRESHOLD%", format(rating.thresholds().forModerate()))
+          .replaceAll("%GOOD_THRESHOLD%", format(rating.thresholds().forGood()))
+          .replaceAll("%UNCLEAR_THRESHOLD%", format(rating.thresholds().forUnclear()));
     }
   }
 
@@ -383,16 +347,12 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
     return formatter.print(project);
   }
 
-  /**
-   * Formats a date when a rating was calculated for a project.
-   */
+  /** Formats a date when a rating was calculated for a project. */
   protected static String lastUpdateOf(GitHubProject project) {
     return project.ratingValueDate().map(DATE_FORMAT::format).orElse(UNKNOWN);
   }
 
-  /**
-   * Formats a confidence of a rating of a project.
-   */
+  /** Formats a confidence of a rating of a project. */
   protected static String confidenceOf(GitHubProject project) {
     Optional<RatingValue> something = project.ratingValue();
     if (!something.isPresent()) {
@@ -402,9 +362,7 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
     return String.format("%2.2f", something.get().confidence());
   }
 
-  /**
-   * Formats a label of a rating of a project.
-   */
+  /** Formats a label of a rating of a project. */
   protected static String labelOf(GitHubProject project) {
     Optional<RatingValue> something = project.ratingValue();
     if (!something.isPresent()) {
@@ -414,9 +372,7 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
     return something.get().label().name();
   }
 
-  /**
-   * Formats a score of a project.
-   */
+  /** Formats a score of a project. */
   protected static String scoreOf(GitHubProject project) {
     Optional<RatingValue> something = project.ratingValue();
     if (!something.isPresent()) {
@@ -429,8 +385,8 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
   }
 
   /**
-   * Prints an actual value of a score value. The method takes care about
-   * unknown and not-applicable score values.
+   * Prints an actual value of a score value. The method takes care about unknown and not-applicable
+   * score values.
    *
    * @param scoreValue The score value.
    * @return A string that represents the score value.
@@ -451,8 +407,8 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
    * Figures out how many stars a project has.
    *
    * @param project The project.
-   * @return A number of stars or {@link #UNKNOWN_NUMBER_OF_STARS}
-   *         if the number of stars is unknown.
+   * @return A number of stars or {@link #UNKNOWN_NUMBER_OF_STARS} if the number of stars is
+   *     unknown.
    */
   static int starsOf(GitHubProject project) {
     if (!project.ratingValue().isPresent()) {
@@ -462,13 +418,12 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
   }
 
   /**
-   * Looks for a value of the
-   * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#NUMBER_OF_GITHUB_STARS}
-   * feature in a score value.
+   * Looks for a value of the {@link
+   * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#NUMBER_OF_GITHUB_STARS} feature in
+   * a score value.
    *
    * @param scoreValue The score value.
-   * @return The features value or {@link #UNKNOWN_NUMBER_OF_STARS}
-   *         if the value is unknown.
+   * @return The features value or {@link #UNKNOWN_NUMBER_OF_STARS} if the value is unknown.
    */
   private static int stars(ScoreValue scoreValue) {
     if (scoreValue.isUnknown()) {
@@ -495,39 +450,25 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
     return UNKNOWN_NUMBER_OF_STARS;
   }
 
-  /**
-   * This class holds statistics about projects.
-   */
+  /** This class holds statistics about projects. */
   protected static class Statistics {
 
-    /**
-     * Total number of projects.
-     */
+    /** Total number of projects. */
     int total;
 
-    /**
-     * A number of projects with an unknown rating.
-     */
+    /** A number of projects with an unknown rating. */
     int unknownRatings = 0;
 
-    /**
-     * A number of projects with a good rating.
-     */
+    /** A number of projects with a good rating. */
     int goodRatings = 0;
 
-    /**
-     * A number of projects with a moderate rating.
-     */
+    /** A number of projects with a moderate rating. */
     int moderateRatings = 0;
 
-    /**
-     * A number of projects with a bad rating.
-     */
+    /** A number of projects with a bad rating. */
     int badRatings = 0;
 
-    /**
-     * A number of projects with unclear ratings.
-     */
+    /** A number of projects with unclear ratings. */
     int unclearRatings = 0;
 
     /**
@@ -615,5 +556,4 @@ public class OssSecurityRatingMarkdownReporter extends AbstractReporter<GitHubPr
       return (double) unclearRatings * 100 / total;
     }
   }
-
 }

@@ -20,5 +20,4 @@ public class ReferenceTest {
     Reference clone = Json.read(bytes, Reference.class);
     assertEquals(reference, clone);
   }
-
 }

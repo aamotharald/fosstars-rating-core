@@ -31,8 +31,7 @@ public class HasSecurityPolicyTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testIfProjectHasPolicy() throws IOException {
     final LocalRepository repository = mock(LocalRepository.class);
-    when(repository.file("SECURITY.md"))
-        .thenReturn(Optional.of(StringUtils.repeat("x", 1000)));
+    when(repository.file("SECURITY.md")).thenReturn(Optional.of(StringUtils.repeat("x", 1000)));
 
     GitHubProject project = new GitHubProject("org", "test");
 

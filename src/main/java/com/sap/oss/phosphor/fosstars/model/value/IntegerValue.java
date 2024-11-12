@@ -6,14 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/**
- * A value of a feature which provides an integer number.
- */
+/** A value of a feature which provides an integer number. */
 public class IntegerValue extends AbstractKnownValue<Integer> {
 
-  /**
-   * The integer.
-   */
+  /** The integer. */
   private final Integer number;
 
   /**
@@ -24,8 +20,7 @@ public class IntegerValue extends AbstractKnownValue<Integer> {
    */
   @JsonCreator
   public IntegerValue(
-      @JsonProperty("feature") Feature<Integer> feature,
-      @JsonProperty("number") Integer number) {
+      @JsonProperty("feature") Feature<Integer> feature, @JsonProperty("number") Integer number) {
 
     super(feature);
     this.number = number;

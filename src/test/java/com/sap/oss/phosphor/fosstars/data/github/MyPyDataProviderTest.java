@@ -70,7 +70,10 @@ public class MyPyDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithPylintRunsAndChecks() throws IOException {
     try (InputStream content = getClass().getResourceAsStream("mypy-analysis-with-run.yml")) {
-      testPylintFilesCheck(GITHUB_WORKFLOW_FILENAME, content, RUNS_MYPY_SCANS.value(true),
+      testPylintFilesCheck(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
+          RUNS_MYPY_SCANS.value(true),
           USES_MYPY_SCAN_CHECKS.value(true));
     }
   }
@@ -79,30 +82,39 @@ public class MyPyDataProviderTest extends TestGitHubDataFetcherHolder {
   public void testWithPylintInRepo() throws IOException {
     try (InputStream content =
         getClass().getResourceAsStream("mypy-analysis-with-pre-commit-hook.yml")) {
-      testPylintFileStreamCheck(GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME, content,
-          RUNS_MYPY_SCANS.value(true), USES_MYPY_SCAN_CHECKS.value(true));
+      testPylintFileStreamCheck(
+          GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
+          content,
+          RUNS_MYPY_SCANS.value(true),
+          USES_MYPY_SCAN_CHECKS.value(true));
     }
   }
 
   @Test
   public void testWithMypyProspector() throws IOException {
-    try (
-        InputStream content = getClass().getResourceAsStream("mypy-analysis-with-prospector.yml")) {
-      testPylintFileStreamCheck(GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME, content,
-          RUNS_MYPY_SCANS.value(true), USES_MYPY_SCAN_CHECKS.value(true));
+    try (InputStream content =
+        getClass().getResourceAsStream("mypy-analysis-with-prospector.yml")) {
+      testPylintFileStreamCheck(
+          GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
+          content,
+          RUNS_MYPY_SCANS.value(true),
+          USES_MYPY_SCAN_CHECKS.value(true));
     }
   }
 
   @Test
   public void testWithMypyIniConfig() throws IOException {
     try (InputStream content = getClass().getResourceAsStream("tox.ini")) {
-      testPylintFileCheck(INI_CONFIG_FILENAME, content, RUNS_MYPY_SCANS.value(true),
+      testPylintFileCheck(
+          INI_CONFIG_FILENAME,
+          content,
+          RUNS_MYPY_SCANS.value(true),
           USES_MYPY_SCAN_CHECKS.value(false));
     }
   }
 
-  private void testPylintFilesCheck(String filename, InputStream content,
-      Value<?>... expectedValues) throws IOException {
+  private void testPylintFilesCheck(
+      String filename, InputStream content, Value<?>... expectedValues) throws IOException {
     Path file = repositoryDirectory.resolve(filename);
     Files.createDirectories(file.getParent());
     when(localRepository.hasDirectory(any(Path.class))).thenReturn(true);
@@ -120,8 +132,8 @@ public class MyPyDataProviderTest extends TestGitHubDataFetcherHolder {
     }
   }
 
-  private void testPylintFileStreamCheck(String filename, InputStream content,
-      Value<?>... expectedValues) throws IOException {
+  private void testPylintFileStreamCheck(
+      String filename, InputStream content, Value<?>... expectedValues) throws IOException {
     Path file = repositoryDirectory.resolve(filename);
     Files.createDirectories(file.getParent());
     when(localRepository.hasDirectory(any(Path.class))).thenReturn(true);

@@ -37,7 +37,8 @@ public class ProjectStarted extends CachedSingleFeatureGitHubDataProvider<Date> 
     Date firstCommitDate = firstCommit.map(Commit::date).orElse(null);
     Date repositoryCreated = fetcher.repositoryFor(project).getCreatedAt();
 
-    if (firstCommitDate != null && repositoryCreated != null
+    if (firstCommitDate != null
+        && repositoryCreated != null
         && firstCommitDate.before(repositoryCreated)) {
       return PROJECT_START_DATE.value(firstCommitDate);
     } else if (repositoryCreated != null) {

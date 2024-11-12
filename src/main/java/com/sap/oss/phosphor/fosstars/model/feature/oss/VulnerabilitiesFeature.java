@@ -14,9 +14,7 @@ import java.io.IOException;
 
 public class VulnerabilitiesFeature extends AbstractFeature<Vulnerabilities> {
 
-  /**
-   * For deserialization.
-   */
+  /** For deserialization. */
   private static final ObjectMapper MAPPER = Json.mapper();
 
   static {

@@ -2,9 +2,7 @@ package com.sap.oss.phosphor.fosstars.model;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/**
- * An interface which represents an interval.
- */
+/** An interface which represents an interval. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface Interval {
 

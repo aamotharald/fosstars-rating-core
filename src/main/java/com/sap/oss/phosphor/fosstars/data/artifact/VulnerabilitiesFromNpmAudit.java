@@ -44,28 +44,22 @@ import org.apache.logging.log4j.Logger;
  * This data provider tries to fill out the {@link OssFeatures#VULNERABILITIES_IN_ARTIFACT}. It
  * gathers vulnerabilities from {@link NpmArtifact} using NPM Audit.
  *
- * @see <a href="https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities">NPM
- * Audit</a>
+ * @see <a
+ *     href="https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities">NPM
+ *     Audit</a>
  */
 public class VulnerabilitiesFromNpmAudit implements DataProvider {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   private final Logger logger = LogManager.getLogger(getClass());
 
-  /**
-   * NPM registry URL to access security audit.
-   */
-  private static final String NPM_AUDIT_URL =
-      "https://registry.npmjs.org/-/npm/v1/security/audits";
+  /** NPM registry URL to access security audit. */
+  private static final String NPM_AUDIT_URL = "https://registry.npmjs.org/-/npm/v1/security/audits";
 
-  /**
-   * NPM Audit API POST request body template.
-   */
-  private static final String
-      NPM_AUDIT_URL_BODY_ENTITY =
-      String.join("",
+  /** NPM Audit API POST request body template. */
+  private static final String NPM_AUDIT_URL_BODY_ENTITY =
+      String.join(
+          "",
           "{",
           "\"name\": \"npm-vulnerabilities\",",
           "\"version\": \"1.0.0\",",
@@ -73,9 +67,7 @@ public class VulnerabilitiesFromNpmAudit implements DataProvider {
           "\"dependencies\": {\"%s\": {\"version\": \"%s\"}}",
           "}");
 
-  /**
-   * An interface to NVD.
-   */
+  /** An interface to NVD. */
   private final NVD nvd;
 
   /**
@@ -87,49 +79,38 @@ public class VulnerabilitiesFromNpmAudit implements DataProvider {
     this.nvd = nvd;
   }
 
-  /**
-   * The method always returns false, so that all child classes can't be interactive.
-   */
+  /** The method always returns false, so that all child classes can't be interactive. */
   @Override
   public final boolean interactive() {
     return false;
   }
 
-  /**
-   * This is a dummy cache which stores nothing.
-   */
+  /** This is a dummy cache which stores nothing. */
   @Override
   public ValueCache<Subject> cache() {
     return NoValueCache.create();
   }
 
-  /**
-   * There is no call back required for this data provider.
-   */
+  /** There is no call back required for this data provider. */
   @Override
   public VulnerabilitiesFromNpmAudit set(UserCallback callback) {
     return this;
   }
 
-  /**
-   * No cache value is needed that is used by the data provider.
-   */
+  /** No cache value is needed that is used by the data provider. */
   @Override
   public VulnerabilitiesFromNpmAudit set(ValueCache<Subject> cache) {
     return this;
   }
 
-  /**
-   * No configuration is required for this data provider.
-   */
+  /** No configuration is required for this data provider. */
   @Override
   public VulnerabilitiesFromNpmAudit configure(Path config) {
     return this;
   }
 
   @Override
-  public VulnerabilitiesFromNpmAudit update(Subject subject, ValueSet values)
-      throws IOException {
+  public VulnerabilitiesFromNpmAudit update(Subject subject, ValueSet values) throws IOException {
     logger.info("Gathering vulnerabilities from NPM Audit...");
     Objects.requireNonNull(values, "On no! Values cannot be null");
     NpmArtifact artifact = cast(subject, NpmArtifact.class);
@@ -142,18 +123,17 @@ public class VulnerabilitiesFromNpmAudit implements DataProvider {
     Vulnerabilities vulnerabilities = new Vulnerabilities();
     for (CVEMetadata cveMetadata : cves) {
       Optional<NvdEntry> nvdEntry = nvd.searchNvd(nvdEntryFrom(cveMetadata.cveID));
-      nvdEntry.ifPresent(entry ->
-          vulnerabilities.add(Vulnerability
-              .Builder.from(entry).set(cveMetadata.resolution).make()));
+      nvdEntry.ifPresent(
+          entry ->
+              vulnerabilities.add(
+                  Vulnerability.Builder.from(entry).set(cveMetadata.resolution).make()));
     }
 
     values.update(VULNERABILITIES_IN_ARTIFACT.value(vulnerabilities));
     return this;
   }
 
-  /**
-   * Returns the supported feature loaded by this data provider.
-   */
+  /** Returns the supported feature loaded by this data provider. */
   @Override
   public Set<Feature<?>> supportedFeatures() {
     return setOf(VULNERABILITIES_IN_ARTIFACT);
@@ -184,9 +164,13 @@ public class VulnerabilitiesFromNpmAudit implements DataProvider {
     try (CloseableHttpClient client = httpClient()) {
       HttpPost httpPostRequest = new HttpPost(NPM_AUDIT_URL);
       httpPostRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-      String body = String.format(NPM_AUDIT_URL_BODY_ENTITY, artifact.identifier(),
-          artifact.version().get(),
-          artifact.identifier(), artifact.version().get());
+      String body =
+          String.format(
+              NPM_AUDIT_URL_BODY_ENTITY,
+              artifact.identifier(),
+              artifact.version().get(),
+              artifact.identifier(),
+              artifact.version().get());
       httpPostRequest.setEntity(new StringEntity(body));
       try (CloseableHttpResponse httpResponse = client.execute(httpPostRequest)) {
         return Json.mapper().readTree(httpResponse.getEntity().getContent());
@@ -208,34 +192,29 @@ public class VulnerabilitiesFromNpmAudit implements DataProvider {
     List<CVEMetadata> cvesMetadata = new ArrayList<>();
     for (JsonNode item : advisories) {
       Advisory advisory = Json.mapper().treeToValue(item, Advisory.class);
-      cvesMetadata.addAll(advisory.getCves().stream()
-          .map(cve -> new CVEMetadata(cve, advisory.getPatchedVersions()))
-          .collect(Collectors.toList()));
+      cvesMetadata.addAll(
+          advisory.getCves().stream()
+              .map(cve -> new CVEMetadata(cve, advisory.getPatchedVersions()))
+              .collect(Collectors.toList()));
     }
     return cvesMetadata;
   }
 
-
-  /**
-   * A class to hold the metadata information for a specific CVE identifier.
-   */
+  /** A class to hold the metadata information for a specific CVE identifier. */
   private static class CVEMetadata {
 
-    /**
-     * The CVE identifier.
-     */
+    /** The CVE identifier. */
     private final String cveID;
 
-    /**
-     * The {@link Resolution}.
-     */
+    /** The {@link Resolution}. */
     private final Resolution resolution;
 
     public CVEMetadata(String cveId, String resolution) {
       this.cveID = cveId;
-      this.resolution
-          = StringUtils.isEmpty(resolution) || resolution.equals("<0.0.0")
-          ? Resolution.UNPATCHED : Resolution.PATCHED;
+      this.resolution =
+          StringUtils.isEmpty(resolution) || resolution.equals("<0.0.0")
+              ? Resolution.UNPATCHED
+              : Resolution.PATCHED;
     }
   }
 }

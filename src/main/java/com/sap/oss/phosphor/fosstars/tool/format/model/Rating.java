@@ -8,40 +8,31 @@ import com.sap.oss.phosphor.fosstars.model.value.RatingValue;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The Rating class that encloses @link {@link RatingValue} to be used in serialization.
- */
+/** The Rating class that encloses @link {@link RatingValue} to be used in serialization. */
 public class Rating {
 
-  /**
-   * The purl of the identifier.
-   */
+  /** The purl of the identifier. */
   private String purl;
 
-  /**
-   * The label of the rating.
-   */
+  /** The label of the rating. */
   private String label;
 
-  /**
-   * The {@link Score} of the rating.
-   */
+  /** The {@link Score} of the rating. */
   private Score score;
 
-  /**
-   * The list of {@link Advice}s of the rating.
-   */
+  /** The list of {@link Advice}s of the rating. */
   private List<Advices> advices = new ArrayList<>();
 
   /**
    * Initializes a Rating instance.
    *
-   * @param purl  the purl of the identifier.
+   * @param purl the purl of the identifier.
    * @param label of the rating.
    * @param score of the rating.
    */
   @JsonCreator
-  public Rating(@JsonProperty("purl") String purl,
+  public Rating(
+      @JsonProperty("purl") String purl,
       @JsonProperty("label") String label,
       @JsonProperty("score") Score score) {
     this.purl = purl;
@@ -49,11 +40,8 @@ public class Rating {
     this.score = score;
   }
 
-  /**
-   * Default constructor.
-   */
-  public Rating() {
-  }
+  /** Default constructor. */
+  public Rating() {}
 
   /**
    * Return the purl of the identifier.

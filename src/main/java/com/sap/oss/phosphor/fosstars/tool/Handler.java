@@ -8,14 +8,12 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 
-/**
- * A command-line handler that calculates a specific rating.
- */
+/** A command-line handler that calculates a specific rating. */
 public interface Handler {
 
   /**
-   * Returns a supported rating name that the command-line tool is aware of.
-   * In other words, the rating name can be passed via --rating command-line option.
+   * Returns a supported rating name that the command-line tool is aware of. In other words, the
+   * rating name can be passed via --rating command-line option.
    *
    * @return A supported rating name.
    */

@@ -41,17 +41,17 @@ public class FuzzedInOssFuzzTest extends TestGitHubDataFetcherHolder {
       git.add().addFilepattern("projects/project/Dockerfile").call();
       CommitCommand commit = git.commit();
       commit.setCredentialsProvider(
-              new UsernamePasswordCredentialsProvider("fuzzer", "don't tell anyone"));
-      commit.setMessage("Added Dockerfile")
+          new UsernamePasswordCredentialsProvider("fuzzer", "don't tell anyone"));
+      commit
+          .setMessage("Added Dockerfile")
           .setSign(false)
           .setAuthor("Mr. Fuzzer", "fuzzer@test.com")
           .setCommitter("Mr. Fuzzer", "fuzzer@test.com")
           .call();
 
-      LocalRepository localRepository = new LocalRepository(
-          new LocalRepositoryInfo(directory, new Date(), OSS_FUZZ_PROJECT.scm()),
-          repository
-      );
+      LocalRepository localRepository =
+          new LocalRepository(
+              new LocalRepositoryInfo(directory, new Date(), OSS_FUZZ_PROJECT.scm()), repository);
       addForTesting(OSS_FUZZ_PROJECT, localRepository);
 
       FuzzedInOssFuzz provider = new FuzzedInOssFuzz(fetcher);
@@ -59,13 +59,11 @@ public class FuzzedInOssFuzzTest extends TestGitHubDataFetcherHolder {
 
       assertEquals(
           FUZZED_IN_OSS_FUZZ.value(true),
-          provider.fetchValueFor(
-              new GitHubProject("test", "project")));
+          provider.fetchValueFor(new GitHubProject("test", "project")));
 
       assertEquals(
           FUZZED_IN_OSS_FUZZ.value(false),
-          provider.fetchValueFor(
-              new GitHubProject("something", "else")));
+          provider.fetchValueFor(new GitHubProject("something", "else")));
     } finally {
       FileUtils.forceDeleteOnExit(directory.toFile());
     }

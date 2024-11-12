@@ -19,22 +19,21 @@ import java.util.function.Predicate;
 /**
  * The data provider gathers info about how a project uses CodeQL for static analysis. In
  * particular, it tires to fill out the following features:
+ *
  * <ul>
- *  <li>{@link OssFeatures#RUNS_CODEQL_SCANS}</li>
- *  <li>{@link OssFeatures#USES_CODEQL_CHECKS}</li>
+ *   <li>{@link OssFeatures#RUNS_CODEQL_SCANS}
+ *   <li>{@link OssFeatures#USES_CODEQL_CHECKS}
  * </ul>
  */
 public class CodeqlDataProvider extends AbstractStaticScanToolsDataProvider {
 
-  /**
-   * A predicate to check if any step in GitHub action that triggers analysis with CodeQL.
-   */
+  /** A predicate to check if any step in GitHub action that triggers analysis with CodeQL. */
   private static final Map<String, Predicate<String>> MATCH_CODEQL_ANALYZE_PREDICATE =
       new HashMap<>();
 
   static {
-    MATCH_CODEQL_ANALYZE_PREDICATE.put("uses",
-        uses -> uses.startsWith("github/codeql-action/analyze"));
+    MATCH_CODEQL_ANALYZE_PREDICATE.put(
+        "uses", uses -> uses.startsWith("github/codeql-action/analyze"));
   }
 
   /**

@@ -6,9 +6,7 @@ import com.sap.oss.phosphor.fosstars.model.ValueSet;
 import java.util.Date;
 import java.util.Optional;
 
-/**
- * This is a dummy cache which stores nothing.
- */
+/** This is a dummy cache which stores nothing. */
 public class NoValueCache<K> implements ValueCache<K> {
 
   /**

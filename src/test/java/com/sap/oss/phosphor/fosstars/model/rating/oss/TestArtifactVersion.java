@@ -5,9 +5,7 @@ import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersion;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-/**
- * An artifact version for testing.
- */
+/** An artifact version for testing. */
 public class TestArtifactVersion extends ArtifactVersion {
 
   /**
@@ -17,8 +15,7 @@ public class TestArtifactVersion extends ArtifactVersion {
    * @param age An age of the artifact.
    */
   public TestArtifactVersion(
-      @JsonProperty("version") String version,
-      @JsonProperty("age") String age) {
+      @JsonProperty("version") String version, @JsonProperty("age") String age) {
 
     super(version, LocalDateTime.now().minus(Duration.parse(age)));
   }

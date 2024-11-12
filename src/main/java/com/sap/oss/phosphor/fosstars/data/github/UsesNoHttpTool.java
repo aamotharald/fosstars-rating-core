@@ -19,11 +19,10 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 
 /**
- * This data provider checks if an open-source project uses
- * <a href="https://github.com/spring-io/nohttp">nohttp</a> tool to make sure that
- * plain HTTP is not used.
- * The provider fills out the
- * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_NOHTTP} feature.
+ * This data provider checks if an open-source project uses <a
+ * href="https://github.com/spring-io/nohttp">nohttp</a> tool to make sure that plain HTTP is not
+ * used. The provider fills out the {@link
+ * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_NOHTTP} feature.
  */
 public class UsesNoHttpTool extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
@@ -65,7 +64,6 @@ public class UsesNoHttpTool extends CachedSingleFeatureGitHubDataProvider<Boolea
     try (InputStream is = content.get()) {
       Model model = readModel(is);
       return browse(model, withVisitor()).result;
-
     }
   }
 
@@ -99,8 +97,8 @@ public class UsesNoHttpTool extends CachedSingleFeatureGitHubDataProvider<Boolea
    *
    * @param plugin The plugin to be checked.
    * @return True if the plugin runs nohttp, false otherwise.
-   * @see <a href="https://github.com/spring-io/nohttp/tree/master/samples/nohttp-maven-sample">
-   *   Demo of using nohttp checkstyle with Maven</a>
+   * @see <a href="https://github.com/spring-io/nohttp/tree/master/samples/nohttp-maven-sample">Demo
+   *     of using nohttp checkstyle with Maven</a>
    */
   private static boolean isNoHttp(Plugin plugin) {
 
@@ -123,21 +121,15 @@ public class UsesNoHttpTool extends CachedSingleFeatureGitHubDataProvider<Boolea
     return false;
   }
 
-  /**
-   * Creates a new visitor for searching the nohttp tool.
-   */
+  /** Creates a new visitor for searching the nohttp tool. */
   private static Visitor withVisitor() {
     return new Visitor();
   }
 
-  /**
-   * A visitor for searching the nohttp tool.
-   */
+  /** A visitor for searching the nohttp tool. */
   private static class Visitor extends AbstractModelVisitor {
 
-    /**
-     * This flag shows whether the nohttp tool was found in a POM file or not.
-     */
+    /** This flag shows whether the nohttp tool was found in a POM file or not. */
     private boolean result;
 
     @Override

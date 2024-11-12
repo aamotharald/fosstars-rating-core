@@ -17,43 +17,41 @@ import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 
-/**
- * This data provider tries to figure out if a project uses GitHub for development.
- */
+/** This data provider tries to figure out if a project uses GitHub for development. */
 public class UsesGithubForDevelopment extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
   /**
-   * This threshold shows how many checks have to be passed to say that a project uses GitHub
-   * for development.
+   * This threshold shows how many checks have to be passed to say that a project uses GitHub for
+   * development.
    */
   private static final double CONFIDENCE_THRESHOLD = 0.5;
 
-  /**
-   * A list of checks to figure out if a project uses GitHub for development.
-   */
-  private static final List<Predicate<GHRepository>> CHECKS = Arrays.asList(
+  /** A list of checks to figure out if a project uses GitHub for development. */
+  private static final List<Predicate<GHRepository>> CHECKS =
+      Arrays.asList(
 
-      // check if the description mentions "mirror"
-      repository -> {
-        String description = repository.getDescription();
-        return StringUtils.isEmpty(description) || !description.toLowerCase().contains("mirror");
-      },
+          // check if the description mentions "mirror"
+          repository -> {
+            String description = repository.getDescription();
+            return StringUtils.isEmpty(description)
+                || !description.toLowerCase().contains("mirror");
+          },
 
-      // check if the repository doesn't have a link to a non-GitHub repository
-      repository -> Stream.of(repository.getMirrorUrl(), repository.getSvnUrl())
-          .filter(StringUtils::isNotEmpty)
-          .noneMatch(UsesGithubForDevelopment::notGitHubUrl),
+          // check if the repository doesn't have a link to a non-GitHub repository
+          repository ->
+              Stream.of(repository.getMirrorUrl(), repository.getSvnUrl())
+                  .filter(StringUtils::isNotEmpty)
+                  .noneMatch(UsesGithubForDevelopment::notGitHubUrl),
 
-      // if GitHub issues are enabled, then it's likely that the project uses GitHub
-      GHRepository::hasIssues,
+          // if GitHub issues are enabled, then it's likely that the project uses GitHub
+          GHRepository::hasIssues,
 
-      // if GitHub Wiki or Pages are enabled, then it's likely that the project uses GitHub
-      repository -> repository.hasWiki() || repository.hasPages(),
+          // if GitHub Wiki or Pages are enabled, then it's likely that the project uses GitHub
+          repository -> repository.hasWiki() || repository.hasPages(),
 
-      // check if repository is not archived
-      repository ->  !repository.isArchived()
-  );
-  
+          // check if repository is not archived
+          repository -> !repository.isArchived());
+
   /**
    * Initializes a data provider.
    *
@@ -93,16 +91,16 @@ public class UsesGithubForDevelopment extends CachedSingleFeatureGitHubDataProvi
   }
 
   /**
-   * The method checks if it looks like that a project uses GitHub for development.
-   * The method runs a number of checks for the project. If most of the checks pass,
-   * then the method concludes that the projects uses GitHub for development.
-   * 
+   * The method checks if it looks like that a project uses GitHub for development. The method runs
+   * a number of checks for the project. If most of the checks pass, then the method concludes that
+   * the projects uses GitHub for development.
+   *
    * @param repository The project's repository.
    * @param threshold value to be checked against.
    * @return True if it looks like that the project uses GitHub, false otherwise.
    * @throws IOException If something goes wrong.
    */
-  static boolean usesGitHubForDevelopment(GHRepository repository, double threshold) 
+  static boolean usesGitHubForDevelopment(GHRepository repository, double threshold)
       throws IOException {
 
     // The .github directory contains various settings for the features provider by GitHub
@@ -118,9 +116,8 @@ public class UsesGithubForDevelopment extends CachedSingleFeatureGitHubDataProvi
       return true;
     }
 
-    int points = CHECKS.stream()
-        .map(check -> check.test(repository) ? 1 : 0)
-        .reduce(0, Integer::sum);
+    int points =
+        CHECKS.stream().map(check -> check.test(repository) ? 1 : 0).reduce(0, Integer::sum);
 
     return Double.compare((double) points / CHECKS.size(), threshold) >= 0;
   }
@@ -141,7 +138,7 @@ public class UsesGithubForDevelopment extends CachedSingleFeatureGitHubDataProvi
 
   /**
    * Check if a string is not a URL to GitHub.
-   * 
+   *
    * @param input The string to be checked.
    * @return True if the string is not a URL to GitHub, false otherwise.
    */

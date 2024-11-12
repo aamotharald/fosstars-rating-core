@@ -20,16 +20,16 @@ public class AdoptedRiskLikelihoodFactorTest {
 
   @Test
   public void testJsonSerialization() throws IOException {
-    AdoptedRiskLikelihoodFactor clone
-        = Json.read(Json.toBytes(SCORE), AdoptedRiskLikelihoodFactor.class);
+    AdoptedRiskLikelihoodFactor clone =
+        Json.read(Json.toBytes(SCORE), AdoptedRiskLikelihoodFactor.class);
     assertTrue(SCORE.equals(clone) && clone.equals(SCORE));
     assertEquals(SCORE.hashCode(), clone.hashCode());
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    AdoptedRiskLikelihoodFactor clone
-        = Yaml.read(Yaml.toBytes(SCORE), AdoptedRiskLikelihoodFactor.class);
+    AdoptedRiskLikelihoodFactor clone =
+        Yaml.read(Yaml.toBytes(SCORE), AdoptedRiskLikelihoodFactor.class);
     assertEquals(clone, SCORE);
   }
 

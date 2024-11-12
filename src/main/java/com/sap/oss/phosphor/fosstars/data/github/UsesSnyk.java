@@ -38,16 +38,12 @@ public class UsesSnyk extends AbstractDependencyScanDataProvider {
    * A location of a Snyk configuration file in a repository.
    *
    * @see <a href="https://github.com/snyk/actions/tree/master/setup">To setup Snyk actions</a>
-   *
    */
-  private static final String [] SNYK_CONFIGS = {
-      ".github/workflows/snyk.yaml",
-      ".github/workflows/snyk.yml"
+  private static final String[] SNYK_CONFIGS = {
+    ".github/workflows/snyk.yaml", ".github/workflows/snyk.yml"
   };
 
-  /** 
-    * Predicate to confirm if there is a file in open-source project with the .snyk extension.
-    */
+  /** Predicate to confirm if there is a file in open-source project with the .snyk extension. */
   private static final Predicate<Path> SNYK_FILE_PREDICATE =
       path -> path.getFileName().toString().endsWith(SNYK_POLICY_FILE_NAME);
 

@@ -41,11 +41,13 @@ public class CompanySupportStorageTest {
 
   @Test
   public void testHttpUrl() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      CompanySupportStorage storage = CompanySupportStorage.load();
-      assertNotNull(storage);
-      assertTrue(storage.supports("http://github.com/spring-projects/spring-security-oauth"));
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          CompanySupportStorage storage = CompanySupportStorage.load();
+          assertNotNull(storage);
+          assertTrue(storage.supports("http://github.com/spring-projects/spring-security-oauth"));
+        });
   }
 
   @Test
@@ -55,5 +57,4 @@ public class CompanySupportStorageTest {
     assertThat(companies, hasItem("Oracle"));
     assertThat(companies, hasItem("SAP"));
   }
-
 }

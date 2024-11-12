@@ -18,8 +18,8 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
- * The data provider gathers info about how a project uses GoSec for static analysis. In
- * particular, it tries to fill out the following features:
+ * The data provider gathers info about how a project uses GoSec for static analysis. In particular,
+ * it tries to fill out the following features:
  *
  * <ul>
  *   <li>{@link OssFeatures#USES_GOSEC_SCAN_CHECKS}
@@ -28,21 +28,20 @@ import java.util.regex.Pattern;
  * </ul>
  */
 public class GoSecDataProvider extends AbstractStaticScanToolsDataProvider {
-  
-  /**
-   * A Predicate to check step in a GitHub action that triggers analysis with GoSec.
-   */
+
+  /** A Predicate to check step in a GitHub action that triggers analysis with GoSec. */
   private static final Map<String, Predicate<String>> MATCH_GOSEC_PREDICATE = new HashMap<>();
 
   static {
     {
-      MATCH_GOSEC_PREDICATE.put("uses",
+      MATCH_GOSEC_PREDICATE.put(
+          "uses",
           step -> Pattern.compile(".*securego/gosec.*$", Pattern.DOTALL).matcher(step).matches());
-      MATCH_GOSEC_PREDICATE.put("run",
-          step -> Pattern.compile("^.*gosec .*$", Pattern.DOTALL).matcher(step).matches());
+      MATCH_GOSEC_PREDICATE.put(
+          "run", step -> Pattern.compile("^.*gosec .*$", Pattern.DOTALL).matcher(step).matches());
     }
   }
-  
+
   /**
    * A Predicate to check step in a GitHub action that triggers analysis with GoSec with specific
    * configs.
@@ -52,12 +51,18 @@ public class GoSecDataProvider extends AbstractStaticScanToolsDataProvider {
 
   static {
     {
-      MATCH_GOSEC_STEP_CONFIG_PREDICATE.put("with",
-          step -> Pattern.compile("(^.*-include=.*$)|(^.*-exclude=.*$)", Pattern.DOTALL)
-              .matcher(step).matches());
-      MATCH_GOSEC_STEP_CONFIG_PREDICATE.put("run",
-          step -> Pattern.compile("(^.*-include=.*$)|(^.*-exclude=.*$)", Pattern.DOTALL)
-              .matcher(step).matches());
+      MATCH_GOSEC_STEP_CONFIG_PREDICATE.put(
+          "with",
+          step ->
+              Pattern.compile("(^.*-include=.*$)|(^.*-exclude=.*$)", Pattern.DOTALL)
+                  .matcher(step)
+                  .matches());
+      MATCH_GOSEC_STEP_CONFIG_PREDICATE.put(
+          "run",
+          step ->
+              Pattern.compile("(^.*-include=.*$)|(^.*-exclude=.*$)", Pattern.DOTALL)
+                  .matcher(step)
+                  .matches());
     }
   }
 

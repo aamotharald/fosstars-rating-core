@@ -13,9 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * An advisor for features related to Dependabot.
- */
+/** An advisor for features related to Dependabot. */
 public class DependabotAdvisor extends AbstractOssAdvisor {
 
   /**

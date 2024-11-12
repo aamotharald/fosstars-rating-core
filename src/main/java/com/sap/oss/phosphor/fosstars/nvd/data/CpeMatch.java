@@ -8,25 +8,13 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * CPE match string or range.
- */
+/** CPE match string or range. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "cpe22Uri",
-    "cpe23Uri",
-    "versionStartIncluding",
-    "versionEndIncluding"
-})
+@JsonPropertyOrder({"cpe22Uri", "cpe23Uri", "versionStartIncluding", "versionEndIncluding"})
 // the properties below are ignored because they are not used
 // that saves a bit of memory
 // when they become necessary, then can be enabled
-@JsonIgnoreProperties({
-    "vulnerable",
-    "cpe_name",
-    "versionStartExcluding",
-    "versionEndExcluding"
-})
+@JsonIgnoreProperties({"vulnerable", "cpe_name", "versionStartExcluding", "versionEndExcluding"})
 public class CpeMatch {
 
   private final Cpe22Uri cpe22Uri;
@@ -56,9 +44,9 @@ public class CpeMatch {
   }
 
   /**
-   * Get the {@link CpeUri} instance if available.
-   * It will check which CPE URI format is applicable and return the appropriate instance.
-   * 
+   * Get the {@link CpeUri} instance if available. It will check which CPE URI format is applicable
+   * and return the appropriate instance.
+   *
    * @return A {@link CpeUri} if available.
    */
   public Optional<CpeUri> getCpeUri() {

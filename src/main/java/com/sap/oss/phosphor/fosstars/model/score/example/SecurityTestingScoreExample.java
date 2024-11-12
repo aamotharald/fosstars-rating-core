@@ -15,16 +15,21 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 public class SecurityTestingScoreExample extends FeatureBasedScore {
 
   SecurityTestingScoreExample() {
-    super("Security testing score (example)",
-        SECURITY_REVIEW_DONE_EXAMPLE, STATIC_CODE_ANALYSIS_DONE_EXAMPLE);
+    super(
+        "Security testing score (example)",
+        SECURITY_REVIEW_DONE_EXAMPLE,
+        STATIC_CODE_ANALYSIS_DONE_EXAMPLE);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Boolean> securityReviewDone = findValue(values, SECURITY_REVIEW_DONE_EXAMPLE,
-        "Couldn't find security review status!");
-    Value<Boolean> staticCodeAnalysisDone = findValue(values, STATIC_CODE_ANALYSIS_DONE_EXAMPLE,
-        "Couldn't find static code analysis status!");
+    Value<Boolean> securityReviewDone =
+        findValue(values, SECURITY_REVIEW_DONE_EXAMPLE, "Couldn't find security review status!");
+    Value<Boolean> staticCodeAnalysisDone =
+        findValue(
+            values,
+            STATIC_CODE_ANALYSIS_DONE_EXAMPLE,
+            "Couldn't find static code analysis status!");
 
     double points = 0.0;
     if (securityReviewDone.get()) {
@@ -35,5 +40,4 @@ public class SecurityTestingScoreExample extends FeatureBasedScore {
     }
     return scoreValue(points, securityReviewDone, staticCodeAnalysisDone);
   }
-
 }

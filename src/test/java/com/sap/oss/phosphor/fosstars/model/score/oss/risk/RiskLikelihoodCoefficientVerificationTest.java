@@ -51,9 +51,10 @@ public class RiskLikelihoodCoefficientVerificationTest {
             .expectedScore(DoubleInterval.closed(9.5, 10))
             .make());
 
-    Optional<RiskLikelihoodCoefficient> score = TestUtils.find(
-        RiskLikelihoodCoefficient.class,
-        RatingRepository.INSTANCE.rating(SecurityRiskIntroducedByOss.class));
+    Optional<RiskLikelihoodCoefficient> score =
+        TestUtils.find(
+            RiskLikelihoodCoefficient.class,
+            RatingRepository.INSTANCE.rating(SecurityRiskIntroducedByOss.class));
 
     if (!score.isPresent()) {
       fail("Could not find the score!");

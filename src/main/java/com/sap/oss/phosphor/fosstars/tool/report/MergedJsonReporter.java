@@ -10,14 +10,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * This reporter takes a number of projects and merge them in to a JSON file.
- */
+/** This reporter takes a number of projects and merge them in to a JSON file. */
 public class MergedJsonReporter extends AbstractReporter<GitHubProject> {
 
-  /**
-   * A path to an output file.
-   */
+  /** A path to an output file. */
   private final Path filename;
 
   /**
@@ -40,8 +36,8 @@ public class MergedJsonReporter extends AbstractReporter<GitHubProject> {
 
     logger.info("Storing info about projects to {}", filename);
     allProjects.sort(Comparator.comparing(project -> project.scm().toString()));
-    byte[] content = Json.mapper().writerFor(LIST_OF_GITHUB_PROJECTS_TYPE)
-        .writeValueAsBytes(allProjects);
+    byte[] content =
+        Json.mapper().writerFor(LIST_OF_GITHUB_PROJECTS_TYPE).writeValueAsBytes(allProjects);
     Files.write(filename, content);
   }
 }

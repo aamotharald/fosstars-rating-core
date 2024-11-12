@@ -27,17 +27,22 @@ public class CodeOfConductGuidelineInfoTest extends TestGitHubDataFetcherHolder 
   public void testSupportedFeatures() throws IOException {
     CodeOfConductGuidelineInfo provider = new CodeOfConductGuidelineInfo(fetcher);
     assertTrue(provider.supportedFeatures().contains(HAS_CODE_OF_CONDUCT));
-    assertTrue(provider.supportedFeatures()
-        .contains(HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE));
+    assertTrue(
+        provider.supportedFeatures().contains(HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE));
   }
-  
+
   @Test
   public void testProjectWithCodeOfConductGuidelineInfo() throws IOException {
     GitHubProject project = new GitHubProject("test", "project");
     LocalRepository localRepository = mock(LocalRepository.class);
     when(localRepository.readTextFrom("CODE_OF_CONDUCT.md"))
-        .thenReturn(Optional.of(String.join("\n",
-            "Here is the code of conduct for our project.", "This is the text.", "Extra text")));
+        .thenReturn(
+            Optional.of(
+                String.join(
+                    "\n",
+                    "Here is the code of conduct for our project.",
+                    "This is the text.",
+                    "Extra text")));
     TestGitHubDataFetcher.addForTesting(project, localRepository);
 
     CodeOfConductGuidelineInfo provider = new CodeOfConductGuidelineInfo(fetcher);
@@ -48,8 +53,10 @@ public class CodeOfConductGuidelineInfoTest extends TestGitHubDataFetcherHolder 
     checkValue(values, HAS_REQUIRED_TEXT_IN_CODE_OF_CONDUCT_GUIDELINE, true);
 
     when(localRepository.readTextFrom("HOW_TO_CODE_OF_CONDUCT.md"))
-        .thenReturn(Optional.of(String.join("\n",
-            "Here is the code of conduct for our project.", "This is the text.")));
+        .thenReturn(
+            Optional.of(
+                String.join(
+                    "\n", "Here is the code of conduct for our project.", "This is the text.")));
 
     provider.knownCodeofConductGuidelineFiles("HOW_TO_CODE_OF_CONDUCT.md");
     provider.requiredContentPatterns("Extra text.");
@@ -63,17 +70,19 @@ public class CodeOfConductGuidelineInfoTest extends TestGitHubDataFetcherHolder 
     GitHubProject project = new GitHubProject("test", "project");
     LocalRepository localRepository = mock(LocalRepository.class);
     when(localRepository.readTextFrom("CODE_OF_CONDUCT.md"))
-         .thenReturn(Optional.of(String.join("\n",
-            "Here is how to contribute to the project.",
-            "Contributor Covenant",
-            "This is the Contributor Covenant")));
+        .thenReturn(
+            Optional.of(
+                String.join(
+                    "\n",
+                    "Here is how to contribute to the project.",
+                    "Contributor Covenant",
+                    "This is the Contributor Covenant")));
     TestGitHubDataFetcher.addForTesting(project, localRepository);
 
     CodeOfConductGuidelineInfo provider = new CodeOfConductGuidelineInfo(fetcher);
-    provider.configure(IOUtils.toInputStream(
-                    "---\n"
-                  + "requiredContentPatterns:\n"
-                  + "  - \"Contributor Covenant\"", UTF_8.name()));
+    provider.configure(
+        IOUtils.toInputStream(
+            "---\n" + "requiredContentPatterns:\n" + "  - \"Contributor Covenant\"", UTF_8.name()));
 
     ValueSet values = provider.fetchValuesFor(project);
     checkValue(values, HAS_CODE_OF_CONDUCT, true);
@@ -82,19 +91,14 @@ public class CodeOfConductGuidelineInfoTest extends TestGitHubDataFetcherHolder 
 
   @Test
   public void testLoadingDefaultConfig() throws IOException {
-    Path config = Paths.get(String.format("%s.config.yml",
-        CodeOfConductGuidelineInfo.class.getSimpleName()));
-    String content =
-        "---\n"
-        + "requiredContentPatterns:\n"
-        + "  - \"Contributor Covenant\"";
+    Path config =
+        Paths.get(String.format("%s.config.yml", CodeOfConductGuidelineInfo.class.getSimpleName()));
+    String content = "---\n" + "requiredContentPatterns:\n" + "  - \"Contributor Covenant\"";
     Files.write(config, content.getBytes());
     try {
       CodeOfConductGuidelineInfo provider = new CodeOfConductGuidelineInfo(fetcher);
       assertEquals(1, provider.requiredContentPatterns().size());
-      assertEquals(
-          "Contributor Covenant",
-          provider.requiredContentPatterns().get(0).pattern());
+      assertEquals("Contributor Covenant", provider.requiredContentPatterns().get(0).pattern());
     } finally {
       FileUtils.forceDeleteOnExit(config.toFile());
     }
@@ -106,5 +110,4 @@ public class CodeOfConductGuidelineInfoTest extends TestGitHubDataFetcherHolder 
     Value<Boolean> value = something.get();
     assertEquals(expected, value.get());
   }
-
 }

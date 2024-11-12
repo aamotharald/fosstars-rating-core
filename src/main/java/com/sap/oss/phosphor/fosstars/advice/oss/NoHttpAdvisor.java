@@ -9,9 +9,7 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import java.net.MalformedURLException;
 import java.util.List;
 
-/**
- * An advisor for features related to NoHttp tool.
- */
+/** An advisor for features related to NoHttp tool. */
 public class NoHttpAdvisor extends AbstractOssAdvisor {
 
   /**

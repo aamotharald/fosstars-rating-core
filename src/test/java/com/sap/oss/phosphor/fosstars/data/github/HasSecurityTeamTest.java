@@ -36,18 +36,18 @@ public class HasSecurityTeamTest extends TestGitHubDataFetcherHolder {
     assertFalse(value.get());
   }
 
-  private static Value<Boolean> check(HasSecurityTeam provider, GitHubProject project) 
+  private static Value<Boolean> check(HasSecurityTeam provider, GitHubProject project)
       throws IOException {
     ValueHashSet values = new ValueHashSet();
     provider.update(project, values);
 
     assertEquals(1, values.size());
     assertTrue(values.has(HAS_SECURITY_TEAM));
-    
+
     Optional<Value<Boolean>> something = values.of(HAS_SECURITY_TEAM);
     assertNotNull(something);
     assertTrue(something.isPresent());
-    
+
     return something.get();
   }
 }

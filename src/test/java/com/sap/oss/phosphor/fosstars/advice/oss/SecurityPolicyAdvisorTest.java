@@ -23,19 +23,21 @@ public class SecurityPolicyAdvisorTest {
 
   @Test
   public void testAdviseForSecurityPolicy() throws MalformedURLException {
-    SecurityPolicyAdvisor advisor = new SecurityPolicyAdvisor(subject -> new OssAdviceContext() {
+    SecurityPolicyAdvisor advisor =
+        new SecurityPolicyAdvisor(
+            subject ->
+                new OssAdviceContext() {
 
-      @Override
-      public Optional<String> lgtmProjectLink() {
-        return Optional.of("https://lgtm.com");
-      }
+                  @Override
+                  public Optional<String> lgtmProjectLink() {
+                    return Optional.of("https://lgtm.com");
+                  }
 
-      @Override
-      public Optional<String> suggestSecurityPolicyLink() {
-        return Optional.of("https://github.com");
-
-      }
-    });
+                  @Override
+                  public Optional<String> suggestSecurityPolicyLink() {
+                    return Optional.of("https://github.com");
+                  }
+                });
     GitHubProject project = new GitHubProject("org", "test");
 
     // no advice if no rating value is set

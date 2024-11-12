@@ -16,7 +16,7 @@ public class SecurityReviewTest {
 
   @Test
   public void testWrongChanges() {
-    for (Double value : new double[] { -1.0, 2.0 }) {
+    for (Double value : new double[] {-1.0, 2.0}) {
       try {
         new SecurityReview(TEST_REVIEW_DATE, value);
         fail("No exception thrown!");

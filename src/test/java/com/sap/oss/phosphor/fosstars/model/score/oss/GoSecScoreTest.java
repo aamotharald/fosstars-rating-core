@@ -53,22 +53,27 @@ public class GoSecScoreTest {
 
   @Test
   public void testCalculateWithoutUsesGoSecChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(RUNS_GOSEC_SCANS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(RUNS_GOSEC_SCANS.unknown(), LANGUAGES.unknown()));
   }
 
   @Test
   public void testCalculateWithoutRunsGoSecScanChecksValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(USES_GOSEC_SCAN_CHECKS.unknown(), LANGUAGES.unknown()));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(USES_GOSEC_SCAN_CHECKS.unknown(), LANGUAGES.unknown()));
   }
 
   @Test
   public void testCalculateWithAllUnknownValues() {
-    assertTrue(SCORE.calculate(
-        USES_GOSEC_SCAN_CHECKS.unknown(),
-        USES_GOSEC_WITH_RULES.unknown(),
-        RUNS_GOSEC_SCANS.unknown(),
-        LANGUAGES.unknown()).isUnknown());
+    assertTrue(
+        SCORE
+            .calculate(
+                USES_GOSEC_SCAN_CHECKS.unknown(),
+                USES_GOSEC_WITH_RULES.unknown(),
+                RUNS_GOSEC_SCANS.unknown(),
+                LANGUAGES.unknown())
+            .isUnknown());
   }
 }

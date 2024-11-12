@@ -17,16 +17,12 @@ import java.util.function.Predicate;
  * @param <T> Type of data the the feature holds.
  * @param <V> Type of value.
  */
-public abstract class AbstractValue<T, V extends AbstractValue<T, V>> implements Value<T>  {
+public abstract class AbstractValue<T, V extends AbstractValue<T, V>> implements Value<T> {
 
-  /**
-   * A corresponding feature.
-   */
+  /** A corresponding feature. */
   private final Feature<T> feature;
 
-  /**
-   * A list of notes that explain the value.
-   */
+  /** A list of notes that explain the value. */
   private final List<String> explanation;
 
   /**

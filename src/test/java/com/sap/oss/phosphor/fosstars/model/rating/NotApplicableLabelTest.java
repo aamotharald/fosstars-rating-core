@@ -32,9 +32,7 @@ public class NotApplicableLabelTest {
   @Test
   public void testSerializationAndDeserialization() throws IOException {
     NotApplicableLabel label = new NotApplicableLabel();
-    NotApplicableLabel clone = Json.read(
-        Json.toBytes(label), NotApplicableLabel.class);
+    NotApplicableLabel clone = Json.read(Json.toBytes(label), NotApplicableLabel.class);
     assertEquals(label, clone);
   }
-
 }

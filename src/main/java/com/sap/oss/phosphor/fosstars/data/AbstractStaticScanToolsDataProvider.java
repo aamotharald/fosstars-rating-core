@@ -37,42 +37,32 @@ import org.apache.commons.collections4.IteratorUtils;
  * This is a base class for data providers that would like to check if the project uses a Static
  * Analysis Scan Tool (SAST) and also determines how the project uses it.
  */
-public abstract class AbstractStaticScanToolsDataProvider extends
-    GitHubCachingDataProvider {
+public abstract class AbstractStaticScanToolsDataProvider extends GitHubCachingDataProvider {
 
-  /**
-   * A directory where GitHub Actions configs are stored.
-   */
+  /** A directory where GitHub Actions configs are stored. */
   private static final String GITHUB_ACTIONS_DIRECTORY = ".github/workflows";
 
   /**
    * A pre-commit hook standard config file path.
    *
    * @see <a href=https://pre-commit.com/#2-add-a-pre-commit-configuration>Pre-commit hook config
-   *      file</a>
+   *     file</a>
    */
   private static final String PRE_COMMIT_HOOK_CONFIG = ".pre-commit-config.yaml";
 
-  /**
-   * A list of extensions of GitHub Actions configs.
-   */
+  /** A list of extensions of GitHub Actions configs. */
   private static final List<String> GITHUB_ACTIONS_CONFIG_EXTENSIONS =
       Arrays.asList(".yaml", ".yml");
 
-  /**
-   * A list of extensions of GitHub Actions configs.
-   */
+  /** A list of extensions of GitHub Actions configs. */
   private static final String GITHUB_INI_CONFIG_EXTENSION = ".ini";
 
-  /**
-   * A Bi-Predicate to evaluate each context of Map type extracted from the GitHub Action jobs.
-   */
+  /** A Bi-Predicate to evaluate each context of Map type extracted from the GitHub Action jobs. */
   private static final BiPredicate<Map<?, ?>, Map<String, Predicate<String>>> MATCH_MAP_PREDICATE =
       (context, matchers) -> {
         for (Map.Entry<String, Predicate<String>> entry : matchers.entrySet()) {
           final String key = entry.getKey();
-          if (context.containsKey(key)
-              && entry.getValue().test(context.get(key).toString())) {
+          if (context.containsKey(key) && entry.getValue().test(context.get(key).toString())) {
             return true;
           }
         }
@@ -99,9 +89,7 @@ public abstract class AbstractStaticScanToolsDataProvider extends
   private static final List<String> PRE_COMMIT_HOOK_CONTEXT =
       Arrays.asList("entry", "additional_dependencies", "repo", "rev");
 
-  /**
-   * Set of supported features.
-   */
+  /** Set of supported features. */
   private final Set<Feature<?>> supportedFeatures;
 
   /**
@@ -110,8 +98,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @param fetcher An interface to GitHub.
    * @param supportedFeatures A set of supported features.
    */
-  public AbstractStaticScanToolsDataProvider(GitHubDataFetcher fetcher,
-      Set<Feature<?>> supportedFeatures) {
+  public AbstractStaticScanToolsDataProvider(
+      GitHubDataFetcher fetcher, Set<Feature<?>> supportedFeatures) {
     super(fetcher);
     this.supportedFeatures = supportedFeatures;
   }
@@ -126,25 +114,28 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    *
    * @param repository The {@link LocalRepository}.
    * @param matchers map of {@link Predicate}s to parse for a specific content and match the
-   *        predicate.
+   *     predicate.
    * @param configMatchers map of {@link Predicate}s to parse for a specific content and match the
-   *        specific configs with the given predicate.
+   *     specific configs with the given predicate.
    * @param visitor The visitor.
    * @param <T> A type of the visitor.
    * @return The passed visitor.
    * @throws IOException if something went wrong.
    */
-  protected static <T extends GitHubVisitor> T browse(LocalRepository repository,
-      Map<String, Predicate<String>> matchers, Map<String, Predicate<String>> configMatchers,
-      T visitor) throws IOException {
+  protected static <T extends GitHubVisitor> T browse(
+      LocalRepository repository,
+      Map<String, Predicate<String>> matchers,
+      Map<String, Predicate<String>> configMatchers,
+      T visitor)
+      throws IOException {
     Objects.requireNonNull(repository, "Oh no! Repository is null!");
     Objects.requireNonNull(matchers, "Oh no! Predicate is null!");
     Objects.requireNonNull(visitor, "On no! Visitor is null!");
 
-    visitor.visitGitHubAction(repository, matchers, configMatchers,
-        in(EnumSet.noneOf(Location.class), GITHUB_ACTION));
-    visitor.visitPreCommitHook(repository, matchers,
-        in(EnumSet.noneOf(Location.class), PRE_COMMIT_HOOK));
+    visitor.visitGitHubAction(
+        repository, matchers, configMatchers, in(EnumSet.noneOf(Location.class), GITHUB_ACTION));
+    visitor.visitPreCommitHook(
+        repository, matchers, in(EnumSet.noneOf(Location.class), PRE_COMMIT_HOOK));
     visitor.visitIniConfig(repository, matchers, in(EnumSet.noneOf(Location.class), INI_CONFIG));
     // visitor.visitSourceCode(repository, predicate, in(EnumSet.noneOf(Location.class), TYPE_PY));
     return visitor;
@@ -175,8 +166,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @throws IOException If something went wrong.
    */
   public static List<Path> findIniConfigsIn(LocalRepository repository) throws IOException {
-    return repository
-        .files(path -> path.getFileName().toString().endsWith(GITHUB_INI_CONFIG_EXTENSION));
+    return repository.files(
+        path -> path.getFileName().toString().endsWith(GITHUB_INI_CONFIG_EXTENSION));
   }
 
   /**
@@ -184,11 +175,11 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    *
    * @param githubAction GitHub Actions.
    * @param matchers predicates to match through the given action.
-   * @return Optional<{@link Map}> step if one of the predicate finds matches.
-   *         Optional.empty otherwise.
+   * @return Optional<{@link Map}> step if one of the predicate finds matches. Optional.empty
+   *     otherwise.
    */
-  private static Optional<Map> scanGitHubAction(Map<?, ?> githubAction,
-      Map<String, Predicate<String>> matchers) {
+  private static Optional<Map> scanGitHubAction(
+      Map<?, ?> githubAction, Map<String, Predicate<String>> matchers) {
     if (matchers.isEmpty()) {
       return Optional.empty();
     }
@@ -208,8 +199,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    *
    * @param jobs Iterable list of GitHub action jobs.
    * @param matchers predicates to match through the given action.
-   * @return Optional<{@link Map}> step if one of the predicate finds matches.
-   *         Optional.empty otherwise.
+   * @return Optional<{@link Map}> step if one of the predicate finds matches. Optional.empty
+   *     otherwise.
    */
   private static Optional<Map> scanJobs(Iterable<?> jobs, Map<String, Predicate<String>> matchers) {
     return IteratorUtils.toList(jobs.iterator()).stream()
@@ -232,8 +223,7 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @return True if the action runs on pull requests, false otherwise.
    */
   private static boolean runsOnPullRequests(Map<?, ?> githubAction) {
-    return runsOnPullRequestArrayType(githubAction)
-        || runsOnPullRequestMapType(githubAction);
+    return runsOnPullRequestArrayType(githubAction) || runsOnPullRequestMapType(githubAction);
   }
 
   /**
@@ -271,8 +261,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @return True if a file looks like a config for a GitHub action, false otherwise.
    */
   private static boolean isGitHubActionConfig(Path path) {
-    return GITHUB_ACTIONS_CONFIG_EXTENSIONS
-        .stream().anyMatch(ext -> path.getFileName().toString().endsWith(ext));
+    return GITHUB_ACTIONS_CONFIG_EXTENSIONS.stream()
+        .anyMatch(ext -> path.getFileName().toString().endsWith(ext));
   }
 
   /**
@@ -297,8 +287,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @param matchers predicates to match through the given config.
    * @return True if one of the predicate finds matches. False otherwise.
    */
-  private static boolean hasPreCommitHook(Map<?, ?> config,
-      Map<String, Predicate<String>> matchers) {
+  private static boolean hasPreCommitHook(
+      Map<?, ?> config, Map<String, Predicate<String>> matchers) {
     if (matchers.isEmpty()) {
       return false;
     }
@@ -317,8 +307,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @param matchers predicates to match through the given action.
    * @return True if one of the predicate finds matches. False otherwise.
    */
-  private static boolean scanPreCommitRepos(Iterable<?> repos,
-      Map<String, Predicate<String>> matchers) {
+  private static boolean scanPreCommitRepos(
+      Iterable<?> repos, Map<String, Predicate<String>> matchers) {
     return IteratorUtils.toList(repos.iterator()).stream()
         .filter(Map.class::isInstance)
         .map(Map.class::cast)
@@ -332,8 +322,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @param matchers predicates to match through the given action.
    * @return True if one of the predicate finds matches. False otherwise.
    */
-  private static boolean scanPreCommitHooks(Iterable<?> repos,
-      Map<String, Predicate<String>> matchers) {
+  private static boolean scanPreCommitHooks(
+      Iterable<?> repos, Map<String, Predicate<String>> matchers) {
     return IteratorUtils.toList(repos.iterator()).stream()
         .filter(Map.class::isInstance)
         .map(Map.class::cast)
@@ -350,8 +340,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @param matchers predicates to match through the given action.
    * @return True if one of the predicate finds matches. False otherwise.
    */
-  private static boolean scanPreCommitHook(Iterable<?> hooks,
-      Map<String, Predicate<String>> matchers) {
+  private static boolean scanPreCommitHook(
+      Iterable<?> hooks, Map<String, Predicate<String>> matchers) {
     return IteratorUtils.toList(hooks.iterator()).stream()
         .filter(Map.class::isInstance)
         .map(Map.class::cast)
@@ -365,8 +355,8 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @param matchers predicates to match through the given action.
    * @return True if one of the predicate finds matches. False otherwise.
    */
-  private static boolean hasIniConfig(Stream<String> lines,
-      Map<String, Predicate<String>> matchers) {
+  private static boolean hasIniConfig(
+      Stream<String> lines, Map<String, Predicate<String>> matchers) {
     if (matchers.isEmpty()) {
       return false;
     }
@@ -381,8 +371,7 @@ public abstract class AbstractStaticScanToolsDataProvider extends
    * @param rest An array of locations to be added to the resulting set.
    * @return A set of locations that contains all passed locations.
    */
-  public static EnumSet<Location> in(
-      EnumSet<Location> locations, Location... rest) {
+  public static EnumSet<Location> in(EnumSet<Location> locations, Location... rest) {
 
     EnumSet<Location> set = EnumSet.copyOf(locations);
     set.addAll(Arrays.asList(rest));
@@ -391,16 +380,14 @@ public abstract class AbstractStaticScanToolsDataProvider extends
 
   /**
    * Creates a visitor for searching {@link GitHubProject}.
-   * 
+   *
    * @return {@link Visitor}.
    */
   protected static Visitor withVisitor() {
     return new Visitor();
   }
 
-  /**
-   * A visitor for searching a specific config predicate in a {@link GitHubProject}.
-   */
+  /** A visitor for searching a specific config predicate in a {@link GitHubProject}. */
   public static class Visitor extends AbstractGitHubVisitor {
 
     /**
@@ -414,16 +401,19 @@ public abstract class AbstractStaticScanToolsDataProvider extends
      * exists.
      */
     public boolean usesCheck = false;
-    
+
     /**
-     * A visitor for searching {@link GitHubProject} if the config to use a specific check tool
-     * has specific rules.
+     * A visitor for searching {@link GitHubProject} if the config to use a specific check tool has
+     * specific rules.
      */
     public boolean hasRules = false;
 
     @Override
-    public void visitPreCommitHook(LocalRepository repository,
-        Map<String, Predicate<String>> matchers, Set<Location> locations) throws IOException {
+    public void visitPreCommitHook(
+        LocalRepository repository,
+        Map<String, Predicate<String>> matchers,
+        Set<Location> locations)
+        throws IOException {
       Optional<InputStream> content = repository.read(PRE_COMMIT_HOOK_CONFIG);
       if (!content.isPresent()) {
         return;
@@ -437,8 +427,11 @@ public abstract class AbstractStaticScanToolsDataProvider extends
     }
 
     @Override
-    public void visitIniConfig(LocalRepository repository, Map<String, Predicate<String>> matchers,
-        Set<Location> locations) throws IOException {
+    public void visitIniConfig(
+        LocalRepository repository,
+        Map<String, Predicate<String>> matchers,
+        Set<Location> locations)
+        throws IOException {
       for (Path configPath : findIniConfigsIn(repository)) {
         try (Stream<String> lines = Files.lines(configPath)) {
           if (hasIniConfig(lines, matchers)) {
@@ -450,9 +443,12 @@ public abstract class AbstractStaticScanToolsDataProvider extends
     }
 
     @Override
-    public void visitGitHubAction(LocalRepository repository,
-        Map<String, Predicate<String>> matchers, Map<String, Predicate<String>> configMatchers,
-        Set<Location> locations) throws IOException {
+    public void visitGitHubAction(
+        LocalRepository repository,
+        Map<String, Predicate<String>> matchers,
+        Map<String, Predicate<String>> configMatchers,
+        Set<Location> locations)
+        throws IOException {
       for (Path configPath : findGitHubActionsIn(repository)) {
         try (InputStream content = Files.newInputStream(configPath)) {
           Map<String, Object> githubAction = Yaml.readMap(content);

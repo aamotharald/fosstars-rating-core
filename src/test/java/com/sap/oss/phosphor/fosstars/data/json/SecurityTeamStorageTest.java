@@ -25,5 +25,4 @@ public class SecurityTeamStorageTest {
     SecurityTeamStorage storage = SecurityTeamStorage.load();
     assertFalse(storage.existsFor("https://github.com/unknown/project"));
   }
-
 }

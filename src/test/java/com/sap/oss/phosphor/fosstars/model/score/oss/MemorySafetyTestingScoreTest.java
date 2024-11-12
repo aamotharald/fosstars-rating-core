@@ -25,8 +25,8 @@ public class MemorySafetyTestingScoreTest {
 
   @Test
   public void testWithLackOfValues() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(LANGUAGES.value(Languages.of(CPP))));
+    assertThrows(
+        IllegalArgumentException.class, () -> SCORE.calculate(LANGUAGES.value(Languages.of(CPP))));
   }
 
   @Test
@@ -36,24 +36,22 @@ public class MemorySafetyTestingScoreTest {
 
   @Test
   public void testVerification() throws VerificationFailedException, IOException {
-    TestVectors vectors = new TestVectors(
-        newTestVector()
-            .alias("test")
-            .expectUnknownScore()
-            .set(LANGUAGES.unknown())
-            .set(USES_ADDRESS_SANITIZER.unknown())
-            .set(USES_MEMORY_SANITIZER.unknown())
-            .set(USES_UNDEFINED_BEHAVIOR_SANITIZER.unknown())
-            .make()
-    );
+    TestVectors vectors =
+        new TestVectors(
+            newTestVector()
+                .alias("test")
+                .expectUnknownScore()
+                .set(LANGUAGES.unknown())
+                .set(USES_ADDRESS_SANITIZER.unknown())
+                .set(USES_MEMORY_SANITIZER.unknown())
+                .set(USES_UNDEFINED_BEHAVIOR_SANITIZER.unknown())
+                .make());
 
     Path file = Files.createTempFile(getClass().getName(), "test");
     try {
       vectors.storeToYaml(file);
 
-      ScoreVerification verification = new ScoreVerification(
-          SCORE,
-          TestVectors.loadFromYaml(file));
+      ScoreVerification verification = new ScoreVerification(SCORE, TestVectors.loadFromYaml(file));
 
       verification.run();
     } finally {

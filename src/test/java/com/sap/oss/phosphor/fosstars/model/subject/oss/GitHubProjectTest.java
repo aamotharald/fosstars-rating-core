@@ -37,8 +37,7 @@ public class GitHubProjectTest {
     GitHubProject project = new GitHubProject(apache, "nifi");
     project.set(
         new RatingValue(
-            new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE),
-            SecurityLabelExample.OKAY));
+            new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE), SecurityLabelExample.OKAY));
     byte[] bytes = Json.toBytes(project);
     assertNotNull(bytes);
     assertTrue(bytes.length > 0);
@@ -53,8 +52,7 @@ public class GitHubProjectTest {
     GitHubProject org = new GitHubProject("org", "test");
     List<GitHubProject> list = Collections.singletonList(org);
     ObjectMapper mapper = Json.mapper();
-    TypeReference<List<GitHubProject>> typeReference
-        = new TypeReference<List<GitHubProject>>() {};
+    TypeReference<List<GitHubProject>> typeReference = new TypeReference<List<GitHubProject>>() {};
     byte[] bytes = mapper.writerFor(typeReference).writeValueAsBytes(list);
     List<GitHubProject> clone = mapper.readValue(bytes, typeReference);
     assertEquals(list, clone);
@@ -62,19 +60,20 @@ public class GitHubProjectTest {
 
   @Test
   public void testJsonSerializationWithUnknownFields() throws IOException {
-    String content = "{\n"
-        + "  \"type\" : \"GitHubProject\",\n"
-        + "  \"organization\" : {\n"
-        + "    \"type\" : \"GitHubOrganization\",\n"
-        + "    \"name\" : \"apache\",\n"
-        + "    \"ratingValue\" : null,\n"
-        + "    \"ratingValueDate\" : null\n"
-        + "  },\n"
-        + "  \"name\" : \"nifi\","
-        + "  \"ratingValue\" : null,"
-        + "  \"ratingValueDate\" : null,"
-        + "  \"extra\" : \"something\""
-        + "}";
+    String content =
+        "{\n"
+            + "  \"type\" : \"GitHubProject\",\n"
+            + "  \"organization\" : {\n"
+            + "    \"type\" : \"GitHubOrganization\",\n"
+            + "    \"name\" : \"apache\",\n"
+            + "    \"ratingValue\" : null,\n"
+            + "    \"ratingValueDate\" : null\n"
+            + "  },\n"
+            + "  \"name\" : \"nifi\","
+            + "  \"ratingValue\" : null,"
+            + "  \"ratingValueDate\" : null,"
+            + "  \"extra\" : \"something\""
+            + "}";
     GitHubProject project = Json.read(content.getBytes(), GitHubProject.class);
     assertEquals("apache", project.organization().name());
     assertEquals("nifi", project.name());
@@ -91,17 +90,18 @@ public class GitHubProjectTest {
 
   @Test
   public void testYamlSerializationWithUnknownFields() throws IOException {
-    String content = "---\n"
-        + "type: \"GitHubProject\"\n"
-        + "organization:\n"
-        + "  type: \"GitHubOrganization\"\n"
-        + "  name: \"org\"\n"
-        + "  ratingValue: null\n"
-        + "  ratingValueDate: null\n"
-        + "name: \"test\"\n"
-        + "ratingValue: null\n"
-        + "ratingValueDate: null\n"
-        + "extra: something\n";
+    String content =
+        "---\n"
+            + "type: \"GitHubProject\"\n"
+            + "organization:\n"
+            + "  type: \"GitHubOrganization\"\n"
+            + "  name: \"org\"\n"
+            + "  ratingValue: null\n"
+            + "  ratingValueDate: null\n"
+            + "name: \"test\"\n"
+            + "ratingValue: null\n"
+            + "ratingValueDate: null\n"
+            + "extra: something\n";
     GitHubProject project = Yaml.read(content.getBytes(), GitHubProject.class);
     assertEquals("org", project.organization().name());
     assertEquals("test", project.name());

@@ -67,9 +67,10 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGosecInUsesAndChecks() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-with-uses.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content = getClass().getResourceAsStream("gosec-analysis-with-uses.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(true),
           USES_GOSEC_WITH_RULES.value(false));
@@ -78,9 +79,11 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGoSecRunsWithRulesAndMultipleJobs() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-with-multiple-jobs.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("gosec-analysis-with-multiple-jobs.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(true),
           USES_GOSEC_WITH_RULES.value(true));
@@ -89,9 +92,11 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithNoGoSecRunStep() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-with-no-gosec-run.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("gosec-analysis-with-no-gosec-run.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(false),
           USES_GOSEC_SCAN_CHECKS.value(false),
           USES_GOSEC_WITH_RULES.value(false));
@@ -100,9 +105,11 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGoSecRunsAndRulesInDifferentStep() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-with-rules-in-different-step.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("gosec-analysis-with-rules-in-different-step.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(false),
           USES_GOSEC_WITH_RULES.value(false));
@@ -111,9 +118,10 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGoSecRunAndChecks() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-with-run.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content = getClass().getResourceAsStream("gosec-analysis-with-run.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(true),
           USES_GOSEC_WITH_RULES.value(false));
@@ -122,9 +130,11 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGoSecRunWithExcludeRules() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-run-with-exclude-rules.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("gosec-analysis-run-with-exclude-rules.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(true),
           USES_GOSEC_WITH_RULES.value(true));
@@ -133,9 +143,11 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGoSecRunWithInludeRules() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-run-with-include-rules.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("gosec-analysis-run-with-include-rules.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(true),
           USES_GOSEC_WITH_RULES.value(true));
@@ -144,9 +156,11 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGoSecRunAndChecksWithoutRules() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-run-without-rules.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("gosec-analysis-run-without-rules.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(true),
           USES_GOSEC_WITH_RULES.value(false));
@@ -155,9 +169,11 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testWithGoSecUsesWithoutWithKey() throws IOException {
-    try (InputStream content = getClass().getResourceAsStream(
-        "gosec-analysis-uses-without-with-key.yml")) {
-      testGoSecRuns(GITHUB_WORKFLOW_FILENAME, content,
+    try (InputStream content =
+        getClass().getResourceAsStream("gosec-analysis-uses-without-with-key.yml")) {
+      testGoSecRuns(
+          GITHUB_WORKFLOW_FILENAME,
+          content,
           RUNS_GOSEC_SCANS.value(true),
           USES_GOSEC_SCAN_CHECKS.value(true),
           USES_GOSEC_WITH_RULES.value(false));

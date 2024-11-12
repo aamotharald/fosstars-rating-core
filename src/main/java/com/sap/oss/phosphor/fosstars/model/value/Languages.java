@@ -11,14 +11,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-/**
- * A set of programming languages.
- */
+/** A set of programming languages. */
 public class Languages implements Iterable<Language> {
 
-  /**
-   * A set of languages.
-   */
+  /** A set of languages. */
   private final Set<Language> elements;
 
   /**
@@ -73,8 +69,8 @@ public class Languages implements Iterable<Language> {
    * Checks if the collection contains one of the other languages.
    *
    * @param languages The other languages.
-   * @return True if at least one of the other languages is present in the collection,
-   *         false otherwise.
+   * @return True if at least one of the other languages is present in the collection, false
+   *     otherwise.
    */
   public boolean containsAnyOf(Languages languages) {
     for (Language language : languages) {
@@ -90,8 +86,8 @@ public class Languages implements Iterable<Language> {
    * Checks if the collection contains one of the other languages.
    *
    * @param languages The other languages.
-   * @return True if at least one of the other languages is present in the collection,
-   *         false otherwise.
+   * @return True if at least one of the other languages is present in the collection, false
+   *     otherwise.
    */
   public boolean containsAnyOf(Language... languages) {
     return containsAnyOf(Languages.of(languages));

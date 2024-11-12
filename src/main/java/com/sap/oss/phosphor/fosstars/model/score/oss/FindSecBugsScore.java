@@ -11,19 +11,18 @@ import com.sap.oss.phosphor.fosstars.model.value.Languages;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * <p>The score shows if an open-source project uses FindSecBugs to catch security issues.</p>
+ * The score shows if an open-source project uses FindSecBugs to catch security issues.
  *
- * <p>The score is based on the following features.</p>
+ * <p>The score is based on the following features.
+ *
  * <ul>
- *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#LANGUAGES}</li>
- *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_FIND_SEC_BUGS}</li>
+ *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#LANGUAGES}
+ *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_FIND_SEC_BUGS}
  * </ul>
  */
 public class FindSecBugsScore extends FeatureBasedScore {
 
-  /**
-   * Initializes a new score.
-   */
+  /** Initializes a new score. */
   FindSecBugsScore() {
     super("How a project uses FindSecBugs", LANGUAGES, USES_FIND_SEC_BUGS);
   }

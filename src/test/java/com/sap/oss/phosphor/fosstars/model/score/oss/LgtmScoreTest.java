@@ -31,13 +31,14 @@ public class LgtmScoreTest {
     assertTrue(SCORE.features().contains(LANGUAGES));
     assertTrue(SCORE.subScores().isEmpty());
 
-    assertScore(Score.INTERVAL, SCORE,
+    assertScore(
+        Score.INTERVAL,
+        SCORE,
         setOf(WORST_LGTM_GRADE.value(LgtmGrade.A_PLUS), LANGUAGES.value(Languages.of(JAVA))));
   }
 
   @Test
   public void testCalculateWithoutUsesWorseLgtmGradeValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(LANGUAGES.unknown()));
+    assertThrows(IllegalArgumentException.class, () -> SCORE.calculate(LANGUAGES.unknown()));
   }
 }

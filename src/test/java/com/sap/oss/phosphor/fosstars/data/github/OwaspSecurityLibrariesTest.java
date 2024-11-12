@@ -39,8 +39,7 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testMavenWithoutOwaspEsapi() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("MavenWithoutOwaspEsapiDependency.xml")) {
+    try (InputStream is = getClass().getResourceAsStream("MavenWithoutOwaspEsapiDependency.xml")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "pom.xml");
       checkValue(provider, USES_OWASP_ESAPI, false);
@@ -51,8 +50,8 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testMavenWithOwaspEsapiInDefaultDependencies() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("MavenWithOwaspEsapiInDefaultDependencies.xml")) {
+    try (InputStream is =
+        getClass().getResourceAsStream("MavenWithOwaspEsapiInDefaultDependencies.xml")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "pom.xml");
       checkValue(provider, USES_OWASP_ESAPI, true);
@@ -63,8 +62,8 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testMavenWithOwaspJavaEncoderInDefaultDependencies() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("MavenWithOwaspJavaEncoderInDefaultDependencies.xml")) {
+    try (InputStream is =
+        getClass().getResourceAsStream("MavenWithOwaspJavaEncoderInDefaultDependencies.xml")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "pom.xml");
       checkValue(provider, USES_OWASP_ESAPI, false);
@@ -75,8 +74,9 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testMavenWithOwaspJavaHtmlSanitizerInDefaultDependencies() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("MavenWithOwaspJavaHtmlSanitizerInDefaultDependencies.xml")) {
+    try (InputStream is =
+        getClass()
+            .getResourceAsStream("MavenWithOwaspJavaHtmlSanitizerInDefaultDependencies.xml")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "pom.xml");
       checkValue(provider, USES_OWASP_ESAPI, false);
@@ -87,8 +87,8 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testMavenWithOwaspEsapiInProfileDependencies() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("MavenWithOwaspEsapiInProfiledDependencies.xml")) {
+    try (InputStream is =
+        getClass().getResourceAsStream("MavenWithOwaspEsapiInProfiledDependencies.xml")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "pom.xml");
       checkValue(provider, USES_OWASP_ESAPI, true);
@@ -99,8 +99,7 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testGradleWithOwaspSecurityTools() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("GradleWithOwaspSecurityTools.gradle")) {
+    try (InputStream is = getClass().getResourceAsStream("GradleWithOwaspSecurityTools.gradle")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "build.gradle");
       checkValue(provider, USES_OWASP_ESAPI, true);
@@ -111,8 +110,7 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testGradleWithOwaspSecurityToolsInSubproject() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("GradleWithOwaspSecurityTools.gradle")) {
+    try (InputStream is = getClass().getResourceAsStream("GradleWithOwaspSecurityTools.gradle")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "subproject/build.gradle");
       checkValue(provider, USES_OWASP_ESAPI, true);
@@ -123,8 +121,8 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
   @Test
   public void testGradleWithoutOwaspSecurityTools() throws IOException {
-    try (InputStream is = getClass()
-        .getResourceAsStream("GradleWithoutOwaspSecurityTools.gradle")) {
+    try (InputStream is =
+        getClass().getResourceAsStream("GradleWithoutOwaspSecurityTools.gradle")) {
 
       OwaspSecurityLibraries provider = createProvider(is, "build.gradle");
       checkValue(provider, USES_OWASP_ESAPI, false);
@@ -148,8 +146,8 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
     assertEquals(expectedValue, value.get());
   }
 
-  private OwaspSecurityLibraries createProvider(
-      InputStream is, String filename) throws IOException {
+  private OwaspSecurityLibraries createProvider(InputStream is, String filename)
+      throws IOException {
 
     final LocalRepository repository = mock(LocalRepository.class);
 
@@ -157,10 +155,8 @@ public class OwaspSecurityLibrariesTest extends TestGitHubDataFetcherHolder {
 
     when(repository.read(filename))
         .thenReturn(Optional.of(IOUtils.toInputStream(String.join("\n", content))));
-    when(repository.readLinesOf(Paths.get(filename)))
-        .thenReturn(Optional.of(content));
-    when(repository.files(any()))
-        .thenReturn(Collections.singletonList(Paths.get(filename)));
+    when(repository.readLinesOf(Paths.get(filename))).thenReturn(Optional.of(content));
+    when(repository.files(any())).thenReturn(Collections.singletonList(Paths.get(filename)));
 
     GitHubProject project = new GitHubProject("org", "test");
     addForTesting(project, repository);

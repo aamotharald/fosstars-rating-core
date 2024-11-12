@@ -10,23 +10,23 @@ import com.sap.oss.phosphor.fosstars.model.score.FeatureBasedScore;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * This scoring function outputs a likelihood factor
- * for security risk introduced by an open source project.
- * The factor is based on functionality that the project offers.
+ * This scoring function outputs a likelihood factor for security risk introduced by an open source
+ * project. The factor is based on functionality that the project offers.
  */
 public class FunctionalityRiskLikelihoodFactor extends FeatureBasedScore {
 
-  /**
-   * Create a new scoring function.
-   */
+  /** Create a new scoring function. */
   public FunctionalityRiskLikelihoodFactor() {
     super("Likelihood factor of functionality of an open source project", FUNCTIONALITY);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Functionality> functionality = findValue(values, FUNCTIONALITY,
-        "Hey! You have to tell me what kind of functionality the project offers!");
+    Value<Functionality> functionality =
+        findValue(
+            values,
+            FUNCTIONALITY,
+            "Hey! You have to tell me what kind of functionality the project offers!");
 
     ScoreValue scoreValue = scoreValue(MIN, functionality);
 

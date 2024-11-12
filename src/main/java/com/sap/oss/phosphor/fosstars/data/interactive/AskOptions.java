@@ -8,24 +8,16 @@ import com.sap.oss.phosphor.fosstars.model.Subject;
 import com.sap.oss.phosphor.fosstars.model.ValueSet;
 import java.util.Set;
 
-/**
- * This data provider asks a question and offers options.
- */
+/** This data provider asks a question and offers options. */
 public class AskOptions<T extends Enum<T>> extends AbstractInteractiveDataProvider {
 
-  /**
-   * A feature that the data provider supports.
-   */
+  /** A feature that the data provider supports. */
   private final Feature<T> feature;
 
-  /**
-   * A question that the data provider asks.
-   */
+  /** A question that the data provider asks. */
   private final String question;
 
-  /**
-   * A class of an enum that contains possible answers.
-   */
+  /** A class of an enum that contains possible answers. */
   private final Class<T> enumClass;
 
   /**
@@ -77,14 +69,10 @@ public class AskOptions<T extends Enum<T>> extends AbstractInteractiveDataProvid
    */
   public static class Builder<T extends Enum<T>> {
 
-    /**
-     * A feature that the provider should support.
-     */
+    /** A feature that the provider should support. */
     private final Feature<T> feature;
 
-    /**
-     * A question that the provider asks.
-     */
+    /** A question that the provider asks. */
     private String question;
 
     /**

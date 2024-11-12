@@ -13,9 +13,7 @@ import java.util.Objects;
  */
 public class EnumFeature<T extends Enum<T>> extends AbstractFeature<T> {
 
-  /**
-   * A class of the enum.
-   */
+  /** A class of the enum. */
   private final Class<T> enumClass;
 
   /**
@@ -26,8 +24,7 @@ public class EnumFeature<T extends Enum<T>> extends AbstractFeature<T> {
    */
   @JsonCreator
   public EnumFeature(
-      @JsonProperty("enumClass") Class<T> enumClass,
-      @JsonProperty("name") String name) {
+      @JsonProperty("enumClass") Class<T> enumClass, @JsonProperty("name") String name) {
 
     super(name);
     Objects.requireNonNull(enumClass, "Oh no! Enum class is null!");
@@ -73,5 +70,4 @@ public class EnumFeature<T extends Enum<T>> extends AbstractFeature<T> {
   private Class<T> enumClass() {
     return enumClass;
   }
-
 }

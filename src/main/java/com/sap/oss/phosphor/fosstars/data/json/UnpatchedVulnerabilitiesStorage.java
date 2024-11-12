@@ -25,9 +25,7 @@ import java.util.Objects;
  */
 public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
 
-  /**
-   * Path to a resource which contains the information about unpatched vulnerabilities.
-   */
+  /** Path to a resource which contains the information about unpatched vulnerabilities. */
   private static final String RESOURCE_PATH =
       "com/sap/oss/phosphor/fosstars/data/UnpatchedVulnerabilities.json";
 
@@ -41,7 +39,7 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
    * Initializes a storage.
    *
    * @param projectVulnerabilities A mapping which maps an URL to source code repository to a list
-   *                               of unpatched vulnerabilities.
+   *     of unpatched vulnerabilities.
    */
   public UnpatchedVulnerabilitiesStorage(
       @JsonProperty("projectVulnerabilities") Map<URL, Vulnerabilities> projectVulnerabilities) {
@@ -62,7 +60,7 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
    *
    * @param url A URL to source code repository for the project.
    * @return An instance of {@link Vulnerabilities} with all known unpatched vulnerabilities for the
-   *         project.
+   *     project.
    * @throws MalformedURLException If the URL is not valid.
    */
   public Vulnerabilities getFor(String url) throws MalformedURLException {
@@ -74,7 +72,7 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
    *
    * @param url A URL to source code repository for the project.
    * @return An instance of {@link Vulnerabilities} with all known unpatched vulnerabilities for the
-   *         project.
+   *     project.
    */
   public Vulnerabilities getFor(URL url) {
     Vulnerabilities vulnerabilities = projectVulnerabilities.get(url);
@@ -121,7 +119,7 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
   }
 
   /**
-   * Loads a list of unpatched vulnerabilities from  a JSON file or resource.
+   * Loads a list of unpatched vulnerabilities from a JSON file or resource.
    *
    * @param path A path to the file or resource.
    * @return An instance of {@link UnpatchedVulnerabilitiesStorage}.
@@ -152,9 +150,11 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
     for (Map.Entry<URL, Vulnerabilities> entry : storage.projectVulnerabilities.entrySet()) {
       for (Vulnerability vulnerability : entry.getValue().entries()) {
         if (vulnerability.resolution() != Resolution.UNPATCHED) {
-          throw new IllegalArgumentException(String.format(
-              "Hey! The list of unpatched vulnerabilities is supposed to contain "
-                  + "only unpatched vulnerabilities (check out '%s')", vulnerability.id()));
+          throw new IllegalArgumentException(
+              String.format(
+                  "Hey! The list of unpatched vulnerabilities is supposed to contain "
+                      + "only unpatched vulnerabilities (check out '%s')",
+                  vulnerability.id()));
         }
       }
     }
@@ -162,8 +162,8 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
   }
 
   /**
-   * The main method is here for demo purposes.
-   * It can be also used to add unpatched vulnerabilities to the storage.
+   * The main method is here for demo purposes. It can be also used to add unpatched vulnerabilities
+   * to the storage.
    *
    * @param args Command line arguments.
    * @throws IOException If something went wrong.
@@ -180,5 +180,4 @@ public class UnpatchedVulnerabilitiesStorage extends AbstractJsonStorage {
 
     storage.store("src/main/resources/" + RESOURCE_PATH);
   }
-
 }

@@ -8,44 +8,32 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * The class holds a CVSS score for a vulnerability.
- */
+/** The class holds a CVSS score for a vulnerability. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public abstract class CVSS {
 
-  /**
-   * CVSS version 2.
-   */
+  /** CVSS version 2. */
   public static class V2 extends CVSS {
 
-    /**
-     * Unknown impact.
-     */
+    /** Unknown impact. */
     public static final Impact UNKNOWN_IMPACT = null;
 
-    /**
-     * Possible impact values.
-     */
+    /** Possible impact values. */
     public enum Impact {
-      NONE, PARTIAL, COMPLETE
+      NONE,
+      PARTIAL,
+      COMPLETE
     }
 
-    /**
-     * Confidentiality impact.
-     */
+    /** Confidentiality impact. */
     @JsonProperty("confidentialityImpact")
     private final Impact confidentialityImpact;
 
-    /**
-     * Integrity impact.
-     */
+    /** Integrity impact. */
     @JsonProperty("integrityImpact")
     private final Impact integrityImpact;
 
-    /**
-     * Availability impact.
-     */
+    /** Availability impact. */
     @JsonProperty("availabilityImpact")
     private final Impact availabilityImpact;
 
@@ -115,43 +103,33 @@ public abstract class CVSS {
 
     @Override
     public int hashCode() {
-      return Objects.hash(super.hashCode(),
-          confidentialityImpact, integrityImpact, availabilityImpact);
+      return Objects.hash(
+          super.hashCode(), confidentialityImpact, integrityImpact, availabilityImpact);
     }
   }
 
-  /**
-   * CVSS version 3.
-   */
+  /** CVSS version 3. */
   public static class V3 extends CVSS {
 
-    /**
-     * Unknown impact.
-     */
+    /** Unknown impact. */
     public static final Impact UNKNOWN_IMPACT = null;
 
-    /**
-     * Possible impact values.
-     */
+    /** Possible impact values. */
     public enum Impact {
-      NONE, LOW, HIGH
+      NONE,
+      LOW,
+      HIGH
     }
 
-    /**
-     * Confidentiality impact.
-     */
+    /** Confidentiality impact. */
     @JsonProperty("confidentialityImpact")
     private final Impact confidentialityImpact;
 
-    /**
-     * Integrity impact.
-     */
+    /** Integrity impact. */
     @JsonProperty("integrityImpact")
     private final Impact integrityImpact;
 
-    /**
-     * Availability impact.
-     */
+    /** Availability impact. */
     @JsonProperty("availabilityImpact")
     private final Impact availabilityImpact;
 
@@ -221,31 +199,24 @@ public abstract class CVSS {
 
     @Override
     public int hashCode() {
-      return Objects.hash(super.hashCode(),
-          confidentialityImpact, integrityImpact, availabilityImpact);
+      return Objects.hash(
+          super.hashCode(), confidentialityImpact, integrityImpact, availabilityImpact);
     }
   }
 
-  /**
-   * The minimum CVSS score.
-   */
+  /** The minimum CVSS score. */
   public static final double MIN = 0.0;
 
-  /**
-   * The maximum CVSS score.
-   */
+  /** The maximum CVSS score. */
   public static final double MAX = 10.0;
 
-  /**
-   * CVSS version.
-   */
+  /** CVSS version. */
   public enum Version {
-    V2, V3
+    V2,
+    V3
   }
 
-  /**
-   * A score.
-   */
+  /** A score. */
   private final Double value;
 
   /**
@@ -318,11 +289,10 @@ public abstract class CVSS {
     }
 
     if (Double.compare(value, MIN) < 0 || Double.compare(value, MAX) > 0) {
-      throw new IllegalArgumentException(format(
-          "What the heck? %f doesn't look like a CVSS score!", value));
+      throw new IllegalArgumentException(
+          format("What the heck? %f doesn't look like a CVSS score!", value));
     }
 
     return value;
   }
-
 }

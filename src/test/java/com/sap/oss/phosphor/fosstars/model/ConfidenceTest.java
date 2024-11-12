@@ -23,14 +23,12 @@ public class ConfidenceTest {
 
   @Test
   public void testNegative() {
-    assertThrows(IllegalArgumentException.class, () ->
-      Confidence.check(-1));
+    assertThrows(IllegalArgumentException.class, () -> Confidence.check(-1));
   }
 
   @Test
   public void testToBig() {
-    assertThrows(IllegalArgumentException.class, () ->
-      Confidence.check(11));
+    assertThrows(IllegalArgumentException.class, () -> Confidence.check(11));
   }
 
   @Test
@@ -43,17 +41,20 @@ public class ConfidenceTest {
 
   @Test
   public void testMakeWithUnknown() {
-    assertEquals(Confidence.MIN,
+    assertEquals(
+        Confidence.MIN,
         Confidence.make(
             NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.unknown(),
             NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.unknown()),
         DELTA);
-    assertEquals((Confidence.MAX - Confidence.MIN) / 2,
+    assertEquals(
+        (Confidence.MAX - Confidence.MIN) / 2,
         Confidence.make(
             NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(10),
             NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.unknown()),
         DELTA);
-    assertEquals(Confidence.MAX,
+    assertEquals(
+        Confidence.MAX,
         Confidence.make(
             NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(10),
             NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(3)),
@@ -62,7 +63,8 @@ public class ConfidenceTest {
 
   @Test
   public void testMakeWithScoreValues() {
-    assertEquals(6.18,
+    assertEquals(
+        6.18,
         Confidence.make(
             new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).confidence(3.0).weight(0.4),
             new ScoreValue(SECURITY_TESTING_SCORE_EXAMPLE).confidence(8.0).weight(0.7)),
@@ -71,7 +73,8 @@ public class ConfidenceTest {
 
   @Test
   public void testMakeWithVariousValues() {
-    assertEquals(5.41,
+    assertEquals(
+        5.41,
         Confidence.make(
             new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).confidence(3.0).weight(0.4),
             new ScoreValue(SECURITY_TESTING_SCORE_EXAMPLE).confidence(8.0).weight(0.7),
@@ -82,7 +85,6 @@ public class ConfidenceTest {
 
   @Test
   public void testMakeWithNoValues() {
-    assertThrows(IllegalArgumentException.class, () ->
-      Confidence.make());
+    assertThrows(IllegalArgumentException.class, () -> Confidence.make());
   }
 }

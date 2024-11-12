@@ -32,5 +32,4 @@ public class IsApache extends CachedSingleFeatureGitHubDataProvider<Boolean> {
     logger.info("Figuring out if the project belongs to the Apache Software Foundation ...");
     return IS_APACHE.value("apache".equalsIgnoreCase(project.organization().name()));
   }
-
 }

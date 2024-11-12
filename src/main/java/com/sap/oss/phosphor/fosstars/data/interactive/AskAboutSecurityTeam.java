@@ -11,15 +11,14 @@ import com.sap.oss.phosphor.fosstars.tool.YesNoSkipQuestion.Answer;
 import java.util.Collections;
 import java.util.Set;
 
-/**
- * This data provider asks a user about security teams.
- */
+/** This data provider asks a user about security teams. */
 public class AskAboutSecurityTeam extends AbstractInteractiveDataProvider {
 
   @Override
   protected AskAboutSecurityTeam ask(Subject subject, ValueSet values) {
-    String question = String.format(
-        "Does '%s' have a security team? Say yes, no, or skip, please.", subject.purl());
+    String question =
+        String.format(
+            "Does '%s' have a security team? Say yes, no, or skip, please.", subject.purl());
 
     Answer answer = new YesNoSkipQuestion(callback, question).ask();
     switch (answer) {

@@ -12,14 +12,10 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * A collection of vulnerabilities.
- */
+/** A collection of vulnerabilities. */
 public class Vulnerabilities implements Iterable<Vulnerability> {
 
-  /**
-   * A set of vulnerabilities.
-   */
+  /** A set of vulnerabilities. */
   private final Set<Vulnerability> entries;
 
   /**

@@ -6,22 +6,14 @@ import com.sap.oss.phosphor.fosstars.model.Subject;
 import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import java.util.Optional;
 
-/**
- * A context factory that provides contexts for projects on GitHub.
- */
+/** A context factory that provides contexts for projects on GitHub. */
 public class AdviceForGitHubContextFactory implements OssAdviceContextFactory {
 
-  /**
-   * Singleton.
-   */
+  /** Singleton. */
   public static final AdviceForGitHubContextFactory INSTANCE = new AdviceForGitHubContextFactory();
 
-  /**
-   * Private constructor.
-   */
-  private AdviceForGitHubContextFactory() {
-
-  }
+  /** Private constructor. */
+  private AdviceForGitHubContextFactory() {}
 
   @Override
   public OssAdviceContext contextFor(Subject subject) {
@@ -32,7 +24,8 @@ public class AdviceForGitHubContextFactory implements OssAdviceContextFactory {
         if (subject instanceof GitHubProject) {
           GitHubProject project = (GitHubProject) subject;
           return Optional.of(
-              String.format("https://lgtm.com/projects/g/%s/%s",
+              String.format(
+                  "https://lgtm.com/projects/g/%s/%s",
                   project.organization().name(), project.name()));
         }
 
@@ -44,7 +37,8 @@ public class AdviceForGitHubContextFactory implements OssAdviceContextFactory {
         if (subject instanceof GitHubProject) {
           GitHubProject project = (GitHubProject) subject;
           return Optional.of(
-              String.format("https://github.com/%s/%s/security/policy",
+              String.format(
+                  "https://github.com/%s/%s/security/policy",
                   project.organization().name(), project.name()));
         }
 

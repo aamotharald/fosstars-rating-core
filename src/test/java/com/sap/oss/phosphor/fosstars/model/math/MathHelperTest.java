@@ -45,5 +45,4 @@ public class MathHelperTest {
     assertEquals(0, MathHelper.invert(g, -10, 50, 1, precision));
     assertEquals(10, MathHelper.invert(g, -10, 50, 41, precision));
   }
-
 }

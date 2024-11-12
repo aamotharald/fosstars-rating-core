@@ -22,20 +22,23 @@ import java.util.Optional;
 
 public class LgtmScoreAdvisorTest {
 
-  //@Test
+  // @Test
   public void testAdviseForLgtmGrade() throws MalformedURLException {
-    LgtmAdvisor advisor = new LgtmAdvisor(subject -> new OssAdviceContext() {
+    LgtmAdvisor advisor =
+        new LgtmAdvisor(
+            subject ->
+                new OssAdviceContext() {
 
-      @Override
-      public Optional<String> lgtmProjectLink() {
-        return Optional.of("https://lgtm.com");
-      }
+                  @Override
+                  public Optional<String> lgtmProjectLink() {
+                    return Optional.of("https://lgtm.com");
+                  }
 
-      @Override
-      public Optional<String> suggestSecurityPolicyLink() {
-        return Optional.of("https://github.com");
-      }
-    });
+                  @Override
+                  public Optional<String> suggestSecurityPolicyLink() {
+                    return Optional.of("https://github.com");
+                  }
+                });
     GitHubProject project = new GitHubProject("org", "test");
 
     // no advice if no rating value is set

@@ -23,8 +23,7 @@ public class AskAboutUnpatchedVulnerabilitiesTest {
 
     testProvider(
         new Vulnerabilities(
-            newVulnerability(firstIssueId).make(),
-            newVulnerability(secondIssueId).make()),
+            newVulnerability(firstIssueId).make(), newVulnerability(secondIssueId).make()),
         new AskAboutUnpatchedVulnerabilities(),
         new TestUserCallback("yes", firstIssueId, "yes", secondIssueId, "no"));
   }
@@ -32,13 +31,13 @@ public class AskAboutUnpatchedVulnerabilitiesTest {
   @Test
   public void noVulnerabilities() {
     testProvider(
-        new Vulnerabilities(),
-        new AskAboutUnpatchedVulnerabilities(),
-        new TestUserCallback("no"));
+        new Vulnerabilities(), new AskAboutUnpatchedVulnerabilities(), new TestUserCallback("no"));
   }
 
-  private static void testProvider(Vulnerabilities expectedVulnerabilities,
-      AskAboutUnpatchedVulnerabilities provider, UserCallback callback) {
+  private static void testProvider(
+      Vulnerabilities expectedVulnerabilities,
+      AskAboutUnpatchedVulnerabilities provider,
+      UserCallback callback) {
 
     ValueSet values = new ValueHashSet();
     provider.set(NoValueCache.create());

@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "product_name",
-    "version"
-})
+@JsonPropertyOrder({"product_name", "version"})
 public class ProductData {
 
   @JsonProperty("product_name")

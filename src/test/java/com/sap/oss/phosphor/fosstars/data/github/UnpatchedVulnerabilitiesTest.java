@@ -26,5 +26,4 @@ public class UnpatchedVulnerabilitiesTest extends TestGitHubDataFetcherHolder {
     assertEquals(Resolution.UNPATCHED, vulnerability.resolution());
     assertFalse(vulnerability.fixed().isPresent());
   }
-
 }

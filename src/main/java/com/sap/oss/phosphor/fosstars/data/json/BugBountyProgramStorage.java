@@ -8,14 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * This class maintains information about bug bounty programs for open-source projects.
- */
+/** This class maintains information about bug bounty programs for open-source projects. */
 public class BugBountyProgramStorage extends AbstractJsonStorage {
 
-  /**
-   * Path to a resource that contains information about bug bounty programs.
-   */
+  /** Path to a resource that contains information about bug bounty programs. */
   private static final String RESOURCE_PATH =
       "com/sap/oss/phosphor/fosstars/data/BugBountyPrograms.json";
 

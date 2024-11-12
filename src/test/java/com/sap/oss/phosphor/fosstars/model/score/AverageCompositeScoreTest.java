@@ -56,14 +56,12 @@ public class AverageCompositeScoreTest {
 
   @Test
   public void negativeValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      new TestAverageCompositeScore().value(-3.0));
+    assertThrows(IllegalArgumentException.class, () -> new TestAverageCompositeScore().value(-3.0));
   }
 
   @Test
   public void tooBigValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      new TestAverageCompositeScore().value(42.0));
+    assertThrows(IllegalArgumentException.class, () -> new TestAverageCompositeScore().value(42.0));
   }
 
   @Test
@@ -84,9 +82,8 @@ public class AverageCompositeScoreTest {
     secondPreCalculatedScoreValue.set(secondValue);
     secondPreCalculatedScoreValue.confidence(secondConfidence);
 
-    ScoreValue scoreValue = score.calculate(
-        firstPreCalculatedScoreValue,
-        secondPreCalculatedScoreValue);
+    ScoreValue scoreValue =
+        score.calculate(firstPreCalculatedScoreValue, secondPreCalculatedScoreValue);
 
     assertNotNull(scoreValue);
 
@@ -120,14 +117,11 @@ public class AverageCompositeScoreTest {
 
   @Test
   public void testWithOneNotApplicable() {
-    TestAverageCompositeScore score = new TestAverageCompositeScore(
-        new FirstScore().returnsNotApplicable(),
-        new SecondScore()
-    );
+    TestAverageCompositeScore score =
+        new TestAverageCompositeScore(new FirstScore().returnsNotApplicable(), new SecondScore());
 
-    ScoreValue scoreValue = score.calculate(
-        FirstScore.FEATURE.value(5.0),
-        SecondScore.FEATURE.value(8.0));
+    ScoreValue scoreValue =
+        score.calculate(FirstScore.FEATURE.value(5.0), SecondScore.FEATURE.value(8.0));
 
     assertFalse(scoreValue.isUnknown());
     assertFalse(scoreValue.isNotApplicable());
@@ -149,14 +143,12 @@ public class AverageCompositeScoreTest {
 
   @Test
   public void testWithAllNotApplicable() {
-    TestAverageCompositeScore score = new TestAverageCompositeScore(
-        new FirstScore().returnsNotApplicable(),
-        new SecondScore().returnsNotApplicable()
-    );
+    TestAverageCompositeScore score =
+        new TestAverageCompositeScore(
+            new FirstScore().returnsNotApplicable(), new SecondScore().returnsNotApplicable());
 
-    ScoreValue scoreValue = score.calculate(
-        FirstScore.FEATURE.value(5.0),
-        SecondScore.FEATURE.value(8.0));
+    ScoreValue scoreValue =
+        score.calculate(FirstScore.FEATURE.value(5.0), SecondScore.FEATURE.value(8.0));
 
     assertFalse(scoreValue.isUnknown());
     assertTrue(scoreValue.isNotApplicable());
@@ -241,5 +233,4 @@ public class AverageCompositeScoreTest {
       super(NAME, new FirstScore(), new SecondScore());
     }
   }
-
 }

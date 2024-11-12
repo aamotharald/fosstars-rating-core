@@ -22,8 +22,8 @@ public class UnpatchedVulnerabilitiesStorageTest {
 
   @Test
   public void notExisting() {
-    assertThrows(IOException.class, () ->
-      UnpatchedVulnerabilitiesStorage.load("not/existing/file.json"));
+    assertThrows(
+        IOException.class, () -> UnpatchedVulnerabilitiesStorage.load("not/existing/file.json"));
   }
 
   @Test
@@ -31,19 +31,17 @@ public class UnpatchedVulnerabilitiesStorageTest {
     UnpatchedVulnerabilitiesStorage storage = UnpatchedVulnerabilitiesStorage.load();
     String projectUrl = "https://github.com/holy/moly";
     storage.add(
-        projectUrl,
-        newVulnerability("https://bugtracker/1")
-            .set(Resolution.UNPATCHED)
-            .make());
-    Path tmp = Files.createTempFile(
-        UnpatchedVulnerabilitiesStorageTest.class.getCanonicalName(), "test");
+        projectUrl, newVulnerability("https://bugtracker/1").set(Resolution.UNPATCHED).make());
+    Path tmp =
+        Files.createTempFile(UnpatchedVulnerabilitiesStorageTest.class.getCanonicalName(), "test");
     String filename = tmp.toString();
     try {
       storage.store(filename);
       storage = UnpatchedVulnerabilitiesStorage.load(filename);
       Vulnerabilities vulnerabilities = storage.getFor(projectUrl);
       assertEquals(1, vulnerabilities.entries().size());
-      assertTrue(vulnerabilities.entries().contains(newVulnerability("https://bugtracker/1").make()));
+      assertTrue(
+          vulnerabilities.entries().contains(newVulnerability("https://bugtracker/1").make()));
     } finally {
       Files.delete(tmp);
     }

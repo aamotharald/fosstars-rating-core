@@ -4,15 +4,12 @@ import com.sap.oss.phosphor.fosstars.model.Rating;
 import java.util.Objects;
 
 /**
- * This class implements a verification procedure for a {@link Rating}.
- * The class loads test vectors and provides methods to verify a {@link Rating}
- * against the loaded test vectors.
+ * This class implements a verification procedure for a {@link Rating}. The class loads test vectors
+ * and provides methods to verify a {@link Rating} against the loaded test vectors.
  */
 public class RatingVerification extends AbstractVerification {
 
-  /**
-   * A rating to be verified.
-   */
+  /** A rating to be verified. */
   private final Rating rating;
 
   /**
@@ -28,13 +25,12 @@ public class RatingVerification extends AbstractVerification {
   }
 
   /**
-   * Verify the rating. The method throws a {@link VerificationFailedException}
-   * if the verification failed.
+   * Verify the rating. The method throws a {@link VerificationFailedException} if the verification
+   * failed.
    *
    * @throws VerificationFailedException If the verification failed.
    */
   public final void run() throws VerificationFailedException {
     new RatingVerifier(rating, vectors).verify();
   }
-
 }

@@ -6,29 +6,19 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-/**
- * Maven GAV coordinates.
- */
+/** Maven GAV coordinates. */
 public class GAV {
 
-  /**
-   * No version.
-   */
+  /** No version. */
   public static final String NO_VERSION = null;
 
-  /**
-   * Group ID.
-   */
+  /** Group ID. */
   private final String group;
 
-  /**
-   * Artifact ID.
-   */
+  /** Artifact ID. */
   private final String artifact;
 
-  /**
-   * Version.
-   */
+  /** Version. */
   private final String version;
 
   /**
@@ -84,7 +74,8 @@ public class GAV {
     }
     GAV gav = (GAV) o;
     return Objects.equals(group, gav.group)
-        && Objects.equals(artifact, gav.artifact) && Objects.equals(version, gav.version);
+        && Objects.equals(artifact, gav.artifact)
+        && Objects.equals(version, gav.version);
   }
 
   @Override
@@ -102,8 +93,8 @@ public class GAV {
   }
 
   /**
-   * Parse a string with GAV coordinates. The coordinates have to have group and artifact IDs,
-   * but version is optional.
+   * Parse a string with GAV coordinates. The coordinates have to have group and artifact IDs, but
+   * version is optional.
    *
    * @param gav The string with GAV coordinates.
    * @return An instance of {@link GAV}.

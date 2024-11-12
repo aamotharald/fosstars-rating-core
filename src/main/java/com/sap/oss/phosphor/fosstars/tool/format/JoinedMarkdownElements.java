@@ -6,19 +6,13 @@ import static java.util.stream.Collectors.joining;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A collection of Markdown elements that should be joined using a specified delimiter.
- */
+/** A collection of Markdown elements that should be joined using a specified delimiter. */
 public class JoinedMarkdownElements extends AbstractMarkdownElement {
 
-  /**
-   * A delimiter for the elements.
-   */
+  /** A delimiter for the elements. */
   private final String delimiter;
 
-  /**
-   * A list of elements.
-   */
+  /** A list of elements. */
   private final List<MarkdownElement> elements;
 
   /**

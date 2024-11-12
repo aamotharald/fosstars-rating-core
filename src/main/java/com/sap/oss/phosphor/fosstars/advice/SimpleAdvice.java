@@ -7,24 +7,16 @@ import com.sap.oss.phosphor.fosstars.model.Subject;
 import com.sap.oss.phosphor.fosstars.model.Value;
 import java.util.Objects;
 
-/**
- * A simple advice for a feature value.
- */
+/** A simple advice for a feature value. */
 public class SimpleAdvice implements Advice {
 
-  /**
-   * A subject of the advice.
-   */
+  /** A subject of the advice. */
   private final Subject subject;
 
-  /**
-   * A value for which the advice was given.
-   */
+  /** A value for which the advice was given. */
   private final Value<?> value;
 
-  /**
-   * A content of the advice.
-   */
+  /** A content of the advice. */
   private final AdviceContent content;
 
   /**

@@ -8,42 +8,39 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * JSON Schema for Common Vulnerability Scoring System version 3.x (BETA)
- */
+/** JSON Schema for Common Vulnerability Scoring System version 3.x (BETA) */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "version",
-    "vectorString",
-    "attackVector",
-    "attackComplexity",
-    "privilegesRequired",
-    "userInteraction",
-    "scope",
-    "confidentialityImpact",
-    "integrityImpact",
-    "availabilityImpact",
-    "baseScore",
-    "baseSeverity",
-    "exploitCodeMaturity",
-    "remediationLevel",
-    "reportConfidence",
-    "temporalScore",
-    "temporalSeverity",
-    "confidentialityRequirement",
-    "integrityRequirement",
-    "availabilityRequirement",
-    "modifiedAttackVector",
-    "modifiedAttackComplexity",
-    "modifiedPrivilegesRequired",
-    "modifiedUserInteraction",
-    "modifiedScope",
-    "modifiedConfidentialityImpact",
-    "modifiedIntegrityImpact",
-    "modifiedAvailabilityImpact",
-    "environmentalScore",
-    "environmentalSeverity"
+  "version",
+  "vectorString",
+  "attackVector",
+  "attackComplexity",
+  "privilegesRequired",
+  "userInteraction",
+  "scope",
+  "confidentialityImpact",
+  "integrityImpact",
+  "availabilityImpact",
+  "baseScore",
+  "baseSeverity",
+  "exploitCodeMaturity",
+  "remediationLevel",
+  "reportConfidence",
+  "temporalScore",
+  "temporalSeverity",
+  "confidentialityRequirement",
+  "integrityRequirement",
+  "availabilityRequirement",
+  "modifiedAttackVector",
+  "modifiedAttackComplexity",
+  "modifiedPrivilegesRequired",
+  "modifiedUserInteraction",
+  "modifiedScope",
+  "modifiedConfidentialityImpact",
+  "modifiedIntegrityImpact",
+  "modifiedAvailabilityImpact",
+  "environmentalScore",
+  "environmentalSeverity"
 })
 public class CVSSv3 {
 
@@ -163,7 +160,6 @@ public class CVSSv3 {
   }
 
   public enum AttackComplexityType {
-
     HIGH("HIGH"),
     LOW("LOW");
 
@@ -200,11 +196,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum AttackVectorType {
-
     NETWORK("NETWORK"),
     ADJACENT_NETWORK("ADJACENT_NETWORK"),
     LOCAL("LOCAL"),
@@ -243,11 +237,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum CiaRequirementType {
-
     LOW("LOW"),
     MEDIUM("MEDIUM"),
     HIGH("HIGH"),
@@ -286,11 +278,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum CiaType {
-
     NONE("NONE"),
     LOW("LOW"),
     HIGH("HIGH");
@@ -328,11 +318,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ConfidenceType {
-
     UNKNOWN("UNKNOWN"),
     REASONABLE("REASONABLE"),
     CONFIRMED("CONFIRMED"),
@@ -371,11 +359,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ExploitCodeMaturityType {
-
     UNPROVEN("UNPROVEN"),
     PROOF_OF_CONCEPT("PROOF_OF_CONCEPT"),
     FUNCTIONAL("FUNCTIONAL"),
@@ -415,17 +401,15 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ModifiedAttackComplexityType {
-
     HIGH("HIGH"),
     LOW("LOW"),
     NOT_DEFINED("NOT_DEFINED");
 
-    private static final Map<String, CVSSv3.ModifiedAttackComplexityType> CONSTANTS
-        = new HashMap<>();
+    private static final Map<String, CVSSv3.ModifiedAttackComplexityType> CONSTANTS =
+        new HashMap<>();
 
     static {
       for (CVSSv3.ModifiedAttackComplexityType c : values()) {
@@ -458,11 +442,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ModifiedAttackVectorType {
-
     NETWORK("NETWORK"),
     ADJACENT_NETWORK("ADJACENT_NETWORK"),
     LOCAL("LOCAL"),
@@ -502,11 +484,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ModifiedCiaType {
-
     NONE("NONE"),
     LOW("LOW"),
     HIGH("HIGH"),
@@ -545,18 +525,16 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ModifiedPrivilegesRequiredType {
-
     HIGH("HIGH"),
     LOW("LOW"),
     NONE("NONE"),
     NOT_DEFINED("NOT_DEFINED");
 
-    private static final Map<String, CVSSv3.ModifiedPrivilegesRequiredType> CONSTANTS
-        = new HashMap<>();
+    private static final Map<String, CVSSv3.ModifiedPrivilegesRequiredType> CONSTANTS =
+        new HashMap<>();
 
     static {
       for (CVSSv3.ModifiedPrivilegesRequiredType c : values()) {
@@ -589,11 +567,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ModifiedScopeType {
-
     UNCHANGED("UNCHANGED"),
     CHANGED("CHANGED"),
     NOT_DEFINED("NOT_DEFINED");
@@ -631,17 +607,15 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ModifiedUserInteractionType {
-
     NONE("NONE"),
     REQUIRED("REQUIRED"),
     NOT_DEFINED("NOT_DEFINED");
 
-    private static final Map<String, CVSSv3.ModifiedUserInteractionType> CONSTANTS
-        = new HashMap<>();
+    private static final Map<String, CVSSv3.ModifiedUserInteractionType> CONSTANTS =
+        new HashMap<>();
 
     static {
       for (CVSSv3.ModifiedUserInteractionType c : values()) {
@@ -674,11 +648,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum PrivilegesRequiredType {
-
     HIGH("HIGH"),
     LOW("LOW"),
     NONE("NONE");
@@ -716,11 +688,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum RemediationLevelType {
-
     OFFICIAL_FIX("OFFICIAL_FIX"),
     TEMPORARY_FIX("TEMPORARY_FIX"),
     WORKAROUND("WORKAROUND"),
@@ -760,11 +730,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum ScopeType {
-
     UNCHANGED("UNCHANGED"),
     CHANGED("CHANGED");
 
@@ -801,11 +769,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum SeverityType {
-
     NONE("NONE"),
     LOW("LOW"),
     MEDIUM("MEDIUM"),
@@ -845,11 +811,9 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum UserInteractionType {
-
     NONE("NONE"),
     REQUIRED("REQUIRED");
 
@@ -886,15 +850,10 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
 
-
-  /**
-   * CVSS Version.
-   */
+  /** CVSS Version. */
   public enum Version {
-
     _3_0("3.0"),
     _3_1("3.1");
 
@@ -931,7 +890,5 @@ public class CVSSv3 {
     public String value() {
       return this.value;
     }
-
   }
-
 }

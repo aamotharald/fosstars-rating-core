@@ -10,12 +10,12 @@ import com.sap.oss.phosphor.fosstars.model.weight.ImmutableWeight;
 import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
 
 /**
- * <p>This scoring function calculates a likelihood coefficient
- * that is used in calculating security risk introduced by an open source project.
- * The coefficient is based on the following:</p>
+ * This scoring function calculates a likelihood coefficient that is used in calculating security
+ * risk introduced by an open source project. The coefficient is based on the following:
+ *
  * <ul>
- *   <li>{@link OssSecurityScore}</li>
- *   <li>{@link AdoptedRiskLikelihoodFactor}</li>
+ *   <li>{@link OssSecurityScore}
+ *   <li>{@link AdoptedRiskLikelihoodFactor}
  * </ul>
  */
 public class RiskLikelihoodCoefficient extends WeightedCompositeScore {
@@ -31,9 +31,7 @@ public class RiskLikelihoodCoefficient extends WeightedCompositeScore {
         .set(AdoptedRiskLikelihoodFactor.class, new ImmutableWeight(0.2));
   }
 
-  /**
-   * Creates a new scoring function with default parameters.
-   */
+  /** Creates a new scoring function with default parameters. */
   RiskLikelihoodCoefficient() {
     this(new OssSecurityScore(), new AdoptedRiskLikelihoodFactor());
   }
@@ -47,7 +45,8 @@ public class RiskLikelihoodCoefficient extends WeightedCompositeScore {
   public RiskLikelihoodCoefficient(
       OssSecurityScore ossSecurityScore, AdoptedRiskLikelihoodFactor adoptedRiskLikelihoodFactor) {
 
-    super("Likelihood coefficient for security risk of open source project",
+    super(
+        "Likelihood coefficient for security risk of open source project",
         setOf(ossSecurityScore, adoptedRiskLikelihoodFactor),
         initWeights());
   }

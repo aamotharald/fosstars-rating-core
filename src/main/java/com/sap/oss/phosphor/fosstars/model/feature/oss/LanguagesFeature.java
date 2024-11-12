@@ -7,10 +7,7 @@ import com.sap.oss.phosphor.fosstars.model.feature.AbstractFeature;
 import com.sap.oss.phosphor.fosstars.model.value.Languages;
 import com.sap.oss.phosphor.fosstars.model.value.LanguagesValue;
 
-/**
- * This feature contains a set of programming languages that are used
- * in an open-source project.
- */
+/** This feature contains a set of programming languages that are used in an open-source project. */
 public class LanguagesFeature extends AbstractFeature<Languages> {
 
   /**

@@ -31,8 +31,8 @@ import org.junit.jupiter.api.Test;
 
 public class OssRulesOfPlayRatingTest {
 
-  private static final OssRulesOfPlayRating RATING
-      = RatingRepository.INSTANCE.rating(OssRulesOfPlayRating.class);
+  private static final OssRulesOfPlayRating RATING =
+      RatingRepository.INSTANCE.rating(OssRulesOfPlayRating.class);
 
   private static final double DELTA = 0.01;
 
@@ -76,8 +76,9 @@ public class OssRulesOfPlayRatingTest {
 
   @Test
   public void testLabelsWithWrongScoreValue() {
-    assertThrows(IllegalArgumentException.class, () ->
-      RATING.label(new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> RATING.label(new ScoreValue(ExampleScores.SECURITY_SCORE_EXAMPLE)));
   }
 
   // the test cases below implement verification procedure for the rating
@@ -85,8 +86,7 @@ public class OssRulesOfPlayRatingTest {
 
   @Test
   public void testCalculateWithNoValues() {
-    assertThrows(IllegalArgumentException.class, () ->
-      RATING.calculate());
+    assertThrows(IllegalArgumentException.class, () -> RATING.calculate());
   }
 
   @Test

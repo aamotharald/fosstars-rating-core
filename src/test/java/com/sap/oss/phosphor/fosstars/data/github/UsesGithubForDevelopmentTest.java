@@ -32,17 +32,18 @@ public class UsesGithubForDevelopmentTest extends TestGitHubDataFetcherHolder {
     GHRepository repository;
     Set<Integer> passedChecks;
 
-    private final List<Consumer<Boolean>> checks = Arrays.asList(
-        passed -> when(repository.getDescription())
-          .thenReturn(passed ? "This is the main repository" : "This is a mirror"),
-        passed -> when(repository.hasIssues()).thenReturn(passed),
-        passed -> when(repository.hasWiki()).thenReturn(passed),
-        passed -> {
-          when(repository.getMirrorUrl()).thenReturn(passed ? "" : "https://test.com");
-          when(repository.getSvnUrl()).thenReturn(passed ? "" : "https://test.com");
-        },
-        passed -> when(repository.isArchived()).thenReturn(!passed)
-    );
+    private final List<Consumer<Boolean>> checks =
+        Arrays.asList(
+            passed ->
+                when(repository.getDescription())
+                    .thenReturn(passed ? "This is the main repository" : "This is a mirror"),
+            passed -> when(repository.hasIssues()).thenReturn(passed),
+            passed -> when(repository.hasWiki()).thenReturn(passed),
+            passed -> {
+              when(repository.getMirrorUrl()).thenReturn(passed ? "" : "https://test.com");
+              when(repository.getSvnUrl()).thenReturn(passed ? "" : "https://test.com");
+            },
+            passed -> when(repository.isArchived()).thenReturn(!passed));
 
     RepositoryMockBuilder() {
       init();
@@ -70,7 +71,6 @@ public class UsesGithubForDevelopmentTest extends TestGitHubDataFetcherHolder {
     GHRepository repository() {
       return repository;
     }
-
   }
 
   @Test
@@ -84,13 +84,11 @@ public class UsesGithubForDevelopmentTest extends TestGitHubDataFetcherHolder {
     final double threshold = 0.5;
     while (i < builder.allChecks()) {
       builder.init();
-      random.ints(i, 0, builder.allChecks())
-          .forEach(builder::passCheck);
+      random.ints(i, 0, builder.allChecks()).forEach(builder::passCheck);
       boolean expected = (double) builder.passedChecks() / builder.allChecks() >= threshold;
       assertEquals(
           expected,
-          UsesGithubForDevelopment.usesGitHubForDevelopment(
-              builder.repository(), threshold));
+          UsesGithubForDevelopment.usesGitHubForDevelopment(builder.repository(), threshold));
       i++;
     }
   }
@@ -102,17 +100,13 @@ public class UsesGithubForDevelopmentTest extends TestGitHubDataFetcherHolder {
       builder.passCheck(i);
     }
     assertEquals(builder.allChecks(), builder.passedChecks());
-    assertTrue(
-        UsesGithubForDevelopment.usesGitHubForDevelopment(
-            builder.repository(), 0.99));
+    assertTrue(UsesGithubForDevelopment.usesGitHubForDevelopment(builder.repository(), 0.99));
   }
 
   @Test
   public void testAllFailedChecks() throws IOException {
     RepositoryMockBuilder builder = new RepositoryMockBuilder();
-    assertFalse(
-        UsesGithubForDevelopment.usesGitHubForDevelopment(
-            builder.repository(), 0.01));
+    assertFalse(UsesGithubForDevelopment.usesGitHubForDevelopment(builder.repository(), 0.01));
   }
 
   @Test

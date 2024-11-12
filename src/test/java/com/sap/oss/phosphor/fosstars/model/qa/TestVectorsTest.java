@@ -41,22 +41,24 @@ public class TestVectorsTest {
   public void testGetAndAdd() {
     TestVectors vectors = new TestVectors();
 
-    TestVector firstVector = new StandardTestVector(
-        setOf(
-            new IntegerValue(ExampleFeatures.NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE, 10),
-            new IntegerValue(ExampleFeatures.NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE, 2)),
-        DoubleInterval.init().from(4.0).to(6.4).closed().make(),
-        SecurityLabelExample.OKAY,
-        "test_1");
+    TestVector firstVector =
+        new StandardTestVector(
+            setOf(
+                new IntegerValue(ExampleFeatures.NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE, 10),
+                new IntegerValue(ExampleFeatures.NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE, 2)),
+            DoubleInterval.init().from(4.0).to(6.4).closed().make(),
+            SecurityLabelExample.OKAY,
+            "test_1");
     vectors.add(firstVector);
 
-    TestVector secondVector = new StandardTestVector(
-        setOf(
-            new IntegerValue(ExampleFeatures.NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE, 30),
-            new IntegerValue(ExampleFeatures.NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE, 3)),
-        DoubleInterval.init().from(5.0).to(7.4).closed().make(),
-        SecurityLabelExample.OKAY,
-        "test_2");
+    TestVector secondVector =
+        new StandardTestVector(
+            setOf(
+                new IntegerValue(ExampleFeatures.NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE, 30),
+                new IntegerValue(ExampleFeatures.NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE, 3)),
+            DoubleInterval.init().from(5.0).to(7.4).closed().make(),
+            SecurityLabelExample.OKAY,
+            "test_2");
     vectors.add(secondVector);
 
     assertFalse(vectors.isEmpty());
@@ -99,5 +101,4 @@ public class TestVectorsTest {
     combinedVectors.add(VECTORS);
     assertEquals(3, combinedVectors.size());
   }
-
 }

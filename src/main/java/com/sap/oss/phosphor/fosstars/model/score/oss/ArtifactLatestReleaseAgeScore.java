@@ -13,14 +13,12 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
- * The scores check how old the latest release artifact version of the open-source project is.
- * The score uses {@link OssFeatures#RELEASED_ARTIFACT_VERSIONS} feature.
+ * The scores check how old the latest release artifact version of the open-source project is. The
+ * score uses {@link OssFeatures#RELEASED_ARTIFACT_VERSIONS} feature.
  */
 public class ArtifactLatestReleaseAgeScore extends FeatureBasedScore {
 
-  /**
-   * Initializes a new score.
-   */
+  /** Initializes a new score. */
   public ArtifactLatestReleaseAgeScore() {
     super("How old the latest released artifact is", RELEASED_ARTIFACT_VERSIONS);
   }

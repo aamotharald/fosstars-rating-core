@@ -7,58 +7,44 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The Score class that encloses @link {@link ScoreValue} to be used in serialization.
- */
+/** The Score class that encloses @link {@link ScoreValue} to be used in serialization. */
 public class Score {
 
-  /**
-   * The name of the score.
-   */
+  /** The name of the score. */
   private String name;
 
-  /**
-   * The value of the score.
-   */
+  /** The value of the score. */
   private String value;
 
-  /**
-   * The sub-scores summarized to calculate the score.
-   */
+  /** The sub-scores summarized to calculate the score. */
   private List<Score> subScores = new ArrayList<>();
 
-  /**
-   * The features used to calculate the score.
-   */
+  /** The features used to calculate the score. */
   private List<Feature> features = new ArrayList<>();
 
-  /**
-   * The weight of the score.
-   */
+  /** The weight of the score. */
   private String weight;
 
-  /**
-   * The confidence of the score.
-   */
+  /** The confidence of the score. */
   private String confidence;
 
-  /**
-   * Default constructor.
-   */
-  public Score() {
-  }
+  /** Default constructor. */
+  public Score() {}
 
   /**
    * Initializes a Score instance.
    *
-   * @param name       the name of the score.
-   * @param value      the value of the score.
-   * @param weight     the weight of the score.
+   * @param name the name of the score.
+   * @param value the value of the score.
+   * @param weight the weight of the score.
    * @param confidence the confidence of the score.
    */
   @JsonCreator
-  public Score(@JsonProperty("name") String name, @JsonProperty("value") String value,
-      @JsonProperty("weight") String weight, @JsonProperty("confidence") String confidence) {
+  public Score(
+      @JsonProperty("name") String name,
+      @JsonProperty("value") String value,
+      @JsonProperty("weight") String weight,
+      @JsonProperty("confidence") String confidence) {
     this.name = name;
     this.value = value;
     this.weight = weight;

@@ -14,20 +14,16 @@ public class NoUserCallbackTest {
 
   @Test
   public void testCanNotAsk() {
-    assertThrows(UnsupportedOperationException.class, () ->
-      NoUserCallback.INSTANCE.ask());
+    assertThrows(UnsupportedOperationException.class, () -> NoUserCallback.INSTANCE.ask());
   }
 
   @Test
   public void testCanNotAskQuestion() {
-    assertThrows(UnsupportedOperationException.class, () ->
-      NoUserCallback.INSTANCE.ask("hmm?"));
+    assertThrows(UnsupportedOperationException.class, () -> NoUserCallback.INSTANCE.ask("hmm?"));
   }
 
   @Test
   public void testCanNotSay() {
-    assertThrows(UnsupportedOperationException.class, () ->
-      NoUserCallback.INSTANCE.say("oops"));
+    assertThrows(UnsupportedOperationException.class, () -> NoUserCallback.INSTANCE.say("oops"));
   }
-
 }

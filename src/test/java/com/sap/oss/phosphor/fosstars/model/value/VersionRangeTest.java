@@ -57,5 +57,4 @@ public class VersionRangeTest {
     assertFalse(range.start().isPresent());
     assertFalse(range.end().isPresent());
   }
-
 }

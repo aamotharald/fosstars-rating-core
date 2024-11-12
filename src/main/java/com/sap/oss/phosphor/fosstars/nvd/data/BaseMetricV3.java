@@ -4,15 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/**
- * CVSS V3.x score.
- */
+/** CVSS V3.x score. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "cvssV3",
-    "exploitabilityScore",
-    "impactScore"
-})
+@JsonPropertyOrder({"cvssV3", "exploitabilityScore", "impactScore"})
 public class BaseMetricV3 {
 
   @JsonProperty("cvssV3")

@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * The verifier checks that a score passes tests defined by test vectors.
- */
+/** The verifier checks that a score passes tests defined by test vectors. */
 public class ScoreVerifier extends AbstractVerifier {
 
-  /**
-   * A score to be verified.
-   */
+  /** A score to be verified. */
   private final Score score;
 
   /**
@@ -40,5 +36,4 @@ public class ScoreVerifier extends AbstractVerifier {
 
     return results;
   }
-
 }

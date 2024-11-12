@@ -6,19 +6,13 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.IntegerValue;
 import java.util.Objects;
 
-/**
- * A feature which holds an integer which belongs to a specific interval [a, b].
- */
+/** A feature which holds an integer which belongs to a specific interval [a, b]. */
 public class BoundedIntegerFeature extends AbstractFeature<Integer> {
 
-  /**
-   * Left boundary.
-   */
+  /** Left boundary. */
   private final int from;
 
-  /**
-   * Right boundary.
-   */
+  /** Right boundary. */
   private final int to;
 
   /**
@@ -88,5 +82,4 @@ public class BoundedIntegerFeature extends AbstractFeature<Integer> {
 
     return n;
   }
-
 }

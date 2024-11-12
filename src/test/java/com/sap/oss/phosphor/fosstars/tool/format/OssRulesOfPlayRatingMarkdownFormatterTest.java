@@ -25,20 +25,20 @@ import org.junit.jupiter.api.Test;
 
 public class OssRulesOfPlayRatingMarkdownFormatterTest {
 
-  private static final OssRulesOfPlayRating RATING
-      = RatingRepository.INSTANCE.rating(OssRulesOfPlayRating.class);
+  private static final OssRulesOfPlayRating RATING =
+      RatingRepository.INSTANCE.rating(OssRulesOfPlayRating.class);
 
-  private static final Path CONFIG_PATH
-      = Paths.get("OssRulesOfPlayRatingMarkdownFormatter.config.yml");
+  private static final Path CONFIG_PATH =
+      Paths.get("OssRulesOfPlayRatingMarkdownFormatter.config.yml");
 
   private static final String RULE_IDS =
-        "---\n"
-      + "ruleIds:\n"
-      + "  rl-license_file-1: If a project has a license\n"
-      + "  rl-license_file-2: If a project uses an allowed license\n"
-      + "  rl-license_file-3: If a license has disallowed text\n"
-      + "  rl-readme_file-1: If a project has a README file\n"
-      + "documentationUrl: https://wiki.local/TestPage";
+      "---\n"
+          + "ruleIds:\n"
+          + "  rl-license_file-1: If a project has a license\n"
+          + "  rl-license_file-2: If a project uses an allowed license\n"
+          + "  rl-license_file-3: If a license has disallowed text\n"
+          + "  rl-readme_file-1: If a project has a README file\n"
+          + "documentationUrl: https://wiki.local/TestPage";
 
   @Test
   public void testPrintWithCompliantProject() throws IOException {
@@ -46,8 +46,8 @@ public class OssRulesOfPlayRatingMarkdownFormatterTest {
     try {
       RatingValue ratingValue = RATING.calculate(allRulesPassed());
       assertEquals(OssRulesOfPlayLabel.PASSED, ratingValue.label());
-      OssRulesOfPlayRatingMarkdownFormatter formatter
-          = new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
+      OssRulesOfPlayRatingMarkdownFormatter formatter =
+          new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
       String text = formatter.print(ratingValue, emptyList());
       assertNotNull(text);
       assertFalse(text.isEmpty());
@@ -72,8 +72,8 @@ public class OssRulesOfPlayRatingMarkdownFormatterTest {
       values.update(OssRulesOfPlayScore.RECOMMENDED_FALSE.iterator().next().value(true));
       RatingValue ratingValue = RATING.calculate(values);
       assertEquals(OssRulesOfPlayLabel.PASSED_WITH_WARNING, ratingValue.label());
-      OssRulesOfPlayRatingMarkdownFormatter formatter
-          = new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
+      OssRulesOfPlayRatingMarkdownFormatter formatter =
+          new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
       String text = formatter.print(ratingValue, emptyList());
       assertNotNull(text);
       assertFalse(text.isEmpty());
@@ -98,8 +98,8 @@ public class OssRulesOfPlayRatingMarkdownFormatterTest {
       values.update(OssRulesOfPlayScore.EXPECTED_FALSE.iterator().next().value(true));
       RatingValue ratingValue = RATING.calculate(values);
       assertEquals(OssRulesOfPlayLabel.FAILED, ratingValue.label());
-      OssRulesOfPlayRatingMarkdownFormatter formatter
-          = new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
+      OssRulesOfPlayRatingMarkdownFormatter formatter =
+          new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
       String text = formatter.print(ratingValue, emptyList());
       assertNotNull(text);
       assertFalse(text.isEmpty());
@@ -122,8 +122,8 @@ public class OssRulesOfPlayRatingMarkdownFormatterTest {
     try {
       RatingValue ratingValue = RATING.calculate(allUnknown(RATING.allFeatures()));
       assertEquals(OssRulesOfPlayLabel.UNCLEAR, ratingValue.label());
-      OssRulesOfPlayRatingMarkdownFormatter formatter
-          = new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
+      OssRulesOfPlayRatingMarkdownFormatter formatter =
+          new OssRulesOfPlayRatingMarkdownFormatter(CONFIG_PATH, new OssRulesOfPlayAdvisor());
       String text = formatter.print(ratingValue, emptyList());
       assertNotNull(text);
       assertFalse(text.isEmpty());

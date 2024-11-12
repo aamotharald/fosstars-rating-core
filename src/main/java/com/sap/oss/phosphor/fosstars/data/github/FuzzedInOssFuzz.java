@@ -16,14 +16,12 @@ import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 
 /**
- * This data provider check if an open-source project is included to the OSS-Fuzz project.
- * It fills out the {@link OssFeatures#FUZZED_IN_OSS_FUZZ} feature.
+ * This data provider check if an open-source project is included to the OSS-Fuzz project. It fills
+ * out the {@link OssFeatures#FUZZED_IN_OSS_FUZZ} feature.
  */
 public class FuzzedInOssFuzz extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
-  /**
-   * OSS-Fuzz project on GitHub.
-   */
+  /** OSS-Fuzz project on GitHub. */
   static final GitHubProject OSS_FUZZ_PROJECT = new GitHubProject("google", "oss-fuzz");
 
   /**
@@ -47,10 +45,11 @@ public class FuzzedInOssFuzz extends CachedSingleFeatureGitHubDataProvider<Boole
     LocalRepository ossFuzzRepository = GitHubDataFetcher.localRepositoryFor(OSS_FUZZ_PROJECT);
 
     try (Stream<Path> paths = Files.walk(ossFuzzRepository.info().path())) {
-      List<Path> dockerFiles = paths
-          .filter(Files::isRegularFile)
-          .filter(path -> "Dockerfile".equals(path.getFileName().toString()))
-          .collect(Collectors.toList());
+      List<Path> dockerFiles =
+          paths
+              .filter(Files::isRegularFile)
+              .filter(path -> "Dockerfile".equals(path.getFileName().toString()))
+              .collect(Collectors.toList());
 
       String url = project.scm().toString();
       for (Path dockerFile : dockerFiles) {

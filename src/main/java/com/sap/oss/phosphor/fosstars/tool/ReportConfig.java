@@ -2,31 +2,24 @@ package com.sap.oss.phosphor.fosstars.tool;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A config for reporting.
- */
+/** A config for reporting. */
 public class ReportConfig {
 
-  /**
-   * Types of reports.
-   */
+  /** Types of reports. */
   public enum ReportType {
-    MARKDOWN, JSON, ISSUES, JSON_REPORT
+    MARKDOWN,
+    JSON,
+    ISSUES,
+    JSON_REPORT
   }
 
-  /**
-   * A type of a report.
-   */
+  /** A type of a report. */
   final ReportType type;
 
-  /**
-   * Where a report should be stored.
-   */
+  /** Where a report should be stored. */
   final String where;
 
-  /**
-   * A source of data.
-   */
+  /** A source of data. */
   final String source;
 
   /**

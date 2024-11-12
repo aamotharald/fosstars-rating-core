@@ -6,9 +6,7 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.BooleanValue;
 import java.util.Objects;
 
-/**
- * A feature which holds a boolean value. In other words, it answers to a yes/no question.
- */
+/** A feature which holds a boolean value. In other words, it answers to a yes/no question. */
 public class BooleanFeature extends AbstractFeature<Boolean> {
 
   /**
@@ -61,5 +59,4 @@ public class BooleanFeature extends AbstractFeature<Boolean> {
         throw new IllegalArgumentException(String.format("Unexpected value: %s", string));
     }
   }
-
 }

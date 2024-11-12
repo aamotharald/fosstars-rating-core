@@ -74,14 +74,15 @@ public class DoubleIntervalTest {
 
   @Test
   public void meanForPositiveInfinity() {
-    assertThrows(IllegalArgumentException.class, () ->
-      DoubleInterval.init().from(1).positiveInfinity().make().mean());
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> DoubleInterval.init().from(1).positiveInfinity().make().mean());
   }
 
   @Test
   public void meanForNegativeInfinity() {
-    assertThrows(IllegalArgumentException.class, () ->
-      DoubleInterval.init().to(10).negativeInfinity().make().mean());
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> DoubleInterval.init().to(10).negativeInfinity().make().mean());
   }
-
 }

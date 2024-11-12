@@ -27,20 +27,19 @@ import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHException;
 
 /**
- * The data provider gathers info about how a project uses static analysis with LGTM.
- * In particular, it tires to fill out the following features:
+ * The data provider gathers info about how a project uses static analysis with LGTM. In particular,
+ * it tires to fill out the following features:
+ *
  * <ul>
- *   <li>{@link OssFeatures#USES_LGTM_CHECKS}</li>
- *   <li>{@link OssFeatures#WORST_LGTM_GRADE}</li>
+ *   <li>{@link OssFeatures#USES_LGTM_CHECKS}
+ *   <li>{@link OssFeatures#WORST_LGTM_GRADE}
  * </ul>
  *
  * @see CodeqlDataProvider
  */
 public class LgtmDataProvider extends GitHubCachingDataProvider {
 
-  /**
-   * The number of latest commits to be checked.
-   */
+  /** The number of latest commits to be checked. */
   private static final int COMMITS_TO_BE_CHECKED = 20;
 
   /**
@@ -89,8 +88,8 @@ public class LgtmDataProvider extends GitHubCachingDataProvider {
   }
 
   /**
-   * Parses a JSON response from the LGTM API
-   * and tries to figure out if the project has been analysed.
+   * Parses a JSON response from the LGTM API and tries to figure out if the project has been
+   * analysed.
    *
    * @return A value of the {@link OssFeatures#USES_LGTM_CHECKS} feature.
    */
@@ -105,8 +104,7 @@ public class LgtmDataProvider extends GitHubCachingDataProvider {
   }
 
   /**
-   * Parses a JSON response from the LGTM API
-   * and tries to figure out the worst grade for a project.
+   * Parses a JSON response from the LGTM API and tries to figure out the worst grade for a project.
    *
    * @param project The project.
    * @return A value of the {@link OssFeatures#WORST_LGTM_GRADE} feature.

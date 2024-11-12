@@ -19,8 +19,7 @@ public class ProjectSecurityTestingScoreTest {
 
   @Test
   public void testCalculateWithNothing() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate());
+    assertThrows(IllegalArgumentException.class, () -> SCORE.calculate());
   }
 
   @Test
@@ -55,12 +54,13 @@ public class ProjectSecurityTestingScoreTest {
 
   @Test
   public void testExplanation() {
-    ScoreValue value = SCORE.calculate(
-        SCORE.score(StaticAnalysisScore.class).value(Score.MAX / 3),
-        SCORE.score(DependencyScanScore.class).value(Score.MAX / 5),
-        SCORE.score(NoHttpToolScore.class).value(Score.MAX / 2),
-        SCORE.score(MemorySafetyTestingScore.class).value(Score.MAX / 4),
-        SCORE.score(FuzzingScore.class).value(Score.MIN / 2));
+    ScoreValue value =
+        SCORE.calculate(
+            SCORE.score(StaticAnalysisScore.class).value(Score.MAX / 3),
+            SCORE.score(DependencyScanScore.class).value(Score.MAX / 5),
+            SCORE.score(NoHttpToolScore.class).value(Score.MAX / 2),
+            SCORE.score(MemorySafetyTestingScore.class).value(Score.MAX / 4),
+            SCORE.score(FuzzingScore.class).value(Score.MIN / 2));
 
     assertTrue(value.score().description().isEmpty());
     assertTrue(value.explanation().isEmpty());
@@ -74,5 +74,4 @@ public class ProjectSecurityTestingScoreTest {
     assertTrue(one.equals(two) && two.equals(one));
     assertEquals(one.hashCode(), two.hashCode());
   }
-
 }

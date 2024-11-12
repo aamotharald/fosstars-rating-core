@@ -10,26 +10,20 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * The class prints a rating value
- * for {@link com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurityRating} in Markdown.
+ * The class prints a rating value for {@link
+ * com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurityRating} in Markdown.
  */
 public class OssArtifactSecurityRatingMarkdownFormatter extends AbstractMarkdownFormatter {
 
-  /**
-   * A resource with a default Markdown template.
-   */
-  private static final String RATING_VALUE_TEMPLATE_RESOURCE
-      = "OssArtifactSecurityRatingMarkdownRatingValueTemplate.md";
+  /** A resource with a default Markdown template. */
+  private static final String RATING_VALUE_TEMPLATE_RESOURCE =
+      "OssArtifactSecurityRatingMarkdownRatingValueTemplate.md";
 
-  /**
-   * A default Markdown template for a rating value.
-   */
-  private static final String DEFAULT_RATING_VALUE_TEMPLATE
-      = loadFrom(RATING_VALUE_TEMPLATE_RESOURCE, OssArtifactSecurityRatingMarkdownFormatter.class);
+  /** A default Markdown template for a rating value. */
+  private static final String DEFAULT_RATING_VALUE_TEMPLATE =
+      loadFrom(RATING_VALUE_TEMPLATE_RESOURCE, OssArtifactSecurityRatingMarkdownFormatter.class);
 
-  /**
-   * A Markdown template for reports.
-   */
+  /** A Markdown template for reports. */
   private final String template;
 
   /**

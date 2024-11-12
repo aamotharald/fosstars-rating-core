@@ -47,41 +47,31 @@ import java.util.function.BooleanSupplier;
 import javax.annotation.Nullable;
 
 /**
- * The class prints a rating value
- * for {@link com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating} in Markdown.
+ * The class prints a rating value for {@link
+ * com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating} in Markdown.
  */
 public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownFormatter {
 
-  /**
-   * A resource with a default Markdown template.
-   */
-  private static final String RATING_VALUE_TEMPLATE_RESOURCE
-      = "OssRulesOfPlayMarkdownRatingValueTemplate.md";
+  /** A resource with a default Markdown template. */
+  private static final String RATING_VALUE_TEMPLATE_RESOURCE =
+      "OssRulesOfPlayMarkdownRatingValueTemplate.md";
 
-  /**
-   * A default Markdown template for a rating value.
-   */
-  private static final String DEFAULT_RATING_VALUE_TEMPLATE
-      = loadFrom(RATING_VALUE_TEMPLATE_RESOURCE, OssRulesOfPlayRatingMarkdownFormatter.class);
+  /** A default Markdown template for a rating value. */
+  private static final String DEFAULT_RATING_VALUE_TEMPLATE =
+      loadFrom(RATING_VALUE_TEMPLATE_RESOURCE, OssRulesOfPlayRatingMarkdownFormatter.class);
 
-  /**
-   * Maps a rule to its identifier.
-   */
+  /** Maps a rule to its identifier. */
   private final Map<Feature<Boolean>, String> featureToRuleId;
-  
-  /**
-   * The rule documentation URL.
-   */
+
+  /** The rule documentation URL. */
   private final String ruleDocumentationUrl;
 
-  /**
-   * A Markdown template for reports.
-   */
+  /** A Markdown template for reports. */
   private final String template;
 
   /**
-   * Initializes a new formatter. The constructor looks for a default file with rule IDs
-   * and tries to load it.
+   * Initializes a new formatter. The constructor looks for a default file with rule IDs and tries
+   * to load it.
    *
    * @param advisor An advisor for calculated ratings.
    * @throws IOException If something went wrong.
@@ -111,13 +101,16 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
   private OssRulesOfPlayRatingMarkdownFormatter(JsonNode config, Advisor advisor)
       throws IOException {
 
-    this(advisor, readRuleIdsFrom(config), readRuleDocumentationUrlFrom(config),
+    this(
+        advisor,
+        readRuleIdsFrom(config),
+        readRuleDocumentationUrlFrom(config),
         DEFAULT_RATING_VALUE_TEMPLATE);
   }
 
   /**
-   * Initializes a new formatter. The constructor looks for a default file with rule IDs
-   * and tries to load it.
+   * Initializes a new formatter. The constructor looks for a default file with rule IDs and tries
+   * to load it.
    *
    * @param advisor An advisor for calculated ratings.
    * @param featureToRuleId Maps a rule to its identifier.
@@ -125,8 +118,10 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
    * @param template A Markdown template for reports.
    */
   public OssRulesOfPlayRatingMarkdownFormatter(
-      Advisor advisor, Map<Feature<Boolean>, String> featureToRuleId, 
-      @Nullable String ruleDocumentationUrl, String template) {
+      Advisor advisor,
+      Map<Feature<Boolean>, String> featureToRuleId,
+      @Nullable String ruleDocumentationUrl,
+      String template) {
 
     super(advisor);
 
@@ -144,9 +139,7 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
    * @return The URL to docs if available.
    */
   public Optional<String> ruleDocumentationUrl() {
-    return isEmpty(ruleDocumentationUrl)
-        ? Optional.empty()
-        : Optional.of(ruleDocumentationUrl);
+    return isEmpty(ruleDocumentationUrl) ? Optional.empty() : Optional.of(ruleDocumentationUrl);
   }
 
   @Override
@@ -216,18 +209,22 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
    * @param unclearRules A list of unclear rules.
    * @return A Markdown-formatted document with advice.
    */
-  private String makeAdviceFrom(List<FormattedRule> violations, List<FormattedRule> warnings,
-      List<FormattedRule> passedRules, List<FormattedRule> unclearRules) {
+  private String makeAdviceFrom(
+      List<FormattedRule> violations,
+      List<FormattedRule> warnings,
+      List<FormattedRule> passedRules,
+      List<FormattedRule> unclearRules) {
 
-    MarkdownElement advice = Markdown.join()
-        .of(adviceFor(violations))
-        .of(adviceFor(warnings))
-        .of(adviceFor(passedRules))
-        .of(adviceFor(unclearRules))
-        .delimitedBy(NEW_LINE);
+    MarkdownElement advice =
+        Markdown.join()
+            .of(adviceFor(violations))
+            .of(adviceFor(warnings))
+            .of(adviceFor(passedRules))
+            .of(adviceFor(unclearRules))
+            .delimitedBy(NEW_LINE);
 
-    MarkdownHeader header = Markdown.header().level(2)
-        .withCaption("What is wrong, and how to fix it");
+    MarkdownHeader header =
+        Markdown.header().level(2).withCaption("What is wrong, and how to fix it");
     MarkdownSection section = Markdown.section().with(header).thatContains(advice);
     BooleanSupplier sectionIsNotEmpty = () -> !Markdown.isEmpty(section.text().make());
 
@@ -369,16 +366,17 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
     String rawId = featureToRuleId.getOrDefault(rule.feature(), EMPTY);
     BooleanSupplier weHaveId = () -> !Markdown.isEmpty(rawId);
 
-    MarkdownElement id = Markdown.choose(Markdown.string(rawId))
-        .when(weHaveId)
-        .otherwise(Markdown.string(rule.feature().name()));
+    MarkdownElement id =
+        Markdown.choose(Markdown.string(rawId))
+            .when(weHaveId)
+            .otherwise(Markdown.string(rule.feature().name()));
     MarkdownHeader header = Markdown.header().level(3).withCaption(id);
     MarkdownSection adviceSection = Markdown.section().with(header).thatContains(advice);
     MarkdownRuleIdentifier ruleId = Markdown.rule(id);
-    MarkdownHeaderReference identifierWithReference
-        = Markdown.reference().to(adviceSection).withCaption(ruleId);
-    MarkdownChoice identifier
-        = Markdown.choose(identifierWithReference).when(weHaveAdvice).otherwise(ruleId);
+    MarkdownHeaderReference identifierWithReference =
+        Markdown.reference().to(adviceSection).withCaption(ruleId);
+    MarkdownChoice identifier =
+        Markdown.choose(identifierWithReference).when(weHaveAdvice).otherwise(ruleId);
     MarkdownString formattedRule = Markdown.string(formatted(rule));
     JoinedMarkdownElements listText = Markdown.join(identifier, formattedRule).delimitedBy(SPACE);
 
@@ -527,7 +525,7 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
 
     return map;
   }
-  
+
   /**
    * Load rule documentation URI from a config.
    *
@@ -548,19 +546,15 @@ public class OssRulesOfPlayRatingMarkdownFormatter extends AbstractMarkdownForma
   }
 
   /**
-   * This class holds Markdown elements for one rule.
-   * The elements may be rendered in different parts of the report.
+   * This class holds Markdown elements for one rule. The elements may be rendered in different
+   * parts of the report.
    */
   private static class FormattedRule {
 
-    /**
-     * A text for the rule in the list of passed, failed, unclear rules or warnings.
-     */
+    /** A text for the rule in the list of passed, failed, unclear rules or warnings. */
     final MarkdownElement listText;
 
-    /**
-     * A Markdown section with advice for the rule.
-     */
+    /** A Markdown section with advice for the rule. */
     final MarkdownSection adviceSection;
 
     /**

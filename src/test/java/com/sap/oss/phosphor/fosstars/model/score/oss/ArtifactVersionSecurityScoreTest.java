@@ -64,14 +64,15 @@ public class ArtifactVersionSecurityScoreTest {
   @Test
   public void testCalculate() {
     ArtifactVersionSecurityScore score = new ArtifactVersionSecurityScore();
-    Set<Value<?>> values = setOf(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())),
-        SUPPORTED_BY_COMPANY.value(false),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
-        IS_APACHE.value(true),
-        IS_ECLIPSE.value(false),
-        PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN)));
+    Set<Value<?>> values =
+        setOf(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())),
+            SUPPORTED_BY_COMPANY.value(false),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
+            IS_APACHE.value(true),
+            IS_ECLIPSE.value(false),
+            PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN)));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(7, 7.50).contains(scoreValue.get()));
@@ -79,22 +80,22 @@ public class ArtifactVersionSecurityScoreTest {
     checkUsedValues(scoreValue);
   }
 
-
   @Test
   public void testCalculateWithOldVersion() {
     ArtifactVersionSecurityScore score = new ArtifactVersionSecurityScore();
-    Set<Value<?>> values = setOf(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now())),
-        SUPPORTED_BY_COMPANY.value(false),
-        IS_APACHE.value(true),
-        IS_ECLIPSE.value(false),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
-        NUMBER_OF_GITHUB_STARS.value(10),
-        NUMBER_OF_WATCHERS_ON_GITHUB.value(5),
-        PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN)));
+    Set<Value<?>> values =
+        setOf(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(false)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now())),
+            SUPPORTED_BY_COMPANY.value(false),
+            IS_APACHE.value(true),
+            IS_ECLIPSE.value(false),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
+            NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
+            NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
+            NUMBER_OF_GITHUB_STARS.value(10),
+            NUMBER_OF_WATCHERS_ON_GITHUB.value(5),
+            PACKAGE_MANAGERS.value(PackageManagers.from(MAVEN)));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(6, 7).contains(scoreValue.get()));
@@ -105,17 +106,18 @@ public class ArtifactVersionSecurityScoreTest {
   @Test
   public void testCalculateWith20() {
     ArtifactVersionSecurityScore score = new ArtifactVersionSecurityScore();
-    Set<Value<?>> values = setOf(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())),
-        SUPPORTED_BY_COMPANY.value(false),
-        IS_APACHE.value(true),
-        IS_ECLIPSE.value(false),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
-        NUMBER_OF_GITHUB_STARS.value(10),
-        NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
+    Set<Value<?>> values =
+        setOf(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now())),
+            SUPPORTED_BY_COMPANY.value(false),
+            IS_APACHE.value(true),
+            IS_ECLIPSE.value(false),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
+            NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
+            NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
+            NUMBER_OF_GITHUB_STARS.value(10),
+            NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(7, 8).contains(scoreValue.get()));
@@ -126,17 +128,18 @@ public class ArtifactVersionSecurityScoreTest {
   @Test
   public void testCalculateWith20Used() {
     ArtifactVersionSecurityScore score = new ArtifactVersionSecurityScore();
-    Set<Value<?>> values = setOf(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
-        SUPPORTED_BY_COMPANY.value(false),
-        IS_APACHE.value(true),
-        IS_ECLIPSE.value(false),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
-        NUMBER_OF_GITHUB_STARS.value(10),
-        NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
+    Set<Value<?>> values =
+        setOf(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
+            SUPPORTED_BY_COMPANY.value(false),
+            IS_APACHE.value(true),
+            IS_ECLIPSE.value(false),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities()),
+            NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
+            NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
+            NUMBER_OF_GITHUB_STARS.value(10),
+            NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(7, 8).contains(scoreValue.get()));
@@ -148,17 +151,18 @@ public class ArtifactVersionSecurityScoreTest {
   public void testCalculateWith20UsedAndHighVulnerability() {
     ArtifactVersionSecurityScore score = new ArtifactVersionSecurityScore();
     Vulnerability vulnerability = TestUtils.createBasicVulnerability(10.0, "2.0.0", "2.0.0");
-    Set<Value<?>> values = setOf(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
-        SUPPORTED_BY_COMPANY.value(false),
-        IS_APACHE.value(true),
-        IS_ECLIPSE.value(false),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
-        NUMBER_OF_GITHUB_STARS.value(10),
-        NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
+    Set<Value<?>> values =
+        setOf(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
+            SUPPORTED_BY_COMPANY.value(false),
+            IS_APACHE.value(true),
+            IS_ECLIPSE.value(false),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
+            NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
+            NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
+            NUMBER_OF_GITHUB_STARS.value(10),
+            NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
 
     ScoreValue scoreValue = score.calculate(values);
     assertEquals(Score.MIN, scoreValue.get(), DELTA);
@@ -170,17 +174,18 @@ public class ArtifactVersionSecurityScoreTest {
   public void testCalculateWith20UsedAndLowVulnerability() {
     ArtifactVersionSecurityScore score = new ArtifactVersionSecurityScore();
     Vulnerability vulnerability = TestUtils.createBasicVulnerability(1.0, "2.0.0", "2.0.0");
-    Set<Value<?>> values = setOf(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
-        SUPPORTED_BY_COMPANY.value(false),
-        IS_APACHE.value(true),
-        IS_ECLIPSE.value(false),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
-        NUMBER_OF_GITHUB_STARS.value(10),
-        NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
+    Set<Value<?>> values =
+        setOf(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
+            SUPPORTED_BY_COMPANY.value(false),
+            IS_APACHE.value(true),
+            IS_ECLIPSE.value(false),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
+            NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
+            NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
+            NUMBER_OF_GITHUB_STARS.value(10),
+            NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(7, 8).contains(scoreValue.get()));
@@ -192,17 +197,18 @@ public class ArtifactVersionSecurityScoreTest {
   public void testCalculateWith20UsedAndOldVulnerability() {
     ArtifactVersionSecurityScore score = new ArtifactVersionSecurityScore();
     Vulnerability vulnerability = TestUtils.createBasicVulnerability(10.0, "1.0.0", "1.0.2");
-    Set<Value<?>> values = setOf(
-        RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
-        ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
-        SUPPORTED_BY_COMPANY.value(false),
-        IS_APACHE.value(true),
-        IS_ECLIPSE.value(false),
-        VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
-        NUMBER_OF_GITHUB_STARS.value(10),
-        NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
+    Set<Value<?>> values =
+        setOf(
+            RELEASED_ARTIFACT_VERSIONS.value(testArtifactVersions(true)),
+            ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now())),
+            SUPPORTED_BY_COMPANY.value(false),
+            IS_APACHE.value(true),
+            IS_ECLIPSE.value(false),
+            VULNERABILITIES_IN_ARTIFACT.value(new Vulnerabilities(vulnerability)),
+            NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(50),
+            NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(3),
+            NUMBER_OF_GITHUB_STARS.value(10),
+            NUMBER_OF_WATCHERS_ON_GITHUB.value(5));
 
     ScoreValue scoreValue = score.calculate(values);
     assertTrue(DoubleInterval.closed(8, 9).contains(scoreValue.get()));
@@ -211,12 +217,9 @@ public class ArtifactVersionSecurityScoreTest {
   }
 
   private static ArtifactVersions testArtifactVersions(boolean with2xx) {
-    ArtifactVersion version100 =
-        new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
-    ArtifactVersion version101 =
-        new ArtifactVersion("1.0.1", LocalDateTime.now().minusMonths(13));
-    ArtifactVersion version110 =
-        new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(6));
+    ArtifactVersion version100 = new ArtifactVersion("1.0.0", LocalDateTime.now().minusMonths(14));
+    ArtifactVersion version101 = new ArtifactVersion("1.0.1", LocalDateTime.now().minusMonths(13));
+    ArtifactVersion version110 = new ArtifactVersion("1.1.0", LocalDateTime.now().minusMonths(6));
     ArtifactVersion version120 = new ArtifactVersion("1.2.0", LocalDateTime.now().minusDays(72));
     if (with2xx) {
       ArtifactVersion version200 = new ArtifactVersion("2.0.0", LocalDateTime.now().minusDays(7));
@@ -240,5 +243,4 @@ public class ArtifactVersionSecurityScoreTest {
       }
     }
   }
-
 }

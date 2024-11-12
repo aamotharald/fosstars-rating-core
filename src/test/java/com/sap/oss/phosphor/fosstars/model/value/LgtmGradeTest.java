@@ -21,5 +21,4 @@ public class LgtmGradeTest {
     assertEquals(LgtmGrade.E, clone);
     assertEquals(LgtmGrade.E.hashCode(), clone.hashCode());
   }
-
 }

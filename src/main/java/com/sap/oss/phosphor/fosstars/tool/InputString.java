@@ -3,14 +3,10 @@ package com.sap.oss.phosphor.fosstars.tool;
 import com.sap.oss.phosphor.fosstars.data.UserCallback;
 import java.util.Objects;
 
-/**
- * Reads a string provided by a user.
- */
+/** Reads a string provided by a user. */
 public class InputString {
 
-  /**
-   * A callback to interact with a user.
-   */
+  /** A callback to interact with a user. */
   private final UserCallback callback;
 
   /**

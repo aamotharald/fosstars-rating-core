@@ -17,19 +17,15 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * This handler calculates
- * {@link com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurityRating}.
+ * This handler calculates {@link
+ * com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurityRating}.
  */
 public class OssArtifactSecurityRatingHandler extends AbstractHandler {
 
-  /**
-   * No project on GitHub.
-   */
+  /** No project on GitHub. */
   private static final GitHubProject NO_PROJECT = null;
 
-  /**
-   * Initialize a handler.
-   */
+  /** Initialize a handler. */
   public OssArtifactSecurityRatingHandler() {
     super(RatingRepository.INSTANCE.rating(OssArtifactSecurityRating.class));
   }
@@ -61,11 +57,12 @@ public class OssArtifactSecurityRatingHandler extends AbstractHandler {
       logger.warn("Could not find SCM on GitHub for the artifact!");
     }
 
-    MavenArtifact artifact = new MavenArtifact(
-        gav.group(),
-        gav.artifact(),
-        gav.version().orElseThrow(() -> new IllegalArgumentException("No version specified!")),
-        project.orElse(NO_PROJECT));
+    MavenArtifact artifact =
+        new MavenArtifact(
+            gav.group(),
+            gav.artifact(),
+            gav.version().orElseThrow(() -> new IllegalArgumentException("No version specified!")),
+            project.orElse(NO_PROJECT));
 
     calculator().calculateFor(artifact);
 
@@ -128,19 +125,21 @@ public class OssArtifactSecurityRatingHandler extends AbstractHandler {
 
   @Override
   SingleRatingCalculator calculator() throws IOException {
-    return super.calculator().set((subject, provider) -> {
-      if (provider.supports(subject)) {
-        return Optional.of(subject);
-      }
+    return super.calculator()
+        .set(
+            (subject, provider) -> {
+              if (provider.supports(subject)) {
+                return Optional.of(subject);
+              }
 
-      if (subject instanceof Artifact) {
-        Artifact artifact = (Artifact) subject;
-        if (artifact.project().isPresent() && provider.supports(artifact.project().get())) {
-          return Optional.of(artifact.project().get());
-        }
-      }
+              if (subject instanceof Artifact) {
+                Artifact artifact = (Artifact) subject;
+                if (artifact.project().isPresent() && provider.supports(artifact.project().get())) {
+                  return Optional.of(artifact.project().get());
+                }
+              }
 
-      return Optional.empty();
-    });
+              return Optional.empty();
+            });
   }
 }

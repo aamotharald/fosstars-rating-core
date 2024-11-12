@@ -15,7 +15,7 @@ public class GitHubDataCacheTest {
   @Test
   public void testPut() {
     GitHubDataCache<String> cache = new GitHubDataCache<>();
-    
+
     String data = "data to be cached";
     GitHubProject project = new GitHubProject("org", "test");
     cache.put(project, data);

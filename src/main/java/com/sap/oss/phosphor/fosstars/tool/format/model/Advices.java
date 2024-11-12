@@ -13,36 +13,29 @@ import java.util.List;
  */
 public class Advices {
 
-  /**
-   * The advice text.
-   */
+  /** The advice text. */
   private String text;
 
-  /**
-   * The feature of the advice.
-   */
+  /** The feature of the advice. */
   private String feature;
 
-  /**
-   * The references for the advice.
-   */
+  /** The references for the advice. */
   private List<Link> links = new ArrayList<>();
 
-  /**
-   * Default constructor.
-   */
-  public Advices() {
-  }
+  /** Default constructor. */
+  public Advices() {}
 
   /**
    * Initializes a Feature instance.
    *
-   * @param text    The advice text.
+   * @param text The advice text.
    * @param feature of the advice.
    * @param links references of the advice.
    */
   @JsonCreator
-  public Advices(@JsonProperty("text") String text, @JsonProperty("feature") String feature,
+  public Advices(
+      @JsonProperty("text") String text,
+      @JsonProperty("feature") String feature,
       @JsonProperty("links") List<Link> links) {
     this.text = text;
     this.feature = feature;

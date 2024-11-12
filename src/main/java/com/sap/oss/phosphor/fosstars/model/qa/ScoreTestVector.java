@@ -15,14 +15,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * A test vector for a score.
- */
+/** A test vector for a score. */
 public class ScoreTestVector extends AbstractTestVector {
 
-  /**
-   * Maps score classes to its values.
-   */
+  /** Maps score classes to its values. */
   private final Map<Class<? extends Score>, Double> values;
 
   /**
@@ -32,10 +28,9 @@ public class ScoreTestVector extends AbstractTestVector {
    * @param expectedScore An interval for an expected score.
    * @param expectedLabel An expected label (can be null).
    * @param alias A alias of the test vector.
-   * @param expectedUnknownScore
-   *        If it's set to true, then an unknown score value is expected.
-   * @param expectedNotApplicableScore
-   *        If it's set to true, then a not-applicable score value is expected.
+   * @param expectedUnknownScore If it's set to true, then an unknown score value is expected.
+   * @param expectedNotApplicableScore If it's set to true, then a not-applicable score value is
+   *     expected.
    */
   @JsonCreator
   public ScoreTestVector(
@@ -43,12 +38,10 @@ public class ScoreTestVector extends AbstractTestVector {
       @JsonProperty("expectedScore") Interval expectedScore,
       @JsonProperty("expectedLabel") Label expectedLabel,
       @JsonProperty("alias") String alias,
-      @JsonProperty(
-          value = "expectedUnknownScore",
-          defaultValue = "false") boolean expectedUnknownScore,
-      @JsonProperty(
-          value = "expectedNotApplicableScore",
-          defaultValue = "false") boolean expectedNotApplicableScore) {
+      @JsonProperty(value = "expectedUnknownScore", defaultValue = "false")
+          boolean expectedUnknownScore,
+      @JsonProperty(value = "expectedNotApplicableScore", defaultValue = "false")
+          boolean expectedNotApplicableScore) {
 
     super(expectedScore, expectedLabel, alias, expectedUnknownScore, expectedNotApplicableScore);
 
@@ -73,9 +66,12 @@ public class ScoreTestVector extends AbstractTestVector {
     Set<Value<?>> result = new HashSet<>();
     for (Map.Entry<Class<? extends Score>, Double> entry : values.entrySet()) {
       String targetScoreClassName = entry.getKey().getCanonicalName();
-      Score subScore = subScoreIn(score, targetScoreClassName)
-          .orElseThrow(() -> new IllegalArgumentException(
-              format("Could not find sub-score %s!", targetScoreClassName)));
+      Score subScore =
+          subScoreIn(score, targetScoreClassName)
+              .orElseThrow(
+                  () ->
+                      new IllegalArgumentException(
+                          format("Could not find sub-score %s!", targetScoreClassName)));
       Value<?> value = subScore.value(entry.getValue());
       result.add(value);
     }

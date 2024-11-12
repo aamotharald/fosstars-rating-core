@@ -19,8 +19,7 @@ public class Package {
   @JsonProperty("ecosystem")
   private String ecosystem;
 
-  @JsonIgnore
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("name")
   public String getName() {
@@ -51,5 +50,4 @@ public class Package {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
-
 }

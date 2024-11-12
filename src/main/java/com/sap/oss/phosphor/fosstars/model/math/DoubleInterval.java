@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Interval;
 import java.util.Objects;
 
-/**
- * An interval with boundaries represented by double numbers or infinities.
- */
+/** An interval with boundaries represented by double numbers or infinities. */
 public class DoubleInterval implements Interval {
 
   static final double PRECISION = 0.0001;
@@ -145,8 +143,7 @@ public class DoubleInterval implements Interval {
   @Override
   public double mean() {
     if (negativeInfinity || positiveInfinity) {
-      throw new IllegalArgumentException(
-          "You are asking about a mean for an infinite interval!");
+      throw new IllegalArgumentException("You are asking about a mean for an infinite interval!");
     }
 
     return from + (to - from) / 2;
@@ -226,9 +223,7 @@ public class DoubleInterval implements Interval {
     return new DoubleInterval(from, false, false, to, false, false);
   }
 
-  /**
-   * A builder for an interval.
-   */
+  /** A builder for an interval. */
   public static class DoubleIntervalBuilder {
 
     private double from = 0.0;
@@ -240,14 +235,11 @@ public class DoubleInterval implements Interval {
     private boolean positiveInfinity = false;
 
     /**
-     * Let's restrict access to the default constructor,
-     * so that the builder can be only initialized via DoubleInterval.init() method
-     * this may prevent of possible problems
-     * if the init() method is updated with some more logic in the future.
+     * Let's restrict access to the default constructor, so that the builder can be only initialized
+     * via DoubleInterval.init() method this may prevent of possible problems if the init() method
+     * is updated with some more logic in the future.
      */
-    DoubleIntervalBuilder() {
-
-    }
+    DoubleIntervalBuilder() {}
 
     /**
      * Set the left boundary.
@@ -359,6 +351,5 @@ public class DoubleInterval implements Interval {
     public DoubleInterval make() {
       return new DoubleInterval(from, openLeft, negativeInfinity, to, openRight, positiveInfinity);
     }
-
   }
 }

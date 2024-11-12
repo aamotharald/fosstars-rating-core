@@ -37,5 +37,4 @@ public class AskAboutSecurityTeamTest {
     assertTrue(values.of(HAS_SECURITY_TEAM).isPresent());
     assertEquals(expected, values.of(HAS_SECURITY_TEAM).get().get());
   }
-
 }

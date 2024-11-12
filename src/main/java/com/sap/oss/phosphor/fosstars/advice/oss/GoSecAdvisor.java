@@ -14,20 +14,14 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An advisor for features related to GoSec.
- */
+/** An advisor for features related to GoSec. */
 public class GoSecAdvisor extends AbstractOssAdvisor {
 
-  /**
-   * A list of features that the advisor advices if not used.
-   */
-  private static final List<Feature<Boolean>> POSITIVE_FEATURES
-      = asList(RUNS_GOSEC_SCANS, USES_GOSEC_SCAN_CHECKS);
+  /** A list of features that the advisor advices if not used. */
+  private static final List<Feature<Boolean>> POSITIVE_FEATURES =
+      asList(RUNS_GOSEC_SCANS, USES_GOSEC_SCAN_CHECKS);
 
-  /**
-   * A feature that the advisor advices if used.
-   */
+  /** A feature that the advisor advices if used. */
   private static final Feature<Boolean> NEGATIVE_FEATURE = USES_GOSEC_WITH_RULES;
 
   /**
@@ -58,8 +52,9 @@ public class GoSecAdvisor extends AbstractOssAdvisor {
     for (Feature<Boolean> feature : POSITIVE_FEATURES) {
       advice.addAll(adviceForBooleanFeature(usedValues, feature, subject, context));
     }
-    advice.addAll(adviceForFeature(usedValues, NEGATIVE_FEATURE, subject, context,
-        GoSecAdvisor::knownTrueValue));
+    advice.addAll(
+        adviceForFeature(
+            usedValues, NEGATIVE_FEATURE, subject, context, GoSecAdvisor::knownTrueValue));
 
     return advice;
   }

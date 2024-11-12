@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
-/**
- * This data provider returns a date of the first commit.
- */
+/** This data provider returns a date of the first commit. */
 public class FirstCommit extends CachedSingleFeatureGitHubDataProvider<Date> {
 
   /**

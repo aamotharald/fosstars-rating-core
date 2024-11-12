@@ -5,19 +5,13 @@ import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.repeat;
 
-/**
- * A Markdown header.
- */
+/** A Markdown header. */
 public class MarkdownHeader extends AbstractMarkdownElement {
 
-  /**
-   * A caption of the header.
-   */
+  /** A caption of the header. */
   private final MarkdownElement caption;
 
-  /**
-   * A level of the reader.
-   */
+  /** A level of the reader. */
   private final int level;
 
   MarkdownHeader(MarkdownElement caption, int level) {

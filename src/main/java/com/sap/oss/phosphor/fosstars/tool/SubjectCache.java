@@ -17,24 +17,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * This is a cache of {@link Subject}s.
- */
+/** This is a cache of {@link Subject}s. */
 public class SubjectCache {
 
-  /**
-   * The default lifetime of a cache entry in days.
-   */
+  /** The default lifetime of a cache entry in days. */
   private static final int DEFAULT_LIFETIME = 7;
 
-  /**
-   * Maps a PURL to a {@link Subject}.
-   */
+  /** Maps a PURL to a {@link Subject}. */
   final Map<String, Subject> cache;
 
-  /**
-   * A lifetime of a cache entry in days.
-   */
+  /** A lifetime of a cache entry in days. */
   private long lifetime = DEFAULT_LIFETIME;
 
   /**

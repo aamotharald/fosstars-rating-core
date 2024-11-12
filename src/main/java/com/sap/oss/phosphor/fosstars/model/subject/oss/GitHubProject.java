@@ -14,19 +14,13 @@ import java.util.Date;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
-/**
- * A project on GitHub.
- */
+/** A project on GitHub. */
 public class GitHubProject extends AbstractSubject implements OpenSourceProject {
 
-  /**
-   * An organization (or user) that owns the project.
-   */
+  /** An organization (or user) that owns the project. */
   private final GitHubOrganization organization;
 
-  /**
-   * Project's name.
-   */
+  /** Project's name. */
   private final String name;
 
   /**

@@ -23,23 +23,22 @@ public class UsageRiskLikelihoodFactorTest {
 
   @Test
   public void testJsonSerialization() throws IOException {
-    UsageRiskLikelihoodFactor clone
-        = Json.read(Json.toBytes(SCORE), UsageRiskLikelihoodFactor.class);
+    UsageRiskLikelihoodFactor clone =
+        Json.read(Json.toBytes(SCORE), UsageRiskLikelihoodFactor.class);
     assertTrue(SCORE.equals(clone) && clone.equals(SCORE));
     assertEquals(SCORE.hashCode(), clone.hashCode());
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    UsageRiskLikelihoodFactor clone
-        = Yaml.read(Yaml.toBytes(SCORE), UsageRiskLikelihoodFactor.class);
+    UsageRiskLikelihoodFactor clone =
+        Yaml.read(Yaml.toBytes(SCORE), UsageRiskLikelihoodFactor.class);
     assertEquals(clone, SCORE);
   }
 
   @Test
   public void testCalculate() {
-    ScoreValue scoreValue = SCORE.calculate(
-        new EnumValue<>(PROJECT_USAGE, FEW));
+    ScoreValue scoreValue = SCORE.calculate(new EnumValue<>(PROJECT_USAGE, FEW));
     assertFalse(scoreValue.isUnknown());
     assertFalse(scoreValue.isNotApplicable());
     assertTrue(Score.INTERVAL.contains(scoreValue.get()));
@@ -50,8 +49,7 @@ public class UsageRiskLikelihoodFactorTest {
 
   @Test
   public void testScoreValueSerialization() throws IOException {
-    ScoreValue scoreValue = SCORE.calculate(
-        new EnumValue<>(PROJECT_USAGE, SOME));
+    ScoreValue scoreValue = SCORE.calculate(new EnumValue<>(PROJECT_USAGE, SOME));
     ScoreValue clone = Json.read(Json.toBytes(scoreValue), ScoreValue.class);
     assertTrue(scoreValue.equals(clone) && clone.equals(scoreValue));
     assertEquals(scoreValue.hashCode(), clone.hashCode());

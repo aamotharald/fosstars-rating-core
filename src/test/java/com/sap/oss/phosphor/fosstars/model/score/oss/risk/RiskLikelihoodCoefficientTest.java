@@ -23,16 +23,16 @@ public class RiskLikelihoodCoefficientTest {
 
   @Test
   public void testJsonSerialization() throws IOException {
-    RiskLikelihoodCoefficient clone
-        = Json.read(Json.toBytes(SCORE), RiskLikelihoodCoefficient.class);
+    RiskLikelihoodCoefficient clone =
+        Json.read(Json.toBytes(SCORE), RiskLikelihoodCoefficient.class);
     assertTrue(SCORE.equals(clone) && clone.equals(SCORE));
     assertEquals(SCORE.hashCode(), clone.hashCode());
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    RiskLikelihoodCoefficient clone
-        = Yaml.read(Yaml.toBytes(SCORE), RiskLikelihoodCoefficient.class);
+    RiskLikelihoodCoefficient clone =
+        Yaml.read(Yaml.toBytes(SCORE), RiskLikelihoodCoefficient.class);
     assertEquals(clone, SCORE);
   }
 
@@ -40,9 +40,10 @@ public class RiskLikelihoodCoefficientTest {
   public void testCalculate() {
     Score ossSecurityScore = new OssSecurityScore();
     Score adoptedRiskLikelihoodFactor = new AdoptedRiskLikelihoodFactor();
-    ScoreValue scoreValue = SCORE.calculate(
-        ossSecurityScore.calculate(OssSecurityScoreTest.defaultValues()),
-        adoptedRiskLikelihoodFactor.calculate(IS_ADOPTED.no()));
+    ScoreValue scoreValue =
+        SCORE.calculate(
+            ossSecurityScore.calculate(OssSecurityScoreTest.defaultValues()),
+            adoptedRiskLikelihoodFactor.calculate(IS_ADOPTED.no()));
     assertFalse(scoreValue.isUnknown());
     assertFalse(scoreValue.isNotApplicable());
     assertTrue(Score.INTERVAL.contains(scoreValue.get()));
@@ -58,12 +59,12 @@ public class RiskLikelihoodCoefficientTest {
   public void testScoreValueSerialization() throws IOException {
     Score ossSecurityScore = new OssSecurityScore();
     Score adoptedRiskLikelihoodFactor = new AdoptedRiskLikelihoodFactor();
-    ScoreValue scoreValue = SCORE.calculate(
-        ossSecurityScore.calculate(OssSecurityScoreTest.defaultValues()),
-        adoptedRiskLikelihoodFactor.calculate(IS_ADOPTED.no()));
+    ScoreValue scoreValue =
+        SCORE.calculate(
+            ossSecurityScore.calculate(OssSecurityScoreTest.defaultValues()),
+            adoptedRiskLikelihoodFactor.calculate(IS_ADOPTED.no()));
     ScoreValue clone = Json.read(Json.toBytes(scoreValue), ScoreValue.class);
     assertTrue(scoreValue.equals(clone) && clone.equals(scoreValue));
     assertEquals(scoreValue.hashCode(), clone.hashCode());
   }
-
 }

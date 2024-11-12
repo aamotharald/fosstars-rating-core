@@ -7,24 +7,18 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The interface shows that a class can provide a level of confidence for the result
- * which it holds or provides.
+ * The interface shows that a class can provide a level of confidence for the result which it holds
+ * or provides.
  */
 public interface Confidence {
 
-  /**
-   * Minimal confidence.
-   */
+  /** Minimal confidence. */
   double MIN = 0.0;
 
-  /**
-   * Maximum confidence.
-   */
+  /** Maximum confidence. */
   double MAX = 10.0;
 
-  /**
-   * A valid interval for a score value.
-   */
+  /** A valid interval for a score value. */
   Interval INTERVAL = DoubleInterval.init().from(MIN).to(MAX).closed().make();
 
   /**
@@ -43,9 +37,10 @@ public interface Confidence {
    */
   static double check(double confidence) {
     if (!INTERVAL.contains(confidence)) {
-      throw new IllegalArgumentException(String.format(
-          "Hey! Confidence must be in interval [%.2f, %.2f] but you gave me %.02f",
-          MIN, MAX, confidence));
+      throw new IllegalArgumentException(
+          String.format(
+              "Hey! Confidence must be in interval [%.2f, %.2f] but you gave me %.02f",
+              MIN, MAX, confidence));
     }
     return confidence;
   }
@@ -54,9 +49,8 @@ public interface Confidence {
    * Checks if a confidence is in the valid range, and returns an adjusted value if necessary.
    *
    * @param value A confidence to be checked.
-   * @return {@link #MIN} if the confidence is less than {@link Confidence#MIN},
-   *         {@link #MAX} if the confidence is greater than {@link Confidence#MAX},
-   *         or the original confidence otherwise.
+   * @return {@link #MIN} if the confidence is less than {@link Confidence#MIN}, {@link #MAX} if the
+   *     confidence is greater than {@link Confidence#MAX}, or the original confidence otherwise.
    */
   static double adjust(double value) {
     if (value < Confidence.MIN) {
@@ -69,12 +63,13 @@ public interface Confidence {
   }
 
   /**
-   * Calculates a confidence level based on a number of values.
-   * The methods takes into account the following:
+   * Calculates a confidence level based on a number of values. The methods takes into account the
+   * following:
+   *
    * <ul>
-   *   <li>number of unknown values</li>
-   *   <li>score values with their confidences and weights</li>
-   *   <li>values with confidences</li>
+   *   <li>number of unknown values
+   *   <li>score values with their confidences and weights
+   *   <li>values with confidences
    * </ul>
    *
    * @param values The features values.
@@ -122,5 +117,4 @@ public interface Confidence {
     Objects.requireNonNull(values, "Hey! Values can't be null!");
     return make(Arrays.asList(values));
   }
-
 }

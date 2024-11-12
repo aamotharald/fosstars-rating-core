@@ -59,8 +59,7 @@ public class NumberOfDependentProjectOnGitHubTest extends TestGitHubDataFetcherH
     Value<Integer> value = provider.fetchValueFor(PROJECT);
     assertTrue(value.isUnknown());
 
-    provider.set(
-        "<a href=\"/test/project/network/dependents?package_id=xyz\">nothing</a>");
+    provider.set("<a href=\"/test/project/network/dependents?package_id=xyz\">nothing</a>");
     value = provider.fetchValueFor(PROJECT);
     assertTrue(value.isUnknown());
 

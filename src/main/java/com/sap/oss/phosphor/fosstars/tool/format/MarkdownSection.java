@@ -4,19 +4,13 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-/**
- * A Markdown section.
- */
+/** A Markdown section. */
 public class MarkdownSection extends AbstractMarkdownElement {
 
-  /**
-   * A header of the section.
-   */
+  /** A header of the section. */
   private final MarkdownHeader header;
 
-  /**
-   * A text in the section.
-   */
+  /** A text in the section. */
   private final MarkdownElement text;
 
   /**

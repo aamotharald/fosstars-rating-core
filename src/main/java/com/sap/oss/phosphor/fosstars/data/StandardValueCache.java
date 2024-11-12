@@ -21,19 +21,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * This is a cache of feature values which use string as keys.
- */
+/** This is a cache of feature values which use string as keys. */
 public class StandardValueCache implements Cache<String, ValueSet> {
 
-  /**
-   * A map of cache entries.
-   */
+  /** A map of cache entries. */
   private final Map<String, ValueSet> entries;
 
-  /**
-   * The default constructor.
-   */
+  /** The default constructor. */
   public StandardValueCache() {
     this(new HashMap<>());
   }
@@ -205,5 +199,4 @@ public class StandardValueCache implements Cache<String, ValueSet> {
   public int hashCode() {
     return Objects.hashCode(entries);
   }
-
 }

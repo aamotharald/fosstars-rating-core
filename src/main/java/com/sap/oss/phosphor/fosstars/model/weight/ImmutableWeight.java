@@ -8,14 +8,10 @@ import com.sap.oss.phosphor.fosstars.model.Parameter;
 import com.sap.oss.phosphor.fosstars.model.Weight;
 import java.util.Objects;
 
-/**
- * An immutable weight.
- */
+/** An immutable weight. */
 public class ImmutableWeight extends AbstractWeight {
 
-  /**
-   * Weight value.
-   */
+  /** Weight value. */
   private final double value;
 
   @JsonCreator

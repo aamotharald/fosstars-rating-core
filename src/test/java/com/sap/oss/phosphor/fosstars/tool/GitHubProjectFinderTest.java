@@ -39,22 +39,19 @@ public class GitHubProjectFinderTest {
       assertEquals(3, config.organizationConfigs.size());
       assertThat(
           config.organizationConfigs,
-          hasItem(
-              new OrganizationConfig("apache", Arrays.asList("incubator", "incubating"), 100)));
-      assertThat(config.organizationConfigs,
-          hasItem(
-              new OrganizationConfig("eclipse", Collections.singletonList("incubator"), 0)));
-      assertThat(config.organizationConfigs,
-          hasItem(
-              new OrganizationConfig("spring-projects", EMPTY_EXCLUDE_LIST, 0)));
+          hasItem(new OrganizationConfig("apache", Arrays.asList("incubator", "incubating"), 100)));
+      assertThat(
+          config.organizationConfigs,
+          hasItem(new OrganizationConfig("eclipse", Collections.singletonList("incubator"), 0)));
+      assertThat(
+          config.organizationConfigs,
+          hasItem(new OrganizationConfig("spring-projects", EMPTY_EXCLUDE_LIST, 0)));
       assertNotNull(config.projectConfigs);
       assertEquals(2, config.projectConfigs.size());
       assertThat(
-          config.projectConfigs,
-          hasItem(new ProjectConfig("FasterXML", "jackson-databind")));
+          config.projectConfigs, hasItem(new ProjectConfig("FasterXML", "jackson-databind")));
       assertThat(
-          config.projectConfigs,
-          hasItem(new ProjectConfig("FasterXML", "jackson-dataformat-xml")));
+          config.projectConfigs, hasItem(new ProjectConfig("FasterXML", "jackson-dataformat-xml")));
     }
   }
 
@@ -89,15 +86,9 @@ public class GitHubProjectFinderTest {
     List<GitHubProject> projects = finder.run();
 
     assertEquals(3, projects.size());
-    assertThat(
-        projects,
-        hasItem(new GitHubProject(new GitHubOrganization(apache), "project-x")));
-    assertThat(
-        projects,
-        hasItem(new GitHubProject(new GitHubOrganization(apache), "project-y")));
-    assertThat(
-        projects,
-        hasItem(new GitHubProject(new GitHubOrganization(eclipse), "extra")));
+    assertThat(projects, hasItem(new GitHubProject(new GitHubOrganization(apache), "project-x")));
+    assertThat(projects, hasItem(new GitHubProject(new GitHubOrganization(apache), "project-y")));
+    assertThat(projects, hasItem(new GitHubProject(new GitHubOrganization(eclipse), "extra")));
   }
 
   @Test
@@ -112,11 +103,9 @@ public class GitHubProjectFinderTest {
       assertNotNull(config.projectConfigs);
       assertEquals(2, config.projectConfigs.size());
       assertThat(
-          config.projectConfigs,
-          hasItem(new ProjectConfig("FasterXML", "jackson-databind")));
+          config.projectConfigs, hasItem(new ProjectConfig("FasterXML", "jackson-databind")));
       assertThat(
-          config.projectConfigs,
-          hasItem(new ProjectConfig("FasterXML", "jackson-dataformat-xml")));
+          config.projectConfigs, hasItem(new ProjectConfig("FasterXML", "jackson-dataformat-xml")));
     }
   }
 
@@ -125,5 +114,4 @@ public class GitHubProjectFinderTest {
     when(repository.getName()).thenReturn(name);
     return repository;
   }
-
 }

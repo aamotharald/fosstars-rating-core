@@ -14,41 +14,28 @@ import java.util.function.Predicate;
 
 /**
  * A composite data provider that contains a non-interactive and an interactive data providers.
- * First, it looks for a value in a cache. If no value found in the cache,
- * it calls a non-interactive provider. If the provider could not obtain the value,
- * it calls the interactive provider. If it could not obtain the value either,
- * it returns a default value.
+ * First, it looks for a value in a cache. If no value found in the cache, it calls a
+ * non-interactive provider. If the provider could not obtain the value, it calls the interactive
+ * provider. If it could not obtain the value either, it returns a default value.
  */
 public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
 
-  /**
-   * This predicate return true for all subject.
-   */
+  /** This predicate return true for all subject. */
   private static final Predicate<Subject> SUPPORTS_ALL_SUBJECT = subject -> true;
 
-  /**
-   * A feature that the provider supports.
-   */
+  /** A feature that the provider supports. */
   private final Feature<?> feature;
 
-  /**
-   * A predicate the implements the {@link DataProvider#supports(Subject)} method.
-   */
+  /** A predicate the implements the {@link DataProvider#supports(Subject)} method. */
   private final Predicate<Subject> support;
 
-  /**
-   * A non-interactive data provider.
-   */
+  /** A non-interactive data provider. */
   private final DataProvider nonInteractiveProvider;
 
-  /**
-   * An interactive data provider.
-   */
+  /** An interactive data provider. */
   private final DataProvider interactiveProvider;
 
-  /**
-   * A default value.
-   */
+  /** A default value. */
   private final Value<?> defaultValue;
 
   /**
@@ -60,8 +47,11 @@ public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
    * @param interactiveProvider An interactive data provider.
    * @param defaultValue A default value.
    */
-  public SimpleCompositeDataProvider(Feature<?> feature, Predicate<Subject> support,
-      DataProvider nonInteractiveProvider, DataProvider interactiveProvider,
+  public SimpleCompositeDataProvider(
+      Feature<?> feature,
+      Predicate<Subject> support,
+      DataProvider nonInteractiveProvider,
+      DataProvider interactiveProvider,
       Value<?> defaultValue) {
 
     requireNonNull(feature, "On no! Supported feature can't be null!");
@@ -149,8 +139,8 @@ public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
    * Check if a value set contains a known value for the supported feature.
    *
    * @param values The value set.
-   * @return True if the value set contains a known value for the supported feature,
-   *         false otherwise.
+   * @return True if the value set contains a known value for the supported feature, false
+   *     otherwise.
    */
   private boolean weAreHappyWith(ValueSet values) {
     return values.of(feature).map(value -> !value.isUnknown()).orElse(false);
@@ -166,24 +156,16 @@ public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
     return new Builder(feature);
   }
 
-  /**
-   * A builder for configuring a data provider.
-   */
+  /** A builder for configuring a data provider. */
   public static class Builder {
 
-    /**
-     * A feature that the provider should support.
-     */
+    /** A feature that the provider should support. */
     private final Feature<?> feature;
 
-    /**
-     * A non-interactive data provider.
-     */
+    /** A non-interactive data provider. */
     private DataProvider nonInteractiveProvider;
 
-    /**
-     * An interactive data provider.
-     */
+    /** An interactive data provider. */
     private DataProvider interactiveProvider;
 
     /**
@@ -202,8 +184,8 @@ public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
      * @return This builder.
      */
     public Builder withInteractiveProvider(DataProvider provider) {
-      this.interactiveProvider
-          = requireNonNull(provider, "Hey! If you set a provider, it has to be non-null!");
+      this.interactiveProvider =
+          requireNonNull(provider, "Hey! If you set a provider, it has to be non-null!");
       return this;
     }
 
@@ -214,8 +196,8 @@ public class SimpleCompositeDataProvider extends AbstractCachingDataProvider {
      * @return This builder.
      */
     public Builder withNonInteractiveProvider(DataProvider provider) {
-      this.nonInteractiveProvider
-          = requireNonNull(provider, "Hey! If you set a provider, it should not be null!");
+      this.nonInteractiveProvider =
+          requireNonNull(provider, "Hey! If you set a provider, it should not be null!");
       return this;
     }
 

@@ -105,7 +105,6 @@ public class HasExecutableBinariesTest extends TestGitHubDataFetcherHolder {
     } finally {
       FileUtils.forceDeleteOnExit(javaFile.toFile());
     }
-
   }
 
   @AfterAll

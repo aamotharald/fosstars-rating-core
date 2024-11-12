@@ -24,14 +24,16 @@ public class ProjectActivityScoreTest {
 
   @Test
   public void testCalculate() {
-    ScoreValue scoreValue = PROJECT_ACTIVITY.calculate(
-        UnknownValue.of(NUMBER_OF_COMMITS_LAST_THREE_MONTHS),
-        UnknownValue.of(NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS));
+    ScoreValue scoreValue =
+        PROJECT_ACTIVITY.calculate(
+            UnknownValue.of(NUMBER_OF_COMMITS_LAST_THREE_MONTHS),
+            UnknownValue.of(NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS));
     assertTrue(scoreValue.isUnknown());
     assertEquals(Confidence.MIN, scoreValue.confidence(), DELTA);
     assertFalse(scoreValue.explanation().isEmpty());
 
-    scoreValue = PROJECT_ACTIVITY.calculate(
+    scoreValue =
+        PROJECT_ACTIVITY.calculate(
             NUMBER_OF_COMMITS_LAST_THREE_MONTHS.value(0),
             UnknownValue.of(NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS));
     assertFalse(scoreValue.isUnknown());
@@ -40,20 +42,21 @@ public class ProjectActivityScoreTest {
     assertTrue(scoreValue.confidence() < Confidence.MAX);
     assertFalse(scoreValue.explanation().isEmpty());
 
-    scoreValue = PROJECT_ACTIVITY.calculate(
+    scoreValue =
+        PROJECT_ACTIVITY.calculate(
             UnknownValue.of(NUMBER_OF_COMMITS_LAST_THREE_MONTHS),
             NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS.value(0));
     assertTrue(scoreValue.isUnknown());
     assertEquals(Confidence.MIN, scoreValue.confidence(), DELTA);
     assertFalse(scoreValue.explanation().isEmpty());
 
-    scoreValue = PROJECT_ACTIVITY.calculate(values(0,0));
+    scoreValue = PROJECT_ACTIVITY.calculate(values(0, 0));
     assertFalse(scoreValue.isUnknown());
     assertEquals(Score.MIN, scoreValue.get(), DELTA);
     assertEquals(Confidence.MAX, scoreValue.confidence(), DELTA);
     assertFalse(scoreValue.explanation().isEmpty());
 
-    scoreValue = PROJECT_ACTIVITY.calculate(values(1,1));
+    scoreValue = PROJECT_ACTIVITY.calculate(values(1, 1));
     assertFalse(scoreValue.isUnknown());
     assertTrue(Score.INTERVAL.contains(scoreValue.get()));
     assertEquals(Confidence.MAX, scoreValue.confidence(), DELTA);
@@ -94,7 +97,7 @@ public class ProjectActivityScoreTest {
     assertEquals(Confidence.MAX, scoreValue.confidence(), DELTA);
     assertFalse(scoreValue.explanation().isEmpty());
   }
-  
+
   @Test
   public void testWithMoreCommitsThanContributors() {
     ScoreValue scoreValue = PROJECT_ACTIVITY.calculate(values(2, 1));

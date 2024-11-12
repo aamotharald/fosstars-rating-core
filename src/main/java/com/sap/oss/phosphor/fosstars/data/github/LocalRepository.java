@@ -32,24 +32,16 @@ import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-/**
- * The class holds information about repository that was cloned with JGit.
- */
+/** The class holds information about repository that was cloned with JGit. */
 public class LocalRepository implements AutoCloseable {
 
-  /**
-   * No changes in the repository.
-   */
+  /** No changes in the repository. */
   private static final double NO_CHANGES = 0.0;
 
-  /**
-   * Info about the repository.
-   */
+  /** Info about the repository. */
   private final LocalRepositoryInfo info;
 
-  /**
-   * An instance of {@link Repository} from JGit.
-   */
+  /** An instance of {@link Repository} from JGit. */
   private final Repository repository;
 
   /**
@@ -62,8 +54,9 @@ public class LocalRepository implements AutoCloseable {
     Objects.requireNonNull(info, "Oh no! Info is null!");
     Objects.requireNonNull(repository, "Oh no! Repository is null!");
 
-    if (!info.path().toAbsolutePath().equals(
-        Paths.get(repository.getDirectory().getParent()).toAbsolutePath())) {
+    if (!info.path()
+        .toAbsolutePath()
+        .equals(Paths.get(repository.getDirectory().getParent()).toAbsolutePath())) {
 
       throw new IllegalArgumentException("Oh no! Paths don't match!");
     }
@@ -359,10 +352,9 @@ public class LocalRepository implements AutoCloseable {
   }
 
   /**
-   * Estimate how much the project has changed since a specified date.
-   * The method inspects the commit history after the specified date,
-   * and looks for updated files.
-   * The method doesn't take into account what was exactly updated in the files.
+   * Estimate how much the project has changed since a specified date. The method inspects the
+   * commit history after the specified date, and looks for updated files. The method doesn't take
+   * into account what was exactly updated in the files.
    *
    * @param date The date.
    * @param toConsider Defines which files should be considered.
@@ -387,7 +379,7 @@ public class LocalRepository implements AutoCloseable {
     files(toConsider).forEach(path -> fileMap.put(path, false));
 
     try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-         DiffFormatter diffFormatter = new DiffFormatter(out)) {
+        DiffFormatter diffFormatter = new DiffFormatter(out)) {
 
       diffFormatter.setRepository(repository);
       for (DiffEntry entry : diffFormatter.scan(target.get().raw(), head.raw())) {
@@ -420,8 +412,8 @@ public class LocalRepository implements AutoCloseable {
   }
 
   /**
-   * Resolve a path from a diff entry against the repository's root
-   * if the path satisfies a specified criteria.
+   * Resolve a path from a diff entry against the repository's root if the path satisfies a
+   * specified criteria.
    *
    * @param entryPath The path.
    * @param criteria The criteria.

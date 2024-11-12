@@ -11,24 +11,19 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "data_type",
-    "data_format",
-    "data_version",
-    "CVE_data_meta",
-    "affects",
-    "problemtype",
-    "references",
-    "description"
+  "data_type",
+  "data_format",
+  "data_version",
+  "CVE_data_meta",
+  "affects",
+  "problemtype",
+  "references",
+  "description"
 })
 // the properties below are ignored because they are not used
 // that saves a bit of memory
 // when they become necessary, then can be enabled
-@JsonIgnoreProperties({
-    "problemtype",
-    "data_version",
-    "data_format",
-    "data_type"
-})
+@JsonIgnoreProperties({"problemtype", "data_version", "data_format", "data_type"})
 public class CVE {
 
   @JsonProperty("data_type")
@@ -81,7 +76,6 @@ public class CVE {
   }
 
   public enum DataFormat {
-
     MITRE("MITRE");
 
     private static final Map<String, CVE.DataFormat> CONSTANTS = new HashMap<>();
@@ -117,11 +111,9 @@ public class CVE {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum DataType {
-
     CVE("CVE");
 
     private static final Map<String, DataType> CONSTANTS = new HashMap<>();
@@ -157,11 +149,9 @@ public class CVE {
     public String value() {
       return this.value;
     }
-
   }
 
   public enum DataVersion {
-
     _4_0("4.0");
 
     private static final Map<String, CVE.DataVersion> CONSTANTS = new HashMap<>();
@@ -198,5 +188,4 @@ public class CVE {
       return this.value;
     }
   }
-
 }

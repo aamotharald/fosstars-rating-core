@@ -14,5 +14,4 @@ public class SecurityRatingExampleVectorsTest {
     assertNotNull(rating);
     new SecurityRatingExampleVerification(rating).run();
   }
-
 }

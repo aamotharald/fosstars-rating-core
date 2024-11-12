@@ -12,35 +12,30 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This is a base class for data providers that holds commons stuff such as a logger, a cache,
- * a callback, etc.
+ * This is a base class for data providers that holds commons stuff such as a logger, a cache, a
+ * callback, etc.
  */
 public abstract class AbstractDataProvider implements DataProvider {
 
-  /**
-   * A logger.
-   */
+  /** A logger. */
   protected final Logger logger = LogManager.getLogger(getClass());
 
-  /**
-   * A cache of values.
-   */
+  /** A cache of values. */
   protected ValueCache<Subject> cache = NoValueCache.create();
 
-  /**
-   * An interface for interacting with a user.
-   */
+  /** An interface for interacting with a user. */
   protected UserCallback callback = NoUserCallback.INSTANCE;
 
   /**
-   * Looks for default YAML configuration files and load them if found.
-   * Default config fine names are based on the class name. If a canonical name of a data provider
-   * is "com.sap.CustomDataProvider", then the method will try to load the following configs:
+   * Looks for default YAML configuration files and load them if found. Default config fine names
+   * are based on the class name. If a canonical name of a data provider is
+   * "com.sap.CustomDataProvider", then the method will try to load the following configs:
+   *
    * <ul>
-   *   <li>com.sap.CustomDataProvider.config.yml</li>
-   *   <li>com.sap.CustomDataProvider.config.yaml</li>
-   *   <li>CustomDataProvider.config.yml</li>
-   *   <li>CustomDataProvider.config.yaml</li>
+   *   <li>com.sap.CustomDataProvider.config.yml
+   *   <li>com.sap.CustomDataProvider.config.yaml
+   *   <li>CustomDataProvider.config.yml
+   *   <li>CustomDataProvider.config.yaml
    * </ul>
    *
    * @throws IOException If something went wrong.
@@ -55,12 +50,11 @@ public abstract class AbstractDataProvider implements DataProvider {
   }
 
   /**
-   * <p>This is a template method that does a couple of checks for the parameters and then
-   * calls the {@link #doUpdate(Subject, ValueSet)} method.</p>
+   * This is a template method that does a couple of checks for the parameters and then calls the
+   * {@link #doUpdate(Subject, ValueSet)} method.
    *
-   * <p>The {@link #doUpdate(Subject, ValueSet)} method fetched the data and adds it
-   * to the resulting set of feature values. The method has to be implemented
-   * by the child classes.</p>
+   * <p>The {@link #doUpdate(Subject, ValueSet)} method fetched the data and adds it to the
+   * resulting set of feature values. The method has to be implemented by the child classes.
    *
    * @param subject The subject.
    * @param values The resulting set of values.

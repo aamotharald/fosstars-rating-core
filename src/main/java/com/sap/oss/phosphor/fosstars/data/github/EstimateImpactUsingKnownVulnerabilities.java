@@ -22,33 +22,29 @@ import java.io.IOException;
 import java.util.Set;
 
 /**
- * <p>This data provider tries to estimate possible impact on confidentiality, integrity and
- * availability (CIA) if a security problem appears in an open source project.
- * The provider uses info about known vulnerabilities in open source projects.
- * It fills out the following features:</p>
+ * This data provider tries to estimate possible impact on confidentiality, integrity and
+ * availability (CIA) if a security problem appears in an open source project. The provider uses
+ * info about known vulnerabilities in open source projects. It fills out the following features:
+ *
  * <ul>
- *   <li>{@link OssRiskFeatures#CONFIDENTIALITY_IMPACT}</li>
- *   <li>{@link OssRiskFeatures#INTEGRITY_IMPACT}</li>
- *   <li>{@link OssRiskFeatures#AVAILABILITY_IMPACT}</li>
+ *   <li>{@link OssRiskFeatures#CONFIDENTIALITY_IMPACT}
+ *   <li>{@link OssRiskFeatures#INTEGRITY_IMPACT}
+ *   <li>{@link OssRiskFeatures#AVAILABILITY_IMPACT}
  * </ul>
  */
 public class EstimateImpactUsingKnownVulnerabilities extends AbstractDataProvider {
 
-  /**
-   * The provider tries to estimate CIA only if the number of vulnerabilities is more than this.
-   */
+  /** The provider tries to estimate CIA only if the number of vulnerabilities is more than this. */
   private static final int KNOWN_VULNERABILITIES_THRESHOLD = 10;
 
-  /**
-   * An underlying data provider that provides info about vulnerabilities.
-   */
+  /** An underlying data provider that provides info about vulnerabilities. */
   private final InfoAboutVulnerabilities infoAboutVulnerabilities;
 
   /**
    * Initialize a new data provider.
    *
-   * @param infoAboutVulnerabilities An underlying data provider
-   *                                 that provides info about vulnerabilities.
+   * @param infoAboutVulnerabilities An underlying data provider that provides info about
+   *     vulnerabilities.
    */
   public EstimateImpactUsingKnownVulnerabilities(
       InfoAboutVulnerabilities infoAboutVulnerabilities) {
@@ -62,9 +58,13 @@ public class EstimateImpactUsingKnownVulnerabilities extends AbstractDataProvide
       throws IOException {
 
     infoAboutVulnerabilities.update(subject, values);
-    Value<Vulnerabilities> vulnerabilities = values.of(VULNERABILITIES_IN_PROJECT).orElseThrow(
-        () -> new IllegalStateException(
-            "Oops! The underlying provider could not provide info about vulnerabilities!"));
+    Value<Vulnerabilities> vulnerabilities =
+        values
+            .of(VULNERABILITIES_IN_PROJECT)
+            .orElseThrow(
+                () ->
+                    new IllegalStateException(
+                        "Oops! The underlying provider could not provide info about vulnerabilities!"));
 
     Impact worstConfidentialityImpact = null;
     Impact worstIntegrityImpact = null;
@@ -76,15 +76,14 @@ public class EstimateImpactUsingKnownVulnerabilities extends AbstractDataProvide
         if (!vulnerability.cvss().isPresent()) {
           continue;
         }
-        worstConfidentialityImpact = set(
-            worstConfidentialityImpact,
-            vulnerability.cvss().get().confidentialityImpact().orElse(null));
-        worstIntegrityImpact = set(
-            worstIntegrityImpact,
-            vulnerability.cvss().get().integrityImpact().orElse(null));
-        worstAvailableImpact = set(
-            worstAvailableImpact,
-            vulnerability.cvss().get().availabilityImpact().orElse(null));
+        worstConfidentialityImpact =
+            set(
+                worstConfidentialityImpact,
+                vulnerability.cvss().get().confidentialityImpact().orElse(null));
+        worstIntegrityImpact =
+            set(worstIntegrityImpact, vulnerability.cvss().get().integrityImpact().orElse(null));
+        worstAvailableImpact =
+            set(worstAvailableImpact, vulnerability.cvss().get().availabilityImpact().orElse(null));
       }
     } else {
       logger.info("Not enough info about vulnerabilities to estimate potential CIA impact");
@@ -105,9 +104,10 @@ public class EstimateImpactUsingKnownVulnerabilities extends AbstractDataProvide
    * @param values The value set.
    */
   private static void set(Feature<Impact> feature, Impact impact, ValueSet values) {
-    values.update(impact == null
-        ? feature.unknown()
-        : feature.value(impact).explain("Estimated using info about vulnerabilities"));
+    values.update(
+        impact == null
+            ? feature.unknown()
+            : feature.value(impact).explain("Estimated using info about vulnerabilities"));
   }
 
   /**
@@ -122,11 +122,11 @@ public class EstimateImpactUsingKnownVulnerabilities extends AbstractDataProvide
     if (V2.Impact.COMPLETE == cvssImpact || V3.Impact.HIGH == cvssImpact) {
       newImpact = Impact.HIGH;
     } else if (V2.Impact.PARTIAL == cvssImpact) {
-      newImpact =  Impact.MEDIUM;
+      newImpact = Impact.MEDIUM;
     } else if (V3.Impact.LOW == cvssImpact) {
-      newImpact =  Impact.LOW;
+      newImpact = Impact.LOW;
     } else if (V2.Impact.NONE == cvssImpact || V3.Impact.NONE == cvssImpact) {
-      newImpact =  Impact.NEGLIGIBLE;
+      newImpact = Impact.NEGLIGIBLE;
     }
 
     if (newImpact == null) {

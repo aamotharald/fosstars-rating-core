@@ -24,27 +24,32 @@ public class CommunityCommitmentScoreTest {
 
   @Test
   public void testWithoutValueForCompanySupport() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(IS_APACHE.value(true), IS_ECLIPSE.value(false)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(IS_APACHE.value(true), IS_ECLIPSE.value(false)));
   }
 
   @Test
   public void testWithoutValueForApache() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(SUPPORTED_BY_COMPANY.value(false), IS_ECLIPSE.value(true)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(SUPPORTED_BY_COMPANY.value(false), IS_ECLIPSE.value(true)));
   }
 
   @Test
   public void testWithoutValueForEclipse() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(SUPPORTED_BY_COMPANY.value(true), IS_APACHE.value(false)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SCORE.calculate(SUPPORTED_BY_COMPANY.value(true), IS_APACHE.value(false)));
   }
 
   @Test
   public void testWithBothApacheAndEclipse() {
-    assertThrows(IllegalArgumentException.class, () ->
-      SCORE.calculate(
-          SUPPORTED_BY_COMPANY.value(false), IS_APACHE.value(true), IS_ECLIPSE.value(true)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            SCORE.calculate(
+                SUPPORTED_BY_COMPANY.value(false), IS_APACHE.value(true), IS_ECLIPSE.value(true)));
   }
 
   @Test
@@ -68,5 +73,4 @@ public class CommunityCommitmentScoreTest {
     return setOf(
         SUPPORTED_BY_COMPANY.value(company), IS_APACHE.value(apache), IS_ECLIPSE.value(eclipse));
   }
-
 }

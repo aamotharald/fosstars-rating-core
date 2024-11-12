@@ -33,21 +33,21 @@ import org.junit.jupiter.api.Test;
 
 public class CalculatedSecurityRiskIntroducedByOssTest {
 
-  private static final CalculatedSecurityRiskIntroducedByOss SCORE
-      = new CalculatedSecurityRiskIntroducedByOss();
+  private static final CalculatedSecurityRiskIntroducedByOss SCORE =
+      new CalculatedSecurityRiskIntroducedByOss();
 
   @Test
   public void testJsonSerialization() throws IOException {
-    CalculatedSecurityRiskIntroducedByOss clone
-        = Json.read(Json.toBytes(SCORE), CalculatedSecurityRiskIntroducedByOss.class);
+    CalculatedSecurityRiskIntroducedByOss clone =
+        Json.read(Json.toBytes(SCORE), CalculatedSecurityRiskIntroducedByOss.class);
     assertTrue(SCORE.equals(clone) && clone.equals(SCORE));
     assertEquals(SCORE.hashCode(), clone.hashCode());
   }
 
   @Test
   public void testYamlSerialization() throws IOException {
-    CalculatedSecurityRiskIntroducedByOss clone
-        = Yaml.read(Yaml.toBytes(SCORE), CalculatedSecurityRiskIntroducedByOss.class);
+    CalculatedSecurityRiskIntroducedByOss clone =
+        Yaml.read(Yaml.toBytes(SCORE), CalculatedSecurityRiskIntroducedByOss.class);
     assertEquals(clone, SCORE);
   }
 

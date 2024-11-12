@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This is a sample implementation of a security rating. Only for demo purposes.
- * The rating is based on SecurityScoreExample.
+ * This is a sample implementation of a security rating. Only for demo purposes. The rating is based
+ * on SecurityScoreExample.
  */
 public class SecurityRatingExample extends AbstractRating implements Tunable {
 
@@ -35,12 +35,12 @@ public class SecurityRatingExample extends AbstractRating implements Tunable {
   }
 
   public enum SecurityLabelExample implements Label {
-    AWFUL, OKAY, AWESOME
+    AWFUL,
+    OKAY,
+    AWESOME
   }
 
-  /**
-   * Initializes a security rating with SecurityScoreExample.
-   */
+  /** Initializes a security rating with SecurityScoreExample. */
   SecurityRatingExample() {
     super("Security rating (example)", SECURITY_SCORE_EXAMPLE);
   }
@@ -50,9 +50,7 @@ public class SecurityRatingExample extends AbstractRating implements Tunable {
     return (SecurityScoreExample) super.score();
   }
 
-  /**
-   * Implements a mapping from a score to a label.
-   */
+  /** Implements a mapping from a score to a label. */
   @Override
   protected SecurityLabelExample label(ScoreValue scoreValue) {
     Objects.requireNonNull(scoreValue, "Oh no! Score value is null!");
@@ -69,5 +67,4 @@ public class SecurityRatingExample extends AbstractRating implements Tunable {
 
     return SecurityLabelExample.AWESOME;
   }
-
 }

@@ -5,14 +5,10 @@ import static java.util.Objects.requireNonNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * A bold string.
- */
+/** A bold string. */
 public class BoldMarkdownString extends AbstractMarkdownElement {
 
-  /**
-   * A wrapped Markdown element.
-   */
+  /** A wrapped Markdown element. */
   private final MarkdownElement element;
 
   /**

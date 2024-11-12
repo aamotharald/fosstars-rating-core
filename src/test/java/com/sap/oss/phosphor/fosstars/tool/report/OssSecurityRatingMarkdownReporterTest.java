@@ -32,45 +32,37 @@ public class OssSecurityRatingMarkdownReporterTest {
 
   @Test
   public void testReport() throws IOException {
-    Path outputDirectory = Files.createTempDirectory(
-        OssSecurityRatingMarkdownReporterTest.class.getName());
+    Path outputDirectory =
+        Files.createTempDirectory(OssSecurityRatingMarkdownReporterTest.class.getName());
     try {
       OssSecurityRating rating = RatingRepository.INSTANCE.rating(OssSecurityRating.class);
 
       GitHubProject goodProject = new GitHubProject("org", "good");
       goodProject.set(
-          new RatingValue(
-              new ScoreValue(rating.score()).set(Score.MAX).confidence(10.0),
-              GOOD));
+          new RatingValue(new ScoreValue(rating.score()).set(Score.MAX).confidence(10.0), GOOD));
 
       GitHubProject moderateProject = new GitHubProject("org", "moderate");
       moderateProject.set(
-          new RatingValue(
-              new ScoreValue(rating.score()).set(5.0).confidence(9.0),
-              MODERATE));
+          new RatingValue(new ScoreValue(rating.score()).set(5.0).confidence(9.0), MODERATE));
 
       GitHubProject badProject = new GitHubProject("org", "bad");
       badProject.set(
-          new RatingValue(
-              new ScoreValue(rating.score()).set(Score.MIN).confidence(8.0),
-              BAD));
+          new RatingValue(new ScoreValue(rating.score()).set(Score.MIN).confidence(8.0), BAD));
 
       GitHubProject projectWithLowConfidence = new GitHubProject("org", "unclear");
       projectWithLowConfidence.set(
-          new RatingValue(
-              new ScoreValue(rating.score()).set(Score.MIN).confidence(1.0),
-              UNCLEAR));
+          new RatingValue(new ScoreValue(rating.score()).set(Score.MIN).confidence(1.0), UNCLEAR));
 
-      List<GitHubProject> projects = Arrays.asList(
-          goodProject, moderateProject, badProject, projectWithLowConfidence
-      );
+      List<GitHubProject> projects =
+          Arrays.asList(goodProject, moderateProject, badProject, projectWithLowConfidence);
 
-      OssSecurityRatingMarkdownReporter reporter = new OssSecurityRatingMarkdownReporter(
-          outputDirectory.toString(), null, rating, new OssSecurityGithubAdvisor());
+      OssSecurityRatingMarkdownReporter reporter =
+          new OssSecurityRatingMarkdownReporter(
+              outputDirectory.toString(), null, rating, new OssSecurityGithubAdvisor());
       reporter.runFor(projects);
 
-      Path reportFileName = outputDirectory.resolve(
-          OssSecurityRatingMarkdownReporter.REPORT_FILENAME);
+      Path reportFileName =
+          outputDirectory.resolve(OssSecurityRatingMarkdownReporter.REPORT_FILENAME);
       assertTrue(Files.exists(reportFileName));
 
       String report = new String(Files.readAllBytes(reportFileName));
@@ -99,30 +91,28 @@ public class OssSecurityRatingMarkdownReporterTest {
   @Test
   public void testInsert() {
     assertEquals(
-        "aaa<br>bbb<br>ccc",
-        OssSecurityRatingMarkdownReporter.insert("<br>", 3, "aaabbbccc"));
+        "aaa<br>bbb<br>ccc", OssSecurityRatingMarkdownReporter.insert("<br>", 3, "aaabbbccc"));
     assertEquals(
         "aaa<br>bbb<br>ccc<br>dd",
         OssSecurityRatingMarkdownReporter.insert("<br>", 3, "aaabbbcccdd"));
-    assertEquals(
-        "aaa",
-        OssSecurityRatingMarkdownReporter.insert("<br>", 3, "aaa"));
+    assertEquals("aaa", OssSecurityRatingMarkdownReporter.insert("<br>", 3, "aaa"));
   }
 
   @Test
   public void testCreatingReportDirectory() throws IOException {
-    Path baseDirectory = Files.createTempDirectory(
-        OssSecurityRatingMarkdownReporterTest.class.getName());
+    Path baseDirectory =
+        Files.createTempDirectory(OssSecurityRatingMarkdownReporterTest.class.getName());
     Path outputDirectory = baseDirectory.resolve("one").resolve("two");
     if (Files.exists(outputDirectory)) {
       fail("Report directory already exists. Please fix the test or its environment");
     }
     try {
-      OssSecurityRatingMarkdownReporter reporter = new OssSecurityRatingMarkdownReporter(
-          outputDirectory.toString(),
-          null,
-          RatingRepository.INSTANCE.rating(OssSecurityRating.class),
-          new OssSecurityGithubAdvisor());
+      OssSecurityRatingMarkdownReporter reporter =
+          new OssSecurityRatingMarkdownReporter(
+              outputDirectory.toString(),
+              null,
+              RatingRepository.INSTANCE.rating(OssSecurityRating.class),
+              new OssSecurityGithubAdvisor());
       reporter.runFor(Collections.emptyList());
     } finally {
       FileUtils.forceDeleteOnExit(baseDirectory.toFile());

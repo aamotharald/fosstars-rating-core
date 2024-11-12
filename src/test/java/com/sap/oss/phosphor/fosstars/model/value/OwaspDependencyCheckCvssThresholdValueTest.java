@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 public class OwaspDependencyCheckCvssThresholdValueTest {
 
-  private static final OwaspDependencyCheckCvssThreshold FEATURE
-      = new OwaspDependencyCheckCvssThreshold();
+  private static final OwaspDependencyCheckCvssThreshold FEATURE =
+      new OwaspDependencyCheckCvssThreshold();
 
   private static final double ACCURACY = 0.001;
 
@@ -21,8 +21,8 @@ public class OwaspDependencyCheckCvssThresholdValueTest {
   public void testSpecifiedAndGet() {
     final double cvssScore = 1.23;
 
-    OwaspDependencyCheckCvssThresholdValue value
-        = new OwaspDependencyCheckCvssThresholdValue(FEATURE, cvssScore, true);
+    OwaspDependencyCheckCvssThresholdValue value =
+        new OwaspDependencyCheckCvssThresholdValue(FEATURE, cvssScore, true);
     assertTrue(value.specified());
     assertEquals(cvssScore, value.get(), ACCURACY);
 
@@ -39,21 +39,21 @@ public class OwaspDependencyCheckCvssThresholdValueTest {
 
   @Test
   public void testEqualsAndHashCode() {
-    OwaspDependencyCheckCvssThresholdValue one
-        = new OwaspDependencyCheckCvssThresholdValue(FEATURE, 1.23, true);
+    OwaspDependencyCheckCvssThresholdValue one =
+        new OwaspDependencyCheckCvssThresholdValue(FEATURE, 1.23, true);
     assertEquals(one, one);
 
-    OwaspDependencyCheckCvssThresholdValue two
-        = new OwaspDependencyCheckCvssThresholdValue(FEATURE, 1.23, true);
+    OwaspDependencyCheckCvssThresholdValue two =
+        new OwaspDependencyCheckCvssThresholdValue(FEATURE, 1.23, true);
     assertEquals(one, two);
     assertEquals(one.hashCode(), two.hashCode());
 
-    OwaspDependencyCheckCvssThresholdValue three
-        = new OwaspDependencyCheckCvssThresholdValue(FEATURE, 2.34, true);
+    OwaspDependencyCheckCvssThresholdValue three =
+        new OwaspDependencyCheckCvssThresholdValue(FEATURE, 2.34, true);
     assertNotEquals(one, three);
 
-    OwaspDependencyCheckCvssThresholdValue four
-        = new OwaspDependencyCheckCvssThresholdValue(FEATURE, 1.23, false);
+    OwaspDependencyCheckCvssThresholdValue four =
+        new OwaspDependencyCheckCvssThresholdValue(FEATURE, 1.23, false);
     assertNotEquals(one, four);
 
     assertNotEquals(three, four);
@@ -62,8 +62,8 @@ public class OwaspDependencyCheckCvssThresholdValueTest {
   @Test
   public void testSerializationAndDeserialization() throws IOException {
     OwaspDependencyCheckCvssThresholdValue value = FEATURE.value(5.7);
-    OwaspDependencyCheckCvssThresholdValue clone = Json.read(
-        Json.toBytes(value), OwaspDependencyCheckCvssThresholdValue.class);
+    OwaspDependencyCheckCvssThresholdValue clone =
+        Json.read(Json.toBytes(value), OwaspDependencyCheckCvssThresholdValue.class);
     assertEquals(value, clone);
     assertEquals(value.hashCode(), clone.hashCode());
   }

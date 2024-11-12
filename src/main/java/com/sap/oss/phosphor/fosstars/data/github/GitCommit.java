@@ -10,32 +10,26 @@ import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 /**
- * <p>A wrapper for a commit provided by JGit.</p>
- * <p>The docs for RevCommit class say that its methods are fairly expensive.
- * That's why the GitCommit class calls them only when required.</p>
+ * A wrapper for a commit provided by JGit.
  *
- * @see <a href="https://download.eclipse.org/jgit/site/5.7.0.202003110725-r/apidocs/index.html">RevCommit</a>
+ * <p>The docs for RevCommit class say that its methods are fairly expensive. That's why the
+ * GitCommit class calls them only when required.
+ *
+ * @see <a
+ *     href="https://download.eclipse.org/jgit/site/5.7.0.202003110725-r/apidocs/index.html">RevCommit</a>
  */
 public class GitCommit implements Commit {
 
-  /**
-   * An instance of {@link RevCommit} from JGit.
-   */
+  /** An instance of {@link RevCommit} from JGit. */
   private final RevCommit revCommit;
 
-  /**
-   * Author's identity.
-   */
+  /** Author's identity. */
   private PersonIdent authorIdentity;
 
-  /**
-   * Committer's identity.
-   */
+  /** Committer's identity. */
   private PersonIdent committerIdentity;
 
-  /**
-   * A signature if available.
-   */
+  /** A signature if available. */
   private byte[] signature;
 
   /**
@@ -79,7 +73,9 @@ public class GitCommit implements Commit {
   @Override
   public List<String> message() {
     return Arrays.stream(revCommit.getFullMessage().split("\\r?\\n"))
-        .map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .collect(Collectors.toList());
   }
 
   /**

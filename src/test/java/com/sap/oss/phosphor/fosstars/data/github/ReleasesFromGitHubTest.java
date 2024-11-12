@@ -127,7 +127,7 @@ public class ReleasesFromGitHubTest extends TestGitHubDataFetcherHolder {
 
     evaluateRepository(repository);
   }
-  
+
   private void evaluateRepository(final GHRepository repository) throws IOException {
     when(fetcher.github().getRepository(any())).thenReturn(repository);
     releasesFromGitHub = new ReleasesFromGitHub(fetcher);

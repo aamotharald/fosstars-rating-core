@@ -43,9 +43,7 @@ public class AbstractStaticScanToolsDataProviderTest extends GitHubDataFetcherTe
 
   private static class SastDataProvider extends AbstractStaticScanToolsDataProvider {
 
-    public SastDataProvider(
-        GitHubDataFetcher fetcher,
-        Set<Feature<?>> supportedFeatures) {
+    public SastDataProvider(GitHubDataFetcher fetcher, Set<Feature<?>> supportedFeatures) {
       super(fetcher, supportedFeatures);
     }
 

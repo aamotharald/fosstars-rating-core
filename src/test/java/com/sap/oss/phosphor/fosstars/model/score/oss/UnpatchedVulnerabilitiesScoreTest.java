@@ -26,15 +26,12 @@ public class UnpatchedVulnerabilitiesScoreTest {
   @Test
   public void testCalculate() {
     assertScore(
-        Score.INTERVAL,
-        SCORE,
-        setOf(VULNERABILITIES_IN_PROJECT.value(new Vulnerabilities())));
+        Score.INTERVAL, SCORE, setOf(VULNERABILITIES_IN_PROJECT.value(new Vulnerabilities())));
   }
 
   @Test
   public void testWithoutInfoAboutVulnerabilities() {
-    assertThrows(IllegalArgumentException.class, () ->
-      assertScore(Score.INTERVAL, SCORE, setOf()));
+    assertThrows(IllegalArgumentException.class, () -> assertScore(Score.INTERVAL, SCORE, setOf()));
   }
 
   @Test

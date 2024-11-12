@@ -75,8 +75,10 @@ public class OssSecurityGithubAdvisorTest {
     Advice advice = adviceList.get(0);
     assertFalse(advice.content().text().isEmpty());
     assertFalse(advice.content().links().isEmpty());
-    boolean foundLinkForSuggestingSecurityPolicy = advice.content().links().stream().anyMatch(
-        link -> "https://github.com/org/test/security/policy".equals(link.url.toString()));
+    boolean foundLinkForSuggestingSecurityPolicy =
+        advice.content().links().stream()
+            .anyMatch(
+                link -> "https://github.com/org/test/security/policy".equals(link.url.toString()));
     assertTrue(foundLinkForSuggestingSecurityPolicy);
   }
 
@@ -96,8 +98,9 @@ public class OssSecurityGithubAdvisorTest {
     Advice advice = adviceList.get(0);
     assertFalse(advice.content().text().isEmpty());
     assertFalse(advice.content().links().isEmpty());
-    boolean foundLinkForSuggestingSecurityPolicy = advice.content().links().stream().anyMatch(
-        link -> "https://find-sec-bugs.github.io/".equals(link.url.toString()));
+    boolean foundLinkForSuggestingSecurityPolicy =
+        advice.content().links().stream()
+            .anyMatch(link -> "https://find-sec-bugs.github.io/".equals(link.url.toString()));
     assertTrue(foundLinkForSuggestingSecurityPolicy);
   }
 
@@ -119,11 +122,19 @@ public class OssSecurityGithubAdvisorTest {
     Advice advice = adviceList.get(0);
     assertFalse(advice.content().text().isEmpty());
     assertFalse(advice.content().links().isEmpty());
-    boolean foundLinkForSuggestingRunBanditScan = advice.content().links().stream().anyMatch(
-        link -> "https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsrun".equals(link.url.toString()));
+    boolean foundLinkForSuggestingRunBanditScan =
+        advice.content().links().stream()
+            .anyMatch(
+                link ->
+                    "https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsrun"
+                        .equals(link.url.toString()));
     assertTrue(foundLinkForSuggestingRunBanditScan);
-    boolean foundLinkForExampleRunBanditScan = advice.content().links().stream().anyMatch(
-        link -> "https://github.com/TNLinc/CV/blob/main/.github/workflows/bandit.yml#L28".equals(link.url.toString()));
+    boolean foundLinkForExampleRunBanditScan =
+        advice.content().links().stream()
+            .anyMatch(
+                link ->
+                    "https://github.com/TNLinc/CV/blob/main/.github/workflows/bandit.yml#L28"
+                        .equals(link.url.toString()));
     assertTrue(foundLinkForExampleRunBanditScan);
 
     // expect an advice if the project doesn't check Bandit scans for commits
@@ -135,11 +146,19 @@ public class OssSecurityGithubAdvisorTest {
     advice = adviceList.get(0);
     assertFalse(advice.content().text().isEmpty());
     assertFalse(advice.content().links().isEmpty());
-    boolean foundLinkForSuggestingCheckBanditScanInPr = advice.content().links().stream().anyMatch(
-        link -> "https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-using-a-list-of-events".equals(link.url.toString()));
+    boolean foundLinkForSuggestingCheckBanditScanInPr =
+        advice.content().links().stream()
+            .anyMatch(
+                link ->
+                    "https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-using-a-list-of-events"
+                        .equals(link.url.toString()));
     assertTrue(foundLinkForSuggestingCheckBanditScanInPr);
-    boolean foundLinkForExampleCheckBanditScanInPr = advice.content().links().stream().anyMatch(
-        link -> "https://github.com/TNLinc/CV/blob/main/.github/workflows/bandit.yml#L3".equals(link.url.toString()));
+    boolean foundLinkForExampleCheckBanditScanInPr =
+        advice.content().links().stream()
+            .anyMatch(
+                link ->
+                    "https://github.com/TNLinc/CV/blob/main/.github/workflows/bandit.yml#L3"
+                        .equals(link.url.toString()));
     assertTrue(foundLinkForExampleCheckBanditScanInPr);
   }
 

@@ -10,24 +10,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * The class holds a configuration for {@link Application}.
- */
+/** The class holds a configuration for {@link Application}. */
 public class Config {
 
-  /**
-   * Where a cache file is located.
-   */
+  /** Where a cache file is located. */
   final String cacheFilename;
 
-  /**
-   * A config for reporting.
-   */
+  /** A config for reporting. */
   final List<ReportConfig> reportConfigs;
 
-  /**
-   * A config for {@link GitHubProjectFinder}.
-   */
+  /** A config for {@link GitHubProjectFinder}. */
   final GitHubProjectFinder.Config finderConfig;
 
   /**
@@ -81,5 +73,4 @@ public class Config {
     mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     return mapper.readValue(is, Config.class);
   }
-
 }

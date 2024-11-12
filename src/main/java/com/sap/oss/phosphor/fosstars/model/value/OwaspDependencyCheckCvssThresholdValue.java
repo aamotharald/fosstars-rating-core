@@ -6,14 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.feature.OwaspDependencyCheckCvssThreshold;
 import java.util.Objects;
 
-/**
- * This feature value contains a CVSS threshold used in OWASP Dependency Check.
- */
+/** This feature value contains a CVSS threshold used in OWASP Dependency Check. */
 public class OwaspDependencyCheckCvssThresholdValue extends DoubleValue {
 
-  /**
-   * Shows if a valid CVSS threshold is specified or not.
-   */
+  /** Shows if a valid CVSS threshold is specified or not. */
   private final boolean specified;
 
   /**
@@ -31,12 +27,12 @@ public class OwaspDependencyCheckCvssThresholdValue extends DoubleValue {
 
     super(feature, cvss);
     CVSS.check(cvss);
-    this.specified = specified; 
+    this.specified = specified;
   }
 
   /**
    * Checks if a valid CVSS threshold is specified or not.
-   *  
+   *
    * @return True if a valid threshold is set, false otherwise.
    */
   @JsonGetter("specified")
