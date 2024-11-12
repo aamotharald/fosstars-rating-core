@@ -69,6 +69,7 @@
   </distributionManagement>
 
   <properties>
+    <version.java>8</version.java>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.jackson>2.15.2</version.jackson>
     <version.commons-math3>3.6.1</version.commons-math3>
@@ -91,6 +92,17 @@
     <version.jsoup>1.16.1</version.jsoup>
     <version.okhttp>4.11.0</version.okhttp>
     <version.hamcrest>3.0</version.hamcrest>
+    <version.spotless-maven-plugin>2.43.0</version.spotless-maven-plugin>
+    <version.googleJavaFormat>1.24.0</version.googleJavaFormat>
+    <version.maven-checkstyle-plugin>3.1.2</version.maven-checkstyle-plugin>
+    <version.maven-gpg-plugin>3.1.0</version.maven-gpg-plugin>
+    <version.nexus-staging-maven-plugin>1.6.13</version.nexus-staging-maven-plugin>
+    <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+    <version.maven-source-plugin>3.3.0</version.maven-source-plugin>
+    <version.maven-javadoc-plugin>3.5.0</version.maven-javadoc-plugin>
+    <version.maven-surefire-plugin>3.1.2</version.maven-surefire-plugin>
+    <version.jacoco-maven-plugin>0.8.10</version.jacoco-maven-plugin>
+    <version.maven-assembly-plugin>3.6.0</version.maven-assembly-plugin>
   </properties>
 
   <build>
@@ -98,16 +110,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>${version.maven-compiler-plugin}</version>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>${version.java}</source>
+          <target>${version.java}</target>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>${version.maven-source-plugin}</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -120,10 +132,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>${version.maven-javadoc-plugin}</version>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>${version.java}</source>
+          <target>${version.java}</target>
           <failOnError>true</failOnError>
           <failOnWarnings>true</failOnWarnings>
           <additionalOptions>-Xdoclint:none</additionalOptions>
@@ -140,7 +152,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>${version.maven-surefire-plugin}</version>
         <configuration>
           <trimStackTrace>false</trimStackTrace>
           <argLine>-Duser.language=en -Duser.region=US</argLine>
@@ -149,7 +161,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.10</version>
+        <version>${version.jacoco-maven-plugin}</version>
         <executions>
           <execution>
             <goals>
@@ -163,7 +175,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>${version.maven-assembly-plugin}</version>
         <configuration>
           <finalName>fosstars-github-rating</finalName>
           <archive>
@@ -186,12 +198,32 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${version.spotless-maven-plugin}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <java>
+            <googleJavaFormat>
+              <version>${version.googleJavaFormat}</version>
+            </googleJavaFormat>
+          </java>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>${version.maven-checkstyle-plugin}</version>
         <configuration>
           <configLocation>google_checks.xml</configLocation>
-          <encoding>UTF-8</encoding>
+          <encoding>${project.build.sourceEncoding}</encoding>
           <consoleOutput>true</consoleOutput>
           <violationSeverity>warning</violationSeverity>
           <failsOnError>true</failsOnError>
@@ -222,7 +254,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>${version.maven-gpg-plugin}</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -236,7 +268,7 @@
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.13</version>
+            <version>${version.nexus-staging-maven-plugin}</version>
             <extensions>true</extensions>
             <configuration>
               <serverId>ossrh</serverId>
@@ -253,6 +285,7 @@
         <checkstyle.skip>true</checkstyle.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <skipAssembly>true</skipAssembly>
+        <spotless.apply.skip>true</spotless.apply.skip>
       </properties>
     </profile>
     <profile>
@@ -262,25 +295,12 @@
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <skipAssembly>false</skipAssembly>
         <skipTests>true</skipTests>
+        <spotless.apply.skip>true</spotless.apply.skip>
       </properties>
     </profile>
   </profiles>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${version.junit}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <version>${version.hamcrest}</version>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
@@ -332,12 +352,6 @@
       <version>${version.httpclient}</version>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-inline</artifactId>
-      <version>${version.mockito}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
       <version>${version.jackson}</version>
@@ -386,6 +400,24 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>${version.okhttp}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${version.junit}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>${version.hamcrest}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-inline</artifactId>
+      <version>${version.mockito}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
