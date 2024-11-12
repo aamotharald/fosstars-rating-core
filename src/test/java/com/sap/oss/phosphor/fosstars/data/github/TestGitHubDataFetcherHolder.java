@@ -2,7 +2,7 @@ package com.sap.oss.phosphor.fosstars.data.github;
 
 import static com.sap.oss.phosphor.fosstars.data.github.GitHubDataFetcher.REPOSITORIES_BASE_PATH;
 import static com.sap.oss.phosphor.fosstars.data.github.GitHubDataFetcher.REPOSITORIES_BASE_PATH_PROPERTY;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
@@ -39,7 +39,7 @@ public class TestGitHubDataFetcherHolder {
    *
    * @throws IOException If the initialization failed.
    */
-  @Before
+  @BeforeEach
   public void init() throws IOException {
     fetcher = spy(new TestGitHubDataFetcher(mock(GitHub.class)));
   }
@@ -49,7 +49,7 @@ public class TestGitHubDataFetcherHolder {
    *
    * @throws IOException If the cleanup failed.
    */
-  @After
+  @AfterEach
   public void cleanup() throws IOException {
     List<Path> deletedPaths = new ArrayList<>();
     fetcher.cleanup((url, repository, total) -> {

@@ -1,10 +1,11 @@
 package com.sap.oss.phosphor.fosstars.model.qa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,7 +22,7 @@ import com.sap.oss.phosphor.fosstars.model.value.IntegerValue;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.List;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ScoreVerifierTest {
 
@@ -131,13 +132,15 @@ public class ScoreVerifierTest {
     assertFalse(results.get(3).scoreValue.isNotApplicable());
   }
 
-  @Test(expected = VerificationFailedException.class)
-  public void testThatVerificationFails() throws VerificationFailedException {
-    ScoreVerifier verifier = new ScoreVerifier(
-        RatingRepository.INSTANCE.rating(SecurityRatingExample.class).score(),
-        TEST_VECTORS);
+  @Test
+  public void testThatVerificationFails() {
+    assertThrows(VerificationFailedException.class, () -> {
+      ScoreVerifier verifier = new ScoreVerifier(
+          RatingRepository.INSTANCE.rating(SecurityRatingExample.class).score(),
+          TEST_VECTORS);
 
-    verifier.verify();
+      verifier.verify();
+    });
   }
 
 }

@@ -1,10 +1,11 @@
 package com.sap.oss.phosphor.fosstars.model.qa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.RatingRepository;
 import com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures;
@@ -16,7 +17,7 @@ import com.sap.oss.phosphor.fosstars.model.rating.example.SecurityRatingExampleV
 import com.sap.oss.phosphor.fosstars.model.value.BooleanValue;
 import com.sap.oss.phosphor.fosstars.model.value.IntegerValue;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RatingVerifierTest {
 
@@ -89,13 +90,15 @@ public class RatingVerifierTest {
     assertFalse(result.scoreValue.isNotApplicable());
   }
 
-  @Test(expected = VerificationFailedException.class)
-  public void run() throws VerificationFailedException {
-    RatingVerifier verifier = new RatingVerifier(
-        RatingRepository.INSTANCE.rating(SecurityRatingExample.class),
-        TEST_VECTORS);
+  @Test
+  public void run() {
+    assertThrows(VerificationFailedException.class, () -> {
+      RatingVerifier verifier = new RatingVerifier(
+          RatingRepository.INSTANCE.rating(SecurityRatingExample.class),
+          TEST_VECTORS);
 
-    verifier.verify();
+      verifier.verify();
+    });
   }
 
 }

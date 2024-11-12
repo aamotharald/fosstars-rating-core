@@ -5,8 +5,8 @@ import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.RUNS_C
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.USES_BANDIT_SCAN_CHECKS;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.USES_CODEQL_CHECKS;
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import com.sap.oss.phosphor.fosstars.data.github.GitHubDataFetcher;
@@ -17,7 +17,7 @@ import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import java.io.IOException;
 import java.util.Set;
 import org.apache.commons.lang3.NotImplementedException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AbstractStaticScanToolsDataProviderTest extends GitHubDataFetcherTest {
 

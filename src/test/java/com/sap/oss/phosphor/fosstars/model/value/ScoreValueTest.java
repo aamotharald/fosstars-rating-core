@@ -6,10 +6,11 @@ import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeature
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.STATIC_CODE_ANALYSIS_DONE_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.PROJECT_ACTIVITY_SCORE_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.SECURITY_TESTING_SCORE_EXAMPLE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Rating;
 import com.sap.oss.phosphor.fosstars.model.RatingRepository;
@@ -24,8 +25,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ScoreValueTest {
 
@@ -34,7 +35,7 @@ public class ScoreValueTest {
   @Test
   public void testIncrease() {
     ScoreValue value = new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE);
-    Assert.assertEquals(Score.MIN, value.get(), ACCURACY);
+    Assertions.assertEquals(Score.MIN, value.get(), ACCURACY);
     value.increase(2.1);
     assertEquals(2.1, value.get(), ACCURACY);
     value.increase(4.9);
@@ -43,9 +44,10 @@ public class ScoreValueTest {
     assertEquals(Score.MAX, value.get(), ACCURACY);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIncreaseNegative() {
-    new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).increase(-1.0);
+    assertThrows(IllegalArgumentException.class, () ->
+      new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).increase(-1.0));
   }
 
   @Test
@@ -61,9 +63,10 @@ public class ScoreValueTest {
     assertEquals(Score.MIN, value.get(), ACCURACY);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testDecreaseNegative() {
-    new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).decrease(-1.0);
+    assertThrows(IllegalArgumentException.class, () ->
+      new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).decrease(-1.0));
   }
 
   @Test
@@ -103,25 +106,28 @@ public class ScoreValueTest {
     assertEquals(0.42, value.weight(), 0.01);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testNegativeWeight() {
-    new ScoreValue(
-        PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.0, 0.7, 10.0, Collections.emptyList())
-        .weight(-1);
+    assertThrows(IllegalArgumentException.class, () ->
+      new ScoreValue(
+          PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.0, 0.7, 10.0, Collections.emptyList())
+          .weight(-1));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testZeroWeight() {
-    new ScoreValue(
-        PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.0, 0.7, 10.0, Collections.emptyList())
-        .weight(0.0);
+    assertThrows(IllegalArgumentException.class, () ->
+      new ScoreValue(
+          PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.0, 0.7, 10.0, Collections.emptyList())
+          .weight(0.0));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testTooBigWeight() {
-    new ScoreValue(
-        PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.0, 0.7, 10.0, Collections.emptyList())
-        .weight(1.1);
+    assertThrows(IllegalArgumentException.class, () ->
+      new ScoreValue(
+          PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.0, 0.7, 10.0, Collections.emptyList())
+          .weight(1.1));
   }
 
   @Test
@@ -227,9 +233,10 @@ public class ScoreValueTest {
     assertEquals(3.0, notApplicable.orElse(3.0), ACCURACY);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void testGetWithUnknownValue() {
-    new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).makeUnknown().get();
+    assertThrows(IllegalStateException.class, () ->
+      new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE).makeUnknown().get());
   }
 
   @Test

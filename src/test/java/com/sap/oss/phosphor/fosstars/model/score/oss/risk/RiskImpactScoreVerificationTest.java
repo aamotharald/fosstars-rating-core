@@ -5,7 +5,7 @@ import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssRiskFeatures.CO
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssRiskFeatures.DATA_CONFIDENTIALITY;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssRiskFeatures.INTEGRITY_IMPACT;
 import static com.sap.oss.phosphor.fosstars.model.qa.TestVectorBuilder.newTestVector;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.sap.oss.phosphor.fosstars.TestUtils;
 import com.sap.oss.phosphor.fosstars.model.RatingRepository;
@@ -17,7 +17,7 @@ import com.sap.oss.phosphor.fosstars.model.qa.TestVectors;
 import com.sap.oss.phosphor.fosstars.model.qa.VerificationFailedException;
 import com.sap.oss.phosphor.fosstars.model.rating.oss.SecurityRiskIntroducedByOss;
 import java.util.Optional;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RiskImpactScoreVerificationTest {
 

@@ -2,8 +2,8 @@ package com.sap.oss.phosphor.fosstars.data.interactive;
 
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.VULNERABILITIES_IN_PROJECT;
 import static com.sap.oss.phosphor.fosstars.model.value.Vulnerability.Builder.newVulnerability;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.data.NoValueCache;
 import com.sap.oss.phosphor.fosstars.data.UserCallback;
@@ -12,7 +12,7 @@ import com.sap.oss.phosphor.fosstars.model.ValueSet;
 import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import com.sap.oss.phosphor.fosstars.model.value.ValueHashSet;
 import com.sap.oss.phosphor.fosstars.model.value.Vulnerabilities;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AskAboutUnpatchedVulnerabilitiesTest {
 

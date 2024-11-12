@@ -4,12 +4,13 @@ import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.PROJECT_ACTIVITY_SCORE_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.SECURITY_SCORE_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.SECURITY_TESTING_SCORE_EXAMPLE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.sap.oss.phosphor.fosstars.model.Confidence;
 import com.sap.oss.phosphor.fosstars.model.Feature;
@@ -28,7 +29,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class WeightedCompositeScoreTest {
 
@@ -98,57 +99,71 @@ public class WeightedCompositeScoreTest {
     assertEquals(7.54, value.get(), PRECISION);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithNegativeValue() {
-    new WeightedScoreImpl().value(-3.0);
+    assertThrows(IllegalArgumentException.class, () ->
+      new WeightedScoreImpl().value(-3.0));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithTooBigValue() {
-    new WeightedScoreImpl().value(42.0);
+    assertThrows(IllegalArgumentException.class, () ->
+      new WeightedScoreImpl().value(42.0));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithZeroWeights() {
-    ScoreWeights weights = ScoreWeights.createFor(
-        PROJECT_ACTIVITY_SCORE_EXAMPLE,
-        SECURITY_TESTING_SCORE_EXAMPLE);
-    weights.set(PROJECT_ACTIVITY_SCORE_EXAMPLE, new MutableWeight(0));
-    weights.set(SECURITY_SCORE_EXAMPLE, new MutableWeight(0));
+    assertThrows(IllegalArgumentException.class, () -> {
+      ScoreWeights weights = ScoreWeights.createFor(
+          PROJECT_ACTIVITY_SCORE_EXAMPLE,
+          SECURITY_TESTING_SCORE_EXAMPLE);
+      weights.set(PROJECT_ACTIVITY_SCORE_EXAMPLE, new MutableWeight(0));
+      weights.set(SECURITY_SCORE_EXAMPLE, new MutableWeight(0));
 
-    WeightedCompositeScore score = new WeightedCompositeScore(
-        "test",
-        setOf(PROJECT_ACTIVITY_SCORE_EXAMPLE, SECURITY_SCORE_EXAMPLE),
-        weights);
-    score.calculate();
+      WeightedCompositeScore score = new WeightedCompositeScore(
+          "test",
+          setOf(PROJECT_ACTIVITY_SCORE_EXAMPLE, SECURITY_SCORE_EXAMPLE),
+          weights);
+      score.calculate();
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testWithNullName() {
-    new WeightedCompositeScore(null, new FirstScore());
+    assertThrows(NullPointerException.class, () -> {
+      new WeightedCompositeScore(null, new FirstScore());
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testWithNullScoreList() {
-    new WeightedCompositeScore("test", (Score[]) null);
+    assertThrows(NullPointerException.class, () -> {
+      new WeightedCompositeScore("test", (Score[]) null);
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testWithNullScoreSet() {
-    new WeightedCompositeScore("test", null, ScoreWeights.createFor());
+    assertThrows(NullPointerException.class, () -> {
+      new WeightedCompositeScore("test", null, ScoreWeights.createFor());
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithEmptyScoreList() {
-    new WeightedCompositeScore("test");
+    assertThrows(IllegalArgumentException.class, () -> {
+      new WeightedCompositeScore("test");
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithEmptyScoreSet() {
-    new WeightedCompositeScore(
-        "test",
-        new HashSet<>(),
-        ScoreWeights.createFor(SECURITY_TESTING_SCORE_EXAMPLE));
+    assertThrows(IllegalArgumentException.class, () -> {
+      new WeightedCompositeScore(
+          "test",
+          new HashSet<>(),
+          ScoreWeights.createFor(SECURITY_TESTING_SCORE_EXAMPLE));
+    });
   }
 
   @Test

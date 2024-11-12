@@ -2,14 +2,15 @@ package com.sap.oss.phosphor.fosstars.model.value;
 
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.util.Json;
 import java.io.IOException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NotApplicableValueTest {
 
@@ -23,9 +24,10 @@ public class NotApplicableValueTest {
     assertTrue(NotApplicableValue.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).isNotApplicable());
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testGet() {
-    NotApplicableValue.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).get();
+    assertThrows(UnsupportedOperationException.class, () ->
+      NotApplicableValue.of(NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE).get());
   }
 
   @Test

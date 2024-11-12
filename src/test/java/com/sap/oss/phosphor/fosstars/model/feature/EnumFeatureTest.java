@@ -1,15 +1,16 @@
 package com.sap.oss.phosphor.fosstars.model.feature;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.value.EnumValue;
 import com.sap.oss.phosphor.fosstars.util.Json;
 import java.io.IOException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EnumFeatureTest {
 
@@ -39,13 +40,15 @@ public class EnumFeatureTest {
     assertSame(TestEnum.A, value.get());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testParseInvalid() {
-    EnumFeature<TestEnum> feature = new EnumFeature<>(TestEnum.class, "test");
-    EnumValue<TestEnum> value = feature.parse("D");
-    assertNotNull(value);
-    assertSame(feature, value.feature());
-    assertSame(TestEnum.A, value.get());
+    assertThrows(IllegalArgumentException.class, () -> {
+      EnumFeature<TestEnum> feature = new EnumFeature<>(TestEnum.class, "test");
+      EnumValue<TestEnum> value = feature.parse("D");
+      assertNotNull(value);
+      assertSame(feature, value.feature());
+      assertSame(TestEnum.A, value.get());
+    });
   }
 
   @Test

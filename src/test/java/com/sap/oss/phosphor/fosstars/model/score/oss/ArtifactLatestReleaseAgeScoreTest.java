@@ -3,6 +3,7 @@ package com.sap.oss.phosphor.fosstars.model.score.oss;
 import static com.sap.oss.phosphor.fosstars.TestUtils.assertScore;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.RELEASED_ARTIFACT_VERSIONS;
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.sap.oss.phosphor.fosstars.model.Score;
 import com.sap.oss.phosphor.fosstars.model.Value;
@@ -10,8 +11,8 @@ import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersion;
 import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersions;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.time.LocalDateTime;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ArtifactLatestReleaseAgeScoreTest {
 
@@ -44,7 +45,7 @@ public class ArtifactLatestReleaseAgeScoreTest {
     Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
         ArtifactVersions.of(version100, version110, version120));
     ScoreValue value = score.calculate(versions);
-    Assert.assertEquals(Double.valueOf(Score.MAX), value.get());
+    Assertions.assertEquals(Double.valueOf(Score.MAX), value.get());
   }
 
   @Test
@@ -58,7 +59,7 @@ public class ArtifactLatestReleaseAgeScoreTest {
     Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
         ArtifactVersions.of(version100, version110));
     ScoreValue value = score.calculate(versions);
-    Assert.assertEquals(Double.valueOf(5.0), value.get());
+    Assertions.assertEquals(Double.valueOf(5.0), value.get());
   }
 
   @Test
@@ -72,7 +73,7 @@ public class ArtifactLatestReleaseAgeScoreTest {
     Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
         ArtifactVersions.of(version100, version110));
     ScoreValue value = score.calculate(versions);
-    Assert.assertEquals(Double.valueOf(2.0), value.get());
+    Assertions.assertEquals(Double.valueOf(2.0), value.get());
   }
 
   @Test
@@ -84,11 +85,12 @@ public class ArtifactLatestReleaseAgeScoreTest {
     Value<ArtifactVersions> versions = RELEASED_ARTIFACT_VERSIONS.value(
         ArtifactVersions.of(version100));
     ScoreValue value = score.calculate(versions);
-    Assert.assertEquals(Double.valueOf(0.0), value.get());
+    Assertions.assertEquals(Double.valueOf(0.0), value.get());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithNoInfo() {
-    new ArtifactLatestReleaseAgeScore().calculate();
+    assertThrows(IllegalArgumentException.class, () ->
+      new ArtifactLatestReleaseAgeScore().calculate());
   }
 }

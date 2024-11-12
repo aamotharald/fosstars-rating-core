@@ -1,14 +1,15 @@
 package com.sap.oss.phosphor.fosstars.model.feature.example;
 
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import com.sap.oss.phosphor.fosstars.model.Value;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NumberOfContributorsLastMonthExampleTest {
 
@@ -36,9 +37,10 @@ public class NumberOfContributorsLastMonthExampleTest {
     assertFalse(NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0).isUnknown());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void negative() {
-    NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(-1);
+    assertThrows(IllegalArgumentException.class, () ->
+      NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(-1));
   }
 
   @Test

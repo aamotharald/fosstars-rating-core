@@ -7,7 +7,8 @@ import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.USES_U
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.allUnknown;
 import static com.sap.oss.phosphor.fosstars.model.qa.TestVectorBuilder.newTestVector;
 import static com.sap.oss.phosphor.fosstars.model.value.Language.CPP;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.qa.ScoreVerification;
 import com.sap.oss.phosphor.fosstars.model.qa.TestVectors;
@@ -16,15 +17,16 @@ import com.sap.oss.phosphor.fosstars.model.value.Languages;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MemorySafetyTestingScoreTest {
 
   private static final MemorySafetyTestingScore SCORE = new MemorySafetyTestingScore();
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithLackOfValues() {
-    SCORE.calculate(LANGUAGES.value(Languages.of(CPP)));
+    assertThrows(IllegalArgumentException.class, () ->
+      SCORE.calculate(LANGUAGES.value(Languages.of(CPP))));
   }
 
   @Test

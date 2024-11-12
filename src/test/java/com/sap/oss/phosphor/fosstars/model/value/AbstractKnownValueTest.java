@@ -1,10 +1,10 @@
 package com.sap.oss.phosphor.fosstars.model.value;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +16,7 @@ import com.sap.oss.phosphor.fosstars.util.Json;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AbstractKnownValueTest {
 
@@ -69,11 +69,9 @@ public class AbstractKnownValueTest {
     }).processIfUnknown(() -> fail("This should not be called!"));
 
     Value<String> unknown = new FeatureImpl("feature").unknown();
-    unknown.processIfKnown(object -> {
-      fail("this should not be reached");
-    }).processIfUnknown(() -> {
-      processedValues.add("unknown");
-    });
+    unknown.processIfKnown(object ->
+      fail("this should not be reached")).processIfUnknown(() ->
+      processedValues.add("unknown"));
 
     assertEquals(2, processedValues.size());
     assertEquals("test", processedValues.get(0));

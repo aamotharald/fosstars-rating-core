@@ -2,8 +2,8 @@ package com.sap.oss.phosphor.fosstars.data;
 
 import static com.sap.oss.phosphor.fosstars.TestUtils.PROJECT;
 import static java.util.Collections.singleton;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.data.interactive.AbstractInteractiveDataProvider;
 import com.sap.oss.phosphor.fosstars.model.Feature;
@@ -15,7 +15,7 @@ import com.sap.oss.phosphor.fosstars.model.value.ValueHashSet;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SimpleCompositeDataProviderTest {
 

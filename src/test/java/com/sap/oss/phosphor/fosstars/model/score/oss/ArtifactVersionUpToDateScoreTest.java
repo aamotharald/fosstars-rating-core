@@ -4,6 +4,7 @@ import static com.sap.oss.phosphor.fosstars.TestUtils.assertScore;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.ARTIFACT_VERSION;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.RELEASED_ARTIFACT_VERSIONS;
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.sap.oss.phosphor.fosstars.model.Score;
 import com.sap.oss.phosphor.fosstars.model.Value;
@@ -11,8 +12,8 @@ import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersion;
 import com.sap.oss.phosphor.fosstars.model.value.ArtifactVersions;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.time.LocalDateTime;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ArtifactVersionUpToDateScoreTest {
 
@@ -48,7 +49,7 @@ public class ArtifactVersionUpToDateScoreTest {
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("2.0.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
-    Assert.assertTrue(value.isUnknown());
+    Assertions.assertTrue(value.isUnknown());
   }
 
   @Test
@@ -65,7 +66,7 @@ public class ArtifactVersionUpToDateScoreTest {
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.2.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
-    Assert.assertEquals(Double.valueOf(10.0), value.get());
+    Assertions.assertEquals(Double.valueOf(10.0), value.get());
   }
 
   @Test
@@ -82,7 +83,7 @@ public class ArtifactVersionUpToDateScoreTest {
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
-    Assert.assertEquals(Double.valueOf(7.0), value.get());
+    Assertions.assertEquals(Double.valueOf(7.0), value.get());
   }
 
   @Test
@@ -98,7 +99,7 @@ public class ArtifactVersionUpToDateScoreTest {
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
-    Assert.assertEquals(Double.valueOf(9.0), value.get());
+    Assertions.assertEquals(Double.valueOf(9.0), value.get());
   }
 
   @Test
@@ -114,7 +115,7 @@ public class ArtifactVersionUpToDateScoreTest {
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.1.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
-    Assert.assertEquals(Double.valueOf(6.0), value.get());
+    Assertions.assertEquals(Double.valueOf(6.0), value.get());
   }
 
   @Test
@@ -128,7 +129,7 @@ public class ArtifactVersionUpToDateScoreTest {
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
-    Assert.assertEquals(Double.valueOf(2.0), value.get());
+    Assertions.assertEquals(Double.valueOf(2.0), value.get());
   }
 
   @Test
@@ -144,11 +145,12 @@ public class ArtifactVersionUpToDateScoreTest {
     Value<ArtifactVersion> version =
         ARTIFACT_VERSION.value(new ArtifactVersion("1.0.0", LocalDateTime.now()));
     ScoreValue value = score.calculate(versions, version);
-    Assert.assertEquals(Double.valueOf(0.0), value.get());
+    Assertions.assertEquals(Double.valueOf(0.0), value.get());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithNoInfo() {
-    new ArtifactVersionUpToDateScore().calculate();
+    assertThrows(IllegalArgumentException.class, () ->
+      new ArtifactVersionUpToDateScore().calculate());
   }
 }

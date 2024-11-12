@@ -5,9 +5,9 @@ import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.USES_G
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.USES_GOSEC_WITH_RULES;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,9 +26,9 @@ import java.util.Optional;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
@@ -40,7 +40,7 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
 
   private static LocalRepository localRepository;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() {
     try {
       repositoryDirectory = Files.createTempDirectory(PackageManagementTest.class.getName());
@@ -184,7 +184,7 @@ public class GoSecDataProviderTest extends TestGitHubDataFetcherHolder {
     }
   }
 
-  @AfterClass
+  @AfterAll
   public static void shutdown() {
     try {
       FileUtils.forceDeleteOnExit(repositoryDirectory.toFile());

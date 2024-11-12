@@ -3,9 +3,10 @@ package com.sap.oss.phosphor.fosstars.advice;
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.SECURITY_REVIEW_DONE_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.STATIC_CODE_ANALYSIS_DONE_EXAMPLE;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import com.sap.oss.phosphor.fosstars.util.Json;
@@ -13,7 +14,7 @@ import com.sap.oss.phosphor.fosstars.util.Yaml;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SimpleAdviceTest {
 
@@ -57,13 +58,15 @@ public class SimpleAdviceTest {
                 SECURITY_REVIEW_DONE_EXAMPLE, "Another advice.", Collections.emptyList())));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithDifferentFeatures() {
-    new SimpleAdvice(
-        new GitHubProject("org", "test"),
-        SECURITY_REVIEW_DONE_EXAMPLE.value(false),
-        new AdviceContent(
-            STATIC_CODE_ANALYSIS_DONE_EXAMPLE, "This is an advice.", Collections.emptyList()));
+    assertThrows(IllegalArgumentException.class, () -> {
+      new SimpleAdvice(
+          new GitHubProject("org", "test"),
+          SECURITY_REVIEW_DONE_EXAMPLE.value(false),
+          new AdviceContent(
+              STATIC_CODE_ANALYSIS_DONE_EXAMPLE, "This is an advice.", Collections.emptyList()));
+    });
   }
 
   @Test

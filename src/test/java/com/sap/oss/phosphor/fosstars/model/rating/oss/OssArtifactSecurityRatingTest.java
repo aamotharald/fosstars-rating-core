@@ -5,7 +5,7 @@ import static com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurity
 import static com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurityRating.ArtifactSecurityLabel.MODERATE;
 import static com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurityRating.ArtifactSecurityLabel.UNCLEAR;
 import static com.sap.oss.phosphor.fosstars.model.rating.oss.OssArtifactSecurityRating.ArtifactSecurityLabel.UNKNOWN;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import com.sap.oss.phosphor.fosstars.model.Rating;
@@ -17,7 +17,7 @@ import com.sap.oss.phosphor.fosstars.model.score.oss.OssArtifactSecurityScore;
 import com.sap.oss.phosphor.fosstars.model.value.RatingValue;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OssArtifactSecurityRatingTest {
 

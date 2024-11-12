@@ -5,9 +5,10 @@ import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeature
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.SECURITY_REVIEW_DONE_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.STATIC_CODE_ANALYSIS_DONE_EXAMPLE;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.advice.AdviceContentYamlStorage.RawAdviceContent;
 import com.sap.oss.phosphor.fosstars.advice.AdviceContentYamlStorage.RawLink;
@@ -20,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AdviceContentYamlStorageTest {
 
@@ -90,9 +91,10 @@ public class AdviceContentYamlStorageTest {
     }
   }
 
-  @Test(expected = IOException.class)
-  public void testWithNotExistingPath() throws IOException {
-    AdviceContentYamlStorage.loadFrom("does_not_exist.yml");
+  @Test
+  public void testWithNotExistingPath() {
+    assertThrows(IOException.class, () ->
+      AdviceContentYamlStorage.loadFrom("does_not_exist.yml"));
   }
 
   @Test

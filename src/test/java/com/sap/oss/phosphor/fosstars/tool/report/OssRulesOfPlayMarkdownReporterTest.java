@@ -5,9 +5,9 @@ import static com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRatin
 import static com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating.OssRulesOfPlayLabel.PASSED_WITH_WARNING;
 import static com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating.OssRulesOfPlayLabel.UNCLEAR;
 import static com.sap.oss.phosphor.fosstars.model.score.oss.OssRulesOfPlayScore.SCORE_WITH_WARNING;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.advice.oss.OssRulesOfPlayAdvisor;
 import com.sap.oss.phosphor.fosstars.model.Confidence;
@@ -28,7 +28,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OssRulesOfPlayMarkdownReporterTest {
 

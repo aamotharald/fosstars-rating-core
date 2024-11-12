@@ -28,7 +28,7 @@ import com.sap.oss.phosphor.fosstars.model.qa.RatingVerification;
 import com.sap.oss.phosphor.fosstars.model.qa.TestVectors;
 import com.sap.oss.phosphor.fosstars.model.qa.VerificationFailedException;
 import com.sap.oss.phosphor.fosstars.model.score.oss.OssSecurityScore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SecurityRiskIntroducedByOssVerificationTest {
 

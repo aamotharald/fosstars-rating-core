@@ -3,22 +3,24 @@ package com.sap.oss.phosphor.fosstars.model.score.oss;
 import static com.sap.oss.phosphor.fosstars.TestUtils.DELTA;
 import static com.sap.oss.phosphor.fosstars.TestUtils.assertScore;
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Confidence;
 import com.sap.oss.phosphor.fosstars.model.Score;
 import com.sap.oss.phosphor.fosstars.model.other.Utils;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ProjectSecurityTestingScoreTest {
 
   private static final ProjectSecurityTestingScore SCORE = new ProjectSecurityTestingScore();
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testCalculateWithNothing() {
-    SCORE.calculate();
+    assertThrows(IllegalArgumentException.class, () ->
+      SCORE.calculate());
   }
 
   @Test

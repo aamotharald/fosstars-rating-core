@@ -1,6 +1,6 @@
 package com.sap.oss.phosphor.fosstars.model.score.oss;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.sap.oss.phosphor.fosstars.ScoreCollector;
 import com.sap.oss.phosphor.fosstars.model.RatingRepository;
@@ -10,7 +10,7 @@ import com.sap.oss.phosphor.fosstars.model.qa.TestVectors;
 import com.sap.oss.phosphor.fosstars.model.qa.VerificationFailedException;
 import com.sap.oss.phosphor.fosstars.model.rating.oss.OssSecurityRating;
 import java.io.InputStream;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ScoreVerificationTest {
 

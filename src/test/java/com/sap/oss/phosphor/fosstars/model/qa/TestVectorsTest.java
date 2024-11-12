@@ -1,9 +1,9 @@
 package com.sap.oss.phosphor.fosstars.model.qa;
 
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures;
 import com.sap.oss.phosphor.fosstars.model.math.DoubleInterval;
@@ -12,7 +12,7 @@ import com.sap.oss.phosphor.fosstars.model.value.IntegerValue;
 import com.sap.oss.phosphor.fosstars.util.Json;
 import com.sap.oss.phosphor.fosstars.util.Yaml;
 import java.io.IOException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TestVectorsTest {
 

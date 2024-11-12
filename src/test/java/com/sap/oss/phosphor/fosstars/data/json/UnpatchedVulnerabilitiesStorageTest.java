@@ -1,16 +1,17 @@
 package com.sap.oss.phosphor.fosstars.data.json;
 
 import static com.sap.oss.phosphor.fosstars.model.value.Vulnerability.Builder.newVulnerability;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.value.Vulnerabilities;
 import com.sap.oss.phosphor.fosstars.model.value.Vulnerability.Resolution;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UnpatchedVulnerabilitiesStorageTest {
 
@@ -19,9 +20,10 @@ public class UnpatchedVulnerabilitiesStorageTest {
     assertNotNull(UnpatchedVulnerabilitiesStorage.load());
   }
 
-  @Test(expected = IOException.class)
-  public void notExisting() throws IOException {
-    UnpatchedVulnerabilitiesStorage.load("not/existing/file.json");
+  @Test
+  public void notExisting() {
+    assertThrows(IOException.class, () ->
+      UnpatchedVulnerabilitiesStorage.load("not/existing/file.json"));
   }
 
   @Test

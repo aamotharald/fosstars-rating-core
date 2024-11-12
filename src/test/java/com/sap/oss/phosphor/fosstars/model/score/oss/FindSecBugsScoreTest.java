@@ -4,7 +4,8 @@ import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.LANGUA
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.USES_FIND_SEC_BUGS;
 import static com.sap.oss.phosphor.fosstars.model.qa.TestVectorBuilder.newTestVector;
 import static com.sap.oss.phosphor.fosstars.model.value.Language.JAVA;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Score;
 import com.sap.oss.phosphor.fosstars.model.qa.ScoreVerification;
@@ -15,20 +16,22 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FindSecBugsScoreTest {
 
   private static final FindSecBugsScore SCORE = new FindSecBugsScore();
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithoutUsesFindSecBugs() {
-    SCORE.calculate(LANGUAGES.unknown());
+    assertThrows(IllegalArgumentException.class, () ->
+      SCORE.calculate(LANGUAGES.unknown()));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithoutLanguagesValue() {
-    SCORE.calculate(USES_FIND_SEC_BUGS.unknown());
+    assertThrows(IllegalArgumentException.class, () ->
+      SCORE.calculate(USES_FIND_SEC_BUGS.unknown()));
   }
 
   @Test

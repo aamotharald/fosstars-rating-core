@@ -4,8 +4,9 @@ import static com.sap.oss.phosphor.fosstars.TestUtils.assertScore;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.ARTIFACT_VERSION;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.RELEASED_ARTIFACT_VERSIONS;
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Confidence;
 import com.sap.oss.phosphor.fosstars.model.Score;
@@ -18,7 +19,7 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ArtifactReleaseHistoryScoreTest {
 
@@ -247,9 +248,10 @@ public class ArtifactReleaseHistoryScoreTest {
     assertEquals(0.0, value.get(), DELTA);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithNoInfo() {
-    new ArtifactReleaseHistoryScore().calculate();
+    assertThrows(IllegalArgumentException.class, () ->
+      new ArtifactReleaseHistoryScore().calculate());
   }
 
   @Test

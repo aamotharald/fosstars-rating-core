@@ -2,16 +2,16 @@ package com.sap.oss.phosphor.fosstars.model.feature.oss;
 
 import static com.sap.oss.phosphor.fosstars.model.value.Vulnerability.Builder.newVulnerability;
 import static com.sap.oss.phosphor.fosstars.model.value.Vulnerability.Resolution.UNPATCHED;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.CVSS;
 import com.sap.oss.phosphor.fosstars.model.value.CVSS.V3.Impact;
 import com.sap.oss.phosphor.fosstars.model.value.Vulnerabilities;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class VulnerabilitiesFeatureTest {
 

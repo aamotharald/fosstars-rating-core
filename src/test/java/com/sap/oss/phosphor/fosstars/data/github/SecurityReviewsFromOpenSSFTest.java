@@ -4,9 +4,9 @@ import static com.sap.oss.phosphor.fosstars.TestUtils.DELTA;
 import static com.sap.oss.phosphor.fosstars.TestUtils.PROJECT;
 import static com.sap.oss.phosphor.fosstars.data.github.SecurityReviewsFromOpenSSF.DATE_FORMAT;
 import static com.sap.oss.phosphor.fosstars.data.github.SecurityReviewsFromOpenSSF.SECURITY_REVIEWS_PROJECT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -36,7 +36,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SecurityReviewsFromOpenSSFTest extends TestGitHubDataFetcherHolder {
 

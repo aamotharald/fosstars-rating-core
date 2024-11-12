@@ -4,10 +4,11 @@ import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeature
 import static com.sap.oss.phosphor.fosstars.model.feature.example.ExampleFeatures.NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.PROJECT_ACTIVITY_SCORE_EXAMPLE;
 import static com.sap.oss.phosphor.fosstars.model.score.example.ExampleScores.SECURITY_TESTING_SCORE_EXAMPLE;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ConfidenceTest {
 
@@ -20,14 +21,16 @@ public class ConfidenceTest {
     Confidence.check(10.0);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testNegative() {
-    Confidence.check(-1);
+    assertThrows(IllegalArgumentException.class, () ->
+      Confidence.check(-1));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testToBig() {
-    Confidence.check(11);
+    assertThrows(IllegalArgumentException.class, () ->
+      Confidence.check(11));
   }
 
   @Test
@@ -77,8 +80,9 @@ public class ConfidenceTest {
         DELTA);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testMakeWithNoValues() {
-    Confidence.make();
+    assertThrows(IllegalArgumentException.class, () ->
+      Confidence.make());
   }
 }

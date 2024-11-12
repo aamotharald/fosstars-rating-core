@@ -51,10 +51,10 @@ import static com.sap.oss.phosphor.fosstars.model.value.Language.C;
 import static com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage.NOT_USED;
 import static com.sap.oss.phosphor.fosstars.model.value.PackageManager.MAVEN;
 import static com.sap.oss.phosphor.fosstars.model.value.SecurityReviews.noReviews;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.advice.oss.github.OssSecurityGithubAdvisor;
 import com.sap.oss.phosphor.fosstars.model.Feature;
@@ -69,9 +69,9 @@ import com.sap.oss.phosphor.fosstars.model.value.Vulnerabilities;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class PrettyPrinterTest {
 
@@ -127,7 +127,7 @@ public class PrettyPrinterTest {
 
   private static Locale savedLocale;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() {
     savedLocale = Locale.getDefault();
     Locale.setDefault(Locale.US);
@@ -147,8 +147,8 @@ public class PrettyPrinterTest {
       assertTrue(text.contains(printer.nameOf(value.feature())));
     }
     for (Feature<?> feature : RATING.allFeatures()) {
-      assertTrue(String.format("'%s' feature should be there!", feature.name()),
-          text.contains(printer.nameOf(feature)));
+      assertTrue(text.contains(printer.nameOf(feature)),
+          String.format("'%s' feature should be there!", feature.name()));
     }
     assertTrue(text.contains("Value"));
     assertTrue(text.contains("Confidence"));
@@ -193,7 +193,7 @@ public class PrettyPrinterTest {
         PrettyPrinter.printValueAndMax(9.0, 10.0));
   }
 
-  @AfterClass
+  @AfterAll
   public static void cleanup() {
     Locale.setDefault(savedLocale);
   }

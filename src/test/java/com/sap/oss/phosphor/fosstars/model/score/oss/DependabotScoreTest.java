@@ -9,8 +9,9 @@ import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.USES_G
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.setOf;
 import static com.sap.oss.phosphor.fosstars.model.value.Language.JAVA;
 import static com.sap.oss.phosphor.fosstars.model.value.PackageManager.MAVEN;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Confidence;
 import com.sap.oss.phosphor.fosstars.model.Score;
@@ -18,7 +19,7 @@ import com.sap.oss.phosphor.fosstars.model.other.Utils;
 import com.sap.oss.phosphor.fosstars.model.value.Languages;
 import com.sap.oss.phosphor.fosstars.model.value.PackageManagers;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DependabotScoreTest {
 
@@ -44,8 +45,9 @@ public class DependabotScoreTest {
     assertEquals(Confidence.MIN, scoreValue.confidence(), DELTA);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWithNoInfo() {
-    new DependencyScanScore().calculate();
+    assertThrows(IllegalArgumentException.class, () ->
+      new DependencyScanScore().calculate());
   }
 }

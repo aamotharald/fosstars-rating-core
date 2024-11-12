@@ -1,14 +1,15 @@
 package com.sap.oss.phosphor.fosstars.tool;
 
 import static com.sap.oss.phosphor.fosstars.tool.MavenScmFinder.normalizeGitHubProjectPath;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MavenScmFinderTest {
 
@@ -43,16 +44,18 @@ public class MavenScmFinderTest {
     }
   }
 
-  @Test(expected = IOException.class)
-  public void testNonParseableUrls() throws IOException {
-    List<String> inputSyntaxes = Arrays.asList(
-        "github.com/path/to/repo.git/",
-        "git@github.com:.git",
-        "git@github.com:/repo.git");
+  @Test
+  public void testNonParseableUrls() {
+    assertThrows(IOException.class, () -> {
+      List<String> inputSyntaxes = Arrays.asList(
+          "github.com/path/to/repo.git/",
+          "git@github.com:.git",
+          "git@github.com:/repo.git");
 
-    for (String url : inputSyntaxes) {
-      normalizeGitHubProjectPath(url);
-    }
+      for (String url : inputSyntaxes) {
+        normalizeGitHubProjectPath(url);
+      }
+    });
   }
   
   @Test

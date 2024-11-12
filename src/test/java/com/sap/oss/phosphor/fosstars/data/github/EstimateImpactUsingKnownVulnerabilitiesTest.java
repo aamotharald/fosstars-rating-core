@@ -12,10 +12,10 @@ import static com.sap.oss.phosphor.fosstars.model.value.CVSS.V3.Impact.LOW;
 import static com.sap.oss.phosphor.fosstars.model.value.CVSS.V3.Impact.NONE;
 import static java.lang.String.format;
 import static java.util.Collections.singleton;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.sap.oss.phosphor.fosstars.data.AbstractDataProvider;
 import com.sap.oss.phosphor.fosstars.model.Feature;
@@ -30,7 +30,7 @@ import com.sap.oss.phosphor.fosstars.model.value.Vulnerability;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EstimateImpactUsingKnownVulnerabilitiesTest extends TestGitHubDataFetcherHolder {
 

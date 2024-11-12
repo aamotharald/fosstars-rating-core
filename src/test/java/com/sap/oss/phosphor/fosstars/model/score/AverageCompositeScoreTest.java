@@ -1,10 +1,11 @@
 package com.sap.oss.phosphor.fosstars.model.score;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.Confidence;
 import com.sap.oss.phosphor.fosstars.model.Feature;
@@ -14,7 +15,7 @@ import com.sap.oss.phosphor.fosstars.model.feature.DoubleFeature;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AverageCompositeScoreTest {
 
@@ -53,14 +54,16 @@ public class AverageCompositeScoreTest {
     assertEquals(7.54, value.get(), PRECISION);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void negativeValue() {
-    new TestAverageCompositeScore().value(-3.0);
+    assertThrows(IllegalArgumentException.class, () ->
+      new TestAverageCompositeScore().value(-3.0));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void tooBigValue() {
-    new TestAverageCompositeScore().value(42.0);
+    assertThrows(IllegalArgumentException.class, () ->
+      new TestAverageCompositeScore().value(42.0));
   }
 
   @Test

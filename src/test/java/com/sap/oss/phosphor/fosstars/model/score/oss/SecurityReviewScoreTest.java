@@ -6,16 +6,16 @@ import static com.sap.oss.phosphor.fosstars.model.Score.MIN;
 import static com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures.SECURITY_REVIEWS;
 import static com.sap.oss.phosphor.fosstars.model.value.SecurityReview.NO_INFO_ABOUT_CHANGES;
 import static java.time.temporal.ChronoUnit.DAYS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import com.sap.oss.phosphor.fosstars.model.value.SecurityReview;
 import com.sap.oss.phosphor.fosstars.model.value.SecurityReviews;
 import java.sql.Date;
 import java.time.Instant;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SecurityReviewScoreTest {
 

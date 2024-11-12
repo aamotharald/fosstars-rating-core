@@ -3,10 +3,10 @@ package com.sap.oss.phosphor.fosstars.tool.format;
 import static com.sap.oss.phosphor.fosstars.model.other.Utils.allUnknown;
 import static com.sap.oss.phosphor.fosstars.model.score.oss.OssRulesOfPlayScoreTest.allRulesPassed;
 import static java.util.Collections.emptyList;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sap.oss.phosphor.fosstars.advice.oss.OssRulesOfPlayAdvisor;
 import com.sap.oss.phosphor.fosstars.model.RatingRepository;
@@ -20,8 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
 
 public class OssRulesOfPlayRatingMarkdownFormatterTest {
 
@@ -145,7 +145,7 @@ public class OssRulesOfPlayRatingMarkdownFormatterTest {
     assertTrue(text.contains("rl-readme_file-1"));
   }
 
-  @AfterClass
+  @AfterAll
   public static void shutdown() throws IOException {
     FileUtils.forceDeleteOnExit(CONFIG_PATH.toFile());
   }
