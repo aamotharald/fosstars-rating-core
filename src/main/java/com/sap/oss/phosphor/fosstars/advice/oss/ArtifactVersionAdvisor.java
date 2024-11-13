@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/** An advisor for used version in comparison to released versions. */
+/**
+ * An advisor for used version in comparison to released versions.
+ */
 public class ArtifactVersionAdvisor extends AbstractOssAdvisor {
 
   /**
@@ -38,8 +40,8 @@ public class ArtifactVersionAdvisor extends AbstractOssAdvisor {
       throws MalformedURLException {
 
     Optional<Value<ArtifactVersion>> versionValue = findValue(usedValues, ARTIFACT_VERSION);
-    Optional<Value<ArtifactVersions>> releasedVersionsValue =
-        findValue(usedValues, RELEASED_ARTIFACT_VERSIONS);
+    Optional<Value<ArtifactVersions>> releasedVersionsValue = findValue(usedValues,
+        RELEASED_ARTIFACT_VERSIONS);
 
     if (isAllVersionInformationAvailable(versionValue, releasedVersionsValue)) {
       // isAllVersionInformationAvailable() checks that both values are present and known
@@ -48,8 +50,7 @@ public class ArtifactVersionAdvisor extends AbstractOssAdvisor {
 
       if (!latestArtifact.version().equals(usedVersion)) {
         List<AdviceContent> advice =
-            adviceStorage.adviceFor(
-                versionValue.get().feature(),
+            adviceStorage.adviceFor(versionValue.get().feature(),
                 getAdviceContext(usedVersion, latestArtifact.version()));
 
         return advice.stream()
@@ -71,14 +72,13 @@ public class ArtifactVersionAdvisor extends AbstractOssAdvisor {
 
     Value<ArtifactVersion> version = versionValue.get();
     Value<ArtifactVersions> releasedVersions = releasedVersionsValue.get();
-    return !version.isUnknown()
-        && !releasedVersions.isUnknown()
-        && !version.get().version().isEmpty()
-        && !releasedVersions.get().empty();
+    return !version.isUnknown() && !releasedVersions.isUnknown()
+        && !version.get().version().isEmpty() && !releasedVersions.get().empty();
   }
 
   private ArtifactVersion getLatestVersion(Value<ArtifactVersions> releasedVersionsValue) {
-    Collection<ArtifactVersion> releasedVersions = releasedVersionsValue.get().sortByReleaseDate();
+    Collection<ArtifactVersion> releasedVersions =
+        releasedVersionsValue.get().sortByReleaseDate();
     if (releasedVersions.isEmpty()) {
       return ArtifactVersion.EMPTY;
     }

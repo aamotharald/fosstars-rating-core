@@ -4,16 +4,24 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.BooleanSupplier;
 
-/** A conditional Markdown element that selects between to options. */
+/**
+ * A conditional Markdown element that selects between to options.
+ */
 public class MarkdownChoice extends AbstractMarkdownElement {
 
-  /** The condition. */
+  /**
+   * The condition.
+   */
   private final BooleanSupplier condition;
 
-  /** The first option that is selected if the condition is true. */
+  /**
+   * The first option that is selected if the condition is true.
+   */
   private final MarkdownElement firstOption;
 
-  /** The second option that is selected if the condition is false. */
+  /**
+   * The second option that is selected if the condition is false.
+   */
   private final MarkdownElement secondOption;
 
   /**

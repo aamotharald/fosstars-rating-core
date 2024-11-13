@@ -8,13 +8,19 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/** A data matcher to search for a specific CVE in NVD database for an artifact. */
+/**
+ * A data matcher to search for a specific CVE in NVD database for an artifact.
+ */
 public class NvdEntryArtifactCveMatcher implements Matcher {
 
-  /** A logger. */
+  /**
+   * A logger.
+   */
   private static final Logger LOGGER = LogManager.getLogger(NvdEntryArtifactCveMatcher.class);
 
-  /** A CVE id. */
+  /**
+   * A CVE id.
+   */
   private final String cveId;
 
   /**

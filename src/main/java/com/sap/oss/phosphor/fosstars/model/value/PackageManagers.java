@@ -13,32 +13,15 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-/** A set of package managers. */
+/**
+ * A set of package managers.
+ */
 public class PackageManagers implements Iterable<PackageManager> {
 
-  /** A set of package managers. */
+  /**
+   * A set of package managers.
+   */
   private final Set<PackageManager> packageManagers;
-
-  /**
-   * Initializes a set of package managers.
-   *
-   * @param packageManagers A set of package managers.
-   */
-  @JsonCreator
-  public PackageManagers(@JsonProperty("packageManagers") Set<PackageManager> packageManagers) {
-
-    Objects.requireNonNull(packageManagers, "Package managers can't be null!");
-    this.packageManagers = new TreeSet<>(packageManagers);
-  }
-
-  /**
-   * Initializes a set of package managers.
-   *
-   * @param packageManagers A number of package managers.
-   */
-  public PackageManagers(PackageManager... packageManagers) {
-    this(setOf(packageManagers));
-  }
 
   /**
    * Creates an empty set of package managers.
@@ -57,6 +40,28 @@ public class PackageManagers implements Iterable<PackageManager> {
    */
   public static PackageManagers from(PackageManager... entries) {
     return new PackageManagers(entries);
+  }
+
+  /**
+   * Initializes a set of package managers.
+   *
+   * @param packageManagers A set of package managers.
+   */
+  @JsonCreator
+  public PackageManagers(
+      @JsonProperty("packageManagers") Set<PackageManager> packageManagers) {
+
+    Objects.requireNonNull(packageManagers, "Package managers can't be null!");
+    this.packageManagers = new TreeSet<>(packageManagers);
+  }
+
+  /**
+   * Initializes a set of package managers.
+   *
+   * @param packageManagers A number of package managers.
+   */
+  public PackageManagers(PackageManager... packageManagers) {
+    this(setOf(packageManagers));
   }
 
   /**
@@ -140,7 +145,7 @@ public class PackageManagers implements Iterable<PackageManager> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof PackageManagers)) {
+    if (o instanceof PackageManagers == false) {
       return false;
     }
     PackageManagers that = (PackageManagers) o;

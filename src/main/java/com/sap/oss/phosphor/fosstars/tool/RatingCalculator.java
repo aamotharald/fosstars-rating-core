@@ -7,7 +7,9 @@ import com.sap.oss.phosphor.fosstars.model.Subject;
 import java.io.IOException;
 import java.util.Optional;
 
-/** A calculator that calculates a rating for a project. */
+/**
+ * A calculator that calculates a rating for a project.
+ */
 public interface RatingCalculator {
 
   /**
@@ -44,9 +46,9 @@ public interface RatingCalculator {
   RatingCalculator calculateFor(Subject subject) throws IOException;
 
   /**
-   * An adaptor that adapts a subject for a data provider. For example, if a subject is not
-   * supported by a data provider, but the subject has another subject inside, which is supported by
-   * the provider, then the adaptor can return it.
+   * An adaptor that adapts a subject for a data provider.
+   * For example, if a subject is not supported by a data provider, but the subject
+   * has another subject inside, which is supported by the provider, then the adaptor can return it.
    */
   interface SubjectAdaptor {
 

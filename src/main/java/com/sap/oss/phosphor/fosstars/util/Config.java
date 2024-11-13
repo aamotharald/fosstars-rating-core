@@ -8,19 +8,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
-/** The class contains helper methods for configuring objects. */
+/**
+ * The class contains helper methods for configuring objects.
+ */
 public class Config {
 
   /**
-   * Looks for default YAML configuration files for a class. Default config file names are based on
-   * the class name. If a canonical class name is "com.sap.CustomClass", then the method will try to
-   * load the following configs:
-   *
+   * Looks for default YAML configuration files for a class.
+   * Default config file names are based on the class name. If a canonical class name
+   * is "com.sap.CustomClass", then the method will try to load the following configs:
    * <ul>
-   *   <li>com.sap.CustomClass.config.yml
-   *   <li>com.sap.CustomClass.config.yaml
-   *   <li>CustomClass.config.yml
-   *   <li>CustomClass.config.yaml
+   *   <li>com.sap.CustomClass.config.yml</li>
+   *   <li>com.sap.CustomClass.config.yaml</li>
+   *   <li>CustomClass.config.yml</li>
+   *   <li>CustomClass.config.yaml</li>
    * </ul>
    *
    * @param clazz The class.

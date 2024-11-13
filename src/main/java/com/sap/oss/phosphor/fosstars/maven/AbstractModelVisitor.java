@@ -5,7 +5,9 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.ReportPlugin;
 
-/** An implementation of {@link ModelVisitor} that does nothing. */
+/**
+ * An implementation of {@link ModelVisitor} that does nothing.
+ */
 public abstract class AbstractModelVisitor implements ModelVisitor {
 
   @Override

@@ -18,11 +18,10 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 
 /**
- * This data provider checks if an open-source project signs its JAR artifacts. In particular, the
- * data provider checks if a project uses <a
- * href="http://maven.apache.org/plugins/maven-gpg-plugin/">Maven GPG plugin</a>.
- *
- * <p>The provider fills out the {@link OssFeatures#SIGNS_ARTIFACTS} feature.
+ * <p>This data provider checks if an open-source project signs its JAR artifacts. In particular,
+ * the data provider checks if a project uses
+ * <a href="http://maven.apache.org/plugins/maven-gpg-plugin/">Maven GPG plugin</a>.</p>
+ * <p>The provider fills out the {@link OssFeatures#SIGNS_ARTIFACTS} feature.</p>
  */
 public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
@@ -33,23 +32,6 @@ public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boo
    */
   public SignsJarArtifacts(GitHubDataFetcher fetcher) {
     super(fetcher);
-  }
-
-  /**
-   * Checks a plugin is the Maven GPG plugin.
-   *
-   * @param plugin The plugin to be checked.
-   * @return True if the plugin is the Maven GPG plugin, false otherwise.
-   */
-  private static boolean isMavenGpg(Plugin plugin) {
-    return plugin != null
-        && "org.apache.maven.plugins".equals(plugin.getGroupId())
-        && "maven-gpg-plugin".equals(plugin.getArtifactId());
-  }
-
-  /** Creates a new visitor for searching for Maven GPG plugin in a build section of a POM file. */
-  private static Visitor withVisitor() {
-    return new Visitor();
   }
 
   @Override
@@ -85,7 +67,28 @@ public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boo
     }
   }
 
-  /** A visitor for searching for Maven GPG plugin in a build section of a POM file. */
+  /**
+   * Checks a plugin is the Maven GPG plugin.
+   *
+   * @param plugin The plugin to be checked.
+   * @return True if the plugin is the Maven GPG plugin, false otherwise.
+   */
+  private static boolean isMavenGpg(Plugin plugin) {
+    return plugin != null
+        && "org.apache.maven.plugins".equals(plugin.getGroupId())
+        && "maven-gpg-plugin".equals(plugin.getArtifactId());
+  }
+
+  /**
+   * Creates a new visitor for searching for Maven GPG plugin in a build section of a POM file.
+   */
+  private static Visitor withVisitor() {
+    return new Visitor();
+  }
+
+  /**
+   * A visitor for searching for Maven GPG plugin in a build section of a POM file.
+   */
   private static class Visitor extends AbstractModelVisitor {
 
     /**
@@ -99,5 +102,7 @@ public class SignsJarArtifacts extends CachedSingleFeatureGitHubDataProvider<Boo
         result = true;
       }
     }
+
   }
+
 }

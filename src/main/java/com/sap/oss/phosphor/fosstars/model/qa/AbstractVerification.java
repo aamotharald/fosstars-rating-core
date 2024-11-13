@@ -2,10 +2,14 @@ package com.sap.oss.phosphor.fosstars.model.qa;
 
 import java.util.Objects;
 
-/** This is a base class for verification procedures for both ratings and scores. */
+/**
+ * This is a base class for verification procedures for both ratings and scores.
+ */
 public abstract class AbstractVerification {
 
-  /** A list of test vectors. */
+  /**
+   * A list of test vectors.
+   */
   protected final TestVectors vectors;
 
   /**
@@ -15,6 +19,15 @@ public abstract class AbstractVerification {
    */
   AbstractVerification(TestVectors vectors) {
     this.vectors = check(vectors);
+  }
+
+  /**
+   * Get the test vectors.
+   *
+   * @return The test vectors.
+   */
+  public TestVectors vectors() {
+    return vectors;
   }
 
   /**
@@ -34,12 +47,4 @@ public abstract class AbstractVerification {
     return vectors;
   }
 
-  /**
-   * Get the test vectors.
-   *
-   * @return The test vectors.
-   */
-  public TestVectors vectors() {
-    return vectors;
-  }
 }

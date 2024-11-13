@@ -8,10 +8,12 @@ import java.nio.file.Path;
 import java.util.Set;
 
 /**
- * An interface of a data provider which knows how to gather feature value for specific subjects
- * such as open source projects. A data provider may be configured with a {@link UserCallback} which
- * allows asking a user for data. A data provider may ignore the specified {@link UserCallback} if
- * it's able to gather data without a user.
+ * An interface of a data provider which knows
+ * how to gather feature value for specific subjects such as open source projects.
+ * A data provider may be configured with a {@link UserCallback}
+ * which allows asking a user for data.
+ * A data provider may ignore the specified {@link UserCallback}
+ * if it's able to gather data without a user.
  */
 public interface DataProvider {
 

@@ -7,71 +7,65 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-/** A visitor for visiting elements in a {@link GitHubProject}. */
+/**
+ * A visitor for visiting elements in a {@link GitHubProject}.
+ */
 public interface GitHubVisitor {
+
+  /**
+   * Known locations of elements in a {@link GitHubProject}.
+   */
+  enum Location {
+    PRE_COMMIT_HOOK, INI_CONFIG, TYPE_PY, GITHUB_ACTION
+  }
 
   /**
    * Visit the pre-commit hook config file.
    *
    * @param repository The {@link LocalRepository}.
    * @param matchers map of {@link Predicate}s to parse for a specific content and match the
-   *     predicate.
+   *        predicate.
    * @param locations A set of locations that tells where the plugin is located.
    * @throws IOException if something went wrong.
    */
-  void visitPreCommitHook(
-      LocalRepository repository, Map<String, Predicate<String>> matchers, Set<Location> locations)
-      throws IOException;
+  void visitPreCommitHook(LocalRepository repository, Map<String, Predicate<String>> matchers,
+      Set<Location> locations) throws IOException;
 
   /**
    * Visit the *.ini files and check for the config.
    *
    * @param repository The {@link LocalRepository}.
    * @param matchers map of {@link Predicate}s to parse for a specific content and match the
-   *     predicate.
+   *        predicate.
    * @param locations A set of locations that tells where the plugin is located.
    * @throws IOException if something went wrong.
    */
-  void visitIniConfig(
-      LocalRepository repository, Map<String, Predicate<String>> matchers, Set<Location> locations)
-      throws IOException;
+  void visitIniConfig(LocalRepository repository, Map<String, Predicate<String>> matchers,
+      Set<Location> locations) throws IOException;
 
   /**
    * Visit the source code and check for the config.
    *
    * @param repository The {@link LocalRepository}.
    * @param matchers map of {@link Predicate}s to parse for a specific content and match the
-   *     predicate.
+   *        predicate.
    * @param locations A set of locations that tells where the plugin is located.
    * @throws IOException if something went wrong.
    */
-  void visitSourceCode(
-      LocalRepository repository, Map<String, Predicate<String>> matchers, Set<Location> locations)
-      throws IOException;
+  void visitSourceCode(LocalRepository repository, Map<String, Predicate<String>> matchers,
+      Set<Location> locations) throws IOException;
 
   /**
    * Visit the GitHub action and check for the config.
    *
    * @param repository The {@link LocalRepository}.
    * @param matchers map of {@link Predicate}s to parse for a specific content and match the
-   *     predicate.
+   *        predicate.
    * @param configMatchers map of {@link Predicate}s to parse for a specific content and match the
-   *     specific configs with the given predicate.
+   *        specific configs with the given predicate.
    * @param locations A set of locations that tells where the plugin is located.
    * @throws IOException if something went wrong.
    */
-  void visitGitHubAction(
-      LocalRepository repository,
-      Map<String, Predicate<String>> matchers,
-      Map<String, Predicate<String>> configMatchers,
-      Set<Location> locations)
-      throws IOException;
-
-  /** Known locations of elements in a {@link GitHubProject}. */
-  enum Location {
-    PRE_COMMIT_HOOK,
-    INI_CONFIG,
-    TYPE_PY,
-    GITHUB_ACTION
-  }
+  void visitGitHubAction(LocalRepository repository, Map<String, Predicate<String>> matchers,
+      Map<String, Predicate<String>> configMatchers, Set<Location> locations) throws IOException;
 }

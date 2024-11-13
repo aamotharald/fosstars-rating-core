@@ -5,23 +5,37 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/** Defines a vulnerability in the NVD data feed. */
+/**
+ * Defines a vulnerability in the NVD data feed.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"cve", "configurations", "impact", "publishedDate", "lastModifiedDate"})
+@JsonPropertyOrder({
+    "cve",
+    "configurations",
+    "impact",
+    "publishedDate",
+    "lastModifiedDate"
+})
 // the properties below are ignored because they are not used
 // that saves a bit of memory
 // when they become necessary, then can be enabled
-@JsonIgnoreProperties({"lastModifiedDate"})
+@JsonIgnoreProperties({
+    "lastModifiedDate"
+})
 public class NvdEntry {
 
   @JsonProperty("cve")
   private CVE cve;
 
-  /** Defines the set of product configurations for a NVD applicability statement. */
+  /**
+   * Defines the set of product configurations for a NVD applicability statement.
+   */
   @JsonProperty("configurations")
   private Configurations configurations;
 
-  /** Impact scores for a vulnerability as found on NVD. */
+  /**
+   * Impact scores for a vulnerability as found on NVD.
+   */
   @JsonProperty("impact")
   private Impact impact;
 

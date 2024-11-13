@@ -4,10 +4,14 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-/** A formatted identifier of a rule of play from the OSS RoP rating. */
+/**
+ * A formatted identifier of a rule of play from the OSS RoP rating.
+ */
 public class MarkdownRuleIdentifier extends AbstractMarkdownElement {
 
-  /** A raw identifier. */
+  /**
+   * A raw identifier.
+   */
   private final MarkdownElement identifier;
 
   /**

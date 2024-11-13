@@ -22,20 +22,32 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/** A base class for scores. */
+/**
+ * A base class for scores.
+ */
 public abstract class AbstractScore implements Score {
 
-  /** No description. */
+  /**
+   * No description.
+   */
   static final String EMPTY_DESCRIPTION = "";
 
-  /** A logger. */
-  @JsonIgnore protected final Logger logger = LogManager.getLogger(getClass());
-
-  /** Score name. */
+  /**
+   * Score name.
+   */
   private final String name;
 
-  /** Description. */
-  @JsonIgnore private final String description;
+  /**
+   * Description.
+   */
+  @JsonIgnore
+  private final String description;
+
+  /**
+   * A logger.
+   */
+  @JsonIgnore
+  protected final Logger logger = LogManager.getLogger(getClass());
 
   /**
    * Initializes a new score.
@@ -62,120 +74,6 @@ public abstract class AbstractScore implements Score {
 
     this.name = name;
     this.description = description;
-  }
-
-  /**
-   * Collect all features which are used by a specified score and its sub-scores. The method browses
-   * the underlying sub-scores recursively and adds features to a specified set.
-   *
-   * @param score The score.
-   * @param allFeatures A set of features to be filled out.
-   * @return The specified set of features.
-   */
-  private static Set<Feature<?>> fillOutFeatures(Score score, Set<Feature<?>> allFeatures) {
-    allFeatures.addAll(score.features());
-    for (Score subScore : score.subScores()) {
-      fillOutFeatures(subScore, allFeatures);
-    }
-    return allFeatures;
-  }
-
-  /**
-   * The method calculates a score value for a specified score if the value is not available.
-   *
-   * @param score The score.
-   * @param values The values that should be used to calculate the score value.
-   * @return The calculated score value.
-   * @see #calculateIfNecessary(Score, ValueSet)
-   */
-  protected static ScoreValue calculateIfNecessary(Score score, Value<?>... values) {
-    return calculateIfNecessary(score, ValueHashSet.from(values));
-  }
-
-  /**
-   * The method calculates a value for a specified score if the value is not available. First, the
-   * method checks if the set of values already contains a value for the specified score. If yes,
-   * the method just returns the existing value. Otherwise, the method tries to calculate a value of
-   * the specified score.
-   *
-   * @param score The score.
-   * @param values The set of values.
-   * @return A value of the specified score.
-   * @throws IllegalArgumentException If a value for the score is not a {@link ScoreValue}.
-   */
-  protected static ScoreValue calculateIfNecessary(Score score, ValueSet values) {
-    Optional<Value<Double>> something = values.of(score);
-
-    // if the set of values doesn't contain a value for the specified score, then calculate it
-    Value<Double> value = something.orElseGet(() -> UnknownValue.of(score));
-    if (value.isUnknown()) {
-      return score.calculate(values);
-    }
-
-    // if the set of values contain a value for the specified score, then return it
-    if (value instanceof ScoreValue) {
-      return (ScoreValue) value;
-    }
-
-    throw new IllegalArgumentException(
-        String.format("Hey! I expected a ScoreValue for a score but got %s!", value.getClass()));
-  }
-
-  /**
-   * Checks if all values are unknown.
-   *
-   * @param values The values to be checked.
-   * @return True if all values are unknown, false otherwise.
-   * @throws IllegalArgumentException If values are empty.
-   */
-  protected static boolean allUnknown(Value<?>... values) {
-    return allUnknown(Arrays.asList(values));
-  }
-
-  /**
-   * Checks if all values are unknown.
-   *
-   * @param values A list of values to be checked.
-   * @return True if all values are unknown, false otherwise.
-   * @throws IllegalArgumentException If values are empty.
-   */
-  protected static boolean allUnknown(List<Value<?>> values) {
-    Objects.requireNonNull(values, "Oh no! Values is null!");
-
-    if (values.size() == 0) {
-      throw new IllegalStateException("Oh no! Values is empty!");
-    }
-
-    for (Value<?> value : values) {
-      if (!value.isUnknown()) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  /**
-   * Checks if all values are N/A.
-   *
-   * @param values The values to be checked.
-   * @return True if all values are N/A, false otherwise.
-   * @throws IllegalArgumentException If values are empty.
-   */
-  protected static boolean allNotApplicable(Value<?>... values) {
-    Objects.requireNonNull(values, "Oh no! Values is null!");
-
-    if (values.length == 0) {
-      throw new IllegalStateException("Oh no! Values is empty!");
-    }
-
-    for (Value<?> value : values) {
-      if (!value.isNotApplicable()) {
-        return false;
-      }
-    }
-
-    return true;
   }
 
   @Override
@@ -238,7 +136,7 @@ public abstract class AbstractScore implements Score {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof AbstractScore)) {
+    if (o instanceof AbstractScore == false) {
       return false;
     }
     AbstractScore that = (AbstractScore) o;
@@ -265,13 +163,30 @@ public abstract class AbstractScore implements Score {
         return subScore;
       }
     }
-    throw new IllegalArgumentException(
-        String.format("Sub-score %s not found", clazz.getCanonicalName()));
+    throw new IllegalArgumentException(String.format(
+        "Sub-score %s not found", clazz.getCanonicalName()));
   }
 
   /**
-   * Initializes a score value for the score. The method adjusts the specified score value so that
-   * it fits to the valid range [0, 10].
+   * Collect all features which are used by a specified score and its sub-scores.
+   * The method browses the underlying sub-scores recursively and adds features
+   * to a specified set.
+   *
+   * @param score The score.
+   * @param allFeatures A set of features to be filled out.
+   * @return The specified set of features.
+   */
+  private static Set<Feature<?>> fillOutFeatures(Score score, Set<Feature<?>> allFeatures) {
+    allFeatures.addAll(score.features());
+    for (Score subScore : score.subScores()) {
+      fillOutFeatures(subScore, allFeatures);
+    }
+    return allFeatures;
+  }
+
+  /**
+   * Initializes a score value for the score.
+   * The method adjusts the specified score value so that it fits to the valid range [0, 10].
    *
    * @param value The score value.
    * @param usedValues The values which were used to produce the score value.
@@ -287,8 +202,8 @@ public abstract class AbstractScore implements Score {
   }
 
   /**
-   * Initializes a score value for the score. The method adjusts the specified score value so that
-   * it fits to the valid range [0, 10].
+   * Initializes a score value for the score.
+   * The method adjusts the specified score value so that it fits to the valid range [0, 10].
    *
    * @param value The score value.
    * @param usedValues The values which were used to produce the score value.
@@ -296,7 +211,11 @@ public abstract class AbstractScore implements Score {
    */
   protected ScoreValue scoreValue(double value, List<Value<?>> usedValues) {
     return new ScoreValue(
-        this, Score.adjust(value), Weight.MAX, Confidence.make(usedValues), usedValues);
+        this,
+        Score.adjust(value),
+        Weight.MAX,
+        Confidence.make(usedValues),
+        usedValues);
   }
 
   /**
@@ -320,5 +239,103 @@ public abstract class AbstractScore implements Score {
 
     throw new IllegalArgumentException(
         String.format("Oh no! We could not find feature: %s", feature.name()));
+  }
+
+  /**
+   * The method calculates a score value for a specified score if the value is not available.
+   *
+   * @param score The score.
+   * @param values The values that should be used to calculate the score value.
+   * @return The calculated score value.
+   * @see #calculateIfNecessary(Score, ValueSet)
+   */
+  protected static ScoreValue calculateIfNecessary(Score score, Value<?>... values) {
+    return calculateIfNecessary(score, ValueHashSet.from(values));
+  }
+
+  /**
+   * The method calculates a value for a specified score if the value is not available.
+   * First, the method checks if the set of values already contains a value for the specified score.
+   * If yes, the method just returns the existing value.
+   * Otherwise, the method tries to calculate a value of the specified score.
+   *
+   * @param score The score.
+   * @param values The set of values.
+   * @return A value of the specified score.
+   * @throws IllegalArgumentException If a value for the score is not a {@link ScoreValue}.
+   */
+  protected static ScoreValue calculateIfNecessary(Score score, ValueSet values) {
+    Optional<Value<Double>> something = values.of(score);
+
+    // if the set of values doesn't contain a value for the specified score, then calculate it
+    Value<Double> value = something.orElseGet(() -> UnknownValue.of(score));
+    if (value.isUnknown()) {
+      return score.calculate(values);
+    }
+
+    // if the set of values contain a value for the specified score, then return it
+    if (value instanceof ScoreValue) {
+      return (ScoreValue) value;
+    }
+
+    throw new IllegalArgumentException(String.format(
+        "Hey! I expected a ScoreValue for a score but got %s!", value.getClass()));
+  }
+
+  /**
+   * Checks if all values are unknown.
+   *
+   * @param values The values to be checked.
+   * @return True if all values are unknown, false otherwise.
+   * @throws IllegalArgumentException If values are empty.
+   */
+  protected static boolean allUnknown(Value<?>... values) {
+    return allUnknown(Arrays.asList(values));
+  }
+
+  /**
+   * Checks if all values are unknown.
+   *
+   * @param values A list of values to be checked.
+   * @return True if all values are unknown, false otherwise.
+   * @throws IllegalArgumentException If values are empty.
+   */
+  protected static boolean allUnknown(List<Value<?>> values) {
+    Objects.requireNonNull(values, "Oh no! Values is null!");
+
+    if (values.size() == 0) {
+      throw new IllegalStateException("Oh no! Values is empty!");
+    }
+
+    for (Value<?> value : values) {
+      if (!value.isUnknown()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Checks if all values are N/A.
+   *
+   * @param values The values to be checked.
+   * @return True if all values are N/A, false otherwise.
+   * @throws IllegalArgumentException If values are empty.
+   */
+  protected static boolean allNotApplicable(Value<?>... values) {
+    Objects.requireNonNull(values, "Oh no! Values is null!");
+
+    if (values.length == 0) {
+      throw new IllegalStateException("Oh no! Values is empty!");
+    }
+
+    for (Value<?> value : values) {
+      if (!value.isNotApplicable()) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

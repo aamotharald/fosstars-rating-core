@@ -7,10 +7,14 @@ import com.sap.oss.phosphor.fosstars.model.qa.VerificationFailedException;
 import com.sap.oss.phosphor.fosstars.model.tuning.TuningWithCMAES;
 import java.io.IOException;
 
-/** This class tunes a {@link SecurityRatingExample} to make it pass test vectors. */
+/**
+ * This class tunes a {@link SecurityRatingExample} to make it pass test vectors.
+ */
 public class SecurityRatingExampleTuningWithCMAES extends TuningWithCMAES {
 
-  /** A path where a tuned rating should be stored. */
+  /**
+   * A path where a tuned rating should be stored.
+   */
   private static final String PATH =
       "src/main/resources/com/sap/oss/phosphor/fosstars/model/rating/example/"
           + "SecurityRatingExample_1_1.json";
@@ -30,8 +34,8 @@ public class SecurityRatingExampleTuningWithCMAES extends TuningWithCMAES {
    *
    * @param args Command-line parameters.
    * @throws IOException If something went wrong.
-   * @throws VerificationFailedException If verification for the {@link SecurityRatingExample}
-   *     failed.
+   * @throws VerificationFailedException
+   *         If verification for the {@link SecurityRatingExample} failed.
    */
   public static void main(String... args) throws IOException, VerificationFailedException {
     SecurityRatingExample rating = new SecurityRatingExample();

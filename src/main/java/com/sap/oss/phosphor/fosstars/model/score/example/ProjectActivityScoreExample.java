@@ -19,7 +19,6 @@ import java.util.Map;
 public class ProjectActivityScoreExample extends FeatureBasedScore {
 
   private static final Map<Interval, Double> NUMBER_OF_COMMITS_TO_POINTS = new HashMap<>();
-  private static final Map<Interval, Double> NUMBER_OF_CONTRIBUTORS_TO_POINTS = new HashMap<>();
 
   static {
     NUMBER_OF_COMMITS_TO_POINTS.put(
@@ -29,6 +28,8 @@ public class ProjectActivityScoreExample extends FeatureBasedScore {
     NUMBER_OF_COMMITS_TO_POINTS.put(
         DoubleInterval.init().from(30).openLeft().positiveInfinity().make(), 5.0);
   }
+
+  private static final Map<Interval, Double> NUMBER_OF_CONTRIBUTORS_TO_POINTS = new HashMap<>();
 
   static {
     NUMBER_OF_CONTRIBUTORS_TO_POINTS.put(
@@ -40,24 +41,18 @@ public class ProjectActivityScoreExample extends FeatureBasedScore {
   }
 
   ProjectActivityScoreExample() {
-    super(
-        "Project activity score (example)",
-        NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE,
-        NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE);
+    super("Project activity score (example)",
+        NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE, NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Integer> numberOfCommitsLastMonthValue =
-        findValue(
-            values,
-            NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE,
-            "Couldn't find number of commits last month!");
-    Value<Integer> numberOfContributorsLastMonthValue =
-        findValue(
-            values,
-            NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE,
-            "Couldn't find number of contributors last month!");
+    Value<Integer> numberOfCommitsLastMonthValue = findValue(values,
+        NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE,
+        "Couldn't find number of commits last month!");
+    Value<Integer> numberOfContributorsLastMonthValue = findValue(values,
+        NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE,
+        "Couldn't find number of contributors last month!");
 
     int numberOfCommitsLastMonth = numberOfCommitsLastMonthValue.get();
     int numberOfContributorsLastMonth = numberOfContributorsLastMonthValue.get();
@@ -66,7 +61,8 @@ public class ProjectActivityScoreExample extends FeatureBasedScore {
       throw new IllegalArgumentException("Number of commits can't be negative!");
     }
     if (numberOfContributorsLastMonth < 0) {
-      throw new IllegalArgumentException("Number of contributors can't be negative!");
+      throw new IllegalArgumentException(
+          "Number of contributors can't be negative!");
     }
 
     double points = 0.0;
@@ -85,4 +81,5 @@ public class ProjectActivityScoreExample extends FeatureBasedScore {
 
     return scoreValue(points, numberOfCommitsLastMonthValue, numberOfContributorsLastMonthValue);
   }
+
 }

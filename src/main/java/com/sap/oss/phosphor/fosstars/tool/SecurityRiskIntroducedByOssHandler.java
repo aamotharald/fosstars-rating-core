@@ -6,10 +6,14 @@ import com.sap.oss.phosphor.fosstars.model.RatingRepository;
 import com.sap.oss.phosphor.fosstars.model.rating.oss.SecurityRiskIntroducedByOss;
 import java.util.Set;
 
-/** This handler calculates {@link SecurityRiskIntroducedByOss}. */
+/**
+ * This handler calculates {@link SecurityRiskIntroducedByOss}.
+ */
 public class SecurityRiskIntroducedByOssHandler extends AbstractHandler {
 
-  /** Initializes a handler. */
+  /**
+   * Initializes a handler.
+   */
   public SecurityRiskIntroducedByOssHandler() {
     super(RatingRepository.INSTANCE.rating(SecurityRiskIntroducedByOss.class));
   }

@@ -4,17 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 
-/** A not-applicable value of a feature. */
+/**
+ * A not-applicable value of a feature.
+ */
 public final class NotApplicableValue<T> extends AbstractKnownValue<T> {
-
-  /**
-   * Initializes a not-applicable value for a feature.
-   *
-   * @param feature The feature.
-   */
-  public NotApplicableValue(@JsonProperty("feature") Feature<T> feature) {
-    super(feature);
-  }
 
   /**
    * This factory method returns a not-applicable value of a specified feature.
@@ -27,14 +20,23 @@ public final class NotApplicableValue<T> extends AbstractKnownValue<T> {
     return new NotApplicableValue<>(feature);
   }
 
+  /**
+   * Initializes a not-applicable value for a feature.
+   *
+   * @param feature The feature.
+   */
+  public NotApplicableValue(@JsonProperty("feature") Feature<T> feature) {
+    super(feature);
+  }
+
   @Override
   @JsonIgnore
-  public boolean isNotApplicable() {
+  public final boolean isNotApplicable() {
     return true;
   }
 
   @Override
-  public T get() {
+  public final T get() {
     throw new UnsupportedOperationException(
         "It's a not-applicable value, get() method is not supposed to be called!");
   }

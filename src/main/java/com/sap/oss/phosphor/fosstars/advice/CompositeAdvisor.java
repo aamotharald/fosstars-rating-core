@@ -7,10 +7,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/** This advisor combines advises from multiple advisors. */
+/**
+ * This advisor combines advises from multiple advisors.
+ */
 public class CompositeAdvisor implements Advisor {
 
-  /** A list of underlying advisors. */
+  /**
+   * A list of underlying advisors.
+   */
   private final List<Advisor> advisors;
 
   /**

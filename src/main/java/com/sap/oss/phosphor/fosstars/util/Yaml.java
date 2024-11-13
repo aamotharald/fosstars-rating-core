@@ -11,10 +11,14 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Objects;
 
-/** This is a helper class that offers methods for serialization and deserialization using YAML. */
+/**
+ * This is a helper class that offers methods for serialization and deserialization using YAML.
+ */
 public class Yaml extends Deserialization {
 
-  /** A factory for parsing YAML. */
+  /**
+   * A factory for parsing YAML.
+   */
   private static final YAMLFactory YAML_FACTORY;
 
   static {
@@ -81,11 +85,9 @@ public class Yaml extends Deserialization {
    * @return A shared {@link ObjectMapper} for YAML.
    */
   public static ObjectMapper mapper() {
-    ObjectMapper mapper =
-        JsonMapper.builder(YAML_FACTORY)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .polymorphicTypeValidator(validator())
-            .build();
+    ObjectMapper mapper = JsonMapper.builder(YAML_FACTORY)
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .polymorphicTypeValidator(validator()).build();
     mapper.findAndRegisterModules();
     return registerSubTypesIn(mapper);
   }

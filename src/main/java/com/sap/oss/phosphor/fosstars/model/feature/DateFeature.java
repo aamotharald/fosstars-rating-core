@@ -8,7 +8,9 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.DateValue;
 import java.util.Date;
 
-/** A features which holds a date. */
+/**
+ * A features which holds a date.
+ */
 public class DateFeature extends AbstractFeature<Date> {
 
   /**
@@ -30,4 +32,5 @@ public class DateFeature extends AbstractFeature<Date> {
   public Value<Date> parse(String string) {
     return value(date(string));
   }
+
 }

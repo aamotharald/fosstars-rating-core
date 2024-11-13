@@ -33,11 +33,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/** A base class for Markdown formatters. */
+/**
+ * A base class for Markdown formatters.
+ */
 public abstract class AbstractMarkdownFormatter extends CommonFormatter {
 
-  /** A logger. */
-  private static final Logger LOGGER = LogManager.getLogger(AbstractMarkdownFormatter.class);
+  /**
+   * A logger.
+   */
+  private static final Logger LOGGER
+      = LogManager.getLogger(AbstractMarkdownFormatter.class);
 
   /**
    * Create a new formatter.
@@ -46,66 +51,6 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
    */
   protected AbstractMarkdownFormatter(Advisor advisor) {
     super(advisor);
-  }
-
-  /**
-   * Build a string that shows an actual value of a score value. The method takes care about unknown
-   * and not-applicable score values.
-   *
-   * @param scoreValue The score value.
-   * @return A string that represents the score value.
-   */
-  public static MarkdownString actualValueOf(ScoreValue scoreValue) {
-    if (scoreValue.isNotApplicable()) {
-      return Markdown.string("N/A");
-    }
-
-    if (scoreValue.isUnknown()) {
-      return Markdown.string("unknown");
-    }
-
-    return Markdown.string(formatted(scoreValue.get()));
-  }
-
-  /**
-   * Prints a link for a vulnerability if possible.
-   *
-   * @param vulnerability The vulnerability.
-   * @return A link for the vulnerability if available, or its identifier otherwise.
-   */
-  private static MarkdownElement linkFor(Vulnerability vulnerability) {
-    if (vulnerability.id().startsWith("CVE-")) {
-      String url = format("https://nvd.nist.gov/vuln/detail/%s", vulnerability.id());
-      return Markdown.link().to(url).withCaption(vulnerability.id());
-    }
-
-    return Markdown.string(vulnerability.id());
-  }
-
-  /**
-   * Builds a string with explanations for a score value if they are available.
-   *
-   * @param scoreValue The score value.
-   * @return A formatted string.
-   */
-  static MarkdownElement explanationOf(ScoreValue scoreValue) {
-    List<MarkdownElement> explanations =
-        scoreValue.explanation().stream().map(Markdown::string).collect(toList());
-    return Markdown.join(explanations).delimitedBy(NEW_LINE);
-  }
-
-  /**
-   * Looks for sub-score values that were used in a specified score value.
-   *
-   * @param scoreValue The score value.
-   * @return A list of sub-score values.
-   */
-  private static List<ScoreValue> usedSubScoreValuesIn(ScoreValue scoreValue) {
-    return scoreValue.usedValues().stream()
-        .filter(value -> value instanceof ScoreValue)
-        .map(ScoreValue.class::cast)
-        .sorted(Collections.reverseOrder(Comparator.comparingDouble(ScoreValue::weight)))
-        .collect(Collectors.toList());
   }
 
   /**
@@ -184,16 +129,36 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
     return Markdown.link().to(link.url).withCaption(link.name);
   }
 
+  /**
+   * Build a string that shows an actual value of a score value. The method takes care about
+   * unknown and not-applicable score values.
+   *
+   * @param scoreValue The score value.
+   * @return A string that represents the score value.
+   */
+  public static MarkdownString actualValueOf(ScoreValue scoreValue) {
+    if (scoreValue.isNotApplicable()) {
+      return Markdown.string("N/A");
+    }
+
+    if (scoreValue.isUnknown()) {
+      return Markdown.string("unknown");
+    }
+
+    return Markdown.string(formatted(scoreValue.get()));
+  }
+
   @Override
   public String actualValueOf(Value<?> value) {
-    if (!value.isUnknown() && value.get() instanceof Vulnerabilities vulnerabilities) {
+    if (!value.isUnknown() && value.get() instanceof Vulnerabilities) {
+      Vulnerabilities vulnerabilities = (Vulnerabilities) value.get();
       if (vulnerabilities.isEmpty()) {
         return "Not found";
       }
 
       MarkdownHeader knownVulnerabilities = Markdown.header().withCaption("Known vulnerabilities");
-      MarkdownHeaderReference reference =
-          Markdown.reference().to(knownVulnerabilities).withCaption("details below");
+      MarkdownHeaderReference reference
+          = Markdown.reference().to(knownVulnerabilities).withCaption("details below");
       MarkdownString infoAboutVulnerabilities = Markdown.string(vulnerabilities.toString());
       return Markdown.join(infoAboutVulnerabilities, reference).delimitedBy(", ").make();
     }
@@ -208,26 +173,25 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
    * @return Formatted info about vulnerabilities.
    */
   MarkdownElement infoAboutVulnerabilitiesIn(ScoreValue scoreValue) {
-    Set<Vulnerability> uniqueVulnerabilities =
-        new TreeSet<>(
-            (first, second) -> {
-              if (first.id().equals(second.id())) {
-                return 0;
-              }
+    Set<Vulnerability> uniqueVulnerabilities = new TreeSet<>((first, second) -> {
+      if (first.id().equals(second.id())) {
+        return 0;
+      }
 
-              if (first.published().isPresent() && second.published().isPresent()) {
-                return first.published().get().compareTo(second.published().get());
-              }
+      if (first.published().isPresent() && second.published().isPresent()) {
+        return first.published().get().compareTo(second.published().get());
+      }
 
-              return first.id().compareTo(second.id());
-            });
+      return first.id().compareTo(second.id());
+    });
 
     for (Value<?> value : scoreValue.usedFeatureValues()) {
       if (value.isUnknown()) {
         continue;
       }
 
-      if (value.get() instanceof Vulnerabilities vulnerabilities) {
+      if (value.get() instanceof Vulnerabilities) {
+        Vulnerabilities vulnerabilities = (Vulnerabilities) value.get();
         for (Vulnerability vulnerability : vulnerabilities) {
           uniqueVulnerabilities.add(vulnerability);
         }
@@ -241,10 +205,9 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
     List<MarkdownElement> elements = new ArrayList<>();
     for (Vulnerability vulnerability : uniqueVulnerabilities) {
       if (vulnerability.description().isPresent()) {
-        MarkdownElement description =
-            Markdown.template(
-                "%s: %s",
-                linkFor(vulnerability), Markdown.string(vulnerability.description().get()));
+        MarkdownElement description = Markdown.template("%s: %s",
+            linkFor(vulnerability),
+            Markdown.string(vulnerability.description().get()));
         elements.add(description);
       } else {
         elements.add(linkFor(vulnerability));
@@ -255,6 +218,47 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
   }
 
   /**
+   * Prints a link for a vulnerability if possible.
+   *
+   * @param vulnerability The vulnerability.
+   * @return A link for the vulnerability if available, or its identifier otherwise.
+   */
+  private static MarkdownElement linkFor(Vulnerability vulnerability) {
+    if (vulnerability.id().startsWith("CVE-")) {
+      String url = format("https://nvd.nist.gov/vuln/detail/%s", vulnerability.id());
+      return Markdown.link().to(url).withCaption(vulnerability.id());
+    }
+
+    return Markdown.string(vulnerability.id());
+  }
+
+  /**
+   * Builds a string with explanations for a score value if they are available.
+   *
+   * @param scoreValue The score value.
+   * @return A formatted string.
+   */
+  static MarkdownElement explanationOf(ScoreValue scoreValue) {
+    List<MarkdownElement> explanations
+        = scoreValue.explanation().stream().map(Markdown::string).collect(toList());
+    return Markdown.join(explanations).delimitedBy(NEW_LINE);
+  }
+
+  /**
+   * Looks for sub-score values that were used in a specified score value.
+   *
+   * @param scoreValue The score value.
+   * @return A list of sub-score values.
+   */
+  private static List<ScoreValue> usedSubScoreValuesIn(ScoreValue scoreValue) {
+    return scoreValue.usedValues().stream()
+        .filter(value -> value instanceof ScoreValue)
+        .map(ScoreValue.class::cast)
+        .sorted(Collections.reverseOrder(Comparator.comparingDouble(ScoreValue::weight)))
+        .collect(Collectors.toList());
+  }
+
+  /**
    * Builds a list of short descriptions of sub-score values for a specified score value.
    *
    * @param scoreValue The score value.
@@ -262,13 +266,12 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
    */
   MarkdownElement highLevelDescriptionOf(ScoreValue scoreValue) {
     List<MarkdownElement> elements = new ArrayList<>();
-    usedSubScoreValuesIn(scoreValue)
-        .forEach(
-            subScoreValue -> {
-              elements.add(
-                  Markdown.group(
-                      shortDescriptionOf(subScoreValue), highLevelDescriptionOf(subScoreValue)));
-            });
+    usedSubScoreValuesIn(scoreValue).forEach(subScoreValue -> {
+      elements.add(Markdown.group(
+          shortDescriptionOf(subScoreValue),
+          highLevelDescriptionOf(subScoreValue)
+      ));
+    });
 
     return Markdown.orderedListOf(elements);
   }
@@ -282,17 +285,17 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
   private MarkdownElement shortDescriptionOf(ScoreValue scoreValue) {
     MarkdownHeader header = Markdown.header().withCaption(nameOf(scoreValue.score()));
     MarkdownHeaderReference reference = Markdown.reference().to(header).withHeaderName();
-    return Markdown.template(
-        "%s: %s (weight is %s)",
+    return Markdown.template("%s: %s (weight is %s)",
         Markdown.bold(reference),
         Markdown.bold(actualValueOf(scoreValue)),
-        Markdown.string(formatted(scoreValue.weight())));
+        Markdown.string(formatted(scoreValue.weight()))
+    );
   }
 
   /**
-   * Build details about sub-scores in a specified score value. Each sub-score is printed out in a
-   * separate section. The method implements BFS, therefore it prints out the direct sub-scores
-   * first.
+   * Build details about sub-scores in a specified score value.
+   * Each sub-score is printed out in a separate section.
+   * The method implements BFS, therefore it prints out the direct sub-scores first.
    *
    * @param scoreValue The score value to be printed out.
    * @return A formatted text.
@@ -318,8 +321,8 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
   }
 
   /**
-   * Build details of a score value in a separate section. The method prints out sub-scores and
-   * feature that were are used in the score value.
+   * Build details of a score value in a separate section.
+   * The method prints out sub-scores and feature that were are used in the score value.
    *
    * @param scoreValue The score value to be printed.
    * @return A formatted score value.
@@ -329,14 +332,12 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
 
     elements.add(Markdown.header().level(3).withCaption(nameOf(scoreValue.score())));
 
-    elements.add(
-        Markdown.template(
-            "Score: %s, confidence is %s (%s), weight is %s (%s)",
-            Markdown.bold(actualValueOf(scoreValue)),
-            Markdown.string(formatted(scoreValue.confidence())),
-            Markdown.string(confidenceLabelFor(scoreValue.confidence()).toLowerCase()),
-            Markdown.string(formatted(scoreValue.weight())),
-            Markdown.string(weightLabel(scoreValue.weight()).toLowerCase())));
+    elements.add(Markdown.template("Score: %s, confidence is %s (%s), weight is %s (%s)",
+        Markdown.bold(actualValueOf(scoreValue)),
+        Markdown.string(formatted(scoreValue.confidence())),
+        Markdown.string(confidenceLabelFor(scoreValue.confidence()).toLowerCase()),
+        Markdown.string(formatted(scoreValue.weight())),
+        Markdown.string(weightLabel(scoreValue.weight()).toLowerCase())));
 
     elements.add(Markdown.string(scoreValue.score().description()));
 
@@ -355,19 +356,16 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
     if (!subScoreValues.isEmpty()) {
       subScoreValues.sort(Collections.reverseOrder(Comparator.comparingDouble(ScoreValue::weight)));
 
-      elements.add(
-          Markdown.string(
-              "This sub-score is based on the following sub-score%s:%n%n",
-              subScoreValues.size() == 1 ? StringUtils.EMPTY : "s"));
+      elements.add(Markdown.string(
+          "This sub-score is based on the following sub-score%s:%n%n",
+          subScoreValues.size() == 1 ? StringUtils.EMPTY : "s"));
 
       elements.add(highLevelDescriptionOf(scoreValue));
     }
 
     if (!featureValues.isEmpty()) {
-      elements.add(
-          Markdown.string(
-              "This sub-score is based on %d feature%s:%n%n",
-              featureValues.size(), featureValues.size() == 1 ? StringUtils.EMPTY : "s"));
+      elements.add(Markdown.string("This sub-score is based on %d feature%s:%n%n",
+          featureValues.size(), featureValues.size() == 1 ? StringUtils.EMPTY : "s"));
 
       Map<String, String> nameToValue = new TreeMap<>(String::compareTo);
       for (Value<?> usedValue : featureValues) {
@@ -382,9 +380,8 @@ public abstract class AbstractMarkdownFormatter extends CommonFormatter {
 
       List<MarkdownElement> items = new ArrayList<>();
       for (Map.Entry<String, String> entry : nameToValue.entrySet()) {
-        items.add(
-            Markdown.template(
-                "%s %s", Markdown.bold(entry.getKey()), Markdown.string(entry.getValue())));
+        items.add(Markdown.template("%s %s",
+            Markdown.bold(entry.getKey()), Markdown.string(entry.getValue())));
       }
       elements.add(Markdown.orderedListOf(items));
     }

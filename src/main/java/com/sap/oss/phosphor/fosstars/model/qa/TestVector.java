@@ -9,13 +9,16 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import java.util.Set;
 
 /**
- * A test vector for a rating or a score. A test vector contains feature values, an interval for an
- * expected score and an optional expected label.
+ * A test vector for a rating or a score.
+ * A test vector contains feature values, an interval for an expected score
+ * and an optional expected label.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface TestVector {
 
-  /** Shows that no expected label is specified in a test vector. */
+  /**
+   * Shows that no expected label is specified in a test vector.
+   */
   Label NO_LABEL = null;
 
   /**

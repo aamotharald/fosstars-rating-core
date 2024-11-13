@@ -40,10 +40,9 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * This data provider checks if an open-source project uses OWASP Dependency Check to scan
  * dependencies for known vulnerabilities. In particular, it tries to fill out the following
  * features:
- *
  * <ul>
- *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_USAGE}
- *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD}
+ *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_USAGE}</li>
+ *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD}</li>
  * </ul>
  */
 public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
@@ -56,7 +55,7 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
   static {
     FAIL_BUILD_CONFIGURATIONS.put("failBuildOnAnyVulnerability", "boolean");
     FAIL_BUILD_CONFIGURATIONS.put("failBuildOnCVSS", "number");
-    FAIL_BUILD_CONFIGURATIONS.put("junitFailOnCVSS", "number");
+    FAIL_BUILD_CONFIGURATIONS.put("junitFailOnCVSS", "number"); 
   }
 
   /**
@@ -68,25 +67,37 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
     super(fetcher);
   }
 
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return setOf(
+        OWASP_DEPENDENCY_CHECK_USAGE, 
+        OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD);
+  }
+
+  @Override
+  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
+    logger.info("Figuring out if the project uses OWASP Dependency Check ...");
+    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
+    return selectBetter(checkMaven(repository), checkGradle(repository));
+  }
+
   private static ValueSet selectBetter(ValueSet firstSet, ValueSet secondSet) {
-    OwaspDependencyCheckUsage firstUsage =
-        firstSet.of(OWASP_DEPENDENCY_CHECK_USAGE).map(Value::get).orElse(NOT_USED);
-    OwaspDependencyCheckUsage secondUsage =
-        secondSet.of(OWASP_DEPENDENCY_CHECK_USAGE).map(Value::get).orElse(NOT_USED);
+    OwaspDependencyCheckUsage firstUsage = firstSet.of(OWASP_DEPENDENCY_CHECK_USAGE)
+        .map(Value::get).orElse(NOT_USED);
+    OwaspDependencyCheckUsage secondUsage = secondSet.of(OWASP_DEPENDENCY_CHECK_USAGE)
+        .map(Value::get).orElse(NOT_USED);
 
     if (firstUsage != secondUsage) {
       return firstUsage.compareTo(secondUsage) < 0 ? firstSet : secondSet;
     }
 
-    OwaspDependencyCheckCvssThresholdValue firstThreshold =
-        firstSet
-            .of(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD)
+    OwaspDependencyCheckCvssThresholdValue firstThreshold
+        = firstSet.of(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD)
             .filter(OwaspDependencyCheckCvssThresholdValue.class::isInstance)
             .map(OwaspDependencyCheckCvssThresholdValue.class::cast)
             .orElse(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.notSpecifiedValue());
-    OwaspDependencyCheckCvssThresholdValue secondThreshold =
-        secondSet
-            .of(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD)
+    OwaspDependencyCheckCvssThresholdValue secondThreshold
+        = secondSet.of(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD)
             .filter(OwaspDependencyCheckCvssThresholdValue.class::isInstance)
             .map(OwaspDependencyCheckCvssThresholdValue.class::cast)
             .orElse(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.notSpecifiedValue());
@@ -128,12 +139,10 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
 
         OwaspDependencyCheckUsageValue usage = OWASP_DEPENDENCY_CHECK_USAGE.value(visitor.usage());
 
-        OwaspDependencyCheckCvssThresholdValue threshold =
-            visitor
-                .threshold()
-                .filter(value -> CVSS.MIN <= value && value <= CVSS.MAX)
-                .map(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD::value)
-                .orElse(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.notSpecifiedValue());
+        OwaspDependencyCheckCvssThresholdValue threshold = visitor.threshold()
+            .filter(value -> CVSS.MIN <= value && value <= CVSS.MAX)
+            .map(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD::value)
+            .orElse(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.notSpecifiedValue());
 
         values.update(usage, threshold);
       }
@@ -164,14 +173,13 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
       if (foundOwaspDependencyCheckInGradle(file)) {
         boolean isMainFile = "build.gradle".equals(gradleFile.toString());
 
-        OwaspDependencyCheckUsageValue usage =
-            OWASP_DEPENDENCY_CHECK_USAGE.value(isMainFile ? MANDATORY : OPTIONAL);
+        OwaspDependencyCheckUsageValue usage
+            = OWASP_DEPENDENCY_CHECK_USAGE.value(isMainFile ? MANDATORY : OPTIONAL);
 
-        OwaspDependencyCheckCvssThresholdValue threshold =
-            lookForThresholdInGradle(file)
-                .filter(value -> CVSS.MIN <= value && value <= CVSS.MAX)
-                .map(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD::value)
-                .orElse(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.notSpecifiedValue());
+        OwaspDependencyCheckCvssThresholdValue threshold = lookForThresholdInGradle(file)
+            .filter(value -> CVSS.MIN <= value && value <= CVSS.MAX)
+            .map(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD::value)
+            .orElse(OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD.notSpecifiedValue());
 
         values.update(usage, threshold);
 
@@ -256,8 +264,8 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
   }
 
   /**
-   * Check if a plugin configuration has an attribute that specifies a CVSS threshold, so that the
-   * plugin fails the build if vulnerabilities with higher CVSS score are found.
+   * Check if a plugin configuration has an attribute that specifies a CVSS threshold,
+   * so that the plugin fails the build if vulnerabilities with higher CVSS score are found.
    *
    * @param configuration The plugin configuration to be checked.
    * @return The CVSS threshold if found, otherwise null.
@@ -276,14 +284,13 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
   }
 
   /**
-   * Parse the value depending on the given type. The type can be 'boolean' or 'number'.
-   *
+   * Parse the value depending on the given type. The type can be 'boolean' or 'number'. 
    * <ul>
-   *   <li>If the type is 'number', then parse the value.
-   *   <li>If the type is 'boolean' and the value is true, then return 0.0, otherwise null.
-   *   <li>If the type is unknown, an exception is thrown.
+   *    <li>If the type is 'number', then parse the value.</li>
+   *    <li>If the type is 'boolean' and the value is true, then return 0.0, otherwise null.</li>
+   *    <li>If the type is unknown, an exception is thrown.</li>
    * </ul>
-   *
+   * 
    * @param value The value to be parsed.
    * @param type The type of the string value.
    * @return The parsed value.
@@ -301,13 +308,13 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
 
   /**
    * Get the value if a configuration exists.
-   *
+   * 
    * @param name The name of the configuration to find.
    * @param configuration The list of configurations associated to OWASP Dependency Check plugin.
    * @return The value of the configuration if found.
    */
   private static Optional<String> parameter(String name, Object configuration) {
-    if (!(configuration instanceof Xpp3Dom)) {
+    if (configuration instanceof Xpp3Dom == false) {
       return Optional.empty();
     }
 
@@ -321,7 +328,7 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
 
   /**
    * Checks whether the plugin will be executed as a mandatory step during the build.
-   *
+   * 
    * @param locations The set of {@link Location}.
    * @return True if the plugin will be executed as a mandatory step, false otherwise.
    */
@@ -329,34 +336,32 @@ public class UsesOwaspDependencyCheck extends GitHubCachingDataProvider {
     return locations.size() == 1 && (locations.contains(BUILD) || locations.contains(REPORTING));
   }
 
-  /** Creates a new visitor for searching OWASP Dependency Check in a POM file. */
+  /**
+   * Creates a new visitor for searching OWASP Dependency Check in a POM file.
+   */
   private static Visitor withVisitor() {
     return new Visitor();
   }
 
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return setOf(OWASP_DEPENDENCY_CHECK_USAGE, OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD);
-  }
-
-  @Override
-  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
-    logger.info("Figuring out if the project uses OWASP Dependency Check ...");
-    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
-    return selectBetter(checkMaven(repository), checkGradle(repository));
-  }
-
-  /** A visitor for searching OWASP Dependency Check in a POM file. */
+  /**
+   * A visitor for searching OWASP Dependency Check in a POM file.
+   */
   private static class Visitor extends AbstractModelVisitor {
 
-    /** If the plugin is run as a mandatory check. */
+    /**
+     * If the plugin is run as a mandatory check.
+     */
     private boolean foundMandatory = false;
-
-    /** If the plugin is run as an optional check. */
+    
+    /**
+     * If the plugin is run as an optional check.
+     */
     private boolean foundOptional = false;
-
-    /** The CVSS threshold score to fail the build. */
-    private Double score;
+    
+    /**
+     * The CVSS threshold score to fail the build. 
+     */
+    private Double score; 
 
     @Override
     public void accept(Plugin plugin, Set<Location> locations) {

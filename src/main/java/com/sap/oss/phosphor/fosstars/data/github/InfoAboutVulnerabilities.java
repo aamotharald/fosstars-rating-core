@@ -16,22 +16,23 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This data provider tries to fill out the {@link
- * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#VULNERABILITIES_IN_PROJECT} feature.
- * It is based on the following data providers:
- *
+ * This data provider tries to fill out the
+ * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#VULNERABILITIES_IN_PROJECT}
+ * feature. It is based on the following data providers:
  * <ul>
- *   <li>{@link UnpatchedVulnerabilities}
- *   <li>{@link VulnerabilitiesFromNvd}
+ *   <li>{@link UnpatchedVulnerabilities}</li>
+ *   <li>{@link VulnerabilitiesFromNvd}</li>
  * </ul>
- *
- * <p>The data provider caches a value for the {@link
- * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#VULNERABILITIES_IN_PROJECT} feature.
+ * The data provider caches a value for the
+ * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#VULNERABILITIES_IN_PROJECT}
+ * feature.
  */
 public class InfoAboutVulnerabilities
     extends CachedSingleFeatureGitHubDataProvider<Vulnerabilities> {
 
-  /** A list of underlying data providers. */
+  /**
+   * A list of underlying data providers.
+   */
   private final List<DataProvider> providers;
 
   /**

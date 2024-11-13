@@ -11,10 +11,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/** A base class for scores which are based only on features. The class is immutable. */
+/**
+ * A base class for scores which are based only on features. The class is immutable.
+ */
 public abstract class FeatureBasedScore extends AbstractScore {
 
-  /** A set of features which are used in the score. */
+  /**
+   * A set of features which are used in the score.
+   */
   private final Set<Feature<?>> features;
 
   /**
@@ -77,7 +81,7 @@ public abstract class FeatureBasedScore extends AbstractScore {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof FeatureBasedScore)) {
+    if (o instanceof FeatureBasedScore == false) {
       return false;
     }
     if (!super.equals(o)) {

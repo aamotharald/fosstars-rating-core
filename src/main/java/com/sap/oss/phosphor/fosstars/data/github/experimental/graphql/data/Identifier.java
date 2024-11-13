@@ -20,7 +20,7 @@ public class Identifier {
   private String type;
 
   @JsonIgnore
-  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("value")
   public String getValue() {
@@ -51,4 +51,5 @@ public class Identifier {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
 }

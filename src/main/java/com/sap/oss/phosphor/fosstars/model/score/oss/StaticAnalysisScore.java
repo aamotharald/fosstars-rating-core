@@ -7,37 +7,20 @@ import com.sap.oss.phosphor.fosstars.model.weight.ImmutableWeight;
 import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
 
 /**
- * The score shows how an open-source project uses static analysis for security testing.
- *
- * <p>It's based on the following sub-scores:
- *
+ * <p>The score shows how an open-source project uses static analysis for security testing.</p>
+ * <p>It's based on the following sub-scores:</p>
  * <ul>
- *   <li>{@link CodeqlScore}
- *   <li>{@link FindSecBugsScore}
- *   <li>{@link BanditScore}
- *   <li>{@link PylintScore}
- *   <li>{@link MyPyScore}
- *   <li>{@link GoSecScore}
+ *   <li>{@link CodeqlScore}</li>
+ *   <li>{@link FindSecBugsScore}</li>
+ *   <li>{@link BanditScore}</li>
+ *   <li>{@link PylintScore}</li>
+ *   <li>{@link MyPyScore}</li>
+ *   <li>{@link GoSecScore}</li>
  * </ul>
- *
  * <p>The above sub-scores may not apply to all projects. The score considers only the sub-scores
- * that is applicable to a particular project.
+ * that is applicable to a particular project.</p>
  */
 public class StaticAnalysisScore extends WeightedCompositeScore {
-
-  /** Initializes a new score. */
-  public StaticAnalysisScore() {
-    super(
-        "How a project uses static analysis for security testing",
-        setOf(
-            new CodeqlScore(),
-            new FindSecBugsScore(),
-            new BanditScore(),
-            new PylintScore(),
-            new MyPyScore(),
-            new GoSecScore()),
-        initWeights());
-  }
 
   /**
    * Initializes weights for sub-scores.
@@ -52,5 +35,15 @@ public class StaticAnalysisScore extends WeightedCompositeScore {
         .set(PylintScore.class, new ImmutableWeight(0.35))
         .set(MyPyScore.class, new ImmutableWeight(0.2))
         .set(GoSecScore.class, new ImmutableWeight(0.3));
+  }
+
+  /**
+   * Initializes a new score.
+   */
+  public StaticAnalysisScore() {
+    super("How a project uses static analysis for security testing",
+        setOf(new CodeqlScore(), new FindSecBugsScore(), new BanditScore(),
+            new PylintScore(), new MyPyScore(), new GoSecScore()),
+        initWeights());
   }
 }

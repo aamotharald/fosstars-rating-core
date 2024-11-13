@@ -11,31 +11,36 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * This scoring functions assesses how the given artifact version relates to released versions, the
- * release history of artifacts and if there are known vulnerabilities for the given artifact
- * version of an open-source project. The score is based on the following sub-scores:
- *
+ * <p>This scoring functions assesses how the given artifact version relates to
+ * released versions, the release history of artifacts and if there are
+ * known vulnerabilities for the given artifact version
+ * of an open-source project.
+ * The score is based on the following sub-scores:</p>
  * <ul>
- *   <li>{@link ArtifactLatestReleaseAgeScore}
- *   <li>{@link ArtifactReleaseHistoryScore}
- *   <li>{@link ArtifactVersionUpToDateScore}
- *   <li>{@link ArtifactVersionVulnerabilityScore}
+ *   <li>{@link ArtifactLatestReleaseAgeScore}</li>
+ *   <li>{@link ArtifactReleaseHistoryScore}</li>
+ *   <li>{@link ArtifactVersionUpToDateScore}</li>
+ *   <li>{@link ArtifactVersionVulnerabilityScore}</li>
  * </ul>
  */
 public class ArtifactVersionSecurityScore extends WeightedCompositeScore {
 
-  /** A description of the score. */
-  private static final String DESCRIPTION =
-      "This scoring functions assesses how the given artifact version relates to "
-          + "released versions, the release history of artifacts and if there are "
-          + "known vulnerabilities for the given artifact version "
-          + "of an open-source project. "
-          + "If there are vulnerabilities with high severity for given version, "
-          + "the score is min. "
-          + "If there are at least two vulnerabilities with medium severity for given version, "
-          + "the score is min.";
+  /**
+   * A description of the score.
+   */
+  private static final String DESCRIPTION
+      = "This scoring functions assesses how the given artifact version relates to "
+      + "released versions, the release history of artifacts and if there are "
+      + "known vulnerabilities for the given artifact version "
+      + "of an open-source project. "
+      + "If there are vulnerabilities with high severity for given version, "
+      + "the score is min. "
+      + "If there are at least two vulnerabilities with medium severity for given version, "
+      + "the score is min.";
 
-  /** A set of sub-scores. */
+  /**
+   * A set of sub-scores.
+   */
   private static final Set<Score> SUB_SCORES = new HashSet<>();
 
   static {
@@ -45,12 +50,12 @@ public class ArtifactVersionSecurityScore extends WeightedCompositeScore {
     SUB_SCORES.add(new ArtifactVersionVulnerabilityScore());
   }
 
-  /** Initializes a new open-source security score. */
+  /**
+   * Initializes a new open-source security score.
+   */
   public ArtifactVersionSecurityScore() {
-    super(
-        "Security score for an artifact version of an open-source project",
-        SUB_SCORES,
-        initWeights());
+    super("Security score for an artifact version of an open-source project",
+        SUB_SCORES, initWeights());
   }
 
   /**
@@ -70,10 +75,10 @@ public class ArtifactVersionSecurityScore extends WeightedCompositeScore {
   public ScoreValue calculate(Set<Value<?>> values) {
     ScoreValue scoreValue = super.calculate(values);
 
-    Optional<ScoreValue> versionScore =
-        scoreValue.findUsedSubScoreValue(ArtifactVersionUpToDateScore.class);
-    Optional<ScoreValue> vulnerabilityScore =
-        scoreValue.findUsedSubScoreValue(ArtifactVersionVulnerabilityScore.class);
+    Optional<ScoreValue> versionScore
+        = scoreValue.findUsedSubScoreValue(ArtifactVersionUpToDateScore.class);
+    Optional<ScoreValue> vulnerabilityScore
+        = scoreValue.findUsedSubScoreValue(ArtifactVersionVulnerabilityScore.class);
 
     if (!versionScore.isPresent() || !vulnerabilityScore.isPresent()) {
       throw new IllegalStateException("Sub-scores should have been already calculated!");

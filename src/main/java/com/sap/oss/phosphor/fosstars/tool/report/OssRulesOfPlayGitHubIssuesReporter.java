@@ -15,17 +15,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.kohsuke.github.GHIssue;
 
-/** This reporter creates GitHub issues for RoP violations. */
+/**
+ * This reporter creates GitHub issues for RoP violations.
+ */
 public class OssRulesOfPlayGitHubIssuesReporter implements Reporter<GitHubProject> {
 
-  /** A logger. */
-  private static final Logger LOGGER =
-      LogManager.getLogger(OssRulesOfPlayGitHubIssuesReporter.class);
+  /**
+   * A logger.
+   */
+  private static final Logger LOGGER
+      = LogManager.getLogger(OssRulesOfPlayGitHubIssuesReporter.class);
 
-  /** An interface to GitHub. */
+  /**
+   * An interface to GitHub.
+   */
   private final GitHubDataFetcher fetcher;
 
-  /** A Markdown formatter. */
+  /**
+   * A Markdown formatter.
+   */
   private final OssRulesOfPlayRatingMarkdownFormatter formatter;
 
   /**
@@ -75,8 +83,8 @@ public class OssRulesOfPlayGitHubIssuesReporter implements Reporter<GitHubProjec
 
     LOGGER.info("Creating issues for violations on {}", project.toString());
 
-    List<Value<Boolean>> violations =
-        OssRulesOfPlayScore.findViolatedRulesIn(
+    List<Value<Boolean>> violations
+        = OssRulesOfPlayScore.findViolatedRulesIn(
             project.ratingValue().get().scoreValue().usedValues());
 
     for (Value<Boolean> violation : violations) {
@@ -100,10 +108,8 @@ public class OssRulesOfPlayGitHubIssuesReporter implements Reporter<GitHubProjec
    */
   public String printTitle(Value<?> value) {
     String title = "Violation against OSS Rules of Play";
-    return formatter
-        .identifierOf(value.feature())
-        .map(id -> format("%s %s", id, title))
-        .orElse(title);
+    return formatter.identifierOf(value.feature())
+        .map(id -> format("%s %s", id, title)).orElse(title);
   }
 
   /**
@@ -113,15 +119,13 @@ public class OssRulesOfPlayGitHubIssuesReporter implements Reporter<GitHubProjec
    * @return The body.
    */
   public String printBody(Value<?> value) {
-    StringBuilder sb =
-        new StringBuilder("A violation against the OSS Rules of Play has been detected.\n\n");
+    StringBuilder sb = new StringBuilder(
+        "A violation against the OSS Rules of Play has been detected.\n\n");
 
-    sb.append(
-        format(
-            "Rule ID: %s\nExplanation: %s **%s**\n\n",
-            formatter.identifierOf(value.feature()).orElse(EMPTY).replaceAll("[\\[\\]]", EMPTY),
-            formatter.nameOf(value.feature()),
-            formatter.printValueAnswer(value)));
+    sb.append(format("Rule ID: %s\nExplanation: %s **%s**\n\n",
+        formatter.identifierOf(value.feature()).orElse(EMPTY).replaceAll("[\\[\\]]", EMPTY),
+        formatter.nameOf(value.feature()),
+        formatter.printValueAnswer(value)));
 
     if (formatter.ruleDocumentationUrl().isPresent()) {
       sb.append(format("Find more information at: %s", formatter.ruleDocumentationUrl().get()));

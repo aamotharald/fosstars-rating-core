@@ -8,16 +8,24 @@ import com.sap.oss.phosphor.fosstars.model.Subject;
 import com.sap.oss.phosphor.fosstars.model.ValueSet;
 import java.util.Set;
 
-/** This data provider asks a question and offers options. */
+/**
+ * This data provider asks a question and offers options.
+ */
 public class AskOptions<T extends Enum<T>> extends AbstractInteractiveDataProvider {
 
-  /** A feature that the data provider supports. */
+  /**
+   * A feature that the data provider supports.
+   */
   private final Feature<T> feature;
 
-  /** A question that the data provider asks. */
+  /**
+   * A question that the data provider asks.
+   */
   private final String question;
 
-  /** A class of an enum that contains possible answers. */
+  /**
+   * A class of an enum that contains possible answers.
+   */
   private final Class<T> enumClass;
 
   /**
@@ -31,17 +39,6 @@ public class AskOptions<T extends Enum<T>> extends AbstractInteractiveDataProvid
     this.feature = requireNonNull(feature, "Oops! Feature is null!");
     this.question = requireNonNull(question, "Oops! Question is null!");
     this.enumClass = requireNonNull(enumClass, "Oops! Options is null!");
-  }
-
-  /**
-   * Create a builder for configuring a data provider.
-   *
-   * @param feature A feature that the provider should support.
-   * @param <T> A type of data that the feature holds.
-   * @return A builder.
-   */
-  public static <T extends Enum<T>> Builder<T> forFeature(Feature<T> feature) {
-    return new Builder<>(feature);
   }
 
   @Override
@@ -63,16 +60,31 @@ public class AskOptions<T extends Enum<T>> extends AbstractInteractiveDataProvid
   }
 
   /**
+   * Create a builder for configuring a data provider.
+   *
+   * @param feature A feature that the provider should support.
+   * @param <T> A type of data that the feature holds.
+   * @return A builder.
+   */
+  public static <T extends Enum<T>> Builder<T> forFeature(Feature<T> feature) {
+    return new Builder<>(feature);
+  }
+
+  /**
    * A builder for configuring a data provider.
    *
    * @param <T> A type of data that the feature holds.
    */
   public static class Builder<T extends Enum<T>> {
 
-    /** A feature that the provider should support. */
+    /**
+     * A feature that the provider should support.
+     */
     private final Feature<T> feature;
 
-    /** A question that the provider asks. */
+    /**
+     * A question that the provider asks.
+     */
     private String question;
 
     /**

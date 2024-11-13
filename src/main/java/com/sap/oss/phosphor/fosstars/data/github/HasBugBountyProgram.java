@@ -8,10 +8,14 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import java.io.IOException;
 
-/** This data provider tries to figure out if a project has a bug bounty program. */
+/**
+ * This data provider tries to figure out if a project has a bug bounty program.
+ */
 public class HasBugBountyProgram extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
-  /** Where info about bug bounty programs are stored. */
+  /**
+   * Where info about bug bounty programs are stored.
+   */
   private final BugBountyProgramStorage bugBounties;
 
   /**

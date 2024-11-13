@@ -6,7 +6,9 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.DoubleValue;
 import java.util.Objects;
 
-/** A feature which holds a double. */
+/**
+ * A feature which holds a double.
+ */
 public class DoubleFeature extends AbstractFeature<Double> {
 
   /**

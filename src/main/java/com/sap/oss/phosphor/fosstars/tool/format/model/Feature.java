@@ -10,19 +10,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Feature {
 
-  /** The name of the feature. */
+  /**
+   * The name of the feature.
+   */
   private String name;
 
-  /** The value of the feature. */
+  /**
+   * The value of the feature.
+   */
   private String value;
 
-  /** Default constructor. */
-  public Feature() {}
+  /**
+   * Default constructor.
+   */
+  public Feature() {
+  }
 
   /**
    * Initializes a Feature instance.
    *
-   * @param name the name of the feature.
+   * @param name  the name of the feature.
    * @param value the value of the feature.
    */
   @JsonCreator

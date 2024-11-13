@@ -122,18 +122,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** The class holds common functionality for JSON and YAML serialization/deserialization. */
+/**
+ * The class holds common functionality for JSON and YAML serialization/deserialization.
+ */
 public abstract class Deserialization {
 
-  /** A type reference for deserialization to a Map. */
-  static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE =
-      new TypeReference<Map<String, Object>>() {};
+  /**
+   * A type reference for deserialization to a Map.
+   */
+  static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE
+      = new TypeReference<Map<String, Object>>() {};
 
-  /** A list of types that are allowed for deserialization by default. */
-  private static final List<String> DEFAULT_ALLOWED_SUB_TYPES =
-      Collections.singletonList("com.sap.oss.phosphor.fosstars");
+  /**
+   * A list of types that are allowed for deserialization by default.
+   */
+  private static final List<String> DEFAULT_ALLOWED_SUB_TYPES = Collections.singletonList(
+      "com.sap.oss.phosphor.fosstars");
 
-  /** A list of classes that are allowed for deserialization. */
+  /**
+   * A list of classes that are allowed for deserialization.
+   */
   private static final List<String> ALLOWED_SUB_TYPES = new ArrayList<>(DEFAULT_ALLOWED_SUB_TYPES);
 
   /**
@@ -223,7 +231,8 @@ public abstract class Deserialization {
         ArtifactVersionsFeature.class,
         OwaspDependencyCheckUsageFeature.class,
         OwaspDependencyCheckCvssThreshold.class,
-        SecurityReviewsFeature.class);
+        SecurityReviewsFeature.class
+    );
 
     // values
     mapper.registerSubtypes(
@@ -246,7 +255,8 @@ public abstract class Deserialization {
         OwaspDependencyCheckUsageValue.class,
         OwaspDependencyCheckCvssThresholdValue.class,
         SecurityReviewsValue.class,
-        TestScoreValue.class);
+        TestScoreValue.class
+    );
 
     // labels
     mapper.registerSubtypes(
@@ -255,7 +265,8 @@ public abstract class Deserialization {
         SecurityRatingExample.SecurityLabelExample.class,
         OssRulesOfPlayRating.OssRulesOfPlayLabel.class,
         NotApplicableLabel.class,
-        SecurityRiskIntroducedByOss.OssSecurityRiskLabel.class);
+        SecurityRiskIntroducedByOss.OssSecurityRiskLabel.class
+    );
 
     // scores
     mapper.registerSubtypes(
@@ -307,14 +318,16 @@ public abstract class Deserialization {
         BanditScore.class,
         GoSecScore.class,
         PylintScore.class,
-        MyPyScore.class);
+        MyPyScore.class
+    );
 
     // ratings
     mapper.registerSubtypes(
         SecurityRatingExample.class,
         OssSecurityRating.class,
         OssRulesOfPlayScore.class,
-        SecurityRiskIntroducedByOss.class);
+        SecurityRiskIntroducedByOss.class
+    );
 
     // weights
     mapper.registerSubtypes(MutableWeight.class, ImmutableWeight.class);
@@ -327,12 +340,8 @@ public abstract class Deserialization {
 
     // other
     mapper.registerSubtypes(
-        GitHubProject.class,
-        GitHubOrganization.class,
-        DoubleInterval.class,
-        ValueHashSet.class,
-        CVSS.V2.class,
-        CVSS.V3.class);
+        GitHubProject.class, GitHubOrganization.class, DoubleInterval.class, ValueHashSet.class,
+        CVSS.V2.class, CVSS.V3.class);
 
     return mapper;
   }

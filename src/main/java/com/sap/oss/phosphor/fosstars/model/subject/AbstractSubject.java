@@ -10,21 +10,27 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-/** A base class for a subject. */
+/**
+ * A base class for a subject.
+ */
 public abstract class AbstractSubject implements Subject {
 
-  /** A rating value for the subject. */
+  /**
+   * A rating value for the subject.
+   */
   private RatingValue ratingValue;
 
-  /** When the rating value was calculated. */
+  /**
+   * When the rating value was calculated.
+   */
   private Date ratingValueDate;
 
   /**
    * Initializes a new subject.
    *
    * @param ratingValue A rating value for the project. It may be null which means no rating value.
-   * @param ratingValueDate When the rating value was calculated. It may be null which means no date
-   *     is available.
+   * @param ratingValueDate When the rating value was calculated.
+   *                        It may be null which means no date is available.
    */
   @JsonCreator
   public AbstractSubject(
@@ -35,7 +41,9 @@ public abstract class AbstractSubject implements Subject {
     this.ratingValueDate = ratingValueDate;
   }
 
-  /** Initializes a new subject. */
+  /**
+   * Initializes a new subject.
+   */
   public AbstractSubject() {
     this(NO_RATING_VALUE, NO_RATING_DATE);
   }
@@ -99,4 +107,5 @@ public abstract class AbstractSubject implements Subject {
   private Date getRatingValueDate() {
     return ratingValueDate;
   }
+
 }

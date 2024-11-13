@@ -7,13 +7,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Defines the set of product configurations for a NVD applicability statement. */
+/**
+ * Defines the set of product configurations for a NVD applicability statement.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"CVE_data_version", "nodes"})
+@JsonPropertyOrder({
+    "CVE_data_version",
+    "nodes"
+})
 // the properties below are ignored because they are not used
 // that saves a bit of memory
 // when they become necessary, then can be enabled
-@JsonIgnoreProperties({"CVE_data_version"})
+@JsonIgnoreProperties({
+    "CVE_data_version"
+})
 public class Configurations {
 
   @JsonProperty("CVE_data_version")

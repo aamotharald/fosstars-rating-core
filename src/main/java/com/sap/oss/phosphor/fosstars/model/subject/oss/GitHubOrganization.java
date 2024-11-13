@@ -8,10 +8,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.subject.AbstractSubject;
 import java.util.Objects;
 
-/** An organization (or a user) on GitHub. */
+/**
+ * An organization (or a user) on GitHub.
+ */
 public class GitHubOrganization extends AbstractSubject {
 
-  /** A name. */
+  /**
+   * A name.
+   */
   private final String name;
 
   /**

@@ -6,13 +6,19 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.DoubleValue;
 import java.util.Objects;
 
-/** A feature which holds an double which belongs to a specific interval [a, b]. */
+/**
+ * A feature which holds an double which belongs to a specific interval [a, b].
+ */
 public class BoundedDoubleFeature extends AbstractFeature<Double> {
 
-  /** Left boundary. */
+  /**
+   * Left boundary.
+   */
   protected final double from;
 
-  /** Right boundary. */
+  /**
+   * Right boundary.
+   */
   protected final double to;
 
   /**
@@ -55,7 +61,7 @@ public class BoundedDoubleFeature extends AbstractFeature<Double> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof BoundedDoubleFeature)) {
+    if (o instanceof BoundedDoubleFeature == false) {
       return false;
     }
     if (!super.equals(o)) {
@@ -63,7 +69,8 @@ public class BoundedDoubleFeature extends AbstractFeature<Double> {
     }
     BoundedDoubleFeature that = (BoundedDoubleFeature) o;
 
-    return Double.compare(from, that.from) == 0 && Double.compare(to, that.to) == 0;
+    return Double.compare(from, that.from) == 0
+        && Double.compare(to, that.to) == 0;
   }
 
   @Override

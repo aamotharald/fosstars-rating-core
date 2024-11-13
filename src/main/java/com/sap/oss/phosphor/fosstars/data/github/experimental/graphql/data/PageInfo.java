@@ -20,7 +20,7 @@ public class PageInfo {
   private Boolean hasNextPage;
 
   @JsonIgnore
-  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("endCursor")
   public String getEndCursor() {
@@ -51,4 +51,5 @@ public class PageInfo {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
 }

@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Objects;
 
-/** The enum represents LGTM grades. */
+/**
+ * The enum represents LGTM grades.
+ */
 public enum LgtmGrade {
+
   A_PLUS("A+"),
   A("A"),
   B("B"),
@@ -13,7 +16,9 @@ public enum LgtmGrade {
   D("D"),
   E("E");
 
-  /** LGTM grade. */
+  /**
+   * LGTM grade.
+   */
   private final String grade;
 
   /**
@@ -23,6 +28,16 @@ public enum LgtmGrade {
    */
   LgtmGrade(String grade) {
     this.grade = grade;
+  }
+
+  /**
+   * Get the grade as a string.
+   *
+   * @return The LGTM grade as a string.
+   */
+  @JsonValue
+  public String grade() {
+    return grade;
   }
 
   /**
@@ -48,16 +63,6 @@ public enum LgtmGrade {
     }
 
     throw new IllegalArgumentException(String.format("Unknown value: %s", string));
-  }
-
-  /**
-   * Get the grade as a string.
-   *
-   * @return The LGTM grade as a string.
-   */
-  @JsonValue
-  public String grade() {
-    return grade;
   }
 
   @Override

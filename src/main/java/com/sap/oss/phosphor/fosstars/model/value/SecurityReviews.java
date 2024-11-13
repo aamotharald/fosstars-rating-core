@@ -9,14 +9,31 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-/** A set of security reviews. */
+/**
+ * A set of security reviews.
+ */
 public class SecurityReviews implements Set<SecurityReview> {
 
-  /** Security reviews. */
+  /**
+   * Returns an empty set of security reviews.
+   *
+   * @return An empty set of security reviews.
+   */
+  public static SecurityReviews noReviews() {
+    return new SecurityReviews();
+  }
+
+  /**
+   * Security reviews.
+   */
   private final Set<SecurityReview> elements = new HashSet<>();
 
-  /** Create an empty set of security reviews. */
-  public SecurityReviews() {}
+  /**
+   * Create an empty set of security reviews.
+   */
+  public SecurityReviews() {
+
+  }
 
   /**
    * Create a set of security reviews.
@@ -29,25 +46,6 @@ public class SecurityReviews implements Set<SecurityReview> {
   }
 
   /**
-   * Create a set of security reviews.
-   *
-   * @param reviews Reviews to be added to the new set.
-   */
-  public SecurityReviews(SecurityReviews reviews) {
-    Objects.requireNonNull(reviews, "Reviews can't be null!");
-    this.elements.addAll(reviews.elements);
-  }
-
-  /**
-   * Returns an empty set of security reviews.
-   *
-   * @return An empty set of security reviews.
-   */
-  public static SecurityReviews noReviews() {
-    return new SecurityReviews();
-  }
-
-  /**
    * Returns a set of security reviews.
    *
    * @return A set of security reviews.
@@ -55,6 +53,16 @@ public class SecurityReviews implements Set<SecurityReview> {
   @JsonGetter("elements")
   public Set<SecurityReview> elements() {
     return new HashSet<>(elements);
+  }
+
+  /**
+   * Create a set of security reviews.
+   *
+   * @param reviews Reviews to be added to the new set.
+   */
+  public SecurityReviews(SecurityReviews reviews) {
+    Objects.requireNonNull(reviews, "Reviews can't be null!");
+    this.elements.addAll(reviews.elements);
   }
 
   @Override

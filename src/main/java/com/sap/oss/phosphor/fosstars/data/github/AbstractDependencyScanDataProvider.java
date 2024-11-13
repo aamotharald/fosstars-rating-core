@@ -10,25 +10,32 @@ import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHUser;
 
-/** This is a base class for dependency checker data providers such as Dependabot and Snyk. */
+/**
+ * This is a base class for dependency checker data providers such as Dependabot and Snyk.
+ */
 public abstract class AbstractDependencyScanDataProvider extends GitHubCachingDataProvider {
 
-  /** Period of time to be checked. */
+  /**
+   * Period of time to be checked.
+   */
   private static final Duration ONE_YEAR = Duration.ofDays(365);
 
-  /** A minimal number of characters in a config for dependency checker. */
+  /**
+   * A minimal number of characters in a config for dependency checker.
+   */
   private static final int ACCEPTABLE_CONFIG_SIZE = 10;
+
+  protected abstract String getDependencyCheckerPattern();
 
   /**
    * Initializes a data provider.
    *
    * @param fetcher An interface to GitHub.
    */
-  public AbstractDependencyScanDataProvider(GitHubDataFetcher fetcher) {
+  public AbstractDependencyScanDataProvider(
+      GitHubDataFetcher fetcher) {
     super(fetcher);
   }
-
-  protected abstract String getDependencyCheckerPattern();
 
   /**
    * Checks if a repository contains commits from dependency checker in the commit history.

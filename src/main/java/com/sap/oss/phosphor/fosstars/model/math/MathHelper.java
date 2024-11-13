@@ -3,7 +3,9 @@ package com.sap.oss.phosphor.fosstars.model.math;
 import java.util.function.Function;
 import org.apache.commons.math3.analysis.function.Logistic;
 
-/** This is a helper class math. */
+/**
+ * This is a helper class math.
+ */
 public class MathHelper {
 
   /**
@@ -14,8 +16,8 @@ public class MathHelper {
    * @param b The end of the interval.
    * @param value The value to be inverted.
    * @param precision The precision for comparison of doubles.
-   * @return The argument of the function, which belongs to the specified interval [a, b], which
-   *     produces the closest value to the specified value.
+   * @return The argument of the function, which belongs to the specified interval [a, b],
+   *         which produces the closest value to the specified value.
    * @throws IllegalArgumentException If the parameters are incorrect.
    */
   public static int invert(Logistic func, int a, int b, double value, double precision) {
@@ -23,18 +25,18 @@ public class MathHelper {
   }
 
   /**
-   * Invert a value of a monotonic function on a specified interval. Note that the method expects a
-   * caller to pass a valid monotonic function. The method doesn't check whether the specified
-   * function is monotonic or not. If the function is not monotonic, the method may not produce a
-   * correct result.
+   * Invert a value of a monotonic function on a specified interval.
+   * Note that the method expects a caller to pass a valid monotonic function.
+   * The method doesn't check whether the specified function is monotonic or not.
+   * If the function is not monotonic, the method may not produce a correct result.
    *
    * @param func The function to be inverted.
    * @param a The beginning of the interval.
    * @param b The end of the interval.
    * @param value The value to be inverted.
    * @param precision The precision for comparison of doubles.
-   * @return The argument of the function, which belongs to the specified interval [a, b], which
-   *     produces the closest value to the specified value.
+   * @return The argument of the function, which belongs to the specified interval [a, b],
+   *         which produces the closest value to the specified value.
    * @throws IllegalArgumentException If the parameters are incorrect.
    */
   public static int invert(
@@ -51,34 +53,34 @@ public class MathHelper {
       throw new IllegalArgumentException(String.format("a == b and func(a) != %2.2f", value));
     }
     if (Double.compare(funcOfA, value) > 0) {
-      throw new IllegalArgumentException(
-          String.format("func(%d) is %2.2f which is greater than %2.2f", a, funcOfA, value));
+      throw new IllegalArgumentException(String.format(
+          "func(%d) is %2.2f which is greater than %2.2f", a, funcOfA, value));
     }
     double funcOfB = func.apply(b);
     if (equals(funcOfB, value, precision)) {
       return b;
     }
     if (Double.compare(funcOfB, value) < 0) {
-      throw new IllegalArgumentException(
-          String.format("func(%d) is %2.2f which is less than %2.2f", b, funcOfB, value));
+      throw new IllegalArgumentException(String.format(
+          "func(%d) is %2.2f which is less than %2.2f", b, funcOfB, value));
     }
 
     return binarySearch(func, a, b, value, precision);
   }
 
   /**
-   * Inverses a monotonic function on a specified interval using binary search. Note that the method
-   * expects a caller to pass a valid monotonic function. The method doesn't check whether the
-   * specified function is monotonic or not. If the function is not monotonic, the method may not
-   * produce a correct result.
+   * Inverses a monotonic function on a specified interval using binary search.
+   * Note that the method expects a caller to pass a valid monotonic function.
+   * The method doesn't check whether the specified function is monotonic or not.
+   * If the function is not monotonic, the method may not produce a correct result.
    *
    * @param func The function to be inverted.
    * @param a The beginning of the interval.
    * @param b The end of the interval.
    * @param value The value of the function to be inverted.
    * @param precision The precision for comparison of doubles.
-   * @return The argument of the function, which belongs to the specified interval [a, b], which
-   *     produces the closest value to the specified value.
+   * @return The argument of the function, which belongs to the specified interval [a, b],
+   *         which produces the closest value to the specified value.
    */
   private static int binarySearch(
       Function<Integer, Double> func, int a, int b, double value, double precision) {

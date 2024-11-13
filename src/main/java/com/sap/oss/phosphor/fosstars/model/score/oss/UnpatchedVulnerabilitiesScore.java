@@ -14,57 +14,50 @@ import com.sap.oss.phosphor.fosstars.model.value.Vulnerability;
 import java.util.Optional;
 
 /**
- * The score analyses unpatched vulnerabilities in an open-source project. For each unpatched
- * vulnerability, the score functions applies a penalty to the overall score. The penalty depends on
- * severity of a particular vulnerability.
+ * <p>The score analyses unpatched vulnerabilities in an open-source project.
+ * For each unpatched vulnerability, the score functions applies a penalty to the overall score.
+ * The penalty depends on severity of a particular vulnerability.</p>
  */
 public class UnpatchedVulnerabilitiesScore extends FeatureBasedScore {
 
-  /** The default CVSS score for a vulnerability if no score specified. */
+  /**
+   * The default CVSS score for a vulnerability if no score specified.
+   */
   private static final double DEFAULT_CVSS = 10.0;
 
-  /** The penalty for vulnerabilities with high severity. */
+  /**
+   * The penalty for vulnerabilities with high severity.
+   */
   private static final double HIGH_SEVERITY_PENALTY = 8.0;
 
-  /** The penalty for vulnerabilities with medium severity. */
+  /**
+   * The penalty for vulnerabilities with medium severity.
+   */
   private static final double MEDIUM_SEVERITY_PENALTY = 4.0;
 
-  /** The penalty for vulnerabilities with low severity. */
+  /**
+   * The penalty for vulnerabilities with low severity.
+   */
   private static final double LOW_SEVERITY_PENALTY = 1.0;
 
-  /** This is a template for explanation messages. */
+  /**
+   * This is a template for explanation messages.
+   */
   private static final String EXPLANATION_TEMPLATE =
       "Found %d unpatched vulnerabilities with %s severity "
           + "which decreased the score on %2.2f (%d * %2.2f)";
 
-  /** Initializes a new score. */
+  /**
+   * Initializes a new score.
+   */
   UnpatchedVulnerabilitiesScore() {
     super("How well vulnerabilities are patched", VULNERABILITIES_IN_PROJECT);
   }
 
-  /**
-   * Apply a penalty to a score value if issues found.
-   *
-   * @param scoreValue The score value to be updated.
-   * @param issues The number of issues.
-   * @param severity The severity of issues in human-readable format.
-   * @param penalty The penalty for one issue.
-   */
-  private static void applyPenaltyIfNecessary(
-      ScoreValue scoreValue, int issues, String severity, double penalty) {
-
-    if (issues > 0) {
-      double overallPenalty = penalty * issues;
-      scoreValue.decrease(overallPenalty);
-      scoreValue.explain(
-          String.format(EXPLANATION_TEMPLATE, issues, severity, overallPenalty, issues, penalty));
-    }
-  }
-
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Vulnerabilities> vulnerabilities =
-        findValue(values, VULNERABILITIES_IN_PROJECT, "Hey! Give me info about vulnerabilities!");
+    Value<Vulnerabilities> vulnerabilities = findValue(values, VULNERABILITIES_IN_PROJECT,
+        "Hey! Give me info about vulnerabilities!");
 
     if (vulnerabilities.isUnknown()) {
       return scoreValue(Score.MIN, vulnerabilities).makeUnknown();
@@ -103,5 +96,24 @@ public class UnpatchedVulnerabilitiesScore extends FeatureBasedScore {
     }
 
     return scoreValue;
+  }
+
+  /**
+   * Apply a penalty to a score value if issues found.
+   *
+   * @param scoreValue The score value to be updated.
+   * @param issues The number of issues.
+   * @param severity The severity of issues in human-readable format.
+   * @param penalty The penalty for one issue.
+   */
+  private static void applyPenaltyIfNecessary(
+      ScoreValue scoreValue, int issues, String severity, double penalty) {
+
+    if (issues > 0) {
+      double overallPenalty = penalty * issues;
+      scoreValue.decrease(overallPenalty);
+      scoreValue.explain(String.format(EXPLANATION_TEMPLATE,
+          issues, severity, overallPenalty, issues, penalty));
+    }
   }
 }

@@ -9,7 +9,6 @@ import com.sap.oss.phosphor.fosstars.util.Json;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,10 +27,10 @@ import org.apache.http.impl.client.HttpClients;
 /**
  * This class offers an interface to GitHub security advisories using GrahhQL APIs exposed by
  * GitHub.
- *
+ * 
  * @see <a href=
- *     "https://help.github.com/en/github/managing-security-vulnerabilities/about-github-security-advisories">GitHub
- *     Security Advisory</a>
+ *      "https://help.github.com/en/github/managing-security-vulnerabilities/about-github-security-advisories">GitHub
+ *      Security Advisory</a>
  */
 public class GitHubAdvisories {
 
@@ -47,10 +46,14 @@ public class GitHubAdvisories {
    */
   private static final String GRAPHQL_NEXT_PAGE_RUN_TEMPLATE = "next_page_run_template";
 
-  /** First n advisories per page. */
+  /**
+   * First n advisories per page.
+   */
   private static final int FIRST_N_ADVISORIES = 100;
 
-  /** The token to access GitHub API. */
+  /**
+   * The token to access GitHub API.
+   */
   private final String gitHubToken;
 
   /**
@@ -61,29 +64,14 @@ public class GitHubAdvisories {
   public GitHubAdvisories(String gitHubToken) {
     this.gitHubToken = Objects.requireNonNull(gitHubToken, "The GitHub token cannot be null!");
   }
-
-  /**
-   * This is for testing purpose only.
-   *
-   * @param args Command line arguments.
-   * @throws IOException if something goes wrong.
-   */
-  public static void main(String... args) throws IOException {
-    String token = System.getenv("TOKEN");
-    GitHubAdvisories gitHubAdvisories = new GitHubAdvisories(token);
-    List<Node> advisories =
-        gitHubAdvisories.advisoriesFor(
-            PackageManager.MAVEN, "com.fasterxml.jackson.core:jackson-databind");
-    System.out.println("Total count :" + advisories.size());
-  }
-
+  
   /**
    * Get the all the advisories for the given artifact and the package manager which are not present
    * in NVD database. This is done by checking if the advisory has a CVE associated to it.
-   *
+   * 
    * @param ecosystem The GitHub project package management used.
    * @param artifact The artifact identifier for the GitHub project (E.g MAVEN for Java, NPM for
-   *     JavaScript packages).
+   *        JavaScript packages).
    * @return List of type {@link Node}. Each {@link Node} is an {@link Advisory}.
    * @throws IOException if something goes wrong.
    */
@@ -103,21 +91,18 @@ public class GitHubAdvisories {
   /**
    * Downloads the advisories related to the input parameters from GitHub Security Advisory
    * Database.
-   *
+   * 
    * @param ecosystem The GitHub project package management used.
    * @param artifact The artifact identifier for the GitHub project (E.g MAVEN for Java, NPM for
-   *     JavaScript packages).
+   *        JavaScript packages).
    * @return List of type {@link Node}. Each {@link Node} is an {@link Advisory}.
    * @throws IOException if something goes wrong.
    */
   private List<Node> download(String ecosystem, String artifact) throws IOException {
     List<Node> advisories = new ArrayList<>();
 
-    String jsonEntity =
-        String.format(
-            "{\"query\" : \"%s\"}",
-            String.format(
-                load(GRAPHQL_FIRST_RUN_TEMPLATE), FIRST_N_ADVISORIES, ecosystem, artifact));
+    String jsonEntity = String.format("{\"query\" : \"%s\"}",
+        String.format(load(GRAPHQL_FIRST_RUN_TEMPLATE), FIRST_N_ADVISORIES, ecosystem, artifact));
 
     boolean nextPage = true;
 
@@ -127,24 +112,18 @@ public class GitHubAdvisories {
       advisories.addAll(nodes(entry));
 
       nextPage = hasNextPage(entry);
-      jsonEntity =
-          String.format(
-              "{\"query\" : \"%s\"}",
-              String.format(
-                  load(GRAPHQL_NEXT_PAGE_RUN_TEMPLATE),
-                  FIRST_N_ADVISORIES,
-                  endCursor(entry),
-                  ecosystem,
-                  artifact));
+      jsonEntity = String.format("{\"query\" : \"%s\"}", String
+          .format(load(GRAPHQL_NEXT_PAGE_RUN_TEMPLATE), FIRST_N_ADVISORIES, endCursor(entry),
+              ecosystem, artifact));
     } while (nextPage);
-
+    
     return advisories;
   }
 
   /**
    * Does a REST API call to public URL <a link="https://api.github.com/graphql">GitHub GraphQL
    * API</a> to list all the security advisories from GitHub Security Advisory.
-   *
+   * 
    * @param gitHubToken The GitHub Token.
    * @param jsonEntity is the query which needs to used to call GraphQL API.
    * @return The {@link GitHubAdvisoryEntry} object.
@@ -155,15 +134,15 @@ public class GitHubAdvisories {
     try (CloseableHttpClient client = httpClient()) {
       HttpPost httpPostRequest = buildRequest(gitHubToken, jsonEntity);
       try (CloseableHttpResponse response = client.execute(httpPostRequest)) {
-        return Json.mapper()
-            .readValue(response.getEntity().getContent(), GitHubAdvisoryEntry.class);
+        return Json.mapper().readValue(
+            response.getEntity().getContent(), GitHubAdvisoryEntry.class);
       }
     }
   }
 
   /**
    * Builds a {@link HttpPost} request.
-   *
+   * 
    * @param gitHubToken is the GitHub Token.
    * @param jsonEntity is the query which needs to used to call GraphQL API.
    * @return The {@link HttpPost} object.
@@ -193,21 +172,20 @@ public class GitHubAdvisories {
 
   /**
    * Loads the GraphQL template, used as query to call GraphQL API.
-   *
+   * 
    * @param file name of the template.
    * @return String content of the template.
    * @throws IOException if something goes wrong.
    */
   private String load(String file) throws IOException {
     try (final InputStream is = getClass().getResourceAsStream(file)) {
-      return IOUtils.toString(is, StandardCharsets.UTF_8)
-          .replaceAll("(\\r|\\n)", StringUtils.EMPTY);
+      return IOUtils.toString(is, "UTF-8").replaceAll("(\\r|\\n)", StringUtils.EMPTY);
     }
   }
 
   /**
    * Get the last index of the first n elements.
-   *
+   * 
    * @param entry object of the type of {@link GitHubAdvisoryEntry}.
    * @return The last index.
    */
@@ -217,7 +195,7 @@ public class GitHubAdvisories {
 
   /**
    * Get the next page flag.
-   *
+   * 
    * @param entry object of the type of {@link GitHubAdvisoryEntry}.
    * @return true if there is a next page. Otherwise false.
    */
@@ -227,7 +205,7 @@ public class GitHubAdvisories {
 
   /**
    * Extract all the advisories from the data {@link GitHubAdvisoryEntry}.
-   *
+   * 
    * @param entry object of the type of {@link GitHubAdvisoryEntry}.
    * @return List o type {@link Node}.
    */
@@ -237,7 +215,7 @@ public class GitHubAdvisories {
 
   /**
    * Check if the advisory has a CVE associated to it.
-   *
+   * 
    * @param advisory of object type {@link Advisory}.
    * @return true if the {@link Advisory} has a CVE. Otherwise false.
    */
@@ -248,5 +226,20 @@ public class GitHubAdvisories {
       }
     }
     return false;
+  }
+
+  /**
+   * This is for testing purpose only.
+   *
+   * @param args Command line arguments.
+   * @throws IOException if something goes wrong.
+   */
+  public static void main(String... args) throws IOException {
+    String token = System.getenv("TOKEN");
+    GitHubAdvisories gitHubAdvisories = new GitHubAdvisories(token);
+    List<Node> advisories =
+        gitHubAdvisories.advisoriesFor(PackageManager.MAVEN,
+            "com.fasterxml.jackson.core:jackson-databind");
+    System.out.println("Total count :" + advisories.size());
   }
 }

@@ -9,7 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"url", "name", "refsource", "tags"})
+@JsonPropertyOrder({
+    "url",
+    "name",
+    "refsource",
+    "tags"
+})
 public class ReferenceLink {
 
   @JsonProperty("url")
@@ -36,7 +41,7 @@ public class ReferenceLink {
 
   /**
    * Return {@link URI} of {@link ReferenceLink#url}.
-   *
+   * 
    * @return type {@link URI} or an {@link Optional#empty()}.
    */
   public Optional<URI> url() {

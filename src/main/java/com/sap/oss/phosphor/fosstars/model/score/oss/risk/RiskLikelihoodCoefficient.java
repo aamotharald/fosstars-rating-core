@@ -10,17 +10,30 @@ import com.sap.oss.phosphor.fosstars.model.weight.ImmutableWeight;
 import com.sap.oss.phosphor.fosstars.model.weight.ScoreWeights;
 
 /**
- * This scoring function calculates a likelihood coefficient that is used in calculating security
- * risk introduced by an open source project. The coefficient is based on the following:
- *
+ * <p>This scoring function calculates a likelihood coefficient
+ * that is used in calculating security risk introduced by an open source project.
+ * The coefficient is based on the following:</p>
  * <ul>
- *   <li>{@link OssSecurityScore}
- *   <li>{@link AdoptedRiskLikelihoodFactor}
+ *   <li>{@link OssSecurityScore}</li>
+ *   <li>{@link AdoptedRiskLikelihoodFactor}</li>
  * </ul>
  */
 public class RiskLikelihoodCoefficient extends WeightedCompositeScore {
 
-  /** Creates a new scoring function with default parameters. */
+  /**
+   * Initializes weights for sub-scores.
+   *
+   * @return The weights of sub-scores.
+   */
+  private static ScoreWeights initWeights() {
+    return ScoreWeights.empty()
+        .set(OssSecurityScore.class, new ImmutableWeight(0.8))
+        .set(AdoptedRiskLikelihoodFactor.class, new ImmutableWeight(0.2));
+  }
+
+  /**
+   * Creates a new scoring function with default parameters.
+   */
   RiskLikelihoodCoefficient() {
     this(new OssSecurityScore(), new AdoptedRiskLikelihoodFactor());
   }
@@ -34,21 +47,9 @@ public class RiskLikelihoodCoefficient extends WeightedCompositeScore {
   public RiskLikelihoodCoefficient(
       OssSecurityScore ossSecurityScore, AdoptedRiskLikelihoodFactor adoptedRiskLikelihoodFactor) {
 
-    super(
-        "Likelihood coefficient for security risk of open source project",
+    super("Likelihood coefficient for security risk of open source project",
         setOf(ossSecurityScore, adoptedRiskLikelihoodFactor),
         initWeights());
-  }
-
-  /**
-   * Initializes weights for sub-scores.
-   *
-   * @return The weights of sub-scores.
-   */
-  private static ScoreWeights initWeights() {
-    return ScoreWeights.empty()
-        .set(OssSecurityScore.class, new ImmutableWeight(0.8))
-        .set(AdoptedRiskLikelihoodFactor.class, new ImmutableWeight(0.2));
   }
 
   @Override

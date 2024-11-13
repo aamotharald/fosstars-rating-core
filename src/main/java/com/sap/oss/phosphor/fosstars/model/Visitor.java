@@ -3,12 +3,11 @@ package com.sap.oss.phosphor.fosstars.model;
 /**
  * This is an interface of a visitor for browsing the internal structure of ratings and scores.
  * Visitors can visit the following objects:
- *
  * <ul>
- *   <li>{@link Rating}
- *   <li>{@link Score}
- *   <li>{@link Feature}
- *   <li>{@link Parameter}
+ *   <li>{@link Rating}</li>
+ *   <li>{@link Score}</li>
+ *   <li>{@link Feature}</li>
+ *   <li>{@link Parameter}</li>
  * </ul>
  */
 public interface Visitor {

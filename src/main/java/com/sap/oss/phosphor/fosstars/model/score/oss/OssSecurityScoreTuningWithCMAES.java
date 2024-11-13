@@ -8,10 +8,14 @@ import com.sap.oss.phosphor.fosstars.model.tuning.TuningWithCMAES;
 import java.io.IOException;
 import java.io.InputStream;
 
-/** This class tunes weights in the open-source security rating to make it pass the test vectors. */
+/**
+ * This class tunes weights in the open-source security rating to make it pass the test vectors.
+ */
 public class OssSecurityScoreTuningWithCMAES extends TuningWithCMAES {
 
-  /** A path to weights for the open-source security rating. */
+  /**
+   * A path to weights for the open-source security rating.
+   */
   private static final String PATH =
       "src/main/resources/com/sap/oss/phosphor/fosstars/model/score/oss/"
           + "OssSecurityScoreWeights.yml";
@@ -48,8 +52,8 @@ public class OssSecurityScoreTuningWithCMAES extends TuningWithCMAES {
    * @return An instance of {@link OssSecurityScore}.
    */
   private static ScoreVerification verificationFor(OssSecurityScore score) throws IOException {
-    try (InputStream is =
-        OssSecurityScore.class.getResourceAsStream("OssSecurityScoreTestVectors.yml")) {
+    try (InputStream is = OssSecurityScore.class.getResourceAsStream(
+        "OssSecurityScoreTestVectors.yml")) {
 
       return new ScoreVerification(score, TestVectors.loadFromYaml(is));
     }

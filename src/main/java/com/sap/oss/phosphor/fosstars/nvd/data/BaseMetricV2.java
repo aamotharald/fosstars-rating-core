@@ -4,18 +4,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/** CVSS V2.0 score. */
+/**
+ * CVSS V2.0 score.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-  "cvssV2",
-  "severity",
-  "exploitabilityScore",
-  "impactScore",
-  "acInsufInfo",
-  "obtainAllPrivilege",
-  "obtainUserPrivilege",
-  "obtainOtherPrivilege",
-  "userInteractionRequired"
+    "cvssV2",
+    "severity",
+    "exploitabilityScore",
+    "impactScore",
+    "acInsufInfo",
+    "obtainAllPrivilege",
+    "obtainUserPrivilege",
+    "obtainOtherPrivilege",
+    "userInteractionRequired"
 })
 public class BaseMetricV2 {
 

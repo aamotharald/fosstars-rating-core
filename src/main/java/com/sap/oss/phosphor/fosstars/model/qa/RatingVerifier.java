@@ -7,10 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** The verifier checks that a rating passes tests defined by test vectors. */
+/**
+ * The verifier checks that a rating passes tests defined by test vectors.
+ */
 public class RatingVerifier extends AbstractVerifier {
 
-  /** A rating to be verified. */
+  /**
+   * A rating to be verified.
+   */
   private final Rating rating;
 
   /**
@@ -24,6 +28,23 @@ public class RatingVerifier extends AbstractVerifier {
 
     Objects.requireNonNull(rating, "Rating can't be null!");
     this.rating = rating;
+  }
+
+  /**
+   * Check if the rating produces expected scores and labels defined by the test vectors.
+   *
+   * @return A list of failed test vectors.
+   */
+  List<TestVectorResult> runImpl() {
+    List<TestVectorResult> results = new ArrayList<>();
+
+    int index = 0;
+    for (TestVector vector : vectors) {
+      RatingValue ratingValue = rating.calculate(vector.valuesFor(rating));
+      results.add(testResultFor(vector, ratingValue, index++));
+    }
+
+    return results;
   }
 
   /**
@@ -48,8 +69,7 @@ public class RatingVerifier extends AbstractVerifier {
           index,
           ratingValue.scoreValue(),
           Status.FAILED,
-          String.format(
-              "Expected label '%s' but '%s' returned",
+          String.format("Expected label '%s' but '%s' returned",
               vector.expectedLabel(), ratingValue.label()));
     }
 
@@ -71,20 +91,4 @@ public class RatingVerifier extends AbstractVerifier {
     return !vector.expectedLabel().equals(ratingValue.label());
   }
 
-  /**
-   * Check if the rating produces expected scores and labels defined by the test vectors.
-   *
-   * @return A list of failed test vectors.
-   */
-  List<TestVectorResult> runImpl() {
-    List<TestVectorResult> results = new ArrayList<>();
-
-    int index = 0;
-    for (TestVector vector : vectors) {
-      RatingValue ratingValue = rating.calculate(vector.valuesFor(rating));
-      results.add(testResultFor(vector, ratingValue, index++));
-    }
-
-    return results;
-  }
 }

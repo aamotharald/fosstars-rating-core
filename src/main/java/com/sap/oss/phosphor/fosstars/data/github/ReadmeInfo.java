@@ -29,28 +29,22 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * This data provider gathers info about project's README file. It fills out {@link
- * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#HAS_README}.
+ * This data provider gathers info about project's README file.
+ * It fills out {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#HAS_README}.
  */
 public class ReadmeInfo extends GitHubCachingDataProvider {
 
-  /** A list of known README file names. */
-  private static final List<String> KNOWN_README_FILES =
-      Arrays.asList(
-          "README",
-          "README.txt",
-          "README.md",
-          "README.rst",
-          "README.adoc",
-          "readme",
-          "readme.txt",
-          "readme.md",
-          "readme.rst",
-          "readme.adoc",
-          "README.MD",
-          "readme.MD");
+  /**
+   * A list of known README file names.
+   */
+  private static final List<String> KNOWN_README_FILES
+      = Arrays.asList("README", "README.txt", "README.md", "README.rst",
+          "README.adoc", "readme", "readme.txt", "readme.md", "readme.rst", 
+          "readme.adoc", "README.MD", "readme.MD");
 
-  /** A list of patterns that describe required content in README. */
+  /**
+   * A list of patterns that describe required content in README.
+   */
   private final List<Pattern> requiredContentPatterns = new ArrayList<>();
 
   /**
@@ -62,38 +56,6 @@ public class ReadmeInfo extends GitHubCachingDataProvider {
   public ReadmeInfo(GitHubDataFetcher fetcher) throws IOException {
     super(fetcher);
     loadDefaultConfigIfAvailable();
-  }
-
-  /**
-   * Looks for a README file in a repository.
-   *
-   * @param repository The repository.
-   * @return A file name of README.
-   */
-  static Optional<String> readmeIn(LocalRepository repository) {
-    for (String filename : KNOWN_README_FILES) {
-      if (repository.hasFile(filename)) {
-        return Optional.of(filename);
-      }
-    }
-
-    return Optional.empty();
-  }
-
-  /**
-   * Reads a README file in a repository.
-   *
-   * @param repository The repository.
-   * @return Content of a README fine if found.
-   * @throws IOException If something went wrong.
-   */
-  static Optional<String> readReadmeIn(LocalRepository repository) throws IOException {
-    Optional<String> readme = readmeIn(repository);
-    if (!readme.isPresent()) {
-      return Optional.empty();
-    }
-
-    return repository.readTextFrom(readme.get());
   }
 
   /**
@@ -126,8 +88,7 @@ public class ReadmeInfo extends GitHubCachingDataProvider {
     requiredContentPatterns.clear();
     requiredContentPatterns.addAll(
         patterns.stream()
-            .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL))
-            .collect(toList()));
+            .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL)).collect(toList()));
     return this;
   }
 
@@ -150,21 +111,48 @@ public class ReadmeInfo extends GitHubCachingDataProvider {
 
     Value<Boolean> hasReadme = HAS_README.value(true);
 
-    List<Pattern> missedPatterns =
-        requiredContentPatterns.stream()
-            .filter(pattern -> !pattern.matcher(readme.get()).find())
-            .collect(toList());
-    Value<Boolean> incompleteReadme =
-        INCOMPLETE_README
-            .value(!missedPatterns.isEmpty())
-            .explainIf(
-                true,
-                "The README does not contain required text that should match %s",
-                missedPatterns.stream()
-                    .map(pattern -> format("'%s'", pattern))
-                    .collect(joining(", ")));
+    List<Pattern> missedPatterns = requiredContentPatterns.stream()
+        .filter(pattern -> !pattern.matcher(readme.get()).find())
+        .collect(toList());
+    Value<Boolean> incompleteReadme = INCOMPLETE_README.value(!missedPatterns.isEmpty())
+        .explainIf(true, "The README does not contain required text that should match %s",
+            missedPatterns.stream()
+                .map(pattern -> format("'%s'", pattern))
+                .collect(joining(", ")));
 
     return ValueHashSet.from(hasReadme, incompleteReadme);
+  }
+
+  /**
+   * Looks for a README file in a repository.
+   *
+   * @param repository The repository.
+   * @return A file name of README.
+   */
+  static Optional<String> readmeIn(LocalRepository repository) {
+    for (String filename : KNOWN_README_FILES) {
+      if (repository.hasFile(filename)) {
+        return Optional.of(filename);
+      }
+    }
+
+    return Optional.empty();
+  }
+
+  /**
+   * Reads a README file in a repository.
+   *
+   * @param repository The repository.
+   * @return Content of a README fine if found.
+   * @throws IOException If something went wrong.
+   */
+  static Optional<String> readReadmeIn(LocalRepository repository) throws IOException {
+    Optional<String> readme = readmeIn(repository);
+    if (!readme.isPresent()) {
+      return Optional.empty();
+    }
+
+    return repository.readTextFrom(readme.get());
   }
 
   /**

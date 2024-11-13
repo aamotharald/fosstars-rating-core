@@ -27,25 +27,50 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Scm;
 
-/** The class takes GAV coordinates of an artifact and looks for a URL to its SCM. */
+/**
+ * The class takes GAV coordinates of an artifact and looks for a URL to its SCM.
+ */
 public class MavenScmFinder {
 
-  /** A template of a request for downloading files from the Maven Central repository. */
-  private static final String MAVEN_DOWNLOAD_REQUEST_TEMPLATE =
-      "https://repo1.maven.org/maven2/{PATH}";
-
-  /** A template of a path to a POM file of an artifact in the Maven Central repository. */
-  private static final String PATH_TEMPLATE =
-      "{GROUP}/{ARTIFACT}/{VERSION}/{ARTIFACT}-{VERSION}.pom";
-
-  /** Pattern to match the latest version. */
-  private static final Pattern LATEST_VERSION_PATTERN =
-      Pattern.compile(
-          "\\s*<latest>([A-Za-z0-9]+(\\.[A-Za-z0-9]+)*.*)</latest>", Pattern.CASE_INSENSITIVE);
+  /**
+   * A template of a request for downloading files from the Maven Central repository.
+   */
+  private static final String MAVEN_DOWNLOAD_REQUEST_TEMPLATE
+        = "https://repo1.maven.org/maven2/{PATH}";
 
   /**
-   * The method tries to normalize and resolve a GitHub project path from the given URI syntax.
+   * A template of a path to a POM file of an artifact in the Maven Central repository.
+   */
+  private static final String PATH_TEMPLATE
+      = "{GROUP}/{ARTIFACT}/{VERSION}/{ARTIFACT}-{VERSION}.pom";
+
+  /**
+   * Pattern to match the latest version.
+   */
+  private static final Pattern LATEST_VERSION_PATTERN =
+      Pattern.compile("\\s*<latest>([A-Za-z0-9]+(\\.[A-Za-z0-9]+)*.*)</latest>",
+          Pattern.CASE_INSENSITIVE);
+
+  /**
+   * Takes GAV coordinates of an artifact and looks for a URL to its SCM.
    *
+   * @param gav The GAV coordinates.
+   * @return A URL to SCM.
+   * @throws IOException If something went wrong.
+   */
+  public Optional<String> findScmFor(GAV gav) throws IOException {
+    Model pom = loadPomFor(gav);
+    Scm scm = pom.getScm();
+    if (scm == null) {
+      return Optional.empty();
+    }
+
+    return normalizeGitHubProjectPath(scm.getUrl());
+  }
+ 
+  /**
+   * The method tries to normalize and resolve a GitHub project path from the given URI syntax.
+   * 
    * @param url The input URL to be parsed and converted into a GitHub URL.
    * @return A GitHub URL if parsing is successful. Otherwise an #Optional.empty().
    * @throws IOException If something goes wrong.
@@ -77,7 +102,7 @@ public class MavenScmFinder {
 
   /**
    * The method identifies and extracts path from the given URL by matching known syntaxes.
-   *
+   * 
    * @param url The input URL is parsed to identify the project path.
    * @return A GitHub project path if found. Otherwise an #Optional.empty().
    * @throws IllegalArgumentException If something goes wrong.
@@ -89,6 +114,41 @@ public class MavenScmFinder {
 
     URI uri = URI.create(url);
     return Optional.ofNullable(uri.getPath());
+  }
+
+  /**
+   * Takes GAV coordinates to an artifact and looks for a corresponding GitHub project
+   * (maybe a mirror) that contains the source code.
+   *
+   * @param gav The GAV coordinates.
+   * @return A project on GitHub.
+   * @throws IOException If something went wrong.
+   */
+  public Optional<GitHubProject> findGithubProjectFor(GAV gav) throws IOException {
+    Optional<String> scm = findScmFor(gav);
+    if (scm.isPresent()) {
+      String url = scm.get();
+      if (isOnGitHub(url)) {
+        return Optional.of(GitHubProject.parse(url));
+      }
+    }
+
+    return tryToGuessGitHubProjectFor(gav);
+  }
+
+  /**
+   * Takes GAV coordinates and tries to guess a possible GitHub project.
+   *
+   * @param gav The GAV coordinates.
+   * @return A project on GitHub if it exists.
+   */
+  public Optional<GitHubProject> tryToGuessGitHubProjectFor(GAV gav) {
+    Optional<GitHubProject> project = guessGitHubProjectFor(gav);
+    if (project.isPresent() && looksLikeValid(project.get())) {
+      return project;
+    }
+
+    return Optional.empty();
   }
 
   /**
@@ -167,17 +227,16 @@ public class MavenScmFinder {
   /**
    * Gathers latest release version from group:artifact coordinate.
    *
-   * @param group A maven artifact group Id.
+   * @param group    A maven artifact group Id.
    * @param artifact A maven artifact Id.
    * @return An optional {@link String} containing the latest release version.
    * @throws IOException If something goes wrong.
    */
   private static Optional<String> latestVersionOf(String group, String artifact)
       throws IOException {
-    String url =
-        String.format(
-            "https://repo1.maven.org/maven2/%s/%s/maven-metadata.xml",
-            group.replaceAll("\\.", "/"), artifact);
+    String url = String.format(
+        "https://repo1.maven.org/maven2/%s/%s/maven-metadata.xml",
+        group.replaceAll("\\.", "/"), artifact);
     return fetchLatestVersionOf(url);
   }
 
@@ -189,11 +248,10 @@ public class MavenScmFinder {
    * @throws IOException If something wrong.
    */
   private static Model loadPomFor(GAV gav) throws IOException {
-    String path =
-        PATH_TEMPLATE
-            .replace("{GROUP}", gav.group().replace(".", "/"))
-            .replace("{ARTIFACT}", gav.artifact())
-            .replace("{VERSION}", gav.version().orElse(latestVersionOf(gav)));
+    String path = PATH_TEMPLATE
+        .replace("{GROUP}", gav.group().replace(".", "/"))
+        .replace("{ARTIFACT}", gav.artifact())
+        .replace("{VERSION}", gav.version().orElse(latestVersionOf(gav)));
     String urlString = MAVEN_DOWNLOAD_REQUEST_TEMPLATE.replace("{PATH}", path);
     String content = fetch(urlString);
 
@@ -225,13 +283,10 @@ public class MavenScmFinder {
   private static CloseableHttpClient httpClient() {
     // Set the Connection timeout to 120 seconds
     int timeout = 120;
-    RequestConfig config =
-        RequestConfig.custom()
-            .setConnectTimeout(timeout * 1000)
-            .setConnectionRequestTimeout(timeout * 1000)
-            .setSocketTimeout(timeout * 1000)
-            .build();
-    return HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+    RequestConfig config = RequestConfig.custom().setConnectTimeout(timeout * 1000)
+        .setConnectionRequestTimeout(timeout * 1000).setSocketTimeout(timeout * 1000).build();
+    return HttpClientBuilder.create()
+        .setDefaultRequestConfig(config).build();
   }
 
   /**
@@ -246,9 +301,8 @@ public class MavenScmFinder {
       HttpGet httpGetRequest = new HttpGet(url);
       httpGetRequest.addHeader(HttpHeaders.ACCEPT, ContentType.TEXT_HTML.getMimeType());
       try (CloseableHttpResponse httpResponse = client.execute(httpGetRequest);
-          BufferedReader reader =
-              new BufferedReader(
-                  new InputStreamReader(httpResponse.getEntity().getContent(), UTF_8))) {
+          BufferedReader reader = new BufferedReader(
+              new InputStreamReader(httpResponse.getEntity().getContent(), UTF_8))) {
         String line = null;
         while ((line = reader.readLine()) != null) {
           Matcher matcher = LATEST_VERSION_PATTERN.matcher(line);
@@ -269,61 +323,9 @@ public class MavenScmFinder {
    */
   public static void main(String... args) throws IOException {
     String coordinates = args.length > 0 ? args[0] : "org.apache.rocketmq:rocketmq-all:4.9.0";
-    Optional<GitHubProject> project =
-        new MavenScmFinder().findGithubProjectFor(GAV.parse(coordinates));
+    Optional<GitHubProject> project
+        = new MavenScmFinder().findGithubProjectFor(GAV.parse(coordinates));
     System.out.println(
         project.isPresent() ? String.format("GitHub URL = %s", project.get()) : "No SCM found!");
-  }
-
-  /**
-   * Takes GAV coordinates of an artifact and looks for a URL to its SCM.
-   *
-   * @param gav The GAV coordinates.
-   * @return A URL to SCM.
-   * @throws IOException If something went wrong.
-   */
-  public Optional<String> findScmFor(GAV gav) throws IOException {
-    Model pom = loadPomFor(gav);
-    Scm scm = pom.getScm();
-    if (scm == null) {
-      return Optional.empty();
-    }
-
-    return normalizeGitHubProjectPath(scm.getUrl());
-  }
-
-  /**
-   * Takes GAV coordinates to an artifact and looks for a corresponding GitHub project (maybe a
-   * mirror) that contains the source code.
-   *
-   * @param gav The GAV coordinates.
-   * @return A project on GitHub.
-   * @throws IOException If something went wrong.
-   */
-  public Optional<GitHubProject> findGithubProjectFor(GAV gav) throws IOException {
-    Optional<String> scm = findScmFor(gav);
-    if (scm.isPresent()) {
-      String url = scm.get();
-      if (isOnGitHub(url)) {
-        return Optional.of(GitHubProject.parse(url));
-      }
-    }
-
-    return tryToGuessGitHubProjectFor(gav);
-  }
-
-  /**
-   * Takes GAV coordinates and tries to guess a possible GitHub project.
-   *
-   * @param gav The GAV coordinates.
-   * @return A project on GitHub if it exists.
-   */
-  public Optional<GitHubProject> tryToGuessGitHubProjectFor(GAV gav) {
-    Optional<GitHubProject> project = guessGitHubProjectFor(gav);
-    if (project.isPresent() && looksLikeValid(project.get())) {
-      return project;
-    }
-
-    return Optional.empty();
   }
 }

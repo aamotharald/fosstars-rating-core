@@ -20,25 +20,29 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 /**
  * The scores assesses how well an open-source project uses OWASP Dependency Check to scan
  * dependencies for known vulnerabilities. It is based on the following features:
- *
  * <ul>
- *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_USAGE}
- *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD}
+ *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_USAGE}</li>
+ *   <li>{@link OssFeatures#OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD}</li>
  * </ul>
  */
 public class OwaspDependencyScanScore extends FeatureBasedScore {
 
-  /** The basic step score that is allotted in each step. */
+  /**
+   * The basic step score that is allotted in each step.
+   */
   private static final double STEP_SCORE = 3.0;
 
-  /** Package ecosystems that are supported by OWASP Dependency Check. */
-  private static final PackageManagers SUPPORTED_PACKAGE_MANAGERS =
-      PackageManagers.from(MAVEN, GRADLE, DOTNET);
+  /**
+   * Package ecosystems that are supported by OWASP Dependency Check.
+   */
+  private static final PackageManagers SUPPORTED_PACKAGE_MANAGERS
+      = PackageManagers.from(MAVEN, GRADLE, DOTNET);
 
-  /** Initializes a new {@link OwaspDependencyScanScore}. */
+  /**
+   * Initializes a new {@link OwaspDependencyScanScore}.
+   */
   OwaspDependencyScanScore() {
-    super(
-        "How a project uses OWASP Dependency Check to scan dependencies for vulnerabilities",
+    super("How a project uses OWASP Dependency Check to scan dependencies for vulnerabilities",
         OWASP_DEPENDENCY_CHECK_USAGE,
         OWASP_DEPENDENCY_CHECK_FAIL_CVSS_THRESHOLD);
   }
@@ -79,7 +83,7 @@ public class OwaspDependencyScanScore extends FeatureBasedScore {
       return scoreValue;
     }
 
-    if (!(thresholdValue instanceof OwaspDependencyCheckCvssThresholdValue)) {
+    if (thresholdValue instanceof OwaspDependencyCheckCvssThresholdValue == false) {
       throw new IllegalArgumentException("Expected OwaspDependencyCheckCvssThresholdValue!");
     }
 

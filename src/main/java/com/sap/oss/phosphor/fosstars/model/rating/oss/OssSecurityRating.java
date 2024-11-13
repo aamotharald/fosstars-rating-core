@@ -11,15 +11,27 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Objects;
 
 /**
- * This is a security rating for open-source projects that is based on a security score for
- * open-source project.
+ * This is a security rating for open-source projects
+ * that is based on a security score for open-source project.
  */
 public class OssSecurityRating extends AbstractRating {
 
-  /** Thresholds for labels. */
+  /**
+   * A set of labels for the rating.
+   */
+  public enum SecurityLabel implements Label {
+
+    BAD, MODERATE, GOOD, UNCLEAR
+  }
+
+  /**
+   * Thresholds for labels.
+   */
   private final Thresholds thresholds;
 
-  /** Initializes a security rating with defaults. */
+  /**
+   * Initializes a security rating with defaults.
+   */
   public OssSecurityRating() {
     this(new OssSecurityScore(), Thresholds.DEFAULT);
   }
@@ -75,27 +87,29 @@ public class OssSecurityRating extends AbstractRating {
     return thresholds;
   }
 
-  /** A set of labels for the rating. */
-  public enum SecurityLabel implements Label {
-    BAD,
-    MODERATE,
-    GOOD,
-    UNCLEAR
-  }
-
-  /** Holds thresholds for labels. */
+  /**
+   * Holds thresholds for labels.
+   */
   public static class Thresholds {
 
-    /** The default thresholds. */
+    /**
+     * The default thresholds.
+     */
     public static final Thresholds DEFAULT = new Thresholds(5.0, 8.0, 8.0);
 
-    /** A threshold for the moderate label (score value). */
+    /**
+     * A threshold for the moderate label (score value).
+     */
     private final double moderate;
 
-    /** A threshold for the good label (score value). */
+    /**
+     * A threshold for the good label (score value).
+     */
     private final double good;
 
-    /** A threshold for the unclear label (confidence). */
+    /**
+     * A threshold for the unclear label (confidence).
+     */
     private final double unclear;
 
     /**
@@ -152,4 +166,5 @@ public class OssSecurityRating extends AbstractRating {
       return unclear;
     }
   }
+
 }

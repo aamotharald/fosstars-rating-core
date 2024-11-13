@@ -11,16 +11,24 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.StringUtils;
 
-/** A helper class for creating Markdown. */
+/**
+ * A helper class for creating Markdown.
+ */
 public class Markdown {
 
-  /** A whitespace. */
+  /**
+   * A whitespace.
+   */
   static final String SPACE = " ";
 
-  /** A new line. */
+  /**
+   * A new line.
+   */
   static final String NEW_LINE = "\n";
 
-  /** A double new line. */
+  /**
+   * A double new line.
+   */
   static final String DOUBLE_NEW_LINE = NEW_LINE + NEW_LINE;
 
   /**
@@ -184,10 +192,14 @@ public class Markdown {
     return new MarkdownLinkBuilder();
   }
 
-  /** A builder for joined Markdown elements. */
+  /**
+   * A builder for joined Markdown elements.
+   */
   public static class JoinedMarkdownBuilder {
 
-    /** A list of elements to be joined. */
+    /**
+     * A list of elements to be joined.
+     */
     private final List<MarkdownElement> elements = new ArrayList<>();
 
     /**
@@ -230,10 +242,14 @@ public class Markdown {
     }
   }
 
-  /** A builder for a reference to a Markdown header. */
+  /**
+   * A builder for a reference to a Markdown header.
+   */
   public static class MarkdownHeaderReferenceBuilder {
 
-    /** A header. */
+    /**
+     * A header.
+     */
     private MarkdownHeader header;
 
     /**
@@ -287,10 +303,14 @@ public class Markdown {
     }
   }
 
-  /** A builder for a Markdown section. */
+  /**
+   * A builder for a Markdown section.
+   */
   static class MarkdownSectionBuilder {
 
-    /** A section's header. */
+    /**
+     * A section's header.
+     */
     private MarkdownHeader header;
 
     /**
@@ -325,10 +345,14 @@ public class Markdown {
     }
   }
 
-  /** A builder for a Markdown header. */
+  /**
+   * A builder for a Markdown header.
+   */
   static class MarkdownHeaderBuilder {
 
-    /** A header's level. */
+    /**
+     * A header's level.
+     */
     private int level = 1;
 
     /**
@@ -363,13 +387,19 @@ public class Markdown {
     }
   }
 
-  /** A builder for a conditional Markdown element. */
+  /**
+   * A builder for a conditional Markdown element.
+   */
   static class MarkdownChoiceBuilder {
 
-    /** The first option. */
+    /**
+     * The first option.
+     */
     private MarkdownElement firstOption;
 
-    /** A condition. */
+    /**
+     * A condition.
+     */
     private BooleanSupplier condition;
 
     /**
@@ -405,10 +435,14 @@ public class Markdown {
     }
   }
 
-  /** A builder for a Markdown link. */
+  /**
+   * A builder for a Markdown link.
+   */
   static class MarkdownLinkBuilder {
 
-    /** A link's target. */
+    /**
+     * A link's target.
+     */
     private String target;
 
     /**

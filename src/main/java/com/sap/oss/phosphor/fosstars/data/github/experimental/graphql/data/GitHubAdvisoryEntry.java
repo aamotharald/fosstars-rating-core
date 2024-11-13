@@ -17,7 +17,7 @@ public class GitHubAdvisoryEntry {
   private Data data;
 
   @JsonIgnore
-  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("data")
   public Data getData() {
@@ -38,4 +38,5 @@ public class GitHubAdvisoryEntry {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
 }

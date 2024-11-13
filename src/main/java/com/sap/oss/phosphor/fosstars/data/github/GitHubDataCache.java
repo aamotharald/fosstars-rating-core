@@ -9,22 +9,34 @@ import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.collections4.map.LRUMap;
 
-/** This is a cache for data of GitHub projects. */
+/**
+ * This is a cache for data of GitHub projects.
+ */
 public class GitHubDataCache<T> implements Cache<GitHubProject, T> {
 
-  /** This flag doesn't allow exceeding the maximum cache size. */
+  /**
+   * This flag doesn't allow exceeding the maximum cache size.
+   */
   private static final boolean SCAN_UNTIL_REMOVABLE = true;
-
-  /** Maximum size of the cache. */
+  
+  /**
+   * Maximum size of the cache.
+   */
   private static final int CACHE_CAPACITY = 5;
-
-  /** This constant means that the value has no expiration date. */
+  
+  /**
+   * This constant means that the value has no expiration date.
+   */
   private static final Date NO_EXPIRATION = null;
 
-  /** A map of cache entries. */
+  /**
+   * A map of cache entries.
+   */
   private final Map<GitHubProject, GitHubData<T>> entries;
 
-  /** The default constructor. */
+  /**
+   * The default constructor.
+   */
   public GitHubDataCache() {
     this.entries = Collections.synchronizedMap(new LRUMap<>(CACHE_CAPACITY, SCAN_UNTIL_REMOVABLE));
   }
@@ -73,7 +85,7 @@ public class GitHubDataCache<T> implements Cache<GitHubProject, T> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof GitHubDataCache)) {
+    if (o instanceof GitHubDataCache == false) {
       return false;
     }
     GitHubDataCache<T> cache = (GitHubDataCache<T>) o;
@@ -85,7 +97,9 @@ public class GitHubDataCache<T> implements Cache<GitHubProject, T> {
     return Objects.hashCode(entries);
   }
 
-  /** Clear the cache. */
+  /**
+   * Clear the cache.
+   */
   public void clear() {
     entries.clear();
   }
@@ -96,15 +110,19 @@ public class GitHubDataCache<T> implements Cache<GitHubProject, T> {
    */
   private static class GitHubData<T> {
 
-    /** Expiration date, null by default. */
+    /**
+     * Expiration date, null by default.
+     */
     private final Date expiration;
 
-    /** The GitHub data to be cached. */
+    /**
+     * The GitHub data to be cached.
+     */
     private final T data;
 
     /**
      * Constructor for GitHubData.
-     *
+     * 
      * @param data from GitHub project.
      * @param expiration date decided from {@link GitHubDataCache}.
      */
@@ -115,7 +133,7 @@ public class GitHubDataCache<T> implements Cache<GitHubProject, T> {
 
     /**
      * Checks if the cached value is expired.
-     *
+     * 
      * @return true if expired. Otherwise, false.
      */
     private boolean expired() {

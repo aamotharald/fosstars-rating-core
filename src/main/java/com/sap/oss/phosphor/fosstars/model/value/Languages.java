@@ -11,11 +11,34 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-/** A set of programming languages. */
+/**
+ * A set of programming languages.
+ */
 public class Languages implements Iterable<Language> {
 
-  /** A set of languages. */
+  /**
+   * A set of languages.
+   */
   private final Set<Language> elements;
+
+  /**
+   * Creates a collection of languages.
+   *
+   * @param languages The languages.
+   * @return A collection of the specified languages.
+   */
+  public static Languages of(Language... languages) {
+    return new Languages(setOf(languages));
+  }
+
+  /**
+   * Creates an empty set of languages.
+   *
+   * @return An empty set of languages.
+   */
+  public static Languages empty() {
+    return new Languages();
+  }
 
   /**
    * Initializes a set of languages.
@@ -38,25 +61,6 @@ public class Languages implements Iterable<Language> {
   }
 
   /**
-   * Creates a collection of languages.
-   *
-   * @param languages The languages.
-   * @return A collection of the specified languages.
-   */
-  public static Languages of(Language... languages) {
-    return new Languages(setOf(languages));
-  }
-
-  /**
-   * Creates an empty set of languages.
-   *
-   * @return An empty set of languages.
-   */
-  public static Languages empty() {
-    return new Languages();
-  }
-
-  /**
    * Get a size of the set.
    *
    * @return A number of languages in the set.
@@ -69,8 +73,8 @@ public class Languages implements Iterable<Language> {
    * Checks if the collection contains one of the other languages.
    *
    * @param languages The other languages.
-   * @return True if at least one of the other languages is present in the collection, false
-   *     otherwise.
+   * @return True if at least one of the other languages is present in the collection,
+   *         false otherwise.
    */
   public boolean containsAnyOf(Languages languages) {
     for (Language language : languages) {
@@ -86,8 +90,8 @@ public class Languages implements Iterable<Language> {
    * Checks if the collection contains one of the other languages.
    *
    * @param languages The other languages.
-   * @return True if at least one of the other languages is present in the collection, false
-   *     otherwise.
+   * @return True if at least one of the other languages is present in the collection,
+   *         false otherwise.
    */
   public boolean containsAnyOf(Language... languages) {
     return containsAnyOf(Languages.of(languages));
@@ -108,7 +112,7 @@ public class Languages implements Iterable<Language> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Languages)) {
+    if (o instanceof Languages == false) {
       return false;
     }
     Languages other = (Languages) o;

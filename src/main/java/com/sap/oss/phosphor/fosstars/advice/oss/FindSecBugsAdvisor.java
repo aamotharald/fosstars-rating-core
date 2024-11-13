@@ -10,8 +10,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 /**
- * An advisor for {@link
- * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_FIND_SEC_BUGS} feature.
+ * An advisor for
+ * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_FIND_SEC_BUGS} feature.
  */
 public class FindSecBugsAdvisor extends AbstractOssAdvisor {
 

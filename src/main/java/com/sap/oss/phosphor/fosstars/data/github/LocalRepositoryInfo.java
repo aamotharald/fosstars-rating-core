@@ -11,20 +11,31 @@ import java.util.Date;
 import java.util.Objects;
 import org.apache.commons.io.FileUtils;
 
-/** The class holds info about a local repository. */
+/**
+ * The class holds info about a local repository.
+ */
 public class LocalRepositoryInfo {
 
-  /** A path to the repository. */
-  private final Path path;
-
-  /** A URL to the repository. */
-  private final URL url;
-
-  /** A date when the repository was updated. */
+  /**
+   * A date when the repository was updated.
+   */
   private Date updated;
 
-  /** Holds a size of repository (may be outdated). */
-  @JsonIgnore private BigInteger cachedRepositorySize;
+  /**
+   * A path to the repository.
+   */
+  private final Path path;
+
+  /**
+   * A URL to the repository.
+   */
+  private final URL url;
+
+  /**
+   * Holds a size of repository (may be outdated).
+   */
+  @JsonIgnore
+  private BigInteger cachedRepositorySize;
 
   /**
    * Initializes a repository.

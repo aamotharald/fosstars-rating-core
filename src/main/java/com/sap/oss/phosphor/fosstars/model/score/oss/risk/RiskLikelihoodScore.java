@@ -12,25 +12,30 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Set;
 
 /**
- * This scoring function calculates likelihood score that is used in calculating security risk
- * introduced by an open source project. This is based on the following:
- *
+ * <p>This scoring function calculates likelihood score
+ * that is used in calculating security risk introduced by an open source project.
+ * This is based on the following:</p>
  * <ul>
- *   <li>{@link RiskLikelihoodCoefficient}
- *   <li>{@link RiskLikelihoodFactors}
+ *   <li>{@link RiskLikelihoodCoefficient}</li>
+ *   <li>{@link RiskLikelihoodFactors}</li>
  * </ul>
- *
  * <pre>likelihood score = coefficient * likelihood factors</pre>
  */
 public class RiskLikelihoodScore extends AbstractScore {
 
-  /** A scoring function that calculates a likelihood coefficient. */
+  /**
+   * A scoring function that calculates a likelihood coefficient.
+   */
   private final RiskLikelihoodCoefficient coefficientScore;
 
-  /** A scoring function that aggregates likelihood factors. */
+  /**
+   * A scoring function that aggregates likelihood factors.
+   */
   private final RiskLikelihoodFactors factorsScore;
 
-  /** Creates a new scoring function with default parameters. */
+  /**
+   * Creates a new scoring function with default parameters.
+   */
   RiskLikelihoodScore() {
     this(new RiskLikelihoodCoefficient(), new RiskLikelihoodFactors());
   }

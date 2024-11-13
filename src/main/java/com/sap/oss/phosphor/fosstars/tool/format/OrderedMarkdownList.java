@@ -2,7 +2,9 @@ package com.sap.oss.phosphor.fosstars.tool.format;
 
 import java.util.List;
 
-/** An ordered Markdown list. */
+/**
+ * An ordered Markdown list.
+ */
 public class OrderedMarkdownList extends MarkdownList {
 
   /**

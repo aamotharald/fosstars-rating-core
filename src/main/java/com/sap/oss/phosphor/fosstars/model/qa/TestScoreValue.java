@@ -9,19 +9,29 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import java.util.List;
 import java.util.function.Predicate;
 
-/** A score value for a test vector. */
+/**
+ * A score value for a test vector.
+ */
 public class TestScoreValue implements Value<Double> {
 
-  /** A class name of a score which the value is for. */
+  /**
+   * A class name of a score which the value is for.
+   */
   private final String scoreClassName;
 
-  /** A score value. */
+  /**
+   * A score value.
+   */
   private final Double value;
 
-  /** Shows whether or not the value is unknown. */
+  /**
+   * Shows whether or not the value is unknown.
+   */
   private final boolean isUnknown;
 
-  /** Shows whether or not the value is N/A. */
+  /**
+   * Shows whether or not the value is N/A.
+   */
   private final boolean isNotApplicable;
 
   /**
@@ -42,18 +52,6 @@ public class TestScoreValue implements Value<Double> {
     this.value = Score.check(value);
     this.isUnknown = isUnknown;
     this.isNotApplicable = isNotApplicable;
-  }
-
-  /**
-   * Create a new test score value.
-   *
-   * @param scoreClass A score class.
-   * @param value A score value.
-   * @return A test score value.
-   */
-  public static TestScoreValue testScoreValue(Class<? extends Score> scoreClass, double value) {
-    requireNonNull(scoreClass, "Oops! Score is null!");
-    return new TestScoreValue(scoreClass.getCanonicalName(), value, false, false);
   }
 
   /**
@@ -118,5 +116,17 @@ public class TestScoreValue implements Value<Double> {
   @Override
   public Value<Double> processIfUnknown(Runnable processor) {
     throw new UnsupportedOperationException("Oops! I can't do that!");
+  }
+
+  /**
+   * Create a new test score value.
+   *
+   * @param scoreClass A score class.
+   * @param value A score value.
+   * @return A test score value.
+   */
+  public static TestScoreValue testScoreValue(Class<? extends Score> scoreClass, double value) {
+    requireNonNull(scoreClass, "Oops! Score is null!");
+    return new TestScoreValue(scoreClass.getCanonicalName(), value, false, false);
   }
 }

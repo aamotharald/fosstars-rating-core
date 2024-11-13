@@ -9,16 +9,19 @@ import com.sap.oss.phosphor.fosstars.model.Rating;
 import java.util.Objects;
 
 /**
- * The class holds a rating value produced by {@link Rating}.
- *
- * <p>TODO: RatingValue should implement the Value interface.
+ * <p>The class holds a rating value produced by {@link Rating}.</p>
+ * <p>TODO: RatingValue should implement the Value interface.</p>
  */
 public class RatingValue implements Confidence {
 
-  /** A score value. */
+  /**
+   * A score value.
+   */
   private final ScoreValue scoreValue;
 
-  /** A label. */
+  /**
+   * A label.
+   */
   private final Label label;
 
   /**
@@ -29,7 +32,8 @@ public class RatingValue implements Confidence {
    */
   @JsonCreator
   public RatingValue(
-      @JsonProperty("scoreValue") ScoreValue scoreValue, @JsonProperty("label") Label label) {
+      @JsonProperty("scoreValue") ScoreValue scoreValue,
+      @JsonProperty("label") Label label) {
 
     this.scoreValue = Objects.requireNonNull(scoreValue, "Hey! Score value can't be null");
     this.label = Objects.requireNonNull(label, "Hey! Label can't be null!");
@@ -79,11 +83,12 @@ public class RatingValue implements Confidence {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof RatingValue)) {
+    if (o instanceof RatingValue == false) {
       return false;
     }
     RatingValue that = (RatingValue) o;
-    return Objects.equals(scoreValue, that.scoreValue) && label == that.label;
+    return Objects.equals(scoreValue, that.scoreValue)
+        && label == that.label;
   }
 
   @Override

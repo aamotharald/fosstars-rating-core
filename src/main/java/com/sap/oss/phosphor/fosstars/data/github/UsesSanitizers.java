@@ -25,29 +25,38 @@ import java.util.regex.Pattern;
 
 /**
  * The data providers checks if a project uses sanitizers. It gathers the following features:
- *
  * <ul>
- *   <li>{@link OssFeatures#USES_ADDRESS_SANITIZER}
- *   <li>{@link OssFeatures#USES_MEMORY_SANITIZER}
- *   <li>{@link OssFeatures#USES_UNDEFINED_BEHAVIOR_SANITIZER}
+ *   <li>{@link OssFeatures#USES_ADDRESS_SANITIZER}</li>
+ *   <li>{@link OssFeatures#USES_MEMORY_SANITIZER}</li>
+ *   <li>{@link OssFeatures#USES_UNDEFINED_BEHAVIOR_SANITIZER}</li>
  * </ul>
  */
 public class UsesSanitizers extends GitHubCachingDataProvider {
 
-  /** A regex for searching sanitizers. */
-  private static final Pattern PATTERN =
-      Pattern.compile("-fsanitize=\\s*((address|memory|undefined)[\\s,]*)*");
+  /**
+   * A regex for searching sanitizers.
+   */
+  private static final Pattern PATTERN
+      = Pattern.compile("-fsanitize=\\s*((address|memory|undefined)[\\s,]*)*");
 
-  /** A compiler option that defines sanitizers. */
+  /**
+   * A compiler option that defines sanitizers.
+   */
   private static final String SANITIZER_OPTION = "-fsanitize=";
 
-  /** A list of well-known file names of build configs. */
+  /**
+   * A list of well-known file names of build configs.
+   */
   private static final String[] BUILD_CONFIGS = {
-    ".travis.yml", "Configure", "CMakeLists.txt", "Makefile"
+      ".travis.yml", "Configure", "CMakeLists.txt", "Makefile"
   };
 
-  /** A list of well-known files extensions of build configs. */
-  private static final String[] BUILD_CONFIG_SUFFIXES = {".ac", ".cmake", ".bazel"};
+  /**
+   * A list of well-known files extensions of build configs.
+   */
+  private static final String[] BUILD_CONFIG_SUFFIXES = {
+      ".ac", ".cmake", ".bazel"
+  };
 
   /**
    * Initializes a data provider.
@@ -56,6 +65,52 @@ public class UsesSanitizers extends GitHubCachingDataProvider {
    */
   public UsesSanitizers(GitHubDataFetcher fetcher) {
     super(fetcher);
+  }
+
+  @Override
+  public Set<Feature<?>> supportedFeatures() {
+    return setOf(USES_ADDRESS_SANITIZER, USES_MEMORY_SANITIZER, USES_UNDEFINED_BEHAVIOR_SANITIZER);
+  }
+
+  @Override
+  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
+    Objects.requireNonNull(project, "Oh no! Project is null!");
+
+    logger.info("Figuring out if the project uses sanitizers ...");
+
+    ValueSet values = new ValueHashSet();
+    values.update(USES_ADDRESS_SANITIZER.value(false));
+    values.update(USES_MEMORY_SANITIZER.value(false));
+    values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(false));
+
+    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
+
+    List<Path> files = repository.files(
+        path -> Files.isRegularFile(path) && maybeBuildConfig(path));
+
+    for (Path path : files) {
+      Optional<String> content = repository.file(path);
+      if (!content.isPresent()) {
+        continue;
+      }
+
+      List<String> sanitizers = lookForSanitizers(content.get());
+      for (String sanitizer : sanitizers) {
+        if (sanitizer.contains("address")) {
+          values.update(USES_ADDRESS_SANITIZER.value(true));
+        }
+
+        if (sanitizer.contains("memory")) {
+          values.update(USES_MEMORY_SANITIZER.value(true));
+        }
+
+        if (sanitizer.contains("undefined")) {
+          values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(true));
+        }
+      }
+    }
+
+    return values;
   }
 
   /**
@@ -132,51 +187,5 @@ public class UsesSanitizers extends GitHubCachingDataProvider {
     }
 
     return options;
-  }
-
-  @Override
-  public Set<Feature<?>> supportedFeatures() {
-    return setOf(USES_ADDRESS_SANITIZER, USES_MEMORY_SANITIZER, USES_UNDEFINED_BEHAVIOR_SANITIZER);
-  }
-
-  @Override
-  protected ValueSet fetchValuesFor(GitHubProject project) throws IOException {
-    Objects.requireNonNull(project, "Oh no! Project is null!");
-
-    logger.info("Figuring out if the project uses sanitizers ...");
-
-    ValueSet values = new ValueHashSet();
-    values.update(USES_ADDRESS_SANITIZER.value(false));
-    values.update(USES_MEMORY_SANITIZER.value(false));
-    values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(false));
-
-    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
-
-    List<Path> files =
-        repository.files(path -> Files.isRegularFile(path) && maybeBuildConfig(path));
-
-    for (Path path : files) {
-      Optional<String> content = repository.file(path);
-      if (!content.isPresent()) {
-        continue;
-      }
-
-      List<String> sanitizers = lookForSanitizers(content.get());
-      for (String sanitizer : sanitizers) {
-        if (sanitizer.contains("address")) {
-          values.update(USES_ADDRESS_SANITIZER.value(true));
-        }
-
-        if (sanitizer.contains("memory")) {
-          values.update(USES_MEMORY_SANITIZER.value(true));
-        }
-
-        if (sanitizer.contains("undefined")) {
-          values.update(USES_UNDEFINED_BEHAVIOR_SANITIZER.value(true));
-        }
-      }
-    }
-
-    return values;
   }
 }

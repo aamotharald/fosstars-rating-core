@@ -12,7 +12,9 @@ import com.sap.oss.phosphor.fosstars.model.value.BooleanValue;
 @JsonSerialize
 public class StaticCodeAnalysisDoneExample extends AbstractFeature<Boolean> {
 
-  /** Initializes a new feature. */
+  /**
+   * Initializes a new feature.
+   */
   StaticCodeAnalysisDoneExample() {
     super("Static code analysis status (example)");
   }
@@ -26,4 +28,5 @@ public class StaticCodeAnalysisDoneExample extends AbstractFeature<Boolean> {
   public Value<Boolean> parse(String string) {
     throw new UnsupportedOperationException();
   }
+
 }

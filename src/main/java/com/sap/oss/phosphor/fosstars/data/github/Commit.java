@@ -3,7 +3,9 @@ package com.sap.oss.phosphor.fosstars.data.github;
 import java.util.Date;
 import java.util.List;
 
-/** An interface of a commit. */
+/**
+ * An interface of a commit.
+ */
 public interface Commit {
 
   /**

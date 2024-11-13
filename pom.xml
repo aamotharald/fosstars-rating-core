@@ -104,6 +104,8 @@
     <version.maven-surefire-plugin>3.1.2</version.maven-surefire-plugin>
     <version.jacoco-maven-plugin>0.8.10</version.jacoco-maven-plugin>
     <version.maven-assembly-plugin>3.6.0</version.maven-assembly-plugin>
+
+    <checkstyleVersion>8.29</checkstyleVersion>
   </properties>
 
   <build>
@@ -197,6 +199,7 @@
           </execution>
         </executions>
       </plugin>
+      <!--
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
@@ -216,6 +219,33 @@
             </googleJavaFormat>
           </java>
         </configuration>
+      </plugin>
+        -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.2</version>
+        <configuration>
+          <configLocation>google_checks.xml</configLocation>
+          <encoding>UTF-8</encoding>
+          <consoleOutput>true</consoleOutput>
+          <violationSeverity>warning</violationSeverity>
+          <failsOnError>true</failsOnError>
+          <linkXRef>false</linkXRef>
+          <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>package</phase>
+            <goals>
+              <goal>checkstyle</goal>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

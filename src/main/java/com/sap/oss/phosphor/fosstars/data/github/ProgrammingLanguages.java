@@ -12,7 +12,10 @@ import java.util.EnumSet;
 import java.util.Set;
 import org.kohsuke.github.GHRepository;
 
-/** This data provider returns a number of languages that are used in an open-source project. */
+/**
+ * This data provider returns a number of languages that are used
+ * in an open-source project.
+ */
 public class ProgrammingLanguages extends CachedSingleFeatureGitHubDataProvider<Languages> {
 
   /**

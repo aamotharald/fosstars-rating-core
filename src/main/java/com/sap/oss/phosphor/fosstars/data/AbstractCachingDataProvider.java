@@ -14,16 +14,17 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * This is a base class for data providers that would like to check the cache before trying to fetch
- * values for a number of features.
+ * This is a base class for data providers that would like to check the cache
+ * before trying to fetch values for a number of features.
  */
 public abstract class AbstractCachingDataProvider extends AbstractDataProvider {
 
   /**
-   * This is a template method that checks for cached values before asking the child classes to
-   * fetch the data. If all supported features are already available in the cache, then the method
-   * just adds them to the resulting value set and exits. Otherwise, the method calls the {@link
-   * #fetchValuesFor(Subject)} method to fetch the data.
+   * This is a template method that checks for cached values
+   * before asking the child classes to fetch the data.
+   * If all supported features are already available in the cache, then the method just
+   * adds them to the resulting value set and exits. Otherwise, the method calls
+   * the {@link #fetchValuesFor(Subject)} method to fetch the data.
    *
    * @param subject The Subject for which the values need to be fetched.
    * @param values The resulting set of values to be updated.

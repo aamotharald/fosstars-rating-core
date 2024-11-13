@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/** This is a base class for all storage classes in this package. */
+/**
+ * This is a base class for all storage classes in this package.
+ */
 class AbstractJsonStorage {
 
   /**
@@ -48,7 +50,8 @@ class AbstractJsonStorage {
     }
 
     if (storage == null) {
-      throw new IOException(String.format("Could not load info bug bounty programs from %s", path));
+      throw new IOException(String.format(
+          "Could not load info bug bounty programs from %s", path));
     }
 
     return storage;
@@ -74,4 +77,5 @@ class AbstractJsonStorage {
 
     throw new IOException(String.format("Resource '%s' not found!", path));
   }
+
 }

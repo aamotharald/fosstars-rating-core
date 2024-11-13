@@ -8,10 +8,14 @@ import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Date;
 import java.util.Objects;
 
-/** A value of a feature which provides a date. */
+/**
+ * A value of a feature which provides a date.
+ */
 public class DateValue extends AbstractKnownValue<Date> {
 
-  /** The date. */
+  /**
+   * The date.
+   */
   @JsonFormat(
       shape = JsonFormat.Shape.STRING,
       pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
@@ -26,7 +30,8 @@ public class DateValue extends AbstractKnownValue<Date> {
    */
   @JsonCreator
   public DateValue(
-      @JsonProperty("feature") Feature<Date> feature, @JsonProperty("date") Date date) {
+      @JsonProperty("feature") Feature<Date> feature,
+      @JsonProperty("date") Date date) {
 
     super(feature);
     this.date = date;
@@ -43,7 +48,7 @@ public class DateValue extends AbstractKnownValue<Date> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof DateValue)) {
+    if (o instanceof DateValue == false) {
       return false;
     }
     if (!super.equals(o)) {

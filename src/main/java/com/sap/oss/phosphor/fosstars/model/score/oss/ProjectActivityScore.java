@@ -12,29 +12,28 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * The project activity score evaluates how active an open-source project is. It is currently based
- * on two features.
- *
+ * <p>The project activity score evaluates how active an open-source project is.
+ * It is currently based on two features.</p>
  * <ul>
- *   <li>Number of commits in the last three months
- *   <li>Number of contributors in the last three months
+ *  <li>Number of commits in the last three months</li>
+ *  <li>Number of contributors in the last three months</li>
  * </ul>
- *
- * <p>Here is how the score evaluates a number of commits in the last 3 month. First, the score
- * supposes that it's good if a project receives more than 5 commits in a week. Assuming that 3
- * months is around 13 weeks, the score supposes that a project is active if it receives more than
- * 65 commits in the last 3 months. In this case the score value is set to 10 (max). If a project
- * received 0 commits in the last 3 months, then the score value is set to 0 (min). If a number of
- * commits is between 0 and 65, then the score uses a linear function to calculate the score value.
- *
- * <p>Here is how the score takes into account a number of contributors in the last 3 months. If
- * it's just 1 contributor, then the score value doesn't change. If it was more than 1 contributor,
- * then the score uses an additional factor for the score value.
- *
+ * <p>Here is how the score evaluates a number of commits in the last 3 month.
+ * First, the score supposes that it's good if a project receives more than 5 commits in a week.
+ * Assuming that 3 months is around 13 weeks, the score supposes that a project is active
+ * if it receives more than 65 commits in the last 3 months.
+ * In this case the score value is set to 10 (max).
+ * If a project received 0 commits in the last 3 months, then the score value is set to 0 (min).
+ * If a number of commits is between 0 and 65,
+ * then the score uses a linear function to calculate the score value.</p>
+ * <p>Here is how the score takes into account a number of contributors in the last 3 months.
+ * If it's just 1 contributor, then the score value doesn't change.
+ * If it was more than 1 contributor, then the score uses an additional factor for the score value.
+ * </p>
  * <ul>
- *   <li>If it's 2 contributors, the factor is 0.05
- *   <li>If it's 3-4 contributors, the factor is 0.1
- *   <li>If it's more than 4 contributors, the factor is 0.2
+ *   <li>If it's 2 contributors, the factor is 0.05</li>
+ *   <li>If it's 3-4 contributors, the factor is 0.1</li>
+ *   <li>If it's more than 4 contributors, the factor is 0.2</li>
  * </ul>
  */
 public class ProjectActivityScore extends FeatureBasedScore {
@@ -43,38 +42,33 @@ public class ProjectActivityScore extends FeatureBasedScore {
 
   private static final Map<Integer, Double> CONTRIBUTOR_FACTOR = new TreeMap<>();
 
-  /** A description of the score. */
-  private static final String DESCRIPTION =
-      "The score evaluates how active a project is. "
-          + "It's based on number of commits and contributors in the last 3 months.";
-
   static {
     CONTRIBUTOR_FACTOR.put(2, 0.05);
     CONTRIBUTOR_FACTOR.put(3, 0.1);
     CONTRIBUTOR_FACTOR.put(5, 0.2);
   }
 
-  /** Initializes a new score. */
+  /**
+   * A description of the score.
+   */
+  private static final String DESCRIPTION =
+      "The score evaluates how active a project is. "
+          + "It's based on number of commits and contributors in the last 3 months.";
+
+  /**
+   * Initializes a new score.
+   */
   ProjectActivityScore() {
-    super(
-        "Open-source project activity score",
-        DESCRIPTION,
-        NUMBER_OF_COMMITS_LAST_THREE_MONTHS,
-        NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS);
+    super("Open-source project activity score", DESCRIPTION,
+        NUMBER_OF_COMMITS_LAST_THREE_MONTHS, NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Integer> commits =
-        findValue(
-            values,
-            NUMBER_OF_COMMITS_LAST_THREE_MONTHS,
-            "Hey! You have to give me a number of commits!");
-    Value<Integer> contributors =
-        findValue(
-            values,
-            NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS,
-            "Hey! You have to give me a number of contributors!");
+    Value<Integer> commits = findValue(values, NUMBER_OF_COMMITS_LAST_THREE_MONTHS,
+        "Hey! You have to give me a number of commits!");
+    Value<Integer> contributors = findValue(values, NUMBER_OF_CONTRIBUTORS_LAST_THREE_MONTHS,
+        "Hey! You have to give me a number of contributors!");
 
     ScoreValue scoreValue = scoreValue(MIN, commits, contributors);
 
@@ -90,18 +84,15 @@ public class ProjectActivityScore extends FeatureBasedScore {
     if (commits.isNotApplicable()) {
       return scoreValue
           .withMinConfidence()
-          .explain(
-              "A score value couldn't be calculated because the number of commits "
-                  + "is marked as N/A for some reason. Please check the data.");
+          .explain("A score value couldn't be calculated because the number of commits "
+              + "is marked as N/A for some reason. Please check the data.");
     }
 
     if (commits.get() < 0) {
       return scoreValue
           .withMinConfidence()
-          .explain(
-              "A score value couldn't be calculated because the number of commits "
-                  + "is negative (%d). Please check the data.",
-              commits.get());
+          .explain("A score value couldn't be calculated because the number of commits "
+                  + "is negative (%d). Please check the data.", commits.get());
     }
 
     // otherwise, calculate a sub-score based on the number of commits
@@ -111,32 +102,29 @@ public class ProjectActivityScore extends FeatureBasedScore {
     } else {
       value = (MAX / GOOD_NUMBER_OF_COMMITS) * commits.get();
     }
-    scoreValue
-        .set(value)
-        .explain("%d commits in the last 3 months results to %.2f points", commits.get(), value);
+    scoreValue.set(value)
+        .explain("%d commits in the last 3 months results to %.2f points",
+            commits.get(), value);
 
     // if the number of contributors is not available, then return what we have
     if (contributors.isNotApplicable()) {
       return scoreValue
           .confidence(Confidence.MAX / 2)
-          .explain(
-              "A number of contributors is marked as N/A for some reason. "
-                  + "That reduces the overall confidence. Please check the data.");
+          .explain("A number of contributors is marked as N/A for some reason. "
+              + "That reduces the overall confidence. Please check the data.");
     }
     if (contributors.isUnknown()) {
       return scoreValue
           .confidence(Confidence.MAX / 2)
-          .explain(
-              "A number of contributors is unknown. "
-                  + "That reduces the overall score and confidence");
+          .explain("A number of contributors is unknown. "
+              + "That reduces the overall score and confidence");
     }
 
     // it looks strange if a project has commits but no contributors
     if (commits.get() > 0 && contributors.get() <= 0) {
       return scoreValue
           .confidence(Confidence.MAX / 2)
-          .explain(
-              "It looks strange that the project had commits (%d) "
+          .explain("It looks strange that the project had commits (%d) "
                   + "but the number of contributors (%d). That reduces the overall confidence. "
                   + "Please check the data.",
               commits.get(), contributors.get());
@@ -146,10 +134,8 @@ public class ProjectActivityScore extends FeatureBasedScore {
     if (commits.get() == 0 && contributors.get() > 0) {
       return scoreValue
           .confidence(Confidence.MAX / 2)
-          .explain(
-              "It looks strange that the project has contributors (%d) but no commits. "
-                  + "That reduces the overall confidence. Please check the data.",
-              contributors.get());
+          .explain("It looks strange that the project has contributors (%d) but no commits. "
+              + "That reduces the overall confidence. Please check the data.", contributors.get());
     }
 
     // otherwise, calculate a factor based on the number of contributors
@@ -165,8 +151,7 @@ public class ProjectActivityScore extends FeatureBasedScore {
       double newValue = value + value * factor;
       scoreValue
           .set(newValue)
-          .explain(
-              "%d contributors increase the score value from %.2f to %.2f",
+          .explain("%d contributors increase the score value from %.2f to %.2f",
               contributors.get(), value, newValue);
     }
 

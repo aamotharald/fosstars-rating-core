@@ -16,10 +16,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/** A base class for scores which are based on an average of other scores (sub-scores). */
+/**
+ * A base class for scores which are based on an average of other scores (sub-scores).
+ */
 public class AverageCompositeScore extends AbstractScore {
 
-  /** A set of sub-scores. */
+  /**
+   * A set of sub-scores.
+   */
   private final Set<Score> subScores;
 
   /**
@@ -40,7 +44,8 @@ public class AverageCompositeScore extends AbstractScore {
    */
   @JsonCreator
   public AverageCompositeScore(
-      @JsonProperty("name") String name, @JsonProperty("subScores") Set<Score> subScores) {
+      @JsonProperty("name") String name,
+      @JsonProperty("subScores") Set<Score> subScores) {
 
     super(name);
     Objects.requireNonNull(subScores, "Sub-scores can't be null!");
@@ -106,7 +111,7 @@ public class AverageCompositeScore extends AbstractScore {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof AverageCompositeScore)) {
+    if (o instanceof AverageCompositeScore == false) {
       return false;
     }
     if (!super.equals(o)) {

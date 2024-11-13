@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** This class maintains information about bug bounty programs for open-source projects. */
+/**
+ * This class maintains information about bug bounty programs for open-source projects.
+ */
 public class BugBountyProgramStorage extends AbstractJsonStorage {
 
-  /** Path to a resource that contains information about bug bounty programs. */
+  /**
+   * Path to a resource that contains information about bug bounty programs.
+   */
   private static final String RESOURCE_PATH =
       "com/sap/oss/phosphor/fosstars/data/BugBountyPrograms.json";
 
@@ -31,16 +35,6 @@ public class BugBountyProgramStorage extends AbstractJsonStorage {
 
     Objects.requireNonNull(bugBountyPrograms, "Oh no! Bug bounty programs are null!");
     this.bugBountyPrograms = bugBountyPrograms;
-  }
-
-  /**
-   * Loads a {@link BugBountyProgramStorage}.
-   *
-   * @return The loaded storage.
-   * @throws IOException If something went wrong.
-   */
-  public static BugBountyProgramStorage load() throws IOException {
-    return load(RESOURCE_PATH, BugBountyProgramStorage.class);
   }
 
   /**
@@ -67,5 +61,15 @@ public class BugBountyProgramStorage extends AbstractJsonStorage {
     }
 
     return false;
+  }
+
+  /**
+   * Loads a {@link BugBountyProgramStorage}.
+   *
+   * @return The loaded storage.
+   * @throws IOException If something went wrong.
+   */
+  public static BugBountyProgramStorage load() throws IOException {
+    return load(RESOURCE_PATH, BugBountyProgramStorage.class);
   }
 }

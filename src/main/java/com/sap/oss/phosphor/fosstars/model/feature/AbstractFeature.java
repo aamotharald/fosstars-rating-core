@@ -7,10 +7,14 @@ import com.sap.oss.phosphor.fosstars.model.Visitor;
 import com.sap.oss.phosphor.fosstars.model.value.UnknownValue;
 import java.util.Objects;
 
-/** Base class for features. */
+/**
+ * Base class for features.
+ */
 public abstract class AbstractFeature<T> implements Feature<T> {
 
-  /** The feature name. */
+  /**
+   * The feature name.
+   */
   protected final String name;
 
   /**
@@ -38,7 +42,7 @@ public abstract class AbstractFeature<T> implements Feature<T> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof AbstractFeature)) {
+    if (o instanceof AbstractFeature == false) {
       return false;
     }
     AbstractFeature<?> that = (AbstractFeature<?>) o;

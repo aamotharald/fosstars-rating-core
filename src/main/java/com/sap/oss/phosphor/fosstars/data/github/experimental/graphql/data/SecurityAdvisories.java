@@ -24,7 +24,7 @@ public class SecurityAdvisories {
   private List<Advisory> nodes = null;
 
   @JsonIgnore
-  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("pageInfo")
   public PageInfo getPageInfo() {
@@ -65,4 +65,5 @@ public class SecurityAdvisories {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
 }

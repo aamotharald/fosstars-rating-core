@@ -24,16 +24,25 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/** The class prints a pretty rating value in JSON. */
+/**
+ * The class prints a pretty rating value in JSON.
+ */
 public class JsonPrettyPrinter extends CommonFormatter {
 
-  /** Object Mapper for Json. */
+  /**
+   * Object Mapper for Json.
+   */
   private static final ObjectMapper mapper = new ObjectMapper();
 
-  /** A logger. */
-  private static final Logger LOGGER = LogManager.getLogger(JsonPrettyPrinter.class);
+  /**
+   * A logger.
+   */
+  private static final Logger LOGGER
+      = LogManager.getLogger(JsonPrettyPrinter.class);
 
-  /** A formatter for doubles. */
+  /**
+   * A formatter for doubles.
+   */
   private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
 
   static {
@@ -48,6 +57,41 @@ public class JsonPrettyPrinter extends CommonFormatter {
    */
   public JsonPrettyPrinter(Advisor advisor) {
     super(advisor);
+  }
+
+  @Override
+  public String print(Subject subject) {
+    if (!subject.ratingValue().isPresent()) {
+      return StringUtils.EMPTY;
+    }
+    RatingValue ratingValue = subject.ratingValue().get();
+    Rating rating = from(ratingValue, subject);
+    rating.advices(adviceFor(subject));
+    StringBuilder output = new StringBuilder();
+    try {
+      output.append(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rating));
+    } catch (JsonProcessingException e) {
+      throw new UncheckedIOException(
+          "Oops! Could not parse the rating value object to Json string!", e);
+    }
+
+    return output.toString();
+  }
+
+  /**
+   * Extract advices for a subject.
+   *
+   * @param subject The subject.
+   * @return Advices collected form a subject.
+   */
+  private List<Advices> adviceFor(Subject subject) {
+    try {
+      return advisor.adviceFor(subject).stream().map(JsonPrettyPrinter::from)
+          .collect(Collectors.toList());
+    } catch (IOException e) {
+      LOGGER.warn("Oops! Could not collect advices!", e);
+      return emptyList();
+    }
   }
 
   /**
@@ -65,12 +109,14 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * Format a rating value.
    *
    * @param ratingValue The rating value.
-   * @param subject The subject.
+   * @param subject     The subject.
    * @return A formatted rating value.
    */
   private static Rating from(RatingValue ratingValue, Subject subject) {
     ScoreValue scoreValue = ratingValue.scoreValue();
-    Rating rating = new Rating().purl(subject.purl()).label(ratingValue.label().name());
+    Rating rating = new Rating()
+        .purl(subject.purl())
+        .label(ratingValue.label().name());
     Score score = from(scoreValue);
     rating.score(score);
     return rating;
@@ -83,12 +129,11 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * @return the serializable Score.
    */
   private static Score from(ScoreValue scoreValue) {
-    Score score =
-        new Score()
-            .name(scoreValue.score().name())
-            .value(tellMeActualValueOf(scoreValue))
-            .confidence(printValue(scoreValue.confidence()))
-            .weight(printValue(scoreValue.weight()));
+    Score score = new Score()
+        .name(scoreValue.score().name())
+        .value(tellMeActualValueOf(scoreValue))
+        .confidence(printValue(scoreValue.confidence()))
+        .weight(printValue(scoreValue.weight()));
     from(scoreValue, score);
     return score;
   }
@@ -109,7 +154,7 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * Extract Sub scores from the score value.
    *
    * @param scoreValue The score value to be printed.
-   * @param score Tells if the score is a top-level score in the rating.
+   * @param score      Tells if the score is a top-level score in the rating.
    */
   private static void from(ScoreValue scoreValue, Score score) {
     for (Value<?> usedValue : scoreValue.usedValues()) {
@@ -165,42 +210,7 @@ public class JsonPrettyPrinter extends CommonFormatter {
    * @return A formatted string with the number and max value.
    */
   public static String printValue(double value) {
-    return String.format("%-4s", DECIMAL_FORMAT.format(value));
-  }
-
-  @Override
-  public String print(Subject subject) {
-    if (!subject.ratingValue().isPresent()) {
-      return StringUtils.EMPTY;
-    }
-    RatingValue ratingValue = subject.ratingValue().get();
-    Rating rating = from(ratingValue, subject);
-    rating.advices(adviceFor(subject));
-    StringBuilder output = new StringBuilder();
-    try {
-      output.append(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rating));
-    } catch (JsonProcessingException e) {
-      throw new UncheckedIOException(
-          "Oops! Could not parse the rating value object to Json string!", e);
-    }
-
-    return output.toString();
-  }
-
-  /**
-   * Extract advices for a subject.
-   *
-   * @param subject The subject.
-   * @return Advices collected form a subject.
-   */
-  private List<Advices> adviceFor(Subject subject) {
-    try {
-      return advisor.adviceFor(subject).stream()
-          .map(JsonPrettyPrinter::from)
-          .collect(Collectors.toList());
-    } catch (IOException e) {
-      LOGGER.warn("Oops! Could not collect advices!", e);
-      return emptyList();
-    }
+    return String.format("%-4s",
+        DECIMAL_FORMAT.format(value));
   }
 }

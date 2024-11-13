@@ -16,7 +16,9 @@ import java.io.IOException;
  */
 public class HasSecurityTeam extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
-  /** Where info about security teams are stored. */
+  /**
+   * Where info about security teams are stored.
+   */
   private final SecurityTeamStorage securityTeam;
 
   /**

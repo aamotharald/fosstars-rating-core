@@ -16,27 +16,31 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * This is a security scoring function for open-source artifact versions. The scoring function is
- * based on the following sub-scores:
- *
+ * <p>This is a security scoring function for open-source artifact versions.
+ * The scoring function is based on the following sub-scores:</p>
  * <ul>
- *   <li>{@link ArtifactVersionSecurityScore}
- *   <li>{@link OssSecurityScore}
+ *   <li>{@link ArtifactVersionSecurityScore}</li>
+ *   <li>{@link OssSecurityScore}</li>
  * </ul>
  */
 public class OssArtifactSecurityScore extends AbstractScore {
 
-  /** A description of the score. */
-  private static final String DESCRIPTION =
-      "The security score for open source artifact versions shows how safe it is to use a "
-          + "specific version of an open source component. Besides information about the artifact "
-          + "version, the scoring functions takes into account the security score of the project "
-          + "to which the artifact belongs to.";
+  /**
+   * A description of the score.
+   */
+  private static final String DESCRIPTION
+      = "The security score for open source artifact versions shows how safe it is to use a "
+      + "specific version of an open source component. Besides information about the artifact "
+      + "version, the scoring functions takes into account the security score of the project "
+      + "to which the artifact belongs to.";
+
 
   private final ArtifactVersionSecurityScore artifactVersionSecurityScore;
   private final OssSecurityScore ossSecurityScore;
 
-  /** Initialize the score with default values. */
+  /**
+   * Initialize the score with default values.
+   */
   public OssArtifactSecurityScore() {
     this(new ArtifactVersionSecurityScore(), new OssSecurityScore());
   }
@@ -48,17 +52,15 @@ public class OssArtifactSecurityScore extends AbstractScore {
    * @param ossSecurityScore project specific security score
    */
   @JsonCreator
-  public OssArtifactSecurityScore(
-      @JsonProperty("artifactVersionSecurityScore")
-          ArtifactVersionSecurityScore artifactVersionSecurityScore,
+  public OssArtifactSecurityScore(@JsonProperty("artifactVersionSecurityScore")
+      ArtifactVersionSecurityScore artifactVersionSecurityScore,
       @JsonProperty("ossSecurityScore") OssSecurityScore ossSecurityScore) {
 
     super("Security score for an artifact of an open-source project", DESCRIPTION);
-    this.artifactVersionSecurityScore =
-        Objects.requireNonNull(
-            artifactVersionSecurityScore, "Hey! ArtifactVersionSecurityScore can't be null!");
-    this.ossSecurityScore =
-        Objects.requireNonNull(ossSecurityScore, "Hey! OssSecurityScore can't be null!");
+    this.artifactVersionSecurityScore = Objects.requireNonNull(
+        artifactVersionSecurityScore, "Hey! ArtifactVersionSecurityScore can't be null!");
+    this.ossSecurityScore = Objects.requireNonNull(
+        ossSecurityScore, "Hey! OssSecurityScore can't be null!");
   }
 
   @Override
@@ -73,10 +75,10 @@ public class OssArtifactSecurityScore extends AbstractScore {
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    ScoreValue artifactVersionSecurityScore =
-        calculateIfNecessary(this.artifactVersionSecurityScore, new ValueHashSet(values));
-    ScoreValue projectSecurityScore =
-        calculateIfNecessary(this.ossSecurityScore, new ValueHashSet(values));
+    ScoreValue artifactVersionSecurityScore = calculateIfNecessary(
+        this.artifactVersionSecurityScore, new ValueHashSet(values));
+    ScoreValue projectSecurityScore = calculateIfNecessary(
+        this.ossSecurityScore, new ValueHashSet(values));
 
     ScoreValue scoreValue =
         scoreValue(Score.MIN, artifactVersionSecurityScore, projectSecurityScore);

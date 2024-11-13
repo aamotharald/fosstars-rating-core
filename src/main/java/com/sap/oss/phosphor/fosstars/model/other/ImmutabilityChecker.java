@@ -7,7 +7,9 @@ import com.sap.oss.phosphor.fosstars.model.Score;
 import com.sap.oss.phosphor.fosstars.model.Tunable;
 import com.sap.oss.phosphor.fosstars.model.Visitor;
 
-/** The visitor checks if objects are immutable if they implement the {@link Tunable} interface. */
+/**
+ * The visitor checks if objects are immutable if they implement the {@link Tunable} interface.
+ */
 public class ImmutabilityChecker implements Visitor {
 
   private boolean isImmutable = true;
@@ -47,7 +49,8 @@ public class ImmutabilityChecker implements Visitor {
    * @param object The object to be checked.
    */
   private void checkImmutability(Object object) {
-    if (object instanceof Tunable tunable) {
+    if (object instanceof Tunable) {
+      Tunable tunable = (Tunable) object;
       if (!tunable.isImmutable()) {
         isImmutable = false;
       }

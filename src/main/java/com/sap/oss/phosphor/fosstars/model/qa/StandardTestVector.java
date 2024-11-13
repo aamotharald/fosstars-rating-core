@@ -15,10 +15,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/** A standard test vector for a rating or a score. The class is immutable. */
+/**
+ * A standard test vector for a rating or a score. The class is immutable.
+ */
 public class StandardTestVector extends AbstractTestVector {
 
-  /** A set of feature values. */
+  /**
+   * A set of feature values.
+   */
   private final Set<Value<?>> values;
 
   /**
@@ -42,9 +46,10 @@ public class StandardTestVector extends AbstractTestVector {
    * @param expectedScore An interval for an expected score.
    * @param expectedLabel An expected label (can be null).
    * @param alias A alias of the test vector.
-   * @param expectedUnknownScore If it's set to true, then an unknown score value is expected.
-   * @param expectedNotApplicableScore If it's set to true, then a not-applicable score value is
-   *     expected.
+   * @param expectedUnknownScore
+   *        If it's set to true, then an unknown score value is expected.
+   * @param expectedNotApplicableScore
+   *        If it's set to true, then a not-applicable score value is expected.
    */
   @JsonCreator
   public StandardTestVector(
@@ -52,10 +57,12 @@ public class StandardTestVector extends AbstractTestVector {
       @JsonProperty("expectedScore") Interval expectedScore,
       @JsonProperty("expectedLabel") Label expectedLabel,
       @JsonProperty("alias") String alias,
-      @JsonProperty(value = "expectedUnknownScore", defaultValue = "false")
-          boolean expectedUnknownScore,
-      @JsonProperty(value = "expectedNotApplicableScore", defaultValue = "false")
-          boolean expectedNotApplicableScore) {
+      @JsonProperty(
+          value = "expectedUnknownScore",
+          defaultValue = "false") boolean expectedUnknownScore,
+      @JsonProperty(
+          value = "expectedNotApplicableScore",
+          defaultValue = "false") boolean expectedNotApplicableScore) {
 
     super(expectedScore, expectedLabel, alias, expectedUnknownScore, expectedNotApplicableScore);
 
@@ -95,13 +102,11 @@ public class StandardTestVector extends AbstractTestVector {
    * @return A prepared or the same value.
    */
   private Value<?> prepare(Value<?> value, Score score) {
-    if (value instanceof TestScoreValue testScoreValue) {
-      Score targetScore =
-          subScoreIn(score, testScoreValue.scoreClassName())
-              .orElseThrow(
-                  () ->
-                      new IllegalStateException(
-                          format("No target score found for %s", testScoreValue.scoreClassName())));
+    if (value instanceof TestScoreValue) {
+      TestScoreValue testScoreValue = (TestScoreValue) value;
+      Score targetScore = subScoreIn(score, testScoreValue.scoreClassName())
+          .orElseThrow(() -> new IllegalStateException(
+              format("No target score found for %s", testScoreValue.scoreClassName())));
       if (testScoreValue.isUnknown()) {
         return new ScoreValue(targetScore).makeUnknown();
       }

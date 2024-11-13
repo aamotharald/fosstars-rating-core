@@ -26,17 +26,36 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-/** This is an implementation of {@link ValueSet} based on a hash map. */
+/**
+ * This is an implementation of {@link ValueSet} based on a hash map.
+ */
 @JsonSerialize(using = ValueHashSet.Serializer.class)
 @JsonDeserialize(using = ValueHashSet.Deserializer.class)
 @JsonTypeName("ValueHashSet")
 public class ValueHashSet implements ValueSet {
 
-  /** A mapping from a feature to its value. */
+  /**
+   * A mapping from a feature to its value.
+   */
   private final Map<Feature<?>, Value<?>> featureToValue = new HashMap<>();
 
-  /** Initializes an empty {@link ValueHashSet}. */
-  public ValueHashSet() {}
+  /**
+   * Initializes a new {@link ValueHashSet} with a number of values.
+   *
+   * @param values The values.
+   * @return The new {@link ValueHashSet}.
+   */
+  public static ValueHashSet from(Value<?>... values) {
+    Objects.requireNonNull(values, "Values can't be null!");
+    return new ValueHashSet(values);
+  }
+
+  /**
+   * Initializes an empty {@link ValueHashSet}.
+   */
+  public ValueHashSet() {
+
+  }
 
   /**
    * Initializes a {@link ValueHashSet} with a number of values.
@@ -60,17 +79,6 @@ public class ValueHashSet implements ValueSet {
   }
 
   /**
-   * Initializes a new {@link ValueHashSet} with a number of values.
-   *
-   * @param values The values.
-   * @return The new {@link ValueHashSet}.
-   */
-  public static ValueHashSet from(Value<?>... values) {
-    Objects.requireNonNull(values, "Values can't be null!");
-    return new ValueHashSet(values);
-  }
-
-  /**
    * Create an empty value set.
    *
    * @return An empty {@link ValueHashSet}.
@@ -89,8 +97,8 @@ public class ValueHashSet implements ValueSet {
     ValueHashSet values = empty();
     for (Feature<?> feature : features) {
       if (values.has(feature)) {
-        throw new IllegalArgumentException(
-            String.format("Hey! You just gave me a duplicate feature: %s", feature));
+        throw new IllegalArgumentException(String.format(
+            "Hey! You just gave me a duplicate feature: %s", feature));
       }
       values.update(UnknownValue.of(feature));
     }
@@ -166,7 +174,7 @@ public class ValueHashSet implements ValueSet {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof ValueHashSet)) {
+    if (o instanceof ValueHashSet == false) {
       return false;
     }
     ValueHashSet that = (ValueHashSet) o;
@@ -189,10 +197,14 @@ public class ValueHashSet implements ValueSet {
     return toSet().iterator();
   }
 
-  /** The default serialized for {@link ValueHashSet}. */
+  /**
+   * The default serialized for {@link ValueHashSet}.
+   */
   static class Serializer extends StdSerializer<ValueHashSet> {
 
-    /** This default constructor is to make Jackson happy. */
+    /**
+     * This default constructor is to make Jackson happy.
+     */
     Serializer() {
       this(null);
     }
@@ -202,21 +214,17 @@ public class ValueHashSet implements ValueSet {
     }
 
     @Override
-    public void serialize(
-        ValueHashSet valueHashSet, JsonGenerator gen, SerializerProvider serializerProvider) {
+    public void serialize(ValueHashSet valueHashSet, JsonGenerator gen,
+        SerializerProvider serializerProvider) {
 
       throw new UnsupportedOperationException("This should not be called!");
     }
 
     @Override
-    public void serializeWithType(
-        ValueHashSet valueHashSet,
-        JsonGenerator gen,
-        SerializerProvider serializers,
-        TypeSerializer typeSer)
-        throws IOException {
+    public void serializeWithType(ValueHashSet valueHashSet, JsonGenerator gen,
+        SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
 
-      WritableTypeId typeId = typeSer.typeId(valueHashSet, JsonToken.START_ARRAY);
+      WritableTypeId typeId = typeSer.typeId(valueHashSet,JsonToken.START_ARRAY);
       typeSer.writeTypePrefix(gen, typeId);
 
       for (Map.Entry<Feature<?>, Value<?>> entry : valueHashSet.featureToValue.entrySet()) {
@@ -233,10 +241,14 @@ public class ValueHashSet implements ValueSet {
     }
   }
 
-  /** The default deserialized for {@link ValueHashSet}. */
+  /**
+   * The default deserialized for {@link ValueHashSet}.
+   */
   static class Deserializer extends StdDeserializer<ValueHashSet> {
 
-    /** This default constructor is to make Jackson happy. */
+    /**
+     * This default constructor is to make Jackson happy.
+     */
     Deserializer() {
       this(null);
     }
@@ -246,8 +258,8 @@ public class ValueHashSet implements ValueSet {
     }
 
     @Override
-    public ValueHashSet deserialize(
-        JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public ValueHashSet deserialize(JsonParser jsonParser,
+        DeserializationContext deserializationContext) throws IOException {
 
       ValueHashSet valueHashSet = new ValueHashSet();
 

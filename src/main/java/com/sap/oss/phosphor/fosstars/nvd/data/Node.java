@@ -7,13 +7,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Defines a node or sub-node in an NVD applicability statement. */
+/**
+ * Defines a node or sub-node in an NVD applicability statement.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"operator", "negate", "children", "cpe_match"})
+@JsonPropertyOrder({
+    "operator",
+    "negate",
+    "children",
+    "cpe_match"
+})
 // the properties below are ignored because they are not used
 // that saves a bit of memory
 // when they become necessary, then can be enabled
-@JsonIgnoreProperties({"operator", "negate"})
+@JsonIgnoreProperties({
+    "operator",
+    "negate"
+})
 public class Node {
 
   @JsonProperty("operator")

@@ -20,30 +20,44 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
 /**
- * The class scans a number of organizations on GitHub and returns their projects. The class also
- * checks specific projects and add them to results of the scan if they exist.
+ * The class scans a number of organizations on GitHub and returns their projects.
+ * The class also checks specific projects and add them to results of the scan if they exist.
  */
 public class GitHubProjectFinder {
 
-  /** An empty exclude list. */
-  static final List<String> EMPTY_EXCLUDE_LIST = Collections.emptyList();
-
-  /** The default minimal number of stars. */
+  /**
+   * The default minimal number of stars.
+   */
   private static final int DEFAULT_STARS = 0;
 
-  /** A page size for requests to GitHub. */
+  /**
+   * A page size for requests to GitHub.
+   */
   private static final int PAGE_SIZE = 100;
 
-  /** An interface to GitHub. */
+  /**
+   * An empty exclude list.
+   */
+  static final List<String> EMPTY_EXCLUDE_LIST = Collections.emptyList();
+
+  /**
+   * An interface to GitHub.
+   */
   private final GitHub github;
 
-  /** A cache of GitHub organizations. */
+  /**
+   * A cache of GitHub organizations.
+   */
   private final Map<String, GHOrganization> organizations = new HashMap<>();
 
-  /** A cache of GitHub projects. */
+  /**
+   * A cache of GitHub projects.
+   */
   private final Map<String, GHRepository> repositories = new HashMap<>();
 
-  /** A configuration. */
+  /**
+   * A configuration.
+   */
   private Config config = new Config();
 
   /**
@@ -70,14 +84,15 @@ public class GitHubProjectFinder {
    * Adds an organization to be scanned.
    *
    * @param name Organization's name.
-   * @param excludeList A list of patterns to identify projects which should be excluded from
-   *     results of the scan.
+   * @param excludeList A list of patterns to identify projects
+   *                    which should be excluded from results of the scan.
    * @return The same {@link GitHubProjectFinder}.
    */
   public GitHubProjectFinder organization(String name, List<String> excludeList) {
     config.organizationConfigs.add(new OrganizationConfig(name, excludeList, DEFAULT_STARS));
     return this;
   }
+
 
   /**
    * Adds an organization to be scanned.
@@ -92,25 +107,29 @@ public class GitHubProjectFinder {
   }
 
   /**
-   * Adds a project to be checked. If the project exists, it will be added to results of the scan.
+   * Adds a project to be checked.
+   * If the project exists, it will be added to results of the scan.
    *
    * @param project The project to be added.
    * @return The same {@link GitHubProjectFinder}.
    */
   public GitHubProjectFinder add(GitHubProject project) {
-    config.projectConfigs.add(new ProjectConfig(project.organization().name(), project.name()));
+    config.projectConfigs.add(
+        new ProjectConfig(project.organization().name(), project.name()));
     return this;
   }
 
   /**
-   * Adds a project to be checked. If the project exists, it will be added to results of the scan.
+   * Adds a project to be checked.
+   * If the project exists, it will be added to results of the scan.
    *
    * @param organization Organization's name.
    * @param name Project's name.
    * @return The same {@link GitHubProjectFinder}.
    */
   public GitHubProjectFinder project(String organization, String name) {
-    config.projectConfigs.add(new ProjectConfig(organization, name));
+    config.projectConfigs.add(
+        new ProjectConfig(organization, name));
     return this;
   }
 
@@ -175,8 +194,8 @@ public class GitHubProjectFinder {
   }
 
   /**
-   * Scans the organization specified by a config and returns its projects. The method uses {@link
-   * OrganizationConfig#excludeList} to exclude some projects.
+   * Scans the organization specified by a config and returns its projects.
+   * The method uses {@link OrganizationConfig#excludeList} to exclude some projects.
    *
    * @param organizationConfig The config.
    * @return A list of projects.
@@ -195,8 +214,8 @@ public class GitHubProjectFinder {
       if (organizationConfig.excluded(name)) {
         continue;
       }
-      projects.add(
-          new GitHubProject(new GitHubOrganization(organizationConfig.name), repository.getName()));
+      projects.add(new GitHubProject(
+          new GitHubOrganization(organizationConfig.name), repository.getName()));
     }
     return projects;
   }
@@ -204,8 +223,8 @@ public class GitHubProjectFinder {
   /**
    * Create a {@link GHRepository}.
    *
-   * @param path A path to the repository For example, apache/nifi is a path for
-   *     https://github.com/apache/nifi repository.
+   * @param path A path to the repository
+   *             For example, apache/nifi is a path for https://github.com/apache/nifi repository.
    * @return An instance of {@link GHRepository}.
    * @throws IOException If the repository doesn't exist or something went wrong.
    */
@@ -247,7 +266,9 @@ public class GitHubProjectFinder {
         new GitHubOrganization(projectConfig.organization), projectConfig.name);
   }
 
-  /** A parser of configurations for {@link GitHubProjectFinder} which are stored in YAML. */
+  /**
+   * A parser of configurations for {@link GitHubProjectFinder} which are stored in YAML.
+   */
   static class ConfigParser {
 
     /**
@@ -276,16 +297,24 @@ public class GitHubProjectFinder {
     }
   }
 
-  /** A configuration for a GitHub organization to be scanned. */
+  /**
+   * A configuration for a GitHub organization to be scanned.
+   */
   static class OrganizationConfig {
 
-    /** Organization's name. */
+    /**
+     * Organization's name.
+     */
     final String name;
 
-    /** A list of patterns that show which projects should be excluded. */
+    /**
+     * A list of patterns that show which projects should be excluded.
+     */
     final List<String> excludeList;
 
-    /** A minimal number of stars for a project. */
+    /**
+     * A minimal number of stars for a project.
+     */
     final int stars;
 
     /**
@@ -332,7 +361,7 @@ public class GitHubProjectFinder {
       if (this == o) {
         return true;
       }
-      if (!(o instanceof OrganizationConfig)) {
+      if (o instanceof OrganizationConfig == false) {
         return false;
       }
       OrganizationConfig that = (OrganizationConfig) o;
@@ -347,13 +376,19 @@ public class GitHubProjectFinder {
     }
   }
 
-  /** A configuration for a GitHub project to be scanned. */
+  /**
+   * A configuration for a GitHub project to be scanned.
+   */
   static class ProjectConfig {
 
-    /** An organization. */
+    /**
+     * An organization.
+     */
     final String organization;
 
-    /** Project's name. */
+    /**
+     * Project's name.
+     */
     final String name;
 
     /**
@@ -364,7 +399,8 @@ public class GitHubProjectFinder {
      */
     @JsonCreator
     ProjectConfig(
-        @JsonProperty("organization") String organization, @JsonProperty("name") String name) {
+        @JsonProperty("organization") String organization,
+        @JsonProperty("name") String name) {
 
       this.organization = Objects.requireNonNull(organization, "Hey! Organization can't be null!");
       this.name = Objects.requireNonNull(name, "Hey! Name can't be null!");
@@ -375,11 +411,12 @@ public class GitHubProjectFinder {
       if (this == o) {
         return true;
       }
-      if (!(o instanceof ProjectConfig)) {
+      if (o instanceof ProjectConfig == false) {
         return false;
       }
       ProjectConfig that = (ProjectConfig) o;
-      return Objects.equals(organization, that.organization) && Objects.equals(name, that.name);
+      return Objects.equals(organization, that.organization)
+          && Objects.equals(name, that.name);
     }
 
     @Override
@@ -388,16 +425,24 @@ public class GitHubProjectFinder {
     }
   }
 
-  /** A configuration for a the {@link GitHubProjectFinder}. */
+  /**
+   * A configuration for a the {@link GitHubProjectFinder}.
+   */
   static class Config {
 
-    /** A list of configurations for GitHub organizations to be scanned. */
+    /**
+     * A list of configurations for GitHub organizations to be scanned.
+     */
     final List<OrganizationConfig> organizationConfigs;
 
-    /** A list of configurations for GitHub projects to be scanned. */
+    /**
+     * A list of configurations for GitHub projects to be scanned.
+     */
     final List<ProjectConfig> projectConfigs;
 
-    /** Initializes an empty configuration. */
+    /**
+     * Initializes an empty configuration.
+     */
     Config() {
       this(new ArrayList<>(), new ArrayList<>());
     }
@@ -413,9 +458,11 @@ public class GitHubProjectFinder {
         @JsonProperty("organizations") List<OrganizationConfig> organizationConfigs,
         @JsonProperty("repositories") List<ProjectConfig> projectConfigs) {
 
-      this.organizationConfigs =
-          organizationConfigs != null ? organizationConfigs : new ArrayList<>();
-      this.projectConfigs = projectConfigs != null ? projectConfigs : new ArrayList<>();
+      this.organizationConfigs
+          = organizationConfigs != null ? organizationConfigs : new ArrayList<>();
+      this.projectConfigs
+          = projectConfigs != null ? projectConfigs : new ArrayList<>();
     }
   }
+
 }

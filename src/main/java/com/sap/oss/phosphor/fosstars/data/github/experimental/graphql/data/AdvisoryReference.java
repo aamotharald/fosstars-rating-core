@@ -17,7 +17,7 @@ public class AdvisoryReference {
   private String url;
 
   @JsonIgnore
-  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("url")
   public String getUrl() {
@@ -43,4 +43,5 @@ public class AdvisoryReference {
   public String toString() {
     return url;
   }
+
 }

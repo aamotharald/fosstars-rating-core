@@ -14,11 +14,16 @@ import java.io.IOException;
 public class UnpatchedVulnerabilities
     extends CachedSingleFeatureGitHubDataProvider<Vulnerabilities> {
 
-  /** A feature that hold info about unpatched vulnerabilities. */
-  private static final Feature<Vulnerabilities> UNPATCHED_VULNERABILITIES =
-      new VulnerabilitiesFeature("Info about unpatched vulnerabilities in an open-source project");
+  /**
+   * A feature that hold info about unpatched vulnerabilities.
+   */
+  private static final Feature<Vulnerabilities> UNPATCHED_VULNERABILITIES
+      = new VulnerabilitiesFeature(
+          "Info about unpatched vulnerabilities in an open-source project");
 
-  /** A storage of unpatched vulnerabilities. */
+  /**
+   * A storage of unpatched vulnerabilities.
+   */
   private final UnpatchedVulnerabilitiesStorage knownUnpatchedVulnerabilities;
 
   /**

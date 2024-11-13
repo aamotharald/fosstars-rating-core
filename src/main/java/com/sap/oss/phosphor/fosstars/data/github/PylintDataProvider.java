@@ -20,22 +20,23 @@ import java.util.regex.Pattern;
 /**
  * The data provider gathers info about how a project uses Bandit for static analysis. In
  * particular, it tries to fill out the following features:
- *
  * <ul>
- *   <li>{@link OssFeatures#RUNS_PYLINT_SCANS}
- *   <li>{@link OssFeatures#USES_PYLINT_SCAN_CHECKS}
+ *   <li>{@link OssFeatures#RUNS_PYLINT_SCANS}</li>
+ *   <li>{@link OssFeatures#USES_PYLINT_SCAN_CHECKS}</li>
  * </ul>
  */
 public class PylintDataProvider extends AbstractStaticScanToolsDataProvider {
 
-  /** A predicate to check if the any step of a GitHub action that triggers analysis with Pylint. */
+  /**
+   * A predicate to check if the any step of a GitHub action that triggers analysis with Pylint.
+   */
   private static final Map<String, Predicate<String>> MATCH_PYLINT_PREDICATE_MAP = new HashMap<>();
 
   static {
-    MATCH_PYLINT_PREDICATE_MAP.put(
-        "uses", step -> Pattern.compile("^.*pylint.*$", Pattern.DOTALL).matcher(step).matches());
-    MATCH_PYLINT_PREDICATE_MAP.put(
-        "run", step -> Pattern.compile("^.*pylint .*$", Pattern.DOTALL).matcher(step).matches());
+    MATCH_PYLINT_PREDICATE_MAP.put("uses",
+        step -> Pattern.compile("^.*pylint.*$", Pattern.DOTALL).matcher(step).matches());
+    MATCH_PYLINT_PREDICATE_MAP.put("run",
+        step -> Pattern.compile("^.*pylint .*$", Pattern.DOTALL).matcher(step).matches());
     MATCH_PYLINT_PREDICATE_MAP.putAll(preCommitHookContextMap(hook -> hook.contains("pylint")));
   }
 

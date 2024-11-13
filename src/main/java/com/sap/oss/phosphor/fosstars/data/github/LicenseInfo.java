@@ -43,28 +43,37 @@ import org.kohsuke.github.GitHubBuilder;
 
 /**
  * This data provider gathers info about project's license. It fills out the following features:
- *
  * <ul>
- *   <li>{@link OssFeatures#HAS_LICENSE}
- *   <li>{@link OssFeatures#ALLOWED_LICENSE}
- *   <li>{@link OssFeatures#LICENSE_HAS_DISALLOWED_CONTENT}
+ * <li>{@link OssFeatures#HAS_LICENSE}</li>
+ * <li>{@link OssFeatures#ALLOWED_LICENSE}</li>
+ * <li>{@link OssFeatures#LICENSE_HAS_DISALLOWED_CONTENT}</li>
  * </ul>
  */
 public class LicenseInfo extends GitHubCachingDataProvider {
 
-  /** A key for SPDX identifier in metadata. */
+  /**
+   * A key for SPDX identifier in metadata.
+   */
   static final String SPDX_ID = "spdxId";
-
-  /** A key to a license path in metadata. */
+  
+  /**
+   * A key to a license path in metadata.
+   */
   static final String LICENSE_PATH = "licensePath";
 
-  /** A list of SPDX IDs of allowed licenses. */
+  /**
+   * A list of SPDX IDs of allowed licenses.
+   */
   private final List<String> allowedLicenses = new ArrayList<>();
 
-  /** A list of repositories that are already known to be compliant. */
+  /**
+   * A list of repositories that are already known to be compliant.
+   */
   private final List<String> repositoryExceptionUrls = new ArrayList<>();
 
-  /** A list of patterns that are not allowed in licenses. */
+  /**
+   * A list of patterns that are not allowed in licenses.
+   */
   private final List<Pattern> disallowedLicensePatterns = new ArrayList<>();
 
   /**
@@ -76,38 +85,6 @@ public class LicenseInfo extends GitHubCachingDataProvider {
   public LicenseInfo(GitHubDataFetcher fetcher) throws IOException {
     super(fetcher);
     loadDefaultConfigIfAvailable();
-  }
-
-  /**
-   * This is for testing and demo purposes.
-   *
-   * @param args Command-line options (option 1: API token, option 2: project URL).
-   * @throws Exception If something went wrong.
-   */
-  public static void main(String... args) throws Exception {
-    String token = args.length > 0 ? args[0] : "";
-    String url = args.length > 1 ? args[1] : "https://github.com/SAP/fosstars-rating-core";
-    GitHubProject project = GitHubProject.parse(url);
-    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
-    LicenseInfo provider = new LicenseInfo(new GitHubDataFetcher(github, token));
-    provider.configure(
-        IOUtils.toInputStream(
-            "---\n"
-                + "allowedLicenses:\n"
-                + "  - Apache-2.0\n"
-                + "  - CC-BY-4.0\n"
-                + "  - MIT\n"
-                + "  - EPL-2.0\n"
-                + "disallowedLicensePatterns:\n"
-                + "  - API\n"
-                + "repositoryExceptions:\n"
-                + "  - https://github.com/SAP/SapMachine\n"
-                + "  - https://github.com/SAP/jmc\n",
-            "UTF-8"));
-    ValueSet values = provider.fetchValuesFor(project);
-    for (Value<?> value : values) {
-      System.out.printf("%s: %s%n", value.feature().name(), value.get());
-    }
   }
 
   /**
@@ -202,10 +179,8 @@ public class LicenseInfo extends GitHubCachingDataProvider {
   public LicenseInfo disallowedLicensePatterns(List<String> patterns) {
     Objects.requireNonNull(patterns, "Oops! Patterns can't be null!");
     disallowedLicensePatterns.clear();
-    disallowedLicensePatterns.addAll(
-        patterns.stream()
-            .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL))
-            .collect(toList()));
+    disallowedLicensePatterns.addAll(patterns.stream()
+        .map(pattern -> Pattern.compile(pattern, Pattern.DOTALL)).collect(toList()));
     return this;
   }
 
@@ -273,22 +248,17 @@ public class LicenseInfo extends GitHubCachingDataProvider {
    * @return A set of values.
    */
   ValueSet analyzeLicense(String content, String spdxId) {
-    Value<Boolean> allowedLicense =
-        ALLOWED_LICENSE
-            .value(allowedLicenses.contains(spdxId))
-            .explainIf(false, "%s is not allowed", spdxId);
+    Value<Boolean> allowedLicense = ALLOWED_LICENSE.value(allowedLicenses.contains(spdxId))
+        .explainIf(false, "%s is not allowed", spdxId);
 
-    List<Pattern> violated =
-        disallowedLicensePatterns.stream()
-            .filter(pattern -> pattern.matcher(content).find())
-            .collect(toList());
-    Value<Boolean> hasDisallowedText =
-        LICENSE_HAS_DISALLOWED_CONTENT
-            .value(!violated.isEmpty())
-            .explainIf(
-                true,
-                "The license contains disallowed text that match %s",
-                violated.stream().map(pattern -> format("'%s'", pattern)).collect(joining(", ")));
+    List<Pattern> violated = disallowedLicensePatterns.stream()
+        .filter(pattern -> pattern.matcher(content).find())
+        .collect(toList());
+    Value<Boolean> hasDisallowedText = LICENSE_HAS_DISALLOWED_CONTENT.value(!violated.isEmpty())
+        .explainIf(true, "The license contains disallowed text that match %s",
+            violated.stream()
+                .map(pattern -> format("'%s'", pattern))
+                .collect(joining(", ")));
 
     return ValueHashSet.from(allowedLicense, hasDisallowedText);
   }
@@ -312,17 +282,14 @@ public class LicenseInfo extends GitHubCachingDataProvider {
     HashMap<String, String> licenseMetadata = new HashMap<>();
 
     try (CloseableHttpClient client = httpClient()) {
-      String url =
-          format(
-              "https://api.github.com/repos/%s/%s/license",
-              project.organization().name(), project.name());
+      String url = format("https://api.github.com/repos/%s/%s/license",
+          project.organization().name(), project.name());
       HttpGet request = new HttpGet(url);
       request.addHeader(HttpHeaders.ACCEPT, "application/vnd.github.v3+json");
       request.addHeader(HttpHeaders.AUTHORIZATION, "token " + fetcher.token());
       try (CloseableHttpResponse response = client.execute(request)) {
         if (response.getStatusLine().getStatusCode() != 200) {
-          logger.warn(
-              "Oops! Could not fetch license metadata from GitHub API ({})",
+          logger.warn("Oops! Could not fetch license metadata from GitHub API ({})",
               response.getStatusLine().getStatusCode());
           return licenseMetadata;
         }
@@ -366,4 +333,36 @@ public class LicenseInfo extends GitHubCachingDataProvider {
     repositoryExceptions(readListFrom(config, "repositoryExceptions"));
     return this;
   }
+
+  /**
+   * This is for testing and demo purposes.
+   *
+   * @param args Command-line options (option 1: API token, option 2: project URL).
+   * @throws Exception If something went wrong.
+   */
+  public static void main(String... args) throws Exception {
+    String token = args.length > 0 ? args[0] : "";
+    String url = args.length > 1 ? args[1] : "https://github.com/SAP/fosstars-rating-core";
+    GitHubProject project = GitHubProject.parse(url);
+    GitHub github = new GitHubBuilder().withOAuthToken(token).build();
+    LicenseInfo provider = new LicenseInfo(new GitHubDataFetcher(github, token));
+    provider.configure(IOUtils.toInputStream(
+        "---\n"
+            + "allowedLicenses:\n"
+            + "  - Apache-2.0\n"
+            + "  - CC-BY-4.0\n"
+            + "  - MIT\n"
+            + "  - EPL-2.0\n"
+            + "disallowedLicensePatterns:\n"
+            + "  - API\n"
+            + "repositoryExceptions:\n"
+            + "  - https://github.com/SAP/SapMachine\n"
+            + "  - https://github.com/SAP/jmc\n",
+        "UTF-8"));
+    ValueSet values = provider.fetchValuesFor(project);
+    for (Value<?> value : values) {
+      System.out.printf("%s: %s%n", value.feature().name(), value.get());
+    }
+  }
+
 }

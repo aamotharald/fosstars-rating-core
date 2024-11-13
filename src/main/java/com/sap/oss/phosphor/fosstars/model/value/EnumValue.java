@@ -8,13 +8,15 @@ import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
 /**
- * A value of a feature that contains a enum item.
+ * <p>A value of a feature that contains a enum item.</p>
  *
  * @param <T> Enum type.
  */
 public class EnumValue<T extends Enum<T>> extends AbstractKnownValue<T> {
 
-  /** The value item. */
+  /**
+   * The value item.
+   */
   @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
   private final T value;
 
@@ -25,7 +27,9 @@ public class EnumValue<T extends Enum<T>> extends AbstractKnownValue<T> {
    * @param value The value.
    */
   @JsonCreator
-  public EnumValue(@JsonProperty("feature") Feature<T> feature, @JsonProperty("value") T value) {
+  public EnumValue(
+      @JsonProperty("feature") Feature<T> feature,
+      @JsonProperty("value") T value) {
 
     super(feature);
 
@@ -44,7 +48,7 @@ public class EnumValue<T extends Enum<T>> extends AbstractKnownValue<T> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof EnumValue)) {
+    if (o instanceof EnumValue == false) {
       return false;
     }
     if (!super.equals(o)) {

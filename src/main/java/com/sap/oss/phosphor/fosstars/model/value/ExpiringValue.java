@@ -17,13 +17,19 @@ import java.util.function.Predicate;
  */
 public class ExpiringValue<T> implements Value<T> {
 
-  /** This constant means that the value has no expiration date. */
+  /**
+   * This constant means that the value has no expiration date.
+   */
   public static final Date NO_EXPIRATION = null;
 
-  /** The wrapped value. */
+  /**
+   * The wrapped value.
+   */
   private final Value<T> value;
 
-  /** The expiration date for the value. */
+  /**
+   * The expiration date for the value.
+   */
   private final Date expiration;
 
   /**
@@ -33,7 +39,8 @@ public class ExpiringValue<T> implements Value<T> {
    * @param expiration An expiration date for the value.
    */
   public ExpiringValue(
-      @JsonProperty("value") Value<T> value, @JsonProperty("expiration") Date expiration) {
+      @JsonProperty("value") Value<T> value,
+      @JsonProperty("expiration") Date expiration) {
 
     this.value = value;
     this.expiration = expiration;
@@ -145,7 +152,7 @@ public class ExpiringValue<T> implements Value<T> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof ExpiringValue)) {
+    if (o instanceof ExpiringValue == false) {
       return false;
     }
     ExpiringValue<?> that = (ExpiringValue<?>) o;

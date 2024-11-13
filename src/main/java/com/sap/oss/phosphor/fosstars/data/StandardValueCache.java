@@ -21,13 +21,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-/** This is a cache of feature values which use string as keys. */
+/**
+ * This is a cache of feature values which use string as keys.
+ */
 public class StandardValueCache implements Cache<String, ValueSet> {
 
-  /** A map of cache entries. */
+  /**
+   * A map of cache entries.
+   */
   private final Map<String, ValueSet> entries;
 
-  /** The default constructor. */
+  /**
+   * The default constructor.
+   */
   public StandardValueCache() {
     this(new HashMap<>());
   }
@@ -40,41 +46,6 @@ public class StandardValueCache implements Cache<String, ValueSet> {
   private StandardValueCache(Map<String, ValueSet> entries) {
     Objects.requireNonNull(entries, "Entries can't be null!");
     this.entries = entries;
-  }
-
-  /**
-   * The method extracts an original value from a ExpiringValue if it's not expired.
-   *
-   * @param value The ExpiringValue.
-   * @param <T> Type of data that the value holds.
-   * @return The original value if it's not expired.
-   * @throws IllegalStateException If the value is not an instance of ExpiringValue.
-   */
-  private static <T> Optional<Value<T>> unwrapExpiring(Value<T> value) {
-    if (!(value instanceof ExpiringValue<T> expiringValue)) {
-      throw new IllegalStateException("It should be an expiring value!");
-    }
-
-    if (expiringValue.neverExpires() || !expiringValue.expired()) {
-      return Optional.of(expiringValue.original());
-    }
-
-    return Optional.empty();
-  }
-
-  /**
-   * Loads a cache from a specified file.
-   *
-   * @param path A path to the file.
-   * @return The loaded cache.
-   * @throws IOException If something went wrong.
-   */
-  public static StandardValueCache load(String path) throws IOException {
-    File file = new File(path);
-    if (!file.exists()) {
-      throw new FileNotFoundException(String.format("Can't find %s", path));
-    }
-    return Json.mapper().readValue(file, StandardValueCache.class);
   }
 
   /*
@@ -119,6 +90,27 @@ public class StandardValueCache implements Cache<String, ValueSet> {
     }
 
     return Optional.of(result);
+  }
+
+  /**
+   * The method extracts an original value from a ExpiringValue if it's not expired.
+   *
+   * @param value The ExpiringValue.
+   * @param <T> Type of data that the value holds.
+   * @return The original value if it's not expired.
+   * @throws IllegalStateException If the value is not an instance of ExpiringValue.
+   */
+  private static <T> Optional<Value<T>> unwrapExpiring(Value<T> value) {
+    if (value instanceof ExpiringValue == false) {
+      throw new IllegalStateException("It should be an expiring value!");
+    }
+    ExpiringValue<T> expiringValue = (ExpiringValue<T>) value;
+
+    if (expiringValue.neverExpires() || !expiringValue.expired()) {
+      return Optional.of(expiringValue.original());
+    }
+
+    return Optional.empty();
   }
 
   @Override
@@ -182,12 +174,27 @@ public class StandardValueCache implements Cache<String, ValueSet> {
     Files.write(path, Json.toBytes(this));
   }
 
+  /**
+   * Loads a cache from a specified file.
+   *
+   * @param path A path to the file.
+   * @return The loaded cache.
+   * @throws IOException If something went wrong.
+   */
+  public static StandardValueCache load(String path) throws IOException {
+    File file = new File(path);
+    if (!file.exists()) {
+      throw new FileNotFoundException(String.format("Can't find %s", path));
+    }
+    return Json.mapper().readValue(file, StandardValueCache.class);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof StandardValueCache)) {
+    if (o instanceof StandardValueCache == false) {
       return false;
     }
     StandardValueCache cache = (StandardValueCache) o;
@@ -198,4 +205,5 @@ public class StandardValueCache implements Cache<String, ValueSet> {
   public int hashCode() {
     return Objects.hashCode(entries);
   }
+
 }

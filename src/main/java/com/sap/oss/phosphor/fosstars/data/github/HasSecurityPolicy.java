@@ -19,18 +19,22 @@ import org.apache.http.impl.client.HttpClients;
  */
 public class HasSecurityPolicy extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
-  /** A minimal number of characters in a security policy to consider it valid. */
+  /**
+   * A minimal number of characters in a security policy to consider it valid.
+   */
   private static final int ACCEPTABLE_POLICY_SIZE = 50;
 
   /**
    * A list of well-known location of a security policy.
    *
-   * @see <a
-   *     href="https://help.github.com/en/github/managing-security-vulnerabilities/adding-a-security-policy-to-your-repository">
-   *     GitHub: Adding a security policy to your repository</a>
+   * @see <a href="https://help.github.com/en/github/managing-security-vulnerabilities/adding-a-security-policy-to-your-repository">
+   * GitHub: Adding a security policy to your repository</a>
    */
   private static final String[] POLICY_LOCATIONS = {
-    "SECURITY.md", "docs/SECURITY.md", ".github/SECURITY.md", ".github/SECURITY.rst"
+      "SECURITY.md",
+      "docs/SECURITY.md",
+      ".github/SECURITY.md",
+      ".github/SECURITY.rst"
   };
 
   /**
@@ -42,21 +46,6 @@ public class HasSecurityPolicy extends CachedSingleFeatureGitHubDataProvider<Boo
     super(fetcher);
   }
 
-  /**
-   * Check if a file exists in a repository and its content more than {@link
-   * #ACCEPTABLE_POLICY_SIZE}.
-   *
-   * @param repository The repository.
-   * @param path A path to the file
-   * @return True if the file exists in the repository and it's big enough, false otherwise.
-   */
-  private static boolean isPolicy(LocalRepository repository, String path) throws IOException {
-    return repository
-        .file(path)
-        .filter(content -> content.length() > ACCEPTABLE_POLICY_SIZE)
-        .isPresent();
-  }
-
   @Override
   protected Feature<Boolean> supportedFeature() {
     return HAS_SECURITY_POLICY;
@@ -65,8 +54,8 @@ public class HasSecurityPolicy extends CachedSingleFeatureGitHubDataProvider<Boo
   @Override
   protected Value<Boolean> fetchValueFor(GitHubProject project) throws IOException {
     logger.info("Figuring out if the project has a security policy ...");
-    return HAS_SECURITY_POLICY
-        .value(hasSecurityPolicy(project) || hasSecurityPolicy(project.organization()))
+    return HAS_SECURITY_POLICY.value(
+        hasSecurityPolicy(project) || hasSecurityPolicy(project.organization()))
         .explainIf(false, "Neither the project nor organization has a security policy");
   }
 
@@ -97,8 +86,8 @@ public class HasSecurityPolicy extends CachedSingleFeatureGitHubDataProvider<Boo
    */
   private boolean hasSecurityPolicy(GitHubOrganization organization) throws IOException {
     try (CloseableHttpClient client = httpClient()) {
-      String url =
-          String.format("https://github.com/%s/.github/security/policy", organization.name());
+      String url = String.format(
+          "https://github.com/%s/.github/security/policy", organization.name());
       HttpGet httpGetRequest = new HttpGet(url);
       try (CloseableHttpResponse httpResponse = client.execute(httpGetRequest)) {
         return httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
@@ -113,5 +102,19 @@ public class HasSecurityPolicy extends CachedSingleFeatureGitHubDataProvider<Boo
    */
   CloseableHttpClient httpClient() {
     return HttpClients.createDefault();
+  }
+
+  /**
+   * Check if a file exists in a repository and its content more than
+   * {@link #ACCEPTABLE_POLICY_SIZE}.
+   *
+   * @param repository The repository.
+   * @param path A path to the file
+   * @return True if the file exists in the repository and it's big enough, false otherwise.
+   */
+  private static boolean isPolicy(LocalRepository repository, String path) throws IOException {
+    return repository.file(path)
+        .filter(content -> content.length() > ACCEPTABLE_POLICY_SIZE)
+        .isPresent();
   }
 }

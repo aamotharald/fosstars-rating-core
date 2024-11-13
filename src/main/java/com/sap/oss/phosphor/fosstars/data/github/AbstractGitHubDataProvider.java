@@ -5,10 +5,14 @@ import com.sap.oss.phosphor.fosstars.model.Subject;
 import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import java.util.Objects;
 
-/** Base class for data providers which get data from GitHub. */
+/**
+ * Base class for data providers which get data from GitHub.
+ */
 public abstract class AbstractGitHubDataProvider extends AbstractDataProvider {
 
-  /** An interface to GitHub. */
+  /**
+   * An interface to GitHub.
+   */
   protected final GitHubDataFetcher fetcher;
 
   /**
@@ -17,8 +21,8 @@ public abstract class AbstractGitHubDataProvider extends AbstractDataProvider {
    * @param fetcher An interface to GitHub.
    */
   public AbstractGitHubDataProvider(GitHubDataFetcher fetcher) {
-    this.fetcher =
-        Objects.requireNonNull(fetcher, "Oh no! You gave me a null instead of a GitHub fetcher!");
+    this.fetcher = Objects.requireNonNull(
+        fetcher, "Oh no! You gave me a null instead of a GitHub fetcher!");
   }
 
   @Override
@@ -26,7 +30,9 @@ public abstract class AbstractGitHubDataProvider extends AbstractDataProvider {
     return subject instanceof GitHubProject;
   }
 
-  /** The method always returns false, so that all child classes can't be interactive. */
+  /**
+   * The method always returns false, so that all child classes can't be interactive.
+   */
   @Override
   public final boolean interactive() {
     return false;

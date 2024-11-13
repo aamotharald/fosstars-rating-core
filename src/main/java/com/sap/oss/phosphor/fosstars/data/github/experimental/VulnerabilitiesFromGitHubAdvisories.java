@@ -37,12 +37,16 @@ import org.kohsuke.github.GHRepository;
 public class VulnerabilitiesFromGitHubAdvisories
     extends CachedSingleFeatureGitHubDataProvider<Vulnerabilities> {
 
-  /** A feature that holds info about vulnerabilities in the GitHub Advisory Database. */
+  /**
+   * A feature that holds info about vulnerabilities in the GitHub Advisory Database.
+   */
   public static final Feature<Vulnerabilities> VULNERABILITIES_IN_ADVISORIES =
       new VulnerabilitiesFeature(
           "Info about vulnerabilities in an open-source project from GitHub Security Advisories");
 
-  /** An interface to the GitHub Advisory database. */
+  /**
+   * An interface to the GitHub Advisory database.
+   */
   private final GitHubAdvisories gitHubAdvisories;
 
   /**
@@ -106,7 +110,7 @@ public class VulnerabilitiesFromGitHubAdvisories
 
   /**
    * Convert List of {@link AdvisoryReference} to List of {@link Reference}.
-   *
+   * 
    * @param references List of type {@link AdvisoryReference}.
    * @return List of {@link Reference}.
    */

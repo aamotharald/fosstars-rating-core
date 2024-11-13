@@ -15,19 +15,22 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * The scoring function checks if the given artifact version is up-to-date. The scoring functions
- * uses the following features:
- *
+ * The scoring function checks if the given artifact version is up-to-date.
+ * The scoring functions uses the following features:
  * <ul>
- *   <li>{@link OssFeatures#RELEASED_ARTIFACT_VERSIONS}
- *   <li>{@link OssFeatures#ARTIFACT_VERSION}
+ *   <li>{@link OssFeatures#RELEASED_ARTIFACT_VERSIONS}</li>
+ *   <li>{@link OssFeatures#ARTIFACT_VERSION}</li>
  * </ul>
  */
 public class ArtifactVersionUpToDateScore extends FeatureBasedScore {
 
-  /** Initializes a new score. */
+  /**
+   * Initializes a new score.
+   */
   public ArtifactVersionUpToDateScore() {
-    super("How up-to-date the given version is", RELEASED_ARTIFACT_VERSIONS, ARTIFACT_VERSION);
+    super("How up-to-date the given version is",
+        RELEASED_ARTIFACT_VERSIONS,
+        ARTIFACT_VERSION);
   }
 
   @Override
@@ -42,7 +45,8 @@ public class ArtifactVersionUpToDateScore extends FeatureBasedScore {
 
     ArtifactVersions artifactVersions = artifactVersionsValue.get();
     Collection<ArtifactVersion> sortedByReleaseDate = artifactVersions.sortByReleaseDate();
-    Optional<ArtifactVersion> mappedVersion = artifactVersions.get(versionValue.get().version());
+    Optional<ArtifactVersion> mappedVersion =
+        artifactVersions.get(versionValue.get().version());
 
     if (mappedVersion.isPresent()) {
       ArtifactVersion latestVersion = sortedByReleaseDate.iterator().next();
@@ -70,11 +74,9 @@ public class ArtifactVersionUpToDateScore extends FeatureBasedScore {
     }
 
     // otherwise, return minimal score
-    return scoreValue
-        .withMinConfidence()
+    return scoreValue.withMinConfidence()
         .explain(
-            String.format(
-                "Given version %s was not found in released artifact versions.",
+            String.format("Given version %s was not found in released artifact versions.",
                 versionValue.get()))
         .makeUnknown();
   }

@@ -2,7 +2,9 @@ package com.sap.oss.phosphor.fosstars.tool.format;
 
 import java.util.List;
 
-/** An unordered Markdown list with bullets. */
+/**
+ * An unordered Markdown list with bullets.
+ */
 public class UnorderedMarkdownList extends MarkdownList {
 
   /**

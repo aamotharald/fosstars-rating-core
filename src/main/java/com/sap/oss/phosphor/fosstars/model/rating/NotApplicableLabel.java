@@ -3,7 +3,9 @@ package com.sap.oss.phosphor.fosstars.model.rating;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sap.oss.phosphor.fosstars.model.Label;
 
-/** This is a label for a score value that is marked as not-applicable. */
+/**
+ * This is a label for a score value that is marked as not-applicable.
+ */
 public class NotApplicableLabel implements Label {
 
   @Override

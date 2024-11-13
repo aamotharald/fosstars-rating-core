@@ -17,7 +17,7 @@ public class Data {
   private SecurityVulnerabilities securityVulnerabilities;
 
   @JsonIgnore
-  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("securityVulnerabilities")
   public SecurityVulnerabilities getSecurityVulnerabilities() {
@@ -38,4 +38,5 @@ public class Data {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
 }

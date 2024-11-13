@@ -24,37 +24,54 @@ import org.apache.logging.log4j.Logger;
 import us.springett.nistdatamirror.NistDataMirror;
 
 /**
- * This class offers an interface to the NVD.
- *
- * <p>The class is not thread-safe.
+ * <p>This class offers an interface to the NVD.</p>
+ * <p>The class is not thread-safe.</p>
  */
 public class NVD {
 
-  /** A logger. */
+  /**
+   * A logger.
+   */
   private static final Logger LOGGER = LogManager.getLogger(NVD.class);
 
-  /** The default location where the date from the NVD is stored. */
+  /**
+   * The default location where the date from the NVD is stored.
+   */
   private static final String DEFAULT_DOWNLOAD_DIRECTORY = ".fosstars/nvdcache";
 
-  /** A file where the class stores a timestamp when the data was downloaded. */
+  /**
+   * A file where the class stores a timestamp when the data was downloaded.
+   */
   private static final String TIMESTAMP_FILENAME = "nvd_last_updated_timestamp";
 
-  /** How often data from NVD should be downloaded. */
+  /**
+   * How often data from NVD should be downloaded.
+   */
   private static final Duration UPDATE_INTERVAL = Duration.ofDays(1);
 
-  /** The version of NVD feed to be used. */
+  /**
+   * The version of NVD feed to be used.
+   */
   private static final String NVD_FEED_VERSION = "1.1";
 
-  /** The location where the data from the NVD is stored. */
+  /**
+   * The location where the data from the NVD is stored.
+   */
   private final String downloadDirectory;
 
-  /** A list of JSON files downloaded from the NVD. */
+  /**
+   * A list of JSON files downloaded from the NVD.
+   */
   private final List<String> jsonFiles = new ArrayList<>();
 
-  /** A list of pre-loaded NVD entries. */
+  /**
+   * A list of pre-loaded NVD entries.
+   */
   private final List<NvdEntry> nvdEntries = new ArrayList<>();
 
-  /** The default constructor. */
+  /**
+   * The default constructor.
+   */
   public NVD() {
     this(DEFAULT_DOWNLOAD_DIRECTORY);
   }
@@ -69,7 +86,9 @@ public class NVD {
     this.downloadDirectory = downloadDirectory;
   }
 
-  /** Downloads data from the NVD database. */
+  /**
+   * Downloads data from the NVD database.
+   */
   public void download() {
     new NistDataMirror(downloadDirectory).mirror(NVD_FEED_VERSION);
     updateTimestamp();
@@ -97,7 +116,9 @@ public class NVD {
     return true;
   }
 
-  /** Store a timestamp when NVD was downloaded. */
+  /**
+   * Store a timestamp when NVD was downloaded.
+   */
   private void updateTimestamp() {
     Path path = timestampFile();
     try {
@@ -116,7 +137,9 @@ public class NVD {
     return Paths.get(downloadDirectory).resolve(TIMESTAMP_FILENAME);
   }
 
-  /** Download and parses NVD if necessary. */
+  /**
+   * Download and parses NVD if necessary.
+   */
   private void updateIfNecessary() {
     if (shouldDownload()) {
       download();
@@ -180,14 +203,13 @@ public class NVD {
     updateIfNecessary();
 
     List<NvdEntry> result = new ArrayList<>();
-    Consumer<NvdEntry> collector =
-        nvdEntry -> {
-          for (Matcher matcher : matchers) {
-            if (matcher.match(nvdEntry)) {
-              result.add(nvdEntry);
-            }
-          }
-        };
+    Consumer<NvdEntry> collector = nvdEntry -> {
+      for (Matcher matcher : matchers) {
+        if (matcher.match(nvdEntry)) {
+          result.add(nvdEntry);
+        }
+      }
+    };
 
     if (!nvdEntries.isEmpty()) {
       nvdEntries.forEach(collector);
@@ -279,4 +301,5 @@ public class NVD {
       }
     }
   }
+
 }

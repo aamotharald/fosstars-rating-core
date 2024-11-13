@@ -6,10 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/** A value for a feature that holds a set of programming languages. */
+/**
+ * A value for a feature that holds a set of programming languages.
+ */
 public class LanguagesValue extends AbstractKnownValue<Languages> {
 
-  /** A language. */
+  /**
+   * A language.
+   */
   private final Languages languages;
 
   /**
@@ -38,7 +42,7 @@ public class LanguagesValue extends AbstractKnownValue<Languages> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof LanguagesValue)) {
+    if (o instanceof LanguagesValue == false) {
       return false;
     }
     if (!super.equals(o)) {

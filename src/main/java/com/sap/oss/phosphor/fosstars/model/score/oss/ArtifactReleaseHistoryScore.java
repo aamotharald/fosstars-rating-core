@@ -16,112 +16,30 @@ import java.util.IntSummaryStatistics;
 import java.util.Iterator;
 
 /**
- * The scoring function assesses how an open source project releases a new version. The more often
- * the higher the score. The scoring function uses {@link OssFeatures#RELEASED_ARTIFACT_VERSIONS}.
+ * The scoring function assesses how an open source project releases a new version.
+ * The more often the higher the score.
+ * The scoring function uses {@link OssFeatures#RELEASED_ARTIFACT_VERSIONS}.
  */
 public class ArtifactReleaseHistoryScore extends FeatureBasedScore {
 
-  /** The artifact versions list should have size greater than the threshold. */
+  /**
+   * The artifact versions list should have size greater than the threshold.
+   */
   private static final int ARTIFACT_VERSIONS_SIZE_THRESHOLD = 1;
-
+  
   /**
    * The artifact versions list to be considered as a cluster should have size greater than the
    * threshold.
    */
   private static final int VERSIONS_CLUSTER_SIZE_THRESHOLD = 10;
 
-  /** Initializes a new score. */
+  /**
+   * Initializes a new score.
+   */
   public ArtifactReleaseHistoryScore() {
-    super(
-        "How frequent an open source project releases new versions",
+    super("How frequent an open source project releases new versions",
         RELEASED_ARTIFACT_VERSIONS,
         ARTIFACT_VERSION);
-  }
-
-  /**
-   * Calculate statistics.
-   *
-   * @param versionInfoCollection Information about artifact versions.
-   * @return Calculated statistics.
-   */
-  static VersionStats calculateVersionStats(Collection<VersionInfo> versionInfoCollection) {
-    IntSummaryStatistics stats =
-        versionInfoCollection.stream()
-            .filter(v -> v.daysDiffToVersionBefore >= 0)
-            .mapToInt(v -> v.daysDiffToVersionBefore)
-            .summaryStatistics();
-
-    int releaseCycleTrend = 0;
-    int lastDays = -1;
-    for (VersionInfo versionInfo : versionInfoCollection) {
-      if (versionInfo.daysDiffToVersionBefore >= 0) {
-        if (lastDays < 0) {
-          lastDays = versionInfo.daysDiffToVersionBefore;
-        } else {
-          if (lastDays > versionInfo.daysDiffToVersionBefore) {
-            releaseCycleTrend--;
-          } else if (lastDays < versionInfo.daysDiffToVersionBefore) {
-            releaseCycleTrend++;
-          }
-        }
-      }
-    }
-
-    double usedReleaseCycleTrend = (double) releaseCycleTrend / stats.getCount();
-    return new VersionStats(usedReleaseCycleTrend, stats.getAverage());
-  }
-
-  /**
-   * Extract additional information about artifact versions.
-   *
-   * @param artifactVersions A sorted collection of artifact versions.
-   * @return A collection of {@link VersionInfo}.
-   */
-  static Collection<VersionInfo> versionInfo(Collection<ArtifactVersion> artifactVersions) {
-    Collection<VersionInfo> versionInfo = new ArrayList<>();
-    ArtifactVersion previousArtifact = null;
-    Iterator<ArtifactVersion> iterator = artifactVersions.iterator();
-    while (iterator.hasNext()) {
-      int daysDiff = -1;
-      ArtifactVersion nextArtifact = previousArtifact;
-      if (previousArtifact == null) {
-        nextArtifact = iterator.next();
-      }
-      if (iterator.hasNext()) {
-        previousArtifact = iterator.next();
-        daysDiff = (int) DAYS.between(previousArtifact.releaseDate(), nextArtifact.releaseDate());
-      }
-      versionInfo.add(new VersionInfo(daysDiff, nextArtifact));
-    }
-    if (artifactVersions.size() != versionInfo.size()) {
-      versionInfo.add(new VersionInfo(-1, previousArtifact));
-    }
-
-    return versionInfo;
-  }
-
-  /**
-   * Filter the artifact versions matching with the major version of the given {@link
-   * ArtifactVersion}. Return the filtered list if size > {@link #VERSIONS_CLUSTER_SIZE_THRESHOLD}.
-   *
-   * @param artifactVersions {@link ArtifactVersions} to be filtered.
-   * @param artifactVersion {@link ArtifactVersion} provided by the user.
-   * @return A collection of {@link ArtifactVersion}.
-   */
-  private static Collection<ArtifactVersion> filter(
-      Value<ArtifactVersions> artifactVersions, Value<ArtifactVersion> artifactVersion) {
-    if (!artifactVersion.isUnknown() && artifactVersion.get().hasValidSemanticVersion()) {
-      ArtifactVersions filteredArtifactVersions =
-          artifactVersions
-              .get()
-              .filterArtifactsByMajorVersion(artifactVersion.get().getSemanticVersion().get());
-
-      // If a cluster of versions has been obtained, return the clustered artifact versions.
-      if (filteredArtifactVersions.size() > VERSIONS_CLUSTER_SIZE_THRESHOLD) {
-        return filteredArtifactVersions.sortByReleaseDate();
-      }
-    }
-    return artifactVersions.get().sortByReleaseDate();
   }
 
   @Override
@@ -174,13 +92,103 @@ public class ArtifactReleaseHistoryScore extends FeatureBasedScore {
     return scoreValue;
   }
 
-  /** Statistics about artifact versions. */
+  /**
+   * Calculate statistics.
+   *
+   * @param versionInfoCollection Information about artifact versions.
+   * @return Calculated statistics.
+   */
+  static VersionStats calculateVersionStats(Collection<VersionInfo> versionInfoCollection) {
+    IntSummaryStatistics stats = versionInfoCollection.stream()
+        .filter(v -> v.daysDiffToVersionBefore >= 0)
+        .mapToInt(v -> v.daysDiffToVersionBefore)
+        .summaryStatistics();
+
+    int releaseCycleTrend = 0;
+    int lastDays = -1;
+    for (VersionInfo versionInfo : versionInfoCollection) {
+      if (versionInfo.daysDiffToVersionBefore >= 0) {
+        if (lastDays < 0) {
+          lastDays = versionInfo.daysDiffToVersionBefore;
+        } else {
+          if (lastDays > versionInfo.daysDiffToVersionBefore) {
+            releaseCycleTrend--;
+          } else if (lastDays < versionInfo.daysDiffToVersionBefore) {
+            releaseCycleTrend++;
+          }
+        }
+      }
+    }
+
+    double usedReleaseCycleTrend = (double) releaseCycleTrend / stats.getCount();
+    return new VersionStats(usedReleaseCycleTrend, stats.getAverage());
+  }
+
+  /**
+   * Extract additional information about artifact versions.
+   *
+   * @param artifactVersions A sorted collection of artifact versions.
+   * @return A collection of {@link VersionInfo}.
+   */
+  static Collection<VersionInfo> versionInfo(Collection<ArtifactVersion> artifactVersions) {
+    Collection<VersionInfo> versionInfo = new ArrayList<>();
+    ArtifactVersion previousArtifact = null;
+    Iterator<ArtifactVersion> iterator = artifactVersions.iterator();
+    while (iterator.hasNext()) {
+      int daysDiff = -1;
+      ArtifactVersion nextArtifact = previousArtifact;
+      if (previousArtifact == null) {
+        nextArtifact = iterator.next();
+      }
+      if (iterator.hasNext()) {
+        previousArtifact = iterator.next();
+        daysDiff = (int) DAYS.between(previousArtifact.releaseDate(), nextArtifact.releaseDate());
+      }
+      versionInfo.add(new VersionInfo(daysDiff, nextArtifact));
+    }
+    if (artifactVersions.size() != versionInfo.size()) {
+      versionInfo.add(new VersionInfo(-1, previousArtifact));
+    }
+
+    return versionInfo;
+  }
+
+  /**
+   * Filter the artifact versions matching with the major version of the given
+   * {@link ArtifactVersion}. Return the filtered list if size >
+   * {@link #VERSIONS_CLUSTER_SIZE_THRESHOLD}.
+   * 
+   * @param artifactVersions {@link ArtifactVersions} to be filtered.
+   * @param artifactVersion {@link ArtifactVersion} provided by the user.
+   * @return A collection of {@link ArtifactVersion}.
+   */
+  private static Collection<ArtifactVersion> filter(Value<ArtifactVersions> artifactVersions,
+      Value<ArtifactVersion> artifactVersion) {
+    if (!artifactVersion.isUnknown() && artifactVersion.get().hasValidSemanticVersion()) {
+      ArtifactVersions filteredArtifactVersions = artifactVersions.get()
+          .filterArtifactsByMajorVersion(artifactVersion.get().getSemanticVersion().get());
+
+      // If a cluster of versions has been obtained, return the clustered artifact versions.
+      if (filteredArtifactVersions.size() > VERSIONS_CLUSTER_SIZE_THRESHOLD) {
+        return filteredArtifactVersions.sortByReleaseDate();
+      }
+    }
+    return artifactVersions.get().sortByReleaseDate();
+  }
+
+  /**
+   * Statistics about artifact versions.
+   */
   static class VersionStats {
 
-    /** Shows whether the release frequency is increasing or not. */
+    /**
+     * Shows whether the release frequency is increasing or not.
+     */
     final double releaseCycleTrend;
 
-    /** An average number of days between releases. */
+    /**
+     * An average number of days between releases.
+     */
     final double averageDaysBetweenReleases;
 
     /**
@@ -197,21 +205,25 @@ public class ArtifactReleaseHistoryScore extends FeatureBasedScore {
     @Override
     public String toString() {
       return "VersionStats{"
-          + "releaseCycleTrend="
-          + releaseCycleTrend
-          + ", averageDaysBetweenReleases="
-          + averageDaysBetweenReleases
+          + "releaseCycleTrend=" + releaseCycleTrend
+          + ", averageDaysBetweenReleases=" + averageDaysBetweenReleases
           + '}';
     }
   }
 
-  /** Holds information about artifact version. */
+  /**
+   * Holds information about artifact version.
+   */
   static class VersionInfo {
 
-    /** A number of days since the previous version. */
+    /**
+     * A number of days since the previous version.
+     */
     final int daysDiffToVersionBefore;
 
-    /** A {@link ArtifactVersion}. */
+    /**
+     * A {@link ArtifactVersion}.
+     */
     final ArtifactVersion version;
 
     /**

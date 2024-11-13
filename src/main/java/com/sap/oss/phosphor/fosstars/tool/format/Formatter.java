@@ -2,7 +2,9 @@ package com.sap.oss.phosphor.fosstars.tool.format;
 
 import com.sap.oss.phosphor.fosstars.model.Subject;
 
-/** The interface of a formatter which knows how to print rating values. */
+/**
+ * The interface of a formatter which knows how to print rating values.
+ */
 public interface Formatter {
 
   /**
@@ -12,4 +14,5 @@ public interface Formatter {
    * @return A formatted subject.
    */
   String print(Subject subject);
+  
 }

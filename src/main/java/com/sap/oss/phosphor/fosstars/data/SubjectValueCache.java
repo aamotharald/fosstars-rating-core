@@ -10,14 +10,19 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * This is a cache of feature values for subjects. The cache just wraps {@link StandardValueCache}.
+ * This is a cache of feature values for subjects.
+ * The cache just wraps {@link StandardValueCache}.
  */
 public class SubjectValueCache implements ValueCache<Subject> {
 
-  /** An underlying cache. */
+  /**
+   * An underlying cache.
+   */
   private final StandardValueCache cache;
 
-  /** Initializes a new cache. */
+  /**
+   * Initializes a new cache.
+   */
   public SubjectValueCache() {
     this(new StandardValueCache());
   }

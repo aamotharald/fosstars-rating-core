@@ -26,35 +26,29 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
-/** The class prints a pretty rating value. */
+/**
+ * The class prints a pretty rating value.
+ */
 public class PrettyPrinter extends CommonFormatter {
 
-  /** An indent step. */
+  /**
+   * An indent step.
+   */
   private static final String INDENT_STEP = "  ";
 
-  /** A length of lines for wrapping descriptions. */
+  /**
+   * A length of lines for wrapping descriptions.
+   */
   private static final int DESCRIPTION_WRAP_LENGTH = 50;
 
-  /** A formatter for doubles. */
+  /**
+   * A formatter for doubles.
+   */
   private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
 
   static {
     DECIMAL_FORMAT.setMinimumFractionDigits(1);
     DECIMAL_FORMAT.setMaximumFractionDigits(2);
-  }
-
-  /** A flag that turns on verbose output. */
-  private final boolean verbose;
-
-  /**
-   * Creates a new {@link PrettyPrinter}.
-   *
-   * @param verbose A flag that turns on verbose output.
-   * @param advisor An advisor.
-   */
-  private PrettyPrinter(boolean verbose, Advisor advisor) {
-    super(advisor);
-    this.verbose = verbose;
   }
 
   /**
@@ -77,52 +71,19 @@ public class PrettyPrinter extends CommonFormatter {
   }
 
   /**
-   * Prints an actual value of a score value. The method takes care about unknown and not-applicable
-   * score values.
-   *
-   * @param scoreValue The score value.
-   * @return A string that represents the score value.
+   * A flag that turns on verbose output.
    */
-  public static String tellMeActualValueOf(ScoreValue scoreValue) {
-    if (scoreValue.isNotApplicable()) {
-      return "N/A";
-    }
-
-    if (scoreValue.isUnknown()) {
-      return "unknown";
-    }
-
-    return printValueAndMax(scoreValue.get(), Score.MAX);
-  }
+  private final boolean verbose;
 
   /**
-   * Prints out a number with its max value.
+   * Creates a new {@link PrettyPrinter}.
    *
-   * @param value The number.
-   * @param max The max value.
-   * @return A formatted string with the number and max value.
+   * @param verbose A flag that turns on verbose output.
+   * @param advisor An advisor.
    */
-  public static String printValueAndMax(double value, double max) {
-    return String.format(
-        "%-4s out of %4s", DECIMAL_FORMAT.format(value), DECIMAL_FORMAT.format(max));
-  }
-
-  /**
-   * Adds a number of specified characters to the end of a string to make it fit to the specified
-   * length.
-   *
-   * @param string The original string.
-   * @param c The character to be appended.
-   * @param length The final length of the string.
-   * @return A string with appended characters if the length of the original string is less than the
-   *     specified length, otherwise the original string.
-   */
-  private static String append(String string, char c, int length) {
-    StringBuilder sb = new StringBuilder(string);
-    while (sb.length() <= length) {
-      sb.append(c);
-    }
-    return sb.toString();
+  private PrettyPrinter(boolean verbose, Advisor advisor) {
+    super(advisor);
+    this.verbose = verbose;
   }
 
   @Override
@@ -141,18 +102,16 @@ public class PrettyPrinter extends CommonFormatter {
    * @return A formatted rating value.
    */
   public String print(RatingValue ratingValue) {
-    String sb =
-        String.format("Here is how the rating was calculated:%n")
-            + print(ratingValue.scoreValue(), INDENT_STEP, true, new HashSet<>())
-            + "\n"
-            + String.format(
-                "Rating:     %s -> %s%n",
-                tellMeActualValueOf(ratingValue.scoreValue()), ratingValue.label())
-            + String.format(
-                "Confidence: %s (%s)%n",
-                confidenceLabelFor(ratingValue.confidence()),
-                printValueAndMax(ratingValue.confidence(), Confidence.MAX));
-    return sb;
+    StringBuilder sb = new StringBuilder();
+    sb.append(String.format("Here is how the rating was calculated:%n"));
+    sb.append(print(ratingValue.scoreValue(), INDENT_STEP, true, new HashSet<>()));
+    sb.append("\n");
+    sb.append(String.format("Rating:     %s -> %s%n",
+        tellMeActualValueOf(ratingValue.scoreValue()), ratingValue.label()));
+    sb.append(String.format("Confidence: %s (%s)%n",
+        confidenceLabelFor(ratingValue.confidence()),
+        printValueAndMax(ratingValue.confidence(), Confidence.MAX)));
+    return sb.toString();
   }
 
   /**
@@ -184,24 +143,19 @@ public class PrettyPrinter extends CommonFormatter {
     }
 
     if (!isMainScore) {
-      sb.append(
-          String.format(
-              "%sImportance:...%s (weight %s)%n",
-              indent,
-              weightLabel(scoreValue.weight()),
-              printValueAndMax(scoreValue.weight(), Weight.MAX)));
+      sb.append(String.format("%sImportance:...%s (weight %s)%n",
+          indent,
+          weightLabel(scoreValue.weight()),
+          printValueAndMax(scoreValue.weight(), Weight.MAX)));
     }
 
-    sb.append(
-        String.format(
-            "%sValue:........%s%n",
-            indent, append(String.format("%s", tellMeActualValueOf(scoreValue)), ' ', 4)));
-    sb.append(
-        String.format(
-            "%sConfidence:...%s (%s)%n",
-            indent,
-            confidenceLabelFor(scoreValue.confidence()),
-            printValueAndMax(scoreValue.confidence(), Confidence.MAX)));
+    sb.append(String.format("%sValue:........%s%n",
+        indent,
+        append(String.format("%s", tellMeActualValueOf(scoreValue)), ' ', 4)));
+    sb.append(String.format("%sConfidence:...%s (%s)%n",
+        indent,
+        confidenceLabelFor(scoreValue.confidence()),
+        printValueAndMax(scoreValue.confidence(), Confidence.MAX)));
 
     if (printedScores.contains(scoreValue.score())) {
       return sb.toString();
@@ -221,12 +175,12 @@ public class PrettyPrinter extends CommonFormatter {
       // sort the sub-score values by their importance
       subScoreValues.sort(Collections.reverseOrder(Comparator.comparingDouble(ScoreValue::weight)));
 
-      sb.append(String.format("%sBased on:.....%d sub-scores%n", indent, subScoreValues.size()));
+      sb.append(String.format(
+          "%sBased on:.....%d sub-scores%n", indent, subScoreValues.size()));
 
-      sb.append(
-          subScoreValues.stream()
-              .map(value -> print(value, indent + INDENT_STEP + INDENT_STEP, false, printedScores))
-              .collect(Collectors.joining("\n")));
+      sb.append(subScoreValues.stream()
+          .map(value -> print(value, indent + INDENT_STEP + INDENT_STEP, false, printedScores))
+          .collect(Collectors.joining("\n")));
     }
 
     if (!featureValues.isEmpty()) {
@@ -248,10 +202,10 @@ public class PrettyPrinter extends CommonFormatter {
       for (Map.Entry<String, Object> entry : nameToValue.entrySet()) {
         String name = entry.getKey();
         name += name.endsWith("?") ? "." : ":";
-        sb.append(
-            String.format(
-                "%s  %s%s%n",
-                indent + INDENT_STEP, append(name, '.', maxLength + 3), entry.getValue()));
+        sb.append(String.format("%s  %s%s%n",
+            indent + INDENT_STEP,
+            append(name, '.', maxLength + 3),
+            entry.getValue()));
       }
     }
 
@@ -361,4 +315,55 @@ public class PrettyPrinter extends CommonFormatter {
   private boolean shouldPrint(List<Value<?>> featureValues) {
     return verbose && !featureValues.isEmpty();
   }
+
+  /**
+   * Prints an actual value of a score value. The method takes care about
+   * unknown and not-applicable score values.
+   *
+   * @param scoreValue The score value.
+   * @return A string that represents the score value.
+   */
+  public static String tellMeActualValueOf(ScoreValue scoreValue) {
+    if (scoreValue.isNotApplicable()) {
+      return "N/A";
+    }
+
+    if (scoreValue.isUnknown()) {
+      return "unknown";
+    }
+
+    return printValueAndMax(scoreValue.get(), Score.MAX);
+  }
+
+  /**
+   * Prints out a number with its max value.
+   *
+   * @param value The number.
+   * @param max The max value.
+   * @return A formatted string with the number and max value.
+   */
+  public static String printValueAndMax(double value, double max) {
+    return String.format("%-4s out of %4s",
+        DECIMAL_FORMAT.format(value), DECIMAL_FORMAT.format(max));
+  }
+
+  /**
+   * Adds a number of specified characters to the end of a string
+   * to make it fit to the specified length.
+   *
+   * @param string The original string.
+   * @param c The character to be appended.
+   * @param length The final length of the string.
+   * @return A string with appended characters
+   *         if the length of the original string is less than the specified length,
+   *         otherwise the original string.
+   */
+  private static String append(String string, char c, int length) {
+    StringBuilder sb = new StringBuilder(string);
+    while (sb.length() <= length) {
+      sb.append(c);
+    }
+    return sb.toString();
+  }
+
 }

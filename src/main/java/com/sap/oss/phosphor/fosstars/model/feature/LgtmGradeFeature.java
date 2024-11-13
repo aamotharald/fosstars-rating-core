@@ -6,7 +6,9 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.value.LgtmGrade;
 import com.sap.oss.phosphor.fosstars.model.value.LgtmGradeValue;
 
-/** This feature contains a grade assigned by LGTM. */
+/**
+ * This feature contains a grade assigned by LGTM.
+ */
 public class LgtmGradeFeature extends AbstractFeature<LgtmGrade> {
 
   /**

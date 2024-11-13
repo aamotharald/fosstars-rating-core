@@ -11,21 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-  "identifiers",
-  "databaseId",
-  "description",
-  "ghsaId",
-  "id",
-  "origin",
-  "permalink",
-  "publishedAt",
-  "references",
-  "severity",
-  "summary",
-  "updatedAt",
-  "withdrawnAt"
-})
+@JsonPropertyOrder({"identifiers", "databaseId", "description", "ghsaId", "id", "origin",
+    "permalink", "publishedAt", "references", "severity", "summary", "updatedAt", "withdrawnAt"})
 public class Advisory {
 
   @JsonProperty("identifiers")
@@ -68,7 +55,7 @@ public class Advisory {
   private Object withdrawnAt;
 
   @JsonIgnore
-  private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   @JsonProperty("identifiers")
   public List<Identifier> getIdentifiers() {
@@ -209,4 +196,5 @@ public class Advisory {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
 }

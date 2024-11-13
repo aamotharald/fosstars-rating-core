@@ -12,13 +12,19 @@ import com.sap.oss.phosphor.fosstars.tool.YesNoQuestion;
 import com.sap.oss.phosphor.fosstars.tool.YesNoQuestion.Answer;
 import java.util.Set;
 
-/** This data provider asks a user about a boolean feature. */
+/**
+ * This data provider asks a user about a boolean feature.
+ */
 public class AskYesOrNo extends AbstractInteractiveDataProvider {
 
-  /** A feature that the data provider supports. */
+  /**
+   * A feature that the data provider supports.
+   */
   private final Feature<Boolean> feature;
 
-  /** A question that the data provider asks. */
+  /**
+   * A question that the data provider asks.
+   */
   private final String question;
 
   /**

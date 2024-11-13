@@ -20,25 +20,20 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-/** A collection of weights for scores. */
+/**
+ * A collection of weights for scores.
+ */
 public class ScoreWeights implements Tunable {
 
-  /** The default weight for sub-scores. */
+  /**
+   * The default weight for sub-scores.
+   */
   static final double DEFAULT_WEIGHT = 1.0;
 
-  /** Maps a score type to its weight. */
-  private final Map<Class<? extends Score>, Weight> values;
-
   /**
-   * Initializes a new collection of weights.
-   *
-   * @param values The weights.
+   * Maps a score type to its weight.
    */
-  @JsonCreator
-  public ScoreWeights(@JsonProperty("values") Map<Class<? extends Score>, Weight> values) {
-    Objects.requireNonNull(values, "Weights can't be null!");
-    this.values = new HashMap<>(values);
-  }
+  private final Map<Class<? extends Score>, Weight> values;
 
   /**
    * Creates an empty collection of weights.
@@ -73,6 +68,17 @@ public class ScoreWeights implements Tunable {
   public static ScoreWeights createFor(Set<Score> scores) {
     Objects.requireNonNull(scores, "Scores can't be null!");
     return createFor(scores.toArray(new Score[0]));
+  }
+
+  /**
+   * Initializes a new collection of weights.
+   *
+   * @param values The weights.
+   */
+  @JsonCreator
+  public ScoreWeights(@JsonProperty("values") Map<Class<? extends Score>, Weight> values) {
+    Objects.requireNonNull(values, "Weights can't be null!");
+    this.values = new HashMap<>(values);
   }
 
   /**
@@ -135,7 +141,7 @@ public class ScoreWeights implements Tunable {
    */
   public void update(ScoreWeights weights) {
     Objects.requireNonNull(weights, "Oh no! Weights is null!");
-    for (Map.Entry<Class<? extends Score>, Weight> entry : weights.values.entrySet()) {
+    for (Map.Entry<Class<? extends  Score>, Weight> entry : weights.values.entrySet()) {
       Class<? extends Score> scoreClass = entry.getKey();
       if (!this.values.containsKey(scoreClass)) {
         throw new IllegalArgumentException(
@@ -146,7 +152,9 @@ public class ScoreWeights implements Tunable {
     }
   }
 
-  /** This method exists to make Jackson happy. */
+  /**
+   * This method exists to make Jackson happy.
+   */
   @JsonGetter("values")
   private Map<Class<?>, Weight> values() {
     return new HashMap<>(values);
@@ -157,7 +165,7 @@ public class ScoreWeights implements Tunable {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof ScoreWeights)) {
+    if (o instanceof ScoreWeights == false) {
       return false;
     }
     ScoreWeights weights = (ScoreWeights) o;

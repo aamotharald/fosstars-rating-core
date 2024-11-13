@@ -8,16 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** A content of an advice for a feature. */
+/**
+ * A content of an advice for a feature.
+ */
 public class AdviceContent {
 
-  /** A feature. */
+  /**
+   * A feature.
+   */
   private final Feature<?> feature;
 
-  /** A text of the advice. */
+  /**
+   * A text of the advice.
+   */
   private final String text;
 
-  /** A number of links that point to additional info. */
+  /**
+   * A number of links that point to additional info.
+   */
   private final List<Link> links;
 
   /**
@@ -83,7 +91,8 @@ public class AdviceContent {
       return true;
     }
 
-    if (o instanceof AdviceContent that) {
+    if (o instanceof AdviceContent) {
+      AdviceContent that = (AdviceContent) o;
       return Objects.equals(feature, that.feature)
           && Objects.equals(text, that.text)
           && Objects.equals(links, that.links);
@@ -96,4 +105,5 @@ public class AdviceContent {
   public int hashCode() {
     return Objects.hash(feature, text, links);
   }
+
 }

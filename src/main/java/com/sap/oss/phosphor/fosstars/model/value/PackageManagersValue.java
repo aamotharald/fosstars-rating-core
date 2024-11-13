@@ -6,10 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/** A value for a feature that holds a set of package managers. */
+/**
+ * A value for a feature that holds a set of package managers.
+ */
 public class PackageManagersValue extends AbstractKnownValue<PackageManagers> {
 
-  /** A set of package managers. */
+  /**
+   * A set of package managers.
+   */
   private final PackageManagers packageManagers;
 
   /**
@@ -24,8 +28,8 @@ public class PackageManagersValue extends AbstractKnownValue<PackageManagers> {
       @JsonProperty("packageManagers") PackageManagers packageManagers) {
 
     super(feature);
-    this.packageManagers =
-        Objects.requireNonNull(packageManagers, "Package managers can't be null!");
+    this.packageManagers = Objects.requireNonNull(
+        packageManagers, "Package managers can't be null!");
   }
 
   @Override
@@ -39,7 +43,7 @@ public class PackageManagersValue extends AbstractKnownValue<PackageManagers> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof PackageManagersValue)) {
+    if (o instanceof PackageManagersValue == false) {
       return false;
     }
     if (!super.equals(o)) {

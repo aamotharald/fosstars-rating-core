@@ -9,7 +9,9 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import java.net.MalformedURLException;
 import java.util.List;
 
-/** An advisor for features related to signing. */
+/**
+ * An advisor for features related to signing.
+ */
 public class SigningAdvisor extends AbstractOssAdvisor {
 
   /**
@@ -19,6 +21,15 @@ public class SigningAdvisor extends AbstractOssAdvisor {
    */
   public SigningAdvisor(OssAdviceContextFactory contextFactory) {
     super(OssAdviceContentYamlStorage.DEFAULT, contextFactory);
+  }
+
+  @Override
+  protected List<Advice> adviceFor(
+      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
+      throws MalformedURLException {
+
+    return adviceForFeature(
+        usedValues, SIGNS_ARTIFACTS, subject, context, SigningAdvisor::disabledArtifactSigning);
   }
 
   /**
@@ -31,14 +42,5 @@ public class SigningAdvisor extends AbstractOssAdvisor {
     return SIGNS_ARTIFACTS.equals(value.feature())
         && !value.isUnknown()
         && Boolean.FALSE.equals(value.get());
-  }
-
-  @Override
-  protected List<Advice> adviceFor(
-      Subject subject, List<Value<?>> usedValues, OssAdviceContext context)
-      throws MalformedURLException {
-
-    return adviceForFeature(
-        usedValues, SIGNS_ARTIFACTS, subject, context, SigningAdvisor::disabledArtifactSigning);
   }
 }

@@ -13,12 +13,16 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** An advisor for features related to Bandit. */
+/**
+ * An advisor for features related to Bandit.
+ */
 public class BanditAdvisor extends AbstractOssAdvisor {
 
-  /** A list of features that the advisor supports. */
-  private static final List<Feature<Boolean>> FEATURES =
-      asList(RUNS_BANDIT_SCANS, USES_BANDIT_SCAN_CHECKS);
+  /**
+   * A list of features that the advisor supports.
+   */
+  private static final List<Feature<Boolean>> FEATURES
+      = asList(RUNS_BANDIT_SCANS, USES_BANDIT_SCAN_CHECKS);
 
   /**
    * Create a new advisor.

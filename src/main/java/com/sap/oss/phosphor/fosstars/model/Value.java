@@ -63,8 +63,8 @@ public interface Value<T> {
    * Add a note that explains the value if it is equal to the expected data.
    *
    * @param value The expected data.
-   * @param note The note to be added if the value is equal to the specified one. It may be a format
-   *     string.
+   * @param note The note to be added if the value is equal to the specified one.
+   *             It may be a format string.
    * @param params A number of parameters if a format string is passed.
    * @return The same value.
    */
@@ -79,7 +79,8 @@ public interface Value<T> {
   T get();
 
   /**
-   * Returns the value if it is known and applicable, otherwise a specified default value.
+   * Returns the value if it is known and applicable,
+   * otherwise a specified default value.
    *
    * @param other The default value.
    * @return The value of the default value.

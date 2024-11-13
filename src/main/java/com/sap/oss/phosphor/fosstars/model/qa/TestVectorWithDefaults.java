@@ -10,15 +10,19 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A wrapper for a test vector. The wrapper extends the original test vector with default values it
- * doesn't have them.
+ * A wrapper for a test vector.
+ * The wrapper extends the original test vector with default values it doesn't have them.
  */
 public class TestVectorWithDefaults implements TestVector {
 
-  /** An original test vector. */
+  /**
+   * An original test vector.
+   */
   private final TestVector vector;
 
-  /** A set of default values. */
+  /**
+   * A set of default values.
+   */
   private final Set<Value<?>> defaults;
 
   /**
@@ -104,11 +108,12 @@ public class TestVectorWithDefaults implements TestVector {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof TestVectorWithDefaults)) {
+    if (o instanceof TestVectorWithDefaults == false) {
       return false;
     }
     TestVectorWithDefaults that = (TestVectorWithDefaults) o;
-    return Objects.equals(vector, that.vector) && Objects.equals(defaults, that.defaults);
+    return Objects.equals(vector, that.vector)
+        && Objects.equals(defaults, that.defaults);
   }
 
   @Override

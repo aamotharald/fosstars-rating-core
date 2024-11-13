@@ -17,35 +17,20 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
-/** A set versions for an artifact. */
+/**
+ * A set versions for an artifact.
+ */
 public class ArtifactVersions implements Iterable<ArtifactVersion> {
 
-  /** Major version template. */
+  /**
+   * Major version template.
+   */
   private static final String MAJOR_VERSION_TEMPLATE = "%s.0.0";
 
-  /** A set of versions. */
+  /**
+   * A set of versions.
+   */
   private final Set<ArtifactVersion> elements;
-
-  /**
-   * Initializes a set of versions.
-   *
-   * @param versions A set of versions.
-   */
-  @JsonCreator
-  public ArtifactVersions(@JsonProperty("elements") Set<ArtifactVersion> versions) {
-    Objects.requireNonNull(versions, "versions can't be null!");
-    this.elements = new TreeSet<>(ArtifactVersion.RELEASE_DATE_VERSION_COMPARISON);
-    this.elements.addAll(versions);
-  }
-
-  /**
-   * Initializes a set of versions.
-   *
-   * @param versions A number of versions.
-   */
-  public ArtifactVersions(ArtifactVersion... versions) {
-    this(setOf(versions));
-  }
 
   /**
    * Creates a collection of versions.
@@ -67,18 +52,24 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
   }
 
   /**
-   * Sort artifact versions hold by ArtifactVersions by release date.
+   * Initializes a set of versions.
    *
-   * @param artifactVersions the artifact versions
-   * @return sorted collection of ArtifactVersion
+   * @param versions A set of versions.
    */
-  public static Collection<ArtifactVersion> sortByReleaseDate(
-      Value<ArtifactVersions> artifactVersions) {
+  @JsonCreator
+  public ArtifactVersions(@JsonProperty("elements") Set<ArtifactVersion> versions) {
+    Objects.requireNonNull(versions, "versions can't be null!");
+    this.elements = new TreeSet<>(ArtifactVersion.RELEASE_DATE_VERSION_COMPARISON);
+    this.elements.addAll(versions);
+  }
 
-    if (artifactVersions.isUnknown()) {
-      return Collections.emptyList();
-    }
-    return artifactVersions.get().sortByReleaseDate();
+  /**
+   * Initializes a set of versions.
+   *
+   * @param versions A number of versions.
+   */
+  public ArtifactVersions(ArtifactVersion... versions) {
+    this(setOf(versions));
   }
 
   /**
@@ -103,8 +94,8 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
    * Checks if the collection contains one of the other versions.
    *
    * @param versions The other versions.
-   * @return True if at least one of the other versions is present in the collection, false
-   *     otherwise.
+   * @return True if at least one of the other versions is present in the collection,
+   *          false otherwise.
    */
   public boolean containsAnyOf(ArtifactVersions versions) {
     for (ArtifactVersion version : versions) {
@@ -120,7 +111,8 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
    * Checks if the collection contains all the other versions.
    *
    * @param versions The other versions.
-   * @return True if all the other versions is present in the collection, false otherwise.
+   * @return True if all the other versions is present in the collection,
+   *         false otherwise.
    */
   public boolean containsAllOf(ArtifactVersions versions) {
     for (ArtifactVersion version : versions) {
@@ -133,13 +125,29 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
   }
 
   /**
-   * Get versions sorted by date. First entry is the latest release. Creates a new collection with
-   * the sorted versions.
+   * Get versions sorted by date.
+   * First entry is the latest release.
+   * Creates a new collection with the sorted versions.
    *
    * @return versions sorted by date
    */
   public Collection<ArtifactVersion> sortByReleaseDate() {
     return Collections.unmodifiableCollection(elements);
+  }
+
+  /**
+   * Sort artifact versions hold by ArtifactVersions by release date.
+   *
+   * @param artifactVersions the artifact versions
+   * @return sorted collection of ArtifactVersion
+   */
+  public static Collection<ArtifactVersion> sortByReleaseDate(
+      Value<ArtifactVersions> artifactVersions) {
+
+    if (artifactVersions.isUnknown()) {
+      return Collections.emptyList();
+    }
+    return artifactVersions.get().sortByReleaseDate();
   }
 
   /**
@@ -157,25 +165,26 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
 
     return new ArtifactVersions(
         elements.stream()
-            .filter(v -> v.hasValidSemanticVersion())
-            .filter(
-                v -> {
-                  final ComparableVersion comparableVersion = new ComparableVersion(v.version());
-                  return comparableVersion.compareTo(currentMajorVersion) >= 0
-                      && comparableVersion.compareTo(nextMajorVersion) < 0;
-                })
-            .collect(Collectors.toSet()));
+          .filter(v -> v.hasValidSemanticVersion())
+          .filter(v -> {
+            final ComparableVersion comparableVersion = new ComparableVersion(v.version());
+            return comparableVersion.compareTo(currentMajorVersion) >= 0
+                && comparableVersion.compareTo(nextMajorVersion) < 0;
+          })
+          .collect(Collectors.toSet()));
   }
 
   /**
-   * Returns Artifact version with given version. If the version is not available an empty optional
-   * is returned.
+   * Returns Artifact version with given version.
+   * If the version is not available an empty optional is returned.
    *
    * @param version to be searched version
    * @return found version or empty optional
    */
   public Optional<ArtifactVersion> get(String version) {
-    return elements.stream().filter(artifact -> artifact.version().equals(version)).findFirst();
+    return elements.stream()
+        .filter(artifact -> artifact.version().equals(version))
+        .findFirst();
   }
 
   /**
@@ -193,7 +202,7 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof ArtifactVersions)) {
+    if (o instanceof ArtifactVersions == false) {
       return false;
     }
     ArtifactVersions other = (ArtifactVersions) o;
@@ -212,11 +221,10 @@ public class ArtifactVersions implements Iterable<ArtifactVersion> {
     }
     Collection<ArtifactVersion> sortByReleaseDate = sortByReleaseDate();
     final int max = 5;
-    String message =
-        sortByReleaseDate.stream()
-            .limit(max)
-            .map(artifact -> String.format("%s:%s", artifact.version(), artifact.releaseDate()))
-            .collect(Collectors.joining(", "));
+    String message = sortByReleaseDate.stream()
+        .limit(max)
+        .map(artifact -> String.format("%s:%s", artifact.version(), artifact.releaseDate()))
+        .collect(Collectors.joining(", "));
 
     if (sortByReleaseDate.size() > max) {
       return String.format("%s (%s in total) ...", message, sortByReleaseDate.size());

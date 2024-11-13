@@ -5,13 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.URL;
 import java.util.Objects;
 
-/** A link to additional info for an advice. */
+/**
+ * A link to additional info for an advice.
+ */
 public class Link {
 
-  /** A name of a link. */
+  /**
+   * A name of a link.
+   */
   public final String name;
 
-  /** A URL. */
+  /**
+   * A URL.
+   */
   public final URL url;
 
   /**
@@ -40,7 +46,8 @@ public class Link {
       return true;
     }
 
-    if (o instanceof Link link) {
+    if (o instanceof Link) {
+      Link link = (Link) o;
       return Objects.equals(name, link.name) && Objects.equals(url, link.url);
     }
 
@@ -51,4 +58,5 @@ public class Link {
   public int hashCode() {
     return Objects.hash(name, url);
   }
+
 }

@@ -10,10 +10,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
-/** This data provider returns a number of commits last 3 months. */
+/**
+ * This data provider returns a number of commits last 3 months.
+ */
 public class NumberOfCommits extends CachedSingleFeatureGitHubDataProvider<Integer> {
 
-  /** ~3 months. */
+  /**
+   * ~3 months.
+   */
   private static final Duration THREE_MONTHS = Duration.ofDays(90);
 
   /**

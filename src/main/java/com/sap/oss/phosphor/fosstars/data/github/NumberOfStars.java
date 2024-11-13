@@ -7,7 +7,9 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import java.io.IOException;
 
-/** This data provider returns a number of stars for a project. */
+/**
+ * This data provider returns a number of stars for a project.
+ */
 public class NumberOfStars extends CachedSingleFeatureGitHubDataProvider<Integer> {
 
   /**
@@ -34,6 +36,8 @@ public class NumberOfStars extends CachedSingleFeatureGitHubDataProvider<Integer
   @Override
   protected Value<Integer> fetchValueFor(GitHubProject project) throws IOException {
     logger.info("Counting how many stars the project has ...");
-    return NUMBER_OF_GITHUB_STARS.value(fetcher.repositoryFor(project).getStargazersCount());
+    return NUMBER_OF_GITHUB_STARS.value(
+        fetcher.repositoryFor(project).getStargazersCount());
   }
+
 }

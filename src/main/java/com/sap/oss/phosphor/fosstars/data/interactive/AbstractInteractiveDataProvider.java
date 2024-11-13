@@ -5,7 +5,9 @@ import com.sap.oss.phosphor.fosstars.model.Subject;
 import com.sap.oss.phosphor.fosstars.model.ValueSet;
 import java.io.IOException;
 
-/** This is a base class for data providers which talk to a user. */
+/**
+ * This is a base class for data providers which talk to a user.
+ */
 public abstract class AbstractInteractiveDataProvider extends AbstractDataProvider {
 
   @Override
@@ -25,8 +27,8 @@ public abstract class AbstractInteractiveDataProvider extends AbstractDataProvid
   }
 
   /**
-   * Asks a user a number of questions about an subject and put corresponding feature values to a
-   * specified values set.
+   * Asks a user a number of questions about an subject and put corresponding feature values
+   * to a specified values set.
    *
    * @param subject The subject to ask about.
    * @param values The value set to be updated.

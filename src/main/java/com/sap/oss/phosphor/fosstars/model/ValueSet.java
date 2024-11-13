@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.Optional;
 import java.util.Set;
 
-/** A set of feature values. The set contains only unique features. */
+/**
+ * A set of feature values. The set contains only unique features.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public interface ValueSet extends Iterable<Value<?>> {
 

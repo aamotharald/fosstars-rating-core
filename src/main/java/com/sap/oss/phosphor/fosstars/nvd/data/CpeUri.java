@@ -1,6 +1,8 @@
 package com.sap.oss.phosphor.fosstars.nvd.data;
 
-/** An interface for CPE URI. */
+/**
+ * An interface for CPE URI.
+ */
 public interface CpeUri {
 
   /**

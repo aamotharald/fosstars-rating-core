@@ -12,34 +12,32 @@ import com.sap.oss.phosphor.fosstars.model.value.PackageManagers;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * The score shows if an open-source project uses nohttp tool to catch usage of insecure HTTP
- * protocol.
+ * <p>The score shows if an open-source project uses nohttp tool
+ * to catch usage of insecure HTTP protocol.</p>
  *
- * <p>The score is based on the following features.
- *
+ * <p>The score is based on the following features.</p>
  * <ul>
- *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_NOHTTP}
- *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#PACKAGE_MANAGERS}
+ *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_NOHTTP}</li>
+ *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#PACKAGE_MANAGERS}</li>
  * </ul>
  *
  * @see <a href="https://github.com/spring-io/nohttp">nohttp</a>
  */
 public class NoHttpToolScore extends FeatureBasedScore {
 
-  /** Initializes a new score. */
+  /**
+   * Initializes a new score.
+   */
   NoHttpToolScore() {
     super("If a project uses nohttp tool", USES_NOHTTP, PACKAGE_MANAGERS);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Boolean> usesNoHttp =
-        findValue(values, USES_NOHTTP, "Hey! You have to tell me if the project uses nohttp tool!");
-    Value<PackageManagers> packageManagers =
-        findValue(
-            values,
-            PACKAGE_MANAGERS,
-            "Hey! You have to tell me which package managers the project uses!");
+    Value<Boolean> usesNoHttp = findValue(values, USES_NOHTTP,
+        "Hey! You have to tell me if the project uses nohttp tool!");
+    Value<PackageManagers> packageManagers = findValue(values, PACKAGE_MANAGERS,
+        "Hey! You have to tell me which package managers the project uses!");
 
     ScoreValue scoreValue = scoreValue(MIN, usesNoHttp, packageManagers);
 

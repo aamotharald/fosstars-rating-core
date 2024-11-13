@@ -2,10 +2,14 @@ package com.sap.oss.phosphor.fosstars.advice;
 
 import java.util.Optional;
 
-/** A context for making advice more detailed for a specific subject. */
+/**
+ * A context for making advice more detailed for a specific subject.
+ */
 public interface AdviceContext {
 
-  /** A context that provides no details. */
+  /**
+   * A context that provides no details.
+   */
   AdviceContext EMPTY_ADVICE_CONTEXT = name -> Optional.empty();
 
   /**

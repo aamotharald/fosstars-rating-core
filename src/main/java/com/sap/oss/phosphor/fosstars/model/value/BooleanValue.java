@@ -7,10 +7,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/** A value of a feature which answers a yes/no question. */
+/**
+ * A value of a feature which answers a yes/no question.
+ */
 public class BooleanValue extends AbstractKnownValue<Boolean> {
 
-  /** A boolean value. */
+  /**
+   * A boolean value.
+   */
   private final Boolean flag;
 
   /**
@@ -21,7 +25,8 @@ public class BooleanValue extends AbstractKnownValue<Boolean> {
    */
   @JsonCreator
   public BooleanValue(
-      @JsonProperty("feature") Feature<Boolean> feature, @JsonProperty("flag") Boolean flag) {
+      @JsonProperty("feature") Feature<Boolean> feature,
+      @JsonProperty("flag") Boolean flag) {
 
     super(feature);
     this.flag = flag;
@@ -38,7 +43,7 @@ public class BooleanValue extends AbstractKnownValue<Boolean> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof BooleanValue)) {
+    if (o instanceof BooleanValue == false) {
       return false;
     }
     if (!super.equals(o)) {

@@ -7,7 +7,9 @@ import com.sap.oss.phosphor.fosstars.model.Value;
 import com.sap.oss.phosphor.fosstars.model.subject.oss.GitHubProject;
 import java.io.IOException;
 
-/** This data provider returns a number of watchers for a project. */
+/**
+ * This data provider returns a number of watchers for a project.
+ */
 public class NumberOfWatchers extends CachedSingleFeatureGitHubDataProvider<Integer> {
 
   /**
@@ -34,6 +36,7 @@ public class NumberOfWatchers extends CachedSingleFeatureGitHubDataProvider<Inte
   @Override
   protected Value<Integer> fetchValueFor(GitHubProject project) throws IOException {
     logger.info("Counting how many watchers the project has ...");
-    return NUMBER_OF_WATCHERS_ON_GITHUB.value(fetcher.repositoryFor(project).getSubscribersCount());
+    return NUMBER_OF_WATCHERS_ON_GITHUB.value(
+        fetcher.repositoryFor(project).getSubscribersCount());
   }
 }

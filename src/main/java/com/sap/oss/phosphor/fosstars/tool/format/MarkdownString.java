@@ -4,13 +4,19 @@ import static java.util.Objects.requireNonNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-/** A simple Markdown string. The class just wraps a usual string. */
+/**
+ * A simple Markdown string. The class just wraps a usual string.
+ */
 public class MarkdownString extends AbstractMarkdownElement {
 
-  /** An empty string. */
+  /**
+   * An empty string.
+   */
   static final MarkdownString EMPTY = new MarkdownString(StringUtils.EMPTY);
 
-  /** The actual string. */
+  /**
+   * The actual string.
+   */
   private final String string;
 
   /**

@@ -3,22 +3,38 @@ package com.sap.oss.phosphor.fosstars.model.qa;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Objects;
 
-/** A holder for a result of executing a test vector. */
+/**
+ * A holder for a result of executing a test vector.
+ */
 public class TestVectorResult {
 
-  /** A test vector. */
+  public enum Status {
+    PASSED, FAILED
+  }
+
+  /**
+   * A test vector.
+   */
   public final TestVector vector;
 
-  /** An index of the test vector. */
+  /**
+   * An index of the test vector.
+   */
   public final int index;
 
-  /** A calculated score value. */
+  /**
+   * A calculated score value.
+   */
   public final ScoreValue scoreValue;
 
-  /** Passed or failed. */
+  /**
+   * Passed or failed.
+   */
   public final Status status;
 
-  /** A message which provides more details about the result. */
+  /**
+   * A message which provides more details about the result.
+   */
   public final String message;
 
   /**
@@ -60,7 +76,7 @@ public class TestVectorResult {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof TestVectorResult)) {
+    if (o instanceof TestVectorResult == false) {
       return false;
     }
     TestVectorResult result = (TestVectorResult) o;
@@ -74,10 +90,5 @@ public class TestVectorResult {
   @Override
   public int hashCode() {
     return Objects.hash(vector, index, scoreValue, status, message);
-  }
-
-  public enum Status {
-    PASSED,
-    FAILED
   }
 }

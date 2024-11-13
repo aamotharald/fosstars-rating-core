@@ -5,18 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import java.util.Optional;
 
-/** The class holds a version range. */
+/**
+ * The class holds a version range.
+ */
 public class VersionRange {
 
-  /** A start version. */
+  /**
+   * A start version.
+   */
   private final String versionStart;
 
-  /** An end version. */
+  /**
+   * An end version.
+   */
   private final String versionEnd;
 
   /**
-   * Create a version range with start and end versions. Both versions are including. Start and end
-   * version may be null.
+   * Create a version range with start and end versions.
+   * Both versions are including.
+   * Start and end version may be null.
    *
    * @param versionStart The start version.
    * @param versionEnd The end version.

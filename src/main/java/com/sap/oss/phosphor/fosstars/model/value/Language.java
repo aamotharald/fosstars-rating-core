@@ -2,32 +2,26 @@ package com.sap.oss.phosphor.fosstars.model.value;
 
 import java.util.Objects;
 
-/** The enum contains programming languages. */
+/**
+ * The enum contains programming languages.
+ */
 public enum Language {
-  C,
-  CPP,
+
+  C, CPP,
 
   // JVM languages
-  JAVA,
-  SCALA,
+  JAVA, SCALA,
 
   // .NET languages
-  C_SHARP,
-  F_SHARP,
-  VISUALBASIC,
+  C_SHARP, F_SHARP, VISUALBASIC,
 
-  PHP,
-  RUBY,
-  PYTHON,
-  JAVASCRIPT,
-  TYPESCRIPT,
-  GO,
+  PHP, RUBY, PYTHON, JAVASCRIPT, TYPESCRIPT, GO,
 
   OTHER;
 
   /**
-   * Convert a string to a programming language. If the language is unknown, then the method returns
-   * {@link #OTHER}.
+   * Convert a string to a programming language.
+   * If the language is unknown, then the method returns {@link #OTHER}.
    *
    * @param string The string.
    * @return A language.

@@ -1,13 +1,21 @@
 package com.sap.oss.phosphor.fosstars.data;
 
-/** A fake {@link UserCallback}. */
+/**
+ * A fake {@link UserCallback}.
+ */
 public class NoUserCallback implements UserCallback {
 
-  /** Singleton. */
+  /**
+   * Singleton.
+   */
   public static final NoUserCallback INSTANCE = new NoUserCallback();
 
-  /** Initialize a fake user callback. */
-  private NoUserCallback() {}
+  /**
+   * Initialize a fake user callback.
+   */
+  private NoUserCallback() {
+
+  }
 
   @Override
   public boolean canTalk() {

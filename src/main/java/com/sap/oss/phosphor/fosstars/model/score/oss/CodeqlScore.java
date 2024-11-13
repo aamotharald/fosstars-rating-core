@@ -19,13 +19,12 @@ import com.sap.oss.phosphor.fosstars.model.value.Languages;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * The score shows if and how a project uses static analysis with CodeQL. The score is based on the
- * following features.
- *
+ * <p>The score shows if and how a project uses static analysis with CodeQL.
+ * The score is based on the following features.</p>
  * <ul>
- *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_CODEQL_CHECKS}
- *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RUNS_CODEQL_SCANS}
- *   <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#LANGUAGES}
+ *  <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#USES_CODEQL_CHECKS}</li>
+ *  <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#RUNS_CODEQL_SCANS}</li>
+ *  <li>{@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#LANGUAGES}</li>
  * </ul>
  */
 public class CodeqlScore extends FeatureBasedScore {
@@ -33,51 +32,49 @@ public class CodeqlScore extends FeatureBasedScore {
   /**
    * Programming languages supported by CodeQL.
    *
-   * @see <a href="https://help.semmle.com/QL/ql-support/language-support.html">CodeQL - Languages
-   *     and compilers</a>
+   * @see <a href="https://help.semmle.com/QL/ql-support/language-support.html">CodeQL - Languages and compilers</a>
    */
-  private static final Languages SUPPORTED_LANGUAGES =
-      Languages.of(C, CPP, JAVA, C_SHARP, PYTHON, GO, JAVASCRIPT, TYPESCRIPT);
+  private static final Languages SUPPORTED_LANGUAGES = Languages.of(
+      C, CPP, JAVA, C_SHARP, PYTHON, GO, JAVASCRIPT, TYPESCRIPT);
 
-  /** Defines how the score value is increased if a project runs CodeQL scans. */
+  /**
+   * Defines how the score value is increased if a project runs CodeQL scans.
+   */
   private static final double CODEQL_SCANS_POINTS = 5.0;
 
-  /** Defines how the score value is increased if a project runs CodeQL checks for commits. */
+  /**
+   * Defines how the score value is increased if a project runs CodeQL checks for commits.
+   */
   private static final double CODEQL_CHECKS_POINTS = 7.0;
 
-  /** Initializes a new {@link CodeqlScore}. */
+  /**
+   * Initializes a new {@link CodeqlScore}.
+   */
   CodeqlScore() {
-    super("How a project uses CodeQL", USES_CODEQL_CHECKS, RUNS_CODEQL_SCANS, LANGUAGES);
+    super("How a project uses CodeQL",
+        USES_CODEQL_CHECKS, RUNS_CODEQL_SCANS, LANGUAGES);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Boolean> usesCodeqlChecks =
-        findValue(
-            values,
-            USES_CODEQL_CHECKS,
-            "Hey! You have to tell me if the project uses CodeQL checks!");
-    Value<Boolean> runsCodeqlScans =
-        findValue(
-            values,
-            RUNS_CODEQL_SCANS,
-            "Hey! You have to tell me if the project runs CodeQL scans!");
-    Value<Languages> languages =
-        findValue(values, LANGUAGES, "Hey! You have to tell me which languages the project uses!");
+    Value<Boolean> usesCodeqlChecks = findValue(values, USES_CODEQL_CHECKS,
+        "Hey! You have to tell me if the project uses CodeQL checks!");
+    Value<Boolean> runsCodeqlScans = findValue(values, RUNS_CODEQL_SCANS,
+        "Hey! You have to tell me if the project runs CodeQL scans!");
+    Value<Languages> languages = findValue(values, LANGUAGES,
+        "Hey! You have to tell me which languages the project uses!");
 
-    ScoreValue scoreValue = scoreValue(MIN, usesCodeqlChecks, runsCodeqlScans, languages);
+    ScoreValue scoreValue = scoreValue(MIN,
+        usesCodeqlChecks, runsCodeqlScans, languages);
 
     if (allUnknown(usesCodeqlChecks, runsCodeqlScans, languages)) {
-      return scoreValue
-          .makeUnknown()
-          .explain("The score value is unknown because all required features are unknown.");
+      return scoreValue.makeUnknown().explain(
+          "The score value is unknown because all required features are unknown.");
     }
 
     if (!languages.isUnknown() && !SUPPORTED_LANGUAGES.containsAnyOf(languages.get())) {
-      return scoreValue
-          .makeNotApplicable()
-          .explain(
-              "The score is N/A because the project uses languages that are not supported by CodeQL.");
+      return scoreValue.makeNotApplicable().explain(
+          "The score is N/A because the project uses languages that are not supported by CodeQL.");
     }
 
     if (usesCodeqlChecks.orElse(false)) {

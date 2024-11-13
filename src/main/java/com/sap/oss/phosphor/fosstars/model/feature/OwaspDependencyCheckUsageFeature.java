@@ -5,10 +5,14 @@ import com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsage;
 import com.sap.oss.phosphor.fosstars.model.value.OwaspDependencyCheckUsageValue;
 import java.util.Objects;
 
-/** A feature which holds a {@link OwaspDependencyCheckUsage} value. */
+/**
+ * A feature which holds a {@link OwaspDependencyCheckUsage} value.
+ */
 public class OwaspDependencyCheckUsageFeature extends AbstractFeature<OwaspDependencyCheckUsage> {
 
-  /** Initializes a feature. */
+  /**
+   * Initializes a feature.
+   */
   @JsonCreator
   public OwaspDependencyCheckUsageFeature() {
     super("How OWASP Dependency Check is used");

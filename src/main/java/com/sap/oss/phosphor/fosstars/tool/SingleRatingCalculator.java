@@ -20,32 +20,46 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/** The class calculates a rating for a project. */
+/**
+ * The class calculates a rating for a project.
+ */
 public class SingleRatingCalculator implements RatingCalculator {
 
-  /** A logger. */
+  /**
+   * A logger.
+   */
   private static final Logger LOGGER = LogManager.getLogger(SingleRatingCalculator.class);
 
-  /** A rating. */
+  /**
+   * A rating.
+   */
   private final Rating rating;
 
-  /** A list of data providers. */
+  /**
+   * A list of data providers.
+   */
   private final List<DataProvider> providers;
 
-  /** A cache of feature values for GitHub projects. */
+  /**
+   * A cache of feature values for GitHub projects.
+   */
   private ValueCache<Subject> cache = NoValueCache.create();
 
-  /** An interface for interacting with a user. */
+  /**
+   * An interface for interacting with a user.
+   */
   private UserCallback callback = NoUserCallback.INSTANCE;
 
   /**
-   * An adaptor for subjects. The default adaptor returns the same subject if a data provider
-   * supports it.
+   * An adaptor for subjects.
+   * The default adaptor returns the same subject if a data provider supports it.
    */
-  private SubjectAdaptor subjectAdaptor =
-      (subject, provider) -> Optional.of(subject).filter(provider::supports);
+  private SubjectAdaptor subjectAdaptor
+      = (subject, provider) -> Optional.of(subject).filter(provider::supports);
 
-  /** An action that should be run after calculating a rating. */
+  /**
+   * An action that should be run after calculating a rating.
+   */
   private Consumer<Subject> doAfterAction;
 
   /**
@@ -118,7 +132,8 @@ public class SingleRatingCalculator implements RatingCalculator {
       try {
         provider.set(callback).set(cache).update(adaptedSubject.get(), values);
       } catch (Exception e) {
-        LOGGER.warn("Holy Moly, {} data provider failed!", provider.getClass().getSimpleName());
+        LOGGER.warn("Holy Moly, {} data provider failed!",
+            provider.getClass().getSimpleName());
         LOGGER.warn("The last thing that it said was", e);
         LOGGER.warn("But we don't give up!");
       }
@@ -128,15 +143,11 @@ public class SingleRatingCalculator implements RatingCalculator {
     PrettyPrinter printer = PrettyPrinter.withoutVerboseOutput();
     values.toSet().stream()
         .sorted(Comparator.comparing(value -> value.feature().name()))
-        .forEach(
-            value -> {
-              String name = printer.nameOf(value.feature());
-              LOGGER.info(
-                  "   {}{} {}",
-                  name,
-                  name.endsWith("?") ? EMPTY : ":",
-                  printer.actualValueOf(value));
-            });
+        .forEach(value -> {
+          String name = printer.nameOf(value.feature());
+          LOGGER.info("   {}{} {}",
+              name, name.endsWith("?") ? EMPTY : ":", printer.actualValueOf(value));
+        });
 
     subject.set(rating.calculate(values));
 

@@ -24,30 +24,42 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * A Markdown reporter for {@link
- * com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating}.
+ * A Markdown reporter
+ * for {@link com.sap.oss.phosphor.fosstars.model.rating.oss.OssRulesOfPlayRating}.
  */
 public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProject> {
 
-  /** A file where a report is going to be stored. */
+  /**
+   * A file where a report is going to be stored.
+   */
   static final String REPORT_FILENAME = "README.md";
 
-  /** A resource with a template for the report. */
-  private static final String REPORT_TEMPLATE_RESOURCE =
-      "OssRulesOfPlayMarkdownReporterTemplate.md";
+  /**
+   * A resource with a template for the report.
+   */
+  private static final String REPORT_TEMPLATE_RESOURCE
+      = "OssRulesOfPlayMarkdownReporterTemplate.md";
 
-  /** A template for the report. */
-  private static final String REPORT_TEMPLATE =
-      loadFrom(REPORT_TEMPLATE_RESOURCE, OssSecurityRatingMarkdownReporter.class);
+  /**
+   * A template for the report.
+   */
+  private static final String REPORT_TEMPLATE
+      = loadFrom(REPORT_TEMPLATE_RESOURCE, OssSecurityRatingMarkdownReporter.class);
 
-  /** A template for a table row in the report. */
-  private static final String PROJECT_LINE_TEMPLATE =
-      "| %NAME% | %STATUS% | %NUMBER_OF_VIOLATED_RULES% |";
+  /**
+   * A template for a table row in the report.
+   */
+  private static final String PROJECT_LINE_TEMPLATE
+      = "| %NAME% | %STATUS% | %NUMBER_OF_VIOLATED_RULES% |";
 
-  /** An output directory. */
+  /**
+   * An output directory.
+   */
   private final Path outputDirectory;
 
-  /** A formatter for rating values. */
+  /**
+   * A formatter for rating values.
+   */
   private final OssRulesOfPlayRatingMarkdownFormatter formatter;
 
   /**
@@ -72,55 +84,24 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
       Files.createDirectories(directory);
     }
     if (!Files.isDirectory(directory)) {
-      throw new IOException(String.format("Oops! Output directory doesn't exist: %s", directory));
+      throw new IOException(
+          String.format("Oops! Output directory doesn't exist: %s", directory));
     }
 
     this.outputDirectory = directory;
     this.formatter = new OssRulesOfPlayRatingMarkdownFormatter(advisor);
   }
 
-  /**
-   * Prints a name of a project.
-   *
-   * @param project The project.
-   * @return A formatted name of the project.
-   */
-  private static String nameOf(GitHubProject project) {
-    return String.format(
-        "[%s/%s](%s)", project.organization().name(), project.name(), project.scm().toString());
-  }
-
-  /**
-   * Prints a formatted number of violated rules for a project.
-   *
-   * @param project The project.
-   * @return A formatted number of violated rules for the project.
-   */
-  private static String numberOfViolatedRulesIn(GitHubProject project) {
-    Optional<RatingValue> ratingValue = project.ratingValue();
-    if (!ratingValue.isPresent()) {
-      return "UNKNOWN";
-    }
-
-    int n = findViolatedRulesIn(ratingValue.get().scoreValue().usedValues()).size();
-
-    if (n == 0) {
-      return "No violated rules";
-    }
-
-    return String.format("%d violated rule%s", n, n > 1 ? "s" : "");
-  }
-
   @Override
   public void runFor(List<GitHubProject> projects) throws IOException {
-
-    Map<Feature<Boolean>, Set<String>> featureResults =
+    
+    Map<Feature<Boolean>, Set<String>> featureResults = 
         new HashMap<Feature<Boolean>, Set<String>>();
     OssRulesOfPlayScore.EXPECTED_TRUE.stream()
         .forEach(feature -> featureResults.put(feature, new HashSet<String>()));
     OssRulesOfPlayScore.EXPECTED_FALSE.stream()
         .forEach(feature -> featureResults.put(feature, new HashSet<String>()));
-
+    
     int total = 0;
     long numberOfPassed = 0;
     long numberOfWarnings = 0;
@@ -161,13 +142,10 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
       Files.write(
           organizationDirectory.resolve(projectReportFilename),
           formatter.print(project).getBytes());
-
+      
       OssRulesOfPlayScore.findViolatedRulesIn(ratingValue.scoreValue().usedValues()).stream()
-          .forEach(
-              value ->
-                  featureResults
-                      .get(value.feature())
-                      .add(String.format("%s/%s", project.organization().name(), project.name())));
+          .forEach(value -> featureResults.get(value.feature())
+            .add(String.format("%s/%s", project.organization().name(), project.name())));
     }
 
     double percentOfPass = (double) numberOfPassed / total * 100;
@@ -175,25 +153,24 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
     double percentOfFail = (double) numberOfFailed / total * 100;
     double percentOfUnclear = (double) numberOfUnclear / total * 100;
 
-    String content =
-        REPORT_TEMPLATE
-            .replace("%NUMBER_OF_PROJECTS%", String.valueOf(total))
-            .replace("%NUMBER_FAILED_PROJECTS%", String.valueOf(numberOfFailed))
-            .replace("%NUMBER_PASSED_PROJECTS%", String.valueOf(numberOfPassed))
-            .replace("%NUMBER_PROJECTS_WITH_WARNINGS%", String.valueOf(numberOfWarnings))
-            .replace("%NUMBER_UNCLEAR_PROJECTS%", String.valueOf(numberOfUnclear))
-            .replace("%PERCENT_FAILED_PROJECTS%", String.format("%2.1f", percentOfFail))
-            .replace("%PERCENT_PASSED_PROJECTS%", String.format("%2.1f", percentOfPass))
-            .replace("%PERCENT_PROJECTS_WITH_WARNINGS%", String.format("%2.1f", percentOfWarnings))
-            .replace("%PERCENT_UNCLEAR_PROJECTS%", String.format("%2.1f", percentOfUnclear))
-            .replace("%PER_RULE_STATISTICS%", perRuleStatistics(featureResults, projects.size()))
-            .replace("%PROJECT_TABLE%", tableOf(projects));
+    String content = REPORT_TEMPLATE
+        .replace("%NUMBER_OF_PROJECTS%", String.valueOf(total))
+        .replace("%NUMBER_FAILED_PROJECTS%", String.valueOf(numberOfFailed))
+        .replace("%NUMBER_PASSED_PROJECTS%", String.valueOf(numberOfPassed))
+        .replace("%NUMBER_PROJECTS_WITH_WARNINGS%", String.valueOf(numberOfWarnings))
+        .replace("%NUMBER_UNCLEAR_PROJECTS%", String.valueOf(numberOfUnclear))
+        .replace("%PERCENT_FAILED_PROJECTS%", String.format("%2.1f", percentOfFail))
+        .replace("%PERCENT_PASSED_PROJECTS%", String.format("%2.1f", percentOfPass))
+        .replace("%PERCENT_PROJECTS_WITH_WARNINGS%", String.format("%2.1f", percentOfWarnings))
+        .replace("%PERCENT_UNCLEAR_PROJECTS%", String.format("%2.1f", percentOfUnclear))
+        .replace("%PER_RULE_STATISTICS%", perRuleStatistics(featureResults, projects.size()))
+        .replace("%PROJECT_TABLE%", tableOf(projects));
 
     Path path = outputDirectory.resolve(REPORT_FILENAME);
     logger.info("Storing a report to {}", path);
     Files.write(path, content.getBytes());
   }
-
+  
   /**
    * Builds a statistics table per rule.
    *
@@ -203,26 +180,19 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
   private String perRuleStatistics(Map<Feature<Boolean>, Set<String>> featureResults, int total) {
     StringBuffer statisticsTable = new StringBuffer();
     for (Feature<Boolean> feature : featureResults.keySet()) {
-      statisticsTable.append(
-          String.format(
-              "\n### Project statistics for %s (%s)\n\n",
-              formatter.identifierOf(feature).orElseGet(() -> "unknown"),
-              formatter.nameOf(feature)));
+      statisticsTable.append(String.format("\n### Project statistics for %s (%s)\n\n", 
+          formatter.identifierOf(feature).orElseGet(() -> "unknown"), formatter.nameOf(feature)));
       Set<String> resultsForFeature = featureResults.get(feature);
       if (resultsForFeature.isEmpty()) {
         statisticsTable.append("*All projects are compliant with this rule.*\n");
       } else {
         statisticsTable.append("|   | # of projects | % of projects |\n");
         statisticsTable.append("| -------  | :----- | :------------------ |\n");
-        statisticsTable.append(
-            String.format(
-                "| Passed | %d | %2.1f%% |\n",
-                total - resultsForFeature.size(),
-                (double) (total - resultsForFeature.size()) / total * 100));
-        statisticsTable.append(
-            String.format(
-                "| Failed | %d | %2.1f%% |\n\n",
-                resultsForFeature.size(), (double) resultsForFeature.size() / total * 100));
+        statisticsTable.append(String.format("| Passed | %d | %2.1f%% |\n", 
+            total - resultsForFeature.size(), 
+            (double) (total - resultsForFeature.size()) / total * 100));
+        statisticsTable.append(String.format("| Failed | %d | %2.1f%% |\n\n", 
+            resultsForFeature.size(), (double) resultsForFeature.size() / total * 100));
         statisticsTable.append("**Failed projects:**\n");
         resultsForFeature.stream()
             .forEach(result -> statisticsTable.append(String.format("- %s\n", result)));
@@ -259,20 +229,51 @@ public class OssRulesOfPlayMarkdownReporter extends AbstractReporter<GitHubProje
   }
 
   /**
+   * Prints a name of a project.
+   *
+   * @param project The project.
+   * @return A formatted name of the project.
+   */
+  private static String nameOf(GitHubProject project) {
+    return String.format("[%s/%s](%s)",
+        project.organization().name(), project.name(), project.scm().toString());
+  }
+
+  /**
    * Prints a status of a project.
    *
    * @param project The project.
    * @return A status of the project.
    */
   private String statusOf(GitHubProject project) {
-    return String.format(
-        "[%s](%s/%s.md)",
-        project
-            .ratingValue()
+    return String.format("[%s](%s/%s.md)",
+        project.ratingValue()
             .map(RatingValue::label)
             .map(OssRulesOfPlayRatingMarkdownFormatter::formatted)
             .orElse("UNKNOWN"),
         project.organization().name(),
         project.name());
   }
+
+  /**
+   * Prints a formatted number of violated rules for a project.
+   *
+   * @param project The project.
+   * @return A formatted number of violated rules for the project.
+   */
+  private static String numberOfViolatedRulesIn(GitHubProject project) {
+    Optional<RatingValue> ratingValue = project.ratingValue();
+    if (!ratingValue.isPresent()) {
+      return "UNKNOWN";
+    }
+
+    int n = findViolatedRulesIn(ratingValue.get().scoreValue().usedValues()).size();
+
+    if (n == 0) {
+      return "No violated rules";
+    }
+
+    return String.format("%d violated rule%s", n, n > 1 ? "s" : "");
+  }
+
 }

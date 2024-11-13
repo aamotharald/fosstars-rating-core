@@ -6,10 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.oss.phosphor.fosstars.model.Feature;
 import java.util.Objects;
 
-/** This is a value that contains information about vulnerabilities. */
+/**
+ * This is a value that contains information about vulnerabilities.
+ */
 public class VulnerabilitiesValue extends AbstractKnownValue<Vulnerabilities> {
 
-  /** Vulnerabilities. */
+  /**
+   * Vulnerabilities.
+   */
   private final Vulnerabilities vulnerabilities;
 
   /**
@@ -39,7 +43,7 @@ public class VulnerabilitiesValue extends AbstractKnownValue<Vulnerabilities> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof VulnerabilitiesValue)) {
+    if (o instanceof VulnerabilitiesValue == false) {
       return false;
     }
     if (!super.equals(o)) {

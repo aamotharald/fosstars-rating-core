@@ -6,22 +6,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This is a security score for open-source projects. The score is based on the following
- * sub-scores:
- *
+ * <p>This is a security score for open-source projects.
+ * The score is based on the following sub-scores:</p>
  * <ul>
- *   <li>{@link ProjectSecurityTestingScore}
- *   <li>{@link ProjectActivityScore}
- *   <li>{@link ProjectPopularityScore}
- *   <li>{@link CommunityCommitmentScore}
- *   <li>{@link ProjectSecurityAwarenessScore}
- *   <li>{@link UnpatchedVulnerabilitiesScore}
- *   <li>{@link VulnerabilityDiscoveryAndSecurityTestingScore}
+ *   <li>{@link ProjectSecurityTestingScore}</li>
+ *   <li>{@link ProjectActivityScore}</li>
+ *   <li>{@link ProjectPopularityScore}</li>
+ *   <li>{@link CommunityCommitmentScore}</li>
+ *   <li>{@link ProjectSecurityAwarenessScore}</li>
+ *   <li>{@link UnpatchedVulnerabilitiesScore}</li>
+ *   <li>{@link VulnerabilityDiscoveryAndSecurityTestingScore}</li>
  * </ul>
  */
 public class OssSecurityScore extends WeightedCompositeScore {
 
-  /** A set of sub-scores. */
+  /**
+   * A set of sub-scores.
+   */
   private static final Set<Score> SUB_SCORES = new HashSet<>();
 
   static {
@@ -37,7 +38,9 @@ public class OssSecurityScore extends WeightedCompositeScore {
     SUB_SCORES.add(new SecurityReviewScore());
   }
 
-  /** Initializes a new open-source security score. */
+  /**
+   * Initializes a new open-source security score.
+   */
   public OssSecurityScore() {
     super("Security score for open-source projects", SUB_SCORES);
   }

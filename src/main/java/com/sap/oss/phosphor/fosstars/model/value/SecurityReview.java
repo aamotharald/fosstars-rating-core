@@ -13,22 +13,34 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-/** A security review. */
+/**
+ * A security review.
+ */
 public class SecurityReview {
 
-  /** No info about changes since a review. */
+  /**
+   * No info about changes since a review.
+   */
   public static final Double NO_INFO_ABOUT_CHANGES = null;
 
-  /** A parser for dates. */
-  static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
-  /** A valid interval for amount of changes returned by {@link #changes()}. */
+  /**
+   * A valid interval for amount of changes returned by {@link #changes()}.
+   */
   private static final Interval CHANGES_INTERVAL = DoubleInterval.closed(0.0, 1.0);
 
-  /** When the review was done. */
+  /**
+   * A parser for dates.
+   */
+  static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+  /**
+   * When the review was done.
+   */
   private final Date date;
 
-  /** An amount of changes in the project since the review date. */
+  /**
+   * An amount of changes in the project since the review date.
+   */
   private final Double changes;
 
   /**
@@ -38,7 +50,8 @@ public class SecurityReview {
    * @param changes An amount of changes in the project since the review date.
    */
   public SecurityReview(
-      @JsonProperty("date") Date date, @Nullable @JsonProperty("changes") Double changes) {
+      @JsonProperty("date") Date date,
+      @Nullable @JsonProperty("changes") Double changes) {
 
     if (changes != null && !CHANGES_INTERVAL.contains(changes)) {
       throw new IllegalArgumentException(format("Oops! Wrong value for changes %s!", changes));
@@ -68,8 +81,8 @@ public class SecurityReview {
   }
 
   /**
-   * An amount of changes in the project since the review date. This method is necessary for
-   * serialization with Jackson.
+   * An amount of changes in the project since the review date.
+   * This method is necessary for serialization with Jackson.
    *
    * @return An amount of changes in the project since the review date.
    */
@@ -87,7 +100,8 @@ public class SecurityReview {
       return false;
     }
     SecurityReview that = (SecurityReview) o;
-    return Objects.equals(date, that.date) && Objects.equals(changes, that.changes);
+    return Objects.equals(date, that.date)
+        && Objects.equals(changes, that.changes);
   }
 
   @Override
@@ -97,8 +111,7 @@ public class SecurityReview {
 
   @Override
   public String toString() {
-    return format(
-        "Security review at %s, %s of the project files has changed since than",
+    return format("Security review at %s, %s of the project files has changed since than",
         DATE_FORMAT.format(date),
         projectChanged().map(n -> format("%d%%", (int) (n * 100.0))).orElse("unknown part"));
   }

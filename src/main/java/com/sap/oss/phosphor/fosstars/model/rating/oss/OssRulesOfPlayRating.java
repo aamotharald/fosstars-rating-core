@@ -7,10 +7,22 @@ import com.sap.oss.phosphor.fosstars.model.score.oss.OssRulesOfPlayScore;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Objects;
 
-/** This rating checks whether an open source project violates certain rules or not. */
+/**
+ * This rating checks whether an open source project violates certain rules or not.
+ */
 public class OssRulesOfPlayRating extends AbstractRating {
 
-  /** Initializes a new rating. */
+  /**
+   * A set of labels for the rating.
+   */
+  public enum OssRulesOfPlayLabel implements Label {
+
+    PASSED, PASSED_WITH_WARNING, FAILED, UNCLEAR
+  }
+
+  /**
+   * Initializes a new rating.
+   */
   public OssRulesOfPlayRating() {
     super("Open source rules of play rating", new OssRulesOfPlayScore());
   }
@@ -37,13 +49,5 @@ public class OssRulesOfPlayRating extends AbstractRating {
     }
 
     return OssRulesOfPlayLabel.PASSED;
-  }
-
-  /** A set of labels for the rating. */
-  public enum OssRulesOfPlayLabel implements Label {
-    PASSED,
-    PASSED_WITH_WARNING,
-    FAILED,
-    UNCLEAR
   }
 }

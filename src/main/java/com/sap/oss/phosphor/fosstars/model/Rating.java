@@ -5,9 +5,9 @@ import com.sap.oss.phosphor.fosstars.model.value.RatingValue;
 import java.util.Set;
 
 /**
- * This is an interface for a rating. A rating takes feature values and calculate a score. Then, the
- * rating can convert the score to a label. All ratings have to support serialization to JSON with
- * Jackson.
+ * This is an interface for a rating. A rating takes feature values and calculate a score.
+ * Then, the rating can convert the score to a label.
+ * All ratings have to support serialization to JSON with Jackson.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface Rating {

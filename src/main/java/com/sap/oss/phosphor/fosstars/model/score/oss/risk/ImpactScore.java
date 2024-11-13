@@ -13,13 +13,16 @@ import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 import java.util.Objects;
 
 /**
- * This scoring function outputs an impact factor for security risk introduced by an open source
- * project. The factor is based on a specified security impact, for example, confidentiality,
- * integrity or availability impact.
+ * This scoring function outputs an impact factor
+ * for security risk introduced by an open source project.
+ * The factor is based on a specified security impact,
+ * for example, confidentiality, integrity or availability impact.
  */
 public class ImpactScore extends FeatureBasedScore {
 
-  /** A feature that describes impact. */
+  /**
+   * A feature that describes impact.
+   */
   private final Feature<Impact> feature;
 
   /**
@@ -29,7 +32,8 @@ public class ImpactScore extends FeatureBasedScore {
    * @param feature The feature.
    */
   public ImpactScore(
-      @JsonProperty("name") String name, @JsonProperty("feature") Feature<Impact> feature) {
+      @JsonProperty("name") String name,
+      @JsonProperty("feature") Feature<Impact> feature) {
 
     super(name, feature);
     this.feature = Objects.requireNonNull(feature, "Oops! Feature can't be null!");

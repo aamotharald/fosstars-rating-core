@@ -10,25 +10,24 @@ import com.sap.oss.phosphor.fosstars.model.score.FeatureBasedScore;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * This scoring function outputs am impact factor for security risk introduced by an open source
- * project. The factor is based on confidentiality of data that the project likely processes.
+ * This scoring function outputs am impact factor
+ * for security risk introduced by an open source project.
+ * The factor is based on confidentiality of data that the project likely processes.
  */
 public class DataConfidentialityRiskImpactFactor extends FeatureBasedScore {
 
-  /** Create a new scoring function. */
+  /**
+   * Create a new scoring function.
+   */
   public DataConfidentialityRiskImpactFactor() {
-    super(
-        "Impact factor of confidentiality of data that an open source project likely processes",
+    super("Impact factor of confidentiality of data that an open source project likely processes",
         DATA_CONFIDENTIALITY);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<DataConfidentialityType> data =
-        findValue(
-            values,
-            DATA_CONFIDENTIALITY,
-            "Hey! You have to tell me what kind of data the project processes!");
+    Value<DataConfidentialityType> data = findValue(values, DATA_CONFIDENTIALITY,
+        "Hey! You have to tell me what kind of data the project processes!");
 
     ScoreValue scoreValue = scoreValue(MIN, data);
 

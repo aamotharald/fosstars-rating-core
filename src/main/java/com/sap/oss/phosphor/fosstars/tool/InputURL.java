@@ -5,10 +5,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
-/** Reads a URL provided by a user. */
+/**
+ * Reads a URL provided by a user.
+ */
 public class InputURL {
 
-  /** A callback to interact with a user. */
+  /**
+   * A callback to interact with a user.
+   */
   private final UserCallback callback;
 
   /**

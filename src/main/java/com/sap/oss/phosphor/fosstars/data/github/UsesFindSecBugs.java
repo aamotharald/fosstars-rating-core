@@ -19,10 +19,10 @@ import org.apache.maven.model.ReportPlugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 /**
- * This data provider checks if an open-source project uses <a
- * href="https://find-sec-bugs.github.io/">FindSecBugs</a>.
+ * <p>This data provider checks if an open-source project uses
+ * <a href="https://find-sec-bugs.github.io/">FindSecBugs</a>.</p>
  *
- * <p>The provider fills out the {@link OssFeatures#USES_FIND_SEC_BUGS} feature.
+ * <p>The provider fills out the {@link OssFeatures#USES_FIND_SEC_BUGS} feature.</p>
  */
 public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boolean> {
 
@@ -33,6 +33,40 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
    */
   public UsesFindSecBugs(GitHubDataFetcher fetcher) {
     super(fetcher);
+  }
+
+  @Override
+  protected Feature<Boolean> supportedFeature() {
+    return USES_FIND_SEC_BUGS;
+  }
+
+  @Override
+  protected Value<Boolean> fetchValueFor(GitHubProject project) throws IOException {
+    logger.info("Figuring out if the project uses FindSecBugs ...");
+    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
+    boolean answer = checkMaven(repository);
+    return USES_FIND_SEC_BUGS.value(answer);
+  }
+
+  /**
+   * Checks if a repository uses FindSecBugs with Maven.
+   *
+   * @param repository The repository.
+   * @return True if the project uses FindSecBugs, false otherwise.
+   * @throws IOException If something went wrong
+   * @see <a href="https://github.com/find-sec-bugs/find-sec-bugs/wiki/Maven-configuration">Maven configuration</a>
+   */
+  private boolean checkMaven(LocalRepository repository) throws IOException {
+    Optional<InputStream> content = repository.read("pom.xml");
+
+    if (!content.isPresent()) {
+      return false;
+    }
+
+    try (InputStream is = content.get()) {
+      Model model = readModel(is);
+      return browse(model, withVisitor()).result;
+    }
   }
 
   /**
@@ -82,7 +116,7 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
    * @return True if the object is a configuration of FindSecBugs plugin, false otherwise.
    */
   private static boolean isFindSecBugs(Object object) {
-    if (!(object instanceof Xpp3Dom)) {
+    if (object instanceof Xpp3Dom == false) {
       return false;
     }
     Xpp3Dom configuration = (Xpp3Dom) object;
@@ -94,8 +128,8 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
    * Checks if an element is FindSecBugs.
    *
    * @param element The element to be checked.
-   * @return True if an element is the "com.h3xstream.findsecbugs:findsecbugs-plugin" plugin, false
-   *     otherwise.
+   * @return True if an element is
+   *         the "com.h3xstream.findsecbugs:findsecbugs-plugin" plugin, false otherwise.
    */
   private static boolean isFindSecBugs(Xpp3Dom element) {
     if (!"plugin".equals(element.getName())) {
@@ -132,50 +166,21 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
     return false;
   }
 
-  /** Creates a visitor for searching FindSecBugs in a POM file. */
+  /**
+   * Creates a visitor for searching FindSecBugs in a POM file.
+   */
   private static Visitor withVisitor() {
     return new Visitor();
   }
 
-  @Override
-  protected Feature<Boolean> supportedFeature() {
-    return USES_FIND_SEC_BUGS;
-  }
-
-  @Override
-  protected Value<Boolean> fetchValueFor(GitHubProject project) throws IOException {
-    logger.info("Figuring out if the project uses FindSecBugs ...");
-    LocalRepository repository = GitHubDataFetcher.localRepositoryFor(project);
-    boolean answer = checkMaven(repository);
-    return USES_FIND_SEC_BUGS.value(answer);
-  }
-
   /**
-   * Checks if a repository uses FindSecBugs with Maven.
-   *
-   * @param repository The repository.
-   * @return True if the project uses FindSecBugs, false otherwise.
-   * @throws IOException If something went wrong
-   * @see <a href="https://github.com/find-sec-bugs/find-sec-bugs/wiki/Maven-configuration">Maven
-   *     configuration</a>
+   * A visitor for searching FindSecBugs in a POM file.
    */
-  private boolean checkMaven(LocalRepository repository) throws IOException {
-    Optional<InputStream> content = repository.read("pom.xml");
-
-    if (!content.isPresent()) {
-      return false;
-    }
-
-    try (InputStream is = content.get()) {
-      Model model = readModel(is);
-      return browse(model, withVisitor()).result;
-    }
-  }
-
-  /** A visitor for searching FindSecBugs in a POM file. */
   private static class Visitor extends AbstractModelVisitor {
 
-    /** A visitor for searching FindSecBugs in a POM file. */
+    /**
+     * A visitor for searching FindSecBugs in a POM file.
+     */
     private boolean result = false;
 
     @Override
@@ -192,4 +197,5 @@ public class UsesFindSecBugs extends CachedSingleFeatureGitHubDataProvider<Boole
       }
     }
   }
+
 }

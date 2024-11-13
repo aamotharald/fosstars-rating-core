@@ -4,7 +4,9 @@ import com.sap.oss.phosphor.fosstars.model.Interval;
 import com.sap.oss.phosphor.fosstars.model.Visitor;
 import com.sap.oss.phosphor.fosstars.model.Weight;
 
-/** A base class for weights. */
+/**
+ * A base class for weights.
+ */
 abstract class AbstractWeight implements Weight {
 
   @Override
@@ -16,4 +18,5 @@ abstract class AbstractWeight implements Weight {
   public Interval boundaries() {
     return Weight.INTERVAL;
   }
+
 }

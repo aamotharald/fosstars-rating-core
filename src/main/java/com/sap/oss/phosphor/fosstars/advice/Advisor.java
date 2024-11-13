@@ -5,10 +5,14 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-/** An advisor that can give advice about a rating and scores of a subject. */
+/**
+ * An advisor that can give advice about a rating and scores of a subject.
+ */
 public interface Advisor {
 
-  /** An advisor that gives no advice. */
+  /**
+   * An advisor that gives no advice.
+   */
   Advisor DUMMY = subject -> Collections.emptyList();
 
   /**

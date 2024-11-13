@@ -19,13 +19,19 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-/** This handler calculates {@link OssRulesOfPlayRating}. */
+/**
+ * This handler calculates {@link OssRulesOfPlayRating}.
+ */
 public class OssRulesOfPlayRatingHandler extends AbstractHandler {
 
-  /** An advisor for calculated security ratings. */
+  /**
+   * An advisor for calculated security ratings.
+   */
   private final OssRulesOfPlayAdvisor advisor;
 
-  /** A markdown formatter. */
+  /**
+   * A markdown formatter.
+   */
   private final OssRulesOfPlayRatingMarkdownFormatter markdownFormatter;
 
   /**

@@ -6,7 +6,9 @@ import com.sap.oss.phosphor.fosstars.model.feature.AbstractFeature;
 import com.sap.oss.phosphor.fosstars.model.value.SecurityReviews;
 import com.sap.oss.phosphor.fosstars.model.value.SecurityReviewsValue;
 
-/** A features that holds security reviews. */
+/**
+ * A features that holds security reviews.
+ */
 public class SecurityReviewsFeature extends AbstractFeature<SecurityReviews> {
 
   /**

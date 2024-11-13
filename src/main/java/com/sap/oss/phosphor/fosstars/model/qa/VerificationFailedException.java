@@ -1,9 +1,13 @@
 package com.sap.oss.phosphor.fosstars.model.qa;
 
-/** An exception which indicates that a verification procedure for a rating failed. */
+/**
+ * An exception which indicates that a verification procedure for a rating failed.
+ */
 public class VerificationFailedException extends Exception {
 
-  /** Creates an exception with a generic message. */
+  /**
+   * Creates an exception with a generic message.
+   */
   public VerificationFailedException() {
     super("One of the test vectors failed!");
   }

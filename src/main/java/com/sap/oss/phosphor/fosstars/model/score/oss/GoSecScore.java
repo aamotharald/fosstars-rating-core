@@ -14,14 +14,13 @@ import com.sap.oss.phosphor.fosstars.model.value.Languages;
 import com.sap.oss.phosphor.fosstars.model.value.ScoreValue;
 
 /**
- * The score shows if and how a project uses static analysis with GoSec. The score is based on the
- * following features.
- *
+ * <p>The score shows if and how a project uses static analysis with GoSec.
+ * The score is based on the following features.</p>
  * <ul>
- *   <li>{@link OssFeatures#RUNS_GOSEC_SCANS}
- *   <li>{@link OssFeatures#USES_GOSEC_SCAN_CHECKS}
- *   <li>{@link OssFeatures#USES_GOSEC_WITH_RULES}
- *   <li>{@link OssFeatures#LANGUAGES}
+ *  <li>{@link OssFeatures#RUNS_GOSEC_SCANS}</li>
+ *  <li>{@link OssFeatures#USES_GOSEC_SCAN_CHECKS}</li>
+ *  <li>{@link OssFeatures#USES_GOSEC_WITH_RULES}</li>
+ *  <li>{@link OssFeatures#LANGUAGES}</li>
  * </ul>
  */
 public class GoSecScore extends FeatureBasedScore {
@@ -30,69 +29,63 @@ public class GoSecScore extends FeatureBasedScore {
    * Programming languages supported by GoSec.
    *
    * @see <a href="https://github.com/securego/gosec#gosec---golang-security-checker">GoSec
-   *     overview</a>
+   * overview</a>
    */
   private static final Languages SUPPORTED_LANGUAGES = Languages.of(GO);
 
-  /** Defines how the score value is increased if a project runs GoSec checks for commits. */
+  /**
+   * Defines how the score value is increased if a project runs GoSec checks for commits.
+   */
   private static final double GOSEC_SCANS_SELECTED_RULES_POINTS = 4.0;
 
-  /** Defines how the score value is increased if a project runs GoSec scans. */
+  /**
+   * Defines how the score value is increased if a project runs GoSec scans.
+   */
   private static final double GOSEC_SCANS_POINTS = 6.0;
 
-  /** Defines how the score value is increased if a project runs GoSec checks for commits. */
+  /**
+   * Defines how the score value is increased if a project runs GoSec checks for commits.
+   */
   private static final double GOSEC_CHECKS_POINTS = 7.0;
 
-  /** Initializes a new {@link GoSecScore}. */
+  /**
+   * Initializes a new {@link GoSecScore}.
+   */
   GoSecScore() {
-    super(
-        "How a project uses GoSec",
-        USES_GOSEC_SCAN_CHECKS,
-        RUNS_GOSEC_SCANS,
-        USES_GOSEC_WITH_RULES,
-        LANGUAGES);
+    super("How a project uses GoSec", USES_GOSEC_SCAN_CHECKS,
+        RUNS_GOSEC_SCANS, USES_GOSEC_WITH_RULES, LANGUAGES);
   }
 
   @Override
   public ScoreValue calculate(Value<?>... values) {
-    Value<Boolean> usesGoSecChecks =
-        findValue(
-            values,
-            USES_GOSEC_SCAN_CHECKS,
-            "Hey! You have to tell me if the project uses GoSec checks!");
-    Value<Boolean> runsGoSecScans =
-        findValue(
-            values, RUNS_GOSEC_SCANS, "Hey! You have to tell me if the project runs GoSec scans!");
-    Value<Boolean> usesGoSecWithSeclectedRules =
-        findValue(
-            values,
-            USES_GOSEC_WITH_RULES,
-            "Hey! You have to tell me if the project runs GoSec scans with rules!");
-    Value<Languages> languages =
-        findValue(values, LANGUAGES, "Hey! You have to tell me which languages the project uses!");
+    Value<Boolean> usesGoSecChecks = findValue(values, USES_GOSEC_SCAN_CHECKS,
+        "Hey! You have to tell me if the project uses GoSec checks!");
+    Value<Boolean> runsGoSecScans = findValue(values, RUNS_GOSEC_SCANS,
+        "Hey! You have to tell me if the project runs GoSec scans!");
+    Value<Boolean> usesGoSecWithSeclectedRules = findValue(values,
+        USES_GOSEC_WITH_RULES,
+        "Hey! You have to tell me if the project runs GoSec scans with rules!");
+    Value<Languages> languages = findValue(values, LANGUAGES,
+        "Hey! You have to tell me which languages the project uses!");
 
-    ScoreValue scoreValue =
-        scoreValue(MIN, usesGoSecChecks, runsGoSecScans, usesGoSecWithSeclectedRules, languages);
+    ScoreValue scoreValue = scoreValue(MIN,
+        usesGoSecChecks, runsGoSecScans, usesGoSecWithSeclectedRules, languages);
 
-    if (allUnknown(usesGoSecChecks, runsGoSecScans, usesGoSecWithSeclectedRules, languages)) {
-      return scoreValue
-          .makeUnknown()
-          .explain("The score value is unknown because all required features are unknown.");
+    if (allUnknown(usesGoSecChecks, runsGoSecScans, usesGoSecWithSeclectedRules,
+        languages)) {
+      return scoreValue.makeUnknown().explain(
+          "The score value is unknown because all required features are unknown.");
     }
 
     if (languages.isUnknown()) {
-      return scoreValue
-          .makeNotApplicable()
-          .explain(
-              "The score is N/A because the project does not confirm which languages are used.");
+      return scoreValue.makeNotApplicable().explain(
+          "The score is N/A because the project does not confirm which languages are used.");
     }
 
     if (!languages.isUnknown() && !SUPPORTED_LANGUAGES.containsAnyOf(languages.get())) {
-      return scoreValue
-          .makeNotApplicable()
-          .explain(
-              "The score is N/A because the project uses languages that are not supported by "
-                  + "GoSec.");
+      return scoreValue.makeNotApplicable().explain(
+          "The score is N/A because the project uses languages that are not supported by "
+              + "GoSec.");
     }
 
     if (usesGoSecChecks.orElse(false)) {

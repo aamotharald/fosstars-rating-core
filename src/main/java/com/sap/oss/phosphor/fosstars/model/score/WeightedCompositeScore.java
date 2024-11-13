@@ -23,13 +23,19 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-/** A base class for scores which are based on a weighted average of other scores (sub-scores). */
+/**
+ * A base class for scores which are based on a weighted average of other scores (sub-scores).
+ */
 public class WeightedCompositeScore extends AbstractScore implements Tunable {
 
-  /** A set of weighted sub-scores. */
+  /**
+   * A set of weighted sub-scores.
+   */
   private final Set<Score> subScores;
 
-  /** Weights of the sub-scores. */
+  /**
+   * Weights of the sub-scores.
+   */
   private final ScoreWeights weights;
 
   /**
@@ -53,7 +59,8 @@ public class WeightedCompositeScore extends AbstractScore implements Tunable {
   }
 
   /**
-   * Initializes a new score. This constructor is used by Jackson during deserialization.
+   * Initializes a new score.
+   * This constructor is used by Jackson during deserialization.
    *
    * @param name A name of the new score.
    * @param subScores A set of sub-scores.
@@ -195,9 +202,8 @@ public class WeightedCompositeScore extends AbstractScore implements Tunable {
   public <T> Optional<T> subScore(Class<T> clazz) {
     Objects.requireNonNull(clazz, "Hey! Class can't be null!");
     if (!Score.class.isAssignableFrom(clazz)) {
-      throw new IllegalArgumentException(
-          String.format(
-              "I expected an instance of Score but you gave me %s!", clazz.getCanonicalName()));
+      throw new IllegalArgumentException(String.format(
+          "I expected an instance of Score but you gave me %s!", clazz.getCanonicalName()));
     }
     for (Score subScore : subScores()) {
       if (subScore.getClass() == clazz) {
@@ -220,14 +226,15 @@ public class WeightedCompositeScore extends AbstractScore implements Tunable {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof WeightedCompositeScore)) {
+    if (o instanceof WeightedCompositeScore == false) {
       return false;
     }
     if (!super.equals(o)) {
       return false;
     }
     WeightedCompositeScore that = (WeightedCompositeScore) o;
-    return Objects.equals(subScores, that.subScores) && Objects.equals(weights, that.weights);
+    return Objects.equals(subScores, that.subScores)
+        && Objects.equals(weights, that.weights);
   }
 
   @Override

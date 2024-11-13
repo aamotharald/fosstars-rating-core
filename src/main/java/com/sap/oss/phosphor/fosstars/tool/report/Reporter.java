@@ -13,6 +13,14 @@ import java.util.List;
 public interface Reporter<T extends Subject> {
 
   /**
+   * Runs the reporter for a list of projects.
+   *
+   * @param projects The projects.
+   * @throws IOException If something went wrong.
+   */
+  void runFor(List<T> projects) throws IOException;
+
+  /**
    * Returns a reporter that does nothing.
    *
    * @param <T> A type of projects.
@@ -21,12 +29,4 @@ public interface Reporter<T extends Subject> {
   static <T extends OpenSourceProject> Reporter<T> dummy() {
     return projects -> {};
   }
-
-  /**
-   * Runs the reporter for a list of projects.
-   *
-   * @param projects The projects.
-   * @throws IOException If something went wrong.
-   */
-  void runFor(List<T> projects) throws IOException;
 }

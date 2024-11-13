@@ -18,16 +18,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/** A collection of test vectors. */
+/**
+ * A collection of test vectors.
+ */
 public class TestVectors implements Iterable<TestVector> {
 
-  /** No default values. */
+  /**
+   * No default values.
+   */
   private static final Set<Value<?>> NO_DEFAULTS = Collections.emptySet();
 
-  /** A list of test vectors. */
+  /**
+   * A list of test vectors.
+   */
   private final List<TestVector> elements;
 
-  /** A set of default values. */
+  /**
+   * A set of default values.
+   */
   private final Set<Value<?>> defaults;
 
   /**
@@ -53,32 +61,6 @@ public class TestVectors implements Iterable<TestVector> {
     Objects.requireNonNull(defaults, "Hey! Defaults can't be null!");
     this.elements = new ArrayList<>(vectors);
     this.defaults = new HashSet<>(defaults);
-  }
-
-  /**
-   * Loads a list of test vectors from a YAML file.
-   *
-   * @param filename The filename.
-   * @return A list of loaded test vectors.
-   * @throws IOException If something went wrong (file doesn't exist, the content is wrong, etc).
-   */
-  public static TestVectors loadFromYaml(Path filename) throws IOException {
-    Objects.requireNonNull(filename, "Filename can't be null!");
-    try (InputStream is = Files.newInputStream(filename)) {
-      return loadFromYaml(is);
-    }
-  }
-
-  /**
-   * Loads a list of test vectors from YAML.
-   *
-   * @param is An input stream with YAML.
-   * @return A list of test vectors.
-   * @throws IOException If something went wrong.
-   */
-  public static TestVectors loadFromYaml(InputStream is) throws IOException {
-    Objects.requireNonNull(is, "Input stream can't be null!");
-    return Yaml.read(is, TestVectors.class);
   }
 
   /**
@@ -131,13 +113,17 @@ public class TestVectors implements Iterable<TestVector> {
     return elements.size();
   }
 
-  /** This getter is to make Jackson happy. */
+  /**
+   * This getter is to make Jackson happy.
+   */
   @JsonGetter("elements")
   private List<TestVector> elements() {
     return new ArrayList<>(elements);
   }
 
-  /** This getter is to make Jackson happy. */
+  /**
+   * This getter is to make Jackson happy.
+   */
   @JsonGetter("defaults")
   private Set<Value<?>> defaults() {
     return new HashSet<>(defaults);
@@ -148,11 +134,12 @@ public class TestVectors implements Iterable<TestVector> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof TestVectors)) {
+    if (o instanceof TestVectors == false) {
       return false;
     }
     TestVectors that = (TestVectors) o;
-    return Objects.equals(elements, that.elements) && Objects.equals(defaults, that.defaults);
+    return Objects.equals(elements, that.elements)
+        && Objects.equals(defaults, that.defaults);
   }
 
   @Override
@@ -165,7 +152,9 @@ public class TestVectors implements Iterable<TestVector> {
     return vectorsWithDefaults().iterator();
   }
 
-  /** Wraps the original test vectors into {@link TestVectorWithDefaults}. */
+  /**
+   * Wraps the original test vectors into {@link TestVectorWithDefaults}.
+   */
   private List<TestVector> vectorsWithDefaults() {
     List<TestVector> list = new ArrayList<>();
     for (TestVector vector : elements) {
@@ -173,6 +162,32 @@ public class TestVectors implements Iterable<TestVector> {
     }
 
     return list;
+  }
+
+  /**
+   * Loads a list of test vectors from a YAML file.
+   *
+   * @param filename The filename.
+   * @return A list of loaded test vectors.
+   * @throws IOException If something went wrong (file doesn't exist, the content is wrong, etc).
+   */
+  public static TestVectors loadFromYaml(Path filename) throws IOException {
+    Objects.requireNonNull(filename, "Filename can't be null!");
+    try (InputStream is = Files.newInputStream(filename)) {
+      return loadFromYaml(is);
+    }
+  }
+
+  /**
+   * Loads a list of test vectors from YAML.
+   *
+   * @param is An input stream with YAML.
+   * @return A list of test vectors.
+   * @throws IOException If something went wrong.
+   */
+  public static TestVectors loadFromYaml(InputStream is) throws IOException {
+    Objects.requireNonNull(is, "Input stream can't be null!");
+    return Yaml.read(is, TestVectors.class);
   }
 
   /**
@@ -185,4 +200,5 @@ public class TestVectors implements Iterable<TestVector> {
     Objects.requireNonNull(filename, "Filename can't be null!");
     Files.write(filename, Yaml.toBytes(this));
   }
+
 }

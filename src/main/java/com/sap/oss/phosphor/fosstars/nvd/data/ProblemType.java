@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"problemtype_data"})
+@JsonPropertyOrder({
+    "problemtype_data"
+})
 public class ProblemType {
 
   @JsonProperty("problemtype_data")

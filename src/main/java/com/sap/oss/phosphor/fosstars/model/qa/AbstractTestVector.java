@@ -7,22 +7,34 @@ import com.sap.oss.phosphor.fosstars.model.Score;
 import java.util.Objects;
 import java.util.Optional;
 
-/** A base class for test vectors. */
+/**
+ * A base class for test vectors.
+ */
 public abstract class AbstractTestVector implements TestVector {
 
-  /** An interval for an expected score. */
+  /**
+   * An interval for an expected score.
+   */
   final Interval expectedScore;
 
-  /** If it's set to true, then an unknown score value is expected. */
+  /**
+   * If it's set to true, then an unknown score value is expected.
+   */
   final boolean expectedUnknownScore;
 
-  /** If it's set to true, then a not-applicable score value is expected. */
+  /**
+   * If it's set to true, then a not-applicable score value is expected.
+   */
   final boolean expectedNotApplicableScore;
 
-  /** An expected label. */
+  /**
+   * An expected label.
+   */
   final Label expectedLabel;
 
-  /** An alias of the test vector. */
+  /**
+   * An alias of the test vector.
+   */
   final String alias;
 
   /**
@@ -31,23 +43,20 @@ public abstract class AbstractTestVector implements TestVector {
    * @param expectedScore An interval for an expected score.
    * @param expectedLabel An expected label (can be null).
    * @param alias A alias of the test vector.
-   * @param expectedUnknownScore If it's set to true, then an unknown score value is expected.
-   * @param expectedNotApplicableScore If it's set to true, then a not-applicable score value is
-   *     expected.
+   * @param expectedUnknownScore
+   *        If it's set to true, then an unknown score value is expected.
+   * @param expectedNotApplicableScore
+   *        If it's set to true, then a not-applicable score value is expected.
    */
-  AbstractTestVector(
-      Interval expectedScore,
-      Label expectedLabel,
-      String alias,
+  AbstractTestVector(Interval expectedScore, Label expectedLabel, String alias,
       boolean expectedUnknownScore,
       boolean expectedNotApplicableScore) {
 
     Objects.requireNonNull(alias, "Hey! alias can't be null!");
 
     if (expectedScore == null && !expectedNotApplicableScore && !expectedUnknownScore) {
-      throw new IllegalArgumentException(
-          "Hey! Expected score can't be null "
-              + "unless a not-applicable or unknown value is expected!");
+      throw new IllegalArgumentException("Hey! Expected score can't be null "
+          + "unless a not-applicable or unknown value is expected!");
     }
 
     this.expectedScore = expectedScore;
@@ -55,33 +64,6 @@ public abstract class AbstractTestVector implements TestVector {
     this.alias = alias;
     this.expectedUnknownScore = expectedUnknownScore;
     this.expectedNotApplicableScore = expectedNotApplicableScore;
-  }
-
-  /**
-   * Looks for a sub-score in a score.
-   *
-   * @param score The score.
-   * @param scoreClassName A class name of the sub-score.
-   * @return The sub-score if it's found.
-   * @throws IllegalArgumentException If no sub-score found.
-   */
-  static Optional<Score> subScoreIn(Score score, String scoreClassName) {
-    Class<? extends Score> scoreClass = score.getClass();
-    if (scoreClassName.equals(scoreClass.getName())
-        || scoreClassName.equals(scoreClass.getSimpleName())
-        || scoreClassName.equals(scoreClass.getCanonicalName())) {
-
-      return Optional.of(score);
-    }
-
-    for (Score subScore : score.subScores()) {
-      Optional<Score> result = subScoreIn(subScore, scoreClassName);
-      if (result.isPresent()) {
-        return result;
-      }
-    }
-
-    return Optional.empty();
   }
 
   @Override
@@ -124,7 +106,7 @@ public abstract class AbstractTestVector implements TestVector {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof AbstractTestVector)) {
+    if (o instanceof AbstractTestVector == false) {
       return false;
     }
     AbstractTestVector that = (AbstractTestVector) o;
@@ -139,5 +121,32 @@ public abstract class AbstractTestVector implements TestVector {
   public int hashCode() {
     return Objects.hash(
         expectedScore, expectedUnknownScore, expectedNotApplicableScore, expectedLabel, alias);
+  }
+
+  /**
+   * Looks for a sub-score in a score.
+   *
+   * @param score The score.
+   * @param scoreClassName A class name of the sub-score.
+   * @return The sub-score if it's found.
+   * @throws IllegalArgumentException If no sub-score found.
+   */
+  static Optional<Score> subScoreIn(Score score, String scoreClassName) {
+    Class<? extends Score> scoreClass = score.getClass();
+    if (scoreClassName.equals(scoreClass.getName())
+        || scoreClassName.equals(scoreClass.getSimpleName())
+        || scoreClassName.equals(scoreClass.getCanonicalName())) {
+
+      return Optional.of(score);
+    }
+
+    for (Score subScore : score.subScores()) {
+      Optional<Score> result = subScoreIn(subScore, scoreClassName);
+      if (result.isPresent()) {
+        return result;
+      }
+    }
+
+    return Optional.empty();
   }
 }

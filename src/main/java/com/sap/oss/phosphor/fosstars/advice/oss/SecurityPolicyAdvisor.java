@@ -10,8 +10,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 /**
- * An advisor for {@link
- * com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#HAS_SECURITY_POLICY} feature.
+ * An advisor for
+ * {@link com.sap.oss.phosphor.fosstars.model.feature.oss.OssFeatures#HAS_SECURITY_POLICY} feature.
  */
 public class SecurityPolicyAdvisor extends AbstractOssAdvisor {
 

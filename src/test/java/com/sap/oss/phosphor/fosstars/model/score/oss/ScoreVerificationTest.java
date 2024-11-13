@@ -10,13 +10,11 @@ import com.sap.oss.phosphor.fosstars.model.qa.TestVectors;
 import com.sap.oss.phosphor.fosstars.model.qa.VerificationFailedException;
 import com.sap.oss.phosphor.fosstars.model.rating.oss.OssSecurityRating;
 import java.io.InputStream;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ScoreVerificationTest {
 
   @Test
-  @Disabled("check if it is possible to enable this test")
   public void testVerification() {
     ScoreCollector collector = new ScoreCollector();
     RatingRepository.INSTANCE.rating(OssSecurityRating.class).accept(collector);
