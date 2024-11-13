@@ -53,7 +53,8 @@ public class AbstractSubjectTest {
       super(ratingValue, ratingValueDate);
     }
 
-    public TestSubject() {}
+    public TestSubject() {
+    }
 
     @Override
     public String purl() {

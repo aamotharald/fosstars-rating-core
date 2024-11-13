@@ -52,7 +52,8 @@ public class GitHubProjectTest {
     GitHubProject org = new GitHubProject("org", "test");
     List<GitHubProject> list = Collections.singletonList(org);
     ObjectMapper mapper = Json.mapper();
-    TypeReference<List<GitHubProject>> typeReference = new TypeReference<List<GitHubProject>>() {};
+    TypeReference<List<GitHubProject>> typeReference = new TypeReference<List<GitHubProject>>() {
+    };
     byte[] bytes = mapper.writerFor(typeReference).writeValueAsBytes(list);
     List<GitHubProject> clone = mapper.readValue(bytes, typeReference);
     assertEquals(list, clone);

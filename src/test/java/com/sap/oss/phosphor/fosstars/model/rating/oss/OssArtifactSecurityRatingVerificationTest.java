@@ -35,7 +35,7 @@ public class OssArtifactSecurityRatingVerificationTest {
      * Initializes a {@link OssArtifactSecurityRatingVerification} for an {@link
      * OssArtifactSecurityRating}.
      *
-     * @param rating A rating to be verified.
+     * @param rating  A rating to be verified.
      * @param vectors A list of test vectors.
      */
     OssArtifactSecurityRatingVerification(OssArtifactSecurityRating rating, TestVectors vectors) {
@@ -52,7 +52,7 @@ public class OssArtifactSecurityRatingVerificationTest {
     static OssArtifactSecurityRatingVerification createFor(OssArtifactSecurityRating rating)
         throws IOException {
       try (InputStream is =
-          OssArtifactSecurityRatingVerification.class.getResourceAsStream(TEST_VECTORS_YAML)) {
+               OssArtifactSecurityRatingVerification.class.getResourceAsStream(TEST_VECTORS_YAML)) {
 
         ObjectMapper mapper = Yaml.mapper();
         mapper.registerSubtypes(TestArtifactVersion.class);

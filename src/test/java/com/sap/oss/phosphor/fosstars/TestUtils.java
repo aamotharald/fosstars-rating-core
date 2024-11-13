@@ -99,10 +99,14 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public class TestUtils {
 
-  /** The precision when comparing numbers. */
+  /**
+   * The precision when comparing numbers.
+   */
   public static final double DELTA = 0.01;
 
-  /** A test GitHub project. */
+  /**
+   * A test GitHub project.
+   */
   public static final GitHubProject PROJECT = new GitHubProject("org", "test");
 
   public static final Consumer<Value<Boolean>> NO_EXPLANATION =
@@ -118,8 +122,8 @@ public class TestUtils {
    * contains all the passed values.
    *
    * @param expectedScoreValue The expected score value.
-   * @param score The score.
-   * @param values The values.
+   * @param score              The score.
+   * @param values             The values.
    */
   public static void assertScore(double expectedScoreValue, Score score, Set<Value<?>> values) {
     ScoreValue scoreValue = score.calculate(values);
@@ -135,8 +139,8 @@ public class TestUtils {
    * contains all the passed values.
    *
    * @param expectedInterval The expected range for the score value.
-   * @param score The score.
-   * @param values The values.
+   * @param score            The score.
+   * @param values           The values.
    */
   public static void assertScore(Interval expectedInterval, Score score, Set<Value<?>> values) {
     ScoreValue scoreValue = score.calculate(values);
@@ -306,9 +310,9 @@ public class TestUtils {
    * Create a vulnerability with given parameters. All other parameters have some default test
    * values (as they are not required for all tests)
    *
-   * @param cvssValue the cvss value
+   * @param cvssValue    the cvss value
    * @param startVersion the start version of the vulnerability
-   * @param endVersion the end version of the vulnerability
+   * @param endVersion   the end version of the vulnerability
    * @return the created vulnerability
    */
   public static Vulnerability createBasicVulnerability(
@@ -351,8 +355,8 @@ public class TestUtils {
    *
    * @param content The stuff to be committed. It is a map from file name to its content.
    * @param message A commit message.
-   * @param git An interface to the Git repository.
-   * @throws IOException If something went wrong.
+   * @param git     An interface to the Git repository.
+   * @throws IOException     If something went wrong.
    * @throws GitAPIException If git failed.
    */
   public static void commit(Map<String, String> content, String message, Git git)
@@ -379,8 +383,8 @@ public class TestUtils {
    * Looks for a score in a rating.
    *
    * @param scoreClazz The score's class.
-   * @param rating The rating.
-   * @param <T> A type of the score.
+   * @param rating     The rating.
+   * @param <T>        A type of the score.
    * @return The score if found.
    */
   public static <T extends Score> Optional<T> find(Class<T> scoreClazz, Rating rating) {

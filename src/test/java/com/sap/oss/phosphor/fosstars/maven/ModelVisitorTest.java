@@ -25,9 +25,9 @@ public class ModelVisitorTest {
   @Test
   public void testWithOnePluginInDefaultBuild() throws IOException {
     try (InputStream is =
-        getClass()
-            .getResourceAsStream(
-                "/com/sap/oss/phosphor/fosstars/data/github/MavenCheckStyleWithNoHttp.xml")) {
+             getClass()
+                 .getResourceAsStream(
+                     "/com/sap/oss/phosphor/fosstars/data/github/MavenCheckStyleWithNoHttp.xml")) {
 
       browse(
           readModel(is),
@@ -57,9 +57,9 @@ public class ModelVisitorTest {
   @Test
   public void testWithOnePluginInProfileBuild() throws IOException {
     try (InputStream is =
-        getClass()
-            .getResourceAsStream(
-                "/com/sap/oss/phosphor/fosstars/data/github/MavenWithFindSecBugsInProfilesBuild.xml")) {
+             getClass()
+                 .getResourceAsStream(
+                     "/com/sap/oss/phosphor/fosstars/data/github/MavenWithFindSecBugsInProfilesBuild.xml")) {
 
       browse(
           readModel(is),
@@ -90,10 +90,10 @@ public class ModelVisitorTest {
   @Test
   public void testWithOnePluginInBuildPluginManagement() throws IOException {
     try (InputStream is =
-        getClass()
-            .getResourceAsStream(
-                "/com/sap/oss/phosphor/fosstars/data/github/"
-                    + "MavenWithOwaspDependencyCheckInBuildPluginManagement.xml")) {
+             getClass()
+                 .getResourceAsStream(
+                     "/com/sap/oss/phosphor/fosstars/data/github/"
+                         + "MavenWithOwaspDependencyCheckInBuildPluginManagement.xml")) {
 
       browse(
           readModel(is),
@@ -124,10 +124,10 @@ public class ModelVisitorTest {
   @Test
   public void testWithOnePluginInProfilesReporting() throws IOException {
     try (InputStream is =
-        getClass()
-            .getResourceAsStream(
-                "/com/sap/oss/phosphor/fosstars/data/github/"
-                    + "MavenWithOwaspDependencyCheckInProfilesReporting.xml")) {
+             getClass()
+                 .getResourceAsStream(
+                     "/com/sap/oss/phosphor/fosstars/data/github/"
+                         + "MavenWithOwaspDependencyCheckInProfilesReporting.xml")) {
 
       browse(
           readModel(is),

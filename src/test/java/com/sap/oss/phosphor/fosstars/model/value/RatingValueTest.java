@@ -39,9 +39,9 @@ public class RatingValueTest {
     assertEquals(ratingValue, ratingValueClone);
 
     ScoreValue[] scoreValues = {
-      new ScoreValue(SECURITY_TESTING_SCORE_EXAMPLE, 5.1, 0.8, 9.0, Collections.emptyList()),
-      new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE, 4.1, 0.8, 9.0, Collections.emptyList()),
-      new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.1, 0.8, 7.0, Collections.emptyList())
+        new ScoreValue(SECURITY_TESTING_SCORE_EXAMPLE, 5.1, 0.8, 9.0, Collections.emptyList()),
+        new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE, 4.1, 0.8, 9.0, Collections.emptyList()),
+        new ScoreValue(PROJECT_ACTIVITY_SCORE_EXAMPLE, 5.1, 0.8, 7.0, Collections.emptyList())
     };
 
     for (ScoreValue anotherScoreValue : scoreValues) {

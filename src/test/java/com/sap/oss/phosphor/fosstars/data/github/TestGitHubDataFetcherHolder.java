@@ -20,14 +20,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
-/** The class creates an instance of {@link GitHubDataFetcher} for tests. */
+/**
+ * The class creates an instance of {@link GitHubDataFetcher} for tests.
+ */
 public class TestGitHubDataFetcherHolder {
 
   static {
     System.setProperty(REPOSITORIES_BASE_PATH_PROPERTY, ".fosstars/test_repositories");
   }
 
-  /** An instance of {@link GitHubDataFetcher} for tests. */
+  /**
+   * An instance of {@link GitHubDataFetcher} for tests.
+   */
   protected TestGitHubDataFetcher fetcher;
 
   /**
@@ -63,7 +67,9 @@ public class TestGitHubDataFetcherHolder {
 
   public static class TestGitHubDataFetcher extends GitHubDataFetcher {
 
-    /** Test class constructor. */
+    /**
+     * Test class constructor.
+     */
     public TestGitHubDataFetcher(GitHub github) throws IOException {
       super(github, "test token");
     }
@@ -71,7 +77,7 @@ public class TestGitHubDataFetcherHolder {
     /**
      * Adds {@link GitHubProject} and its associated {@link LocalRepository} details to cache.
      *
-     * @param project The {@link GitHubProject}.
+     * @param project    The {@link GitHubProject}.
      * @param repository The {@link LocalRepository}.
      */
     public static void addForTesting(GitHubProject project, LocalRepository repository) {
@@ -81,7 +87,7 @@ public class TestGitHubDataFetcherHolder {
     /**
      * Add a new project to be considered while loading repository.
      *
-     * @param project The {@link GitHubProject}.
+     * @param project    The {@link GitHubProject}.
      * @param projectDir The local {@link Path} for the {@link GitHubProject}.
      */
     static void addRepositoryInfoForTesting(GitHubProject project, Path projectDir) {
@@ -104,7 +110,7 @@ public class TestGitHubDataFetcherHolder {
     /**
      * Adds {@link GitHubProject} and its {@link GHRepository repository on Github} to the cache.
      *
-     * @param project The {@link GitHubProject}.
+     * @param project    The {@link GitHubProject}.
      * @param repository The {@link GHRepository repository on GitHub}.
      */
     void addForTesting(GitHubProject project, GHRepository repository) {

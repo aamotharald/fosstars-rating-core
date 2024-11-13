@@ -27,7 +27,7 @@ public class FuzzedInOssFuzzTest extends TestGitHubDataFetcherHolder {
   public void testFetchValueFor() throws IOException, GitAPIException {
     Path directory = Files.createTempDirectory(getClass().getSimpleName());
     try (Repository repository = FileRepositoryBuilder.create(directory.resolve(".git").toFile());
-        Git git = new Git(repository)) {
+         Git git = new Git(repository)) {
 
       repository.create();
 

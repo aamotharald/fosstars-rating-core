@@ -257,7 +257,7 @@ public class UseReuseDataProviderTest extends TestGitHubDataFetcherHolder {
     CloseableHttpClient client = mock(CloseableHttpClient.class);
 
     when(client.execute(
-            argThat(new HttpGetMatcher("https://api.reuse.software/status/github.com/org/test"))))
+        argThat(new HttpGetMatcher("https://api.reuse.software/status/github.com/org/test"))))
         .thenReturn(unregisteredResponse);
 
     HttpEntity compliantEntity = mock(HttpEntity.class);
@@ -269,7 +269,7 @@ public class UseReuseDataProviderTest extends TestGitHubDataFetcherHolder {
     when(compliantResponse.getEntity()).thenReturn(compliantEntity);
 
     when(client.execute(
-            argThat(new HttpGetMatcher("https://api.reuse.software/status/github.com/org/test/"))))
+        argThat(new HttpGetMatcher("https://api.reuse.software/status/github.com/org/test/"))))
         .thenReturn(compliantResponse);
 
     UseReuseDataProvider useReuseDataProvider = spy(new UseReuseDataProvider(fetcher));

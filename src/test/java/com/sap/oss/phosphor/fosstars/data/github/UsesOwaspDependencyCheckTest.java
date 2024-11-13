@@ -74,7 +74,7 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testMavenWithOwaspDependencyCheckInBuild() throws IOException {
     try (InputStream is =
-        getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInBuild.xml")) {
+             getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInBuild.xml")) {
 
       ValueSet values = values(createProvider(is, "pom.xml"));
       checkUsage(MANDATORY, values);
@@ -85,8 +85,8 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testMavenWithOwaspDependencyCheckInBuildPluginManagement() throws IOException {
     try (InputStream is =
-        getClass()
-            .getResourceAsStream("MavenWithOwaspDependencyCheckInBuildPluginManagement.xml")) {
+             getClass()
+                 .getResourceAsStream("MavenWithOwaspDependencyCheckInBuildPluginManagement.xml")) {
 
       ValueSet values = values(createProvider(is, "pom.xml"));
       checkUsage(OPTIONAL, values);
@@ -97,7 +97,7 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testMavenWithOwaspDependencyCheckInProfilesBuild() throws IOException {
     try (InputStream is =
-        getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInProfilesBuild.xml")) {
+             getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInProfilesBuild.xml")) {
 
       ValueSet values = values(createProvider(is, "pom.xml"));
       checkUsage(OPTIONAL, values);
@@ -108,7 +108,8 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testMavenWithOwaspDependencyCheckInProfilesReporting() throws IOException {
     try (InputStream is =
-        getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInProfilesReporting.xml")) {
+             getClass().getResourceAsStream(
+                 "MavenWithOwaspDependencyCheckInProfilesReporting.xml")) {
 
       ValueSet values = values(createProvider(is, "pom.xml"));
       checkUsage(OPTIONAL, values);
@@ -119,7 +120,7 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testMavenWithOwaspDependencyCheckInReporting() throws IOException {
     try (InputStream is =
-        getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInReporting.xml")) {
+             getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInReporting.xml")) {
 
       ValueSet values = values(createProvider(is, "pom.xml"));
       checkUsage(MANDATORY, values);
@@ -140,7 +141,7 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testMavenWitOwaspDependencyCheckBuildAndProfile() throws IOException {
     try (InputStream is =
-        getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInBuildAndProfile.xml")) {
+             getClass().getResourceAsStream("MavenWithOwaspDependencyCheckInBuildAndProfile.xml")) {
 
       ValueSet values = values(createProvider(is, "pom.xml"));
       checkUsage(MANDATORY, values);
@@ -171,7 +172,7 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testGradleWithoutOwaspDependencyCheck() throws IOException {
     try (InputStream is =
-        getClass().getResourceAsStream("GradleWithoutOwaspDependencyCheck.gradle")) {
+             getClass().getResourceAsStream("GradleWithoutOwaspDependencyCheck.gradle")) {
 
       ValueSet values = values(createProvider(is, "build.gradle"));
       checkUsage(NOT_USED, values);
@@ -182,8 +183,8 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testGradleWithMandatoryOwaspDependencyCheckWithFailBuildOnCvss() throws IOException {
     try (InputStream is =
-        getClass()
-            .getResourceAsStream("GradleWithOwaspDependencyCheckWithFailBuildOnCvss.gradle")) {
+             getClass()
+                 .getResourceAsStream("GradleWithOwaspDependencyCheckWithFailBuildOnCvss.gradle")) {
 
       ValueSet values = values(createProvider(is, "build.gradle"));
       checkUsage(MANDATORY, values);
@@ -196,9 +197,9 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
       throws IOException {
 
     try (InputStream is =
-        getClass()
-            .getResourceAsStream(
-                "GradleWithOwaspDependencyCheckWithFailBuildOnAnyIssueTrue.gradle")) {
+             getClass()
+                 .getResourceAsStream(
+                     "GradleWithOwaspDependencyCheckWithFailBuildOnAnyIssueTrue.gradle")) {
 
       ValueSet values = values(createProvider(is, "build.gradle"));
       checkUsage(MANDATORY, values);
@@ -211,9 +212,9 @@ public class UsesOwaspDependencyCheckTest extends TestGitHubDataFetcherHolder {
       throws IOException {
 
     try (InputStream is =
-        getClass()
-            .getResourceAsStream(
-                "GradleWithOwaspDependencyCheckWithFailBuildOnAnyIssueFalse.gradle")) {
+             getClass()
+                 .getResourceAsStream(
+                     "GradleWithOwaspDependencyCheckWithFailBuildOnAnyIssueFalse.gradle")) {
 
       ValueSet values = values(createProvider(is, "build.gradle"));
       checkUsage(MANDATORY, values);

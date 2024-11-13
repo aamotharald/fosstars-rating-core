@@ -14,7 +14,9 @@ public class TestUserCallback implements UserCallback {
 
   private static final Logger LOGGER = LogManager.getLogger(TestUserCallback.class);
 
-  /** An iterator over pre-defined answers. */
+  /**
+   * An iterator over pre-defined answers.
+   */
   private final Iterator<String> iterator;
 
   /**

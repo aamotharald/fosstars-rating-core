@@ -69,11 +69,11 @@ public class OssRulesOfPlayMarkdownReporterTest {
       failedProject1.set(
           new RatingValue(
               new ScoreValue(
-                      rating.score(),
-                      Score.MIN,
-                      Weight.MAX,
-                      Confidence.MIN,
-                      Arrays.asList(failedReadme, failedReuse))
+                  rating.score(),
+                  Score.MIN,
+                  Weight.MAX,
+                  Confidence.MIN,
+                  Arrays.asList(failedReadme, failedReuse))
                   .set(Score.MIN)
                   .confidence(8.0),
               FAILED));
@@ -81,7 +81,7 @@ public class OssRulesOfPlayMarkdownReporterTest {
       failedProject2.set(
           new RatingValue(
               new ScoreValue(
-                      rating.score(), Score.MIN, Weight.MAX, Confidence.MIN, List.of(failedReadme))
+                  rating.score(), Score.MIN, Weight.MAX, Confidence.MIN, List.of(failedReadme))
                   .set(Score.MIN)
                   .confidence(8.0),
               FAILED));

@@ -81,7 +81,7 @@ public class MyPyDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithPylintInRepo() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("mypy-analysis-with-pre-commit-hook.yml")) {
+             getClass().getResourceAsStream("mypy-analysis-with-pre-commit-hook.yml")) {
       testPylintFileStreamCheck(
           GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
           content,
@@ -93,7 +93,7 @@ public class MyPyDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithMypyProspector() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("mypy-analysis-with-prospector.yml")) {
+             getClass().getResourceAsStream("mypy-analysis-with-prospector.yml")) {
       testPylintFileStreamCheck(
           GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
           content,

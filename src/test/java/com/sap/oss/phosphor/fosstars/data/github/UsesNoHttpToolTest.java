@@ -45,7 +45,7 @@ public class UsesNoHttpToolTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testMavenWithNoHttpInProfilesBuild() throws IOException {
     try (InputStream is =
-        getClass().getResourceAsStream("MavenCheckStyleWithNoHttpInProfilesBuild.xml")) {
+             getClass().getResourceAsStream("MavenCheckStyleWithNoHttpInProfilesBuild.xml")) {
 
       checkValue(createProvider(is, "pom.xml"), true);
     }

@@ -81,7 +81,7 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithPylintRunsAndMultipleJobs() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-with-multiple-jobs.yml")) {
+             getClass().getResourceAsStream("pylint-analysis-with-multiple-jobs.yml")) {
       testPylintFilesCheck(
           GITHUB_WORKFLOW_FILENAME,
           content,
@@ -93,7 +93,7 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithNoPylintRunsButInstallPylint() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-with-no-pylint-run.yml")) {
+             getClass().getResourceAsStream("pylint-analysis-with-no-pylint-run.yml")) {
       testPylintFilesCheck(
           GITHUB_WORKFLOW_FILENAME,
           content,
@@ -105,7 +105,8 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithNoPylintRunsButInstallsPylintAndUsesPylint() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-with-no-pylint-run-but-uses-pylint.yml")) {
+             getClass().getResourceAsStream(
+                 "pylint-analysis-with-no-pylint-run-but-uses-pylint.yml")) {
       testPylintFilesCheck(
           GITHUB_WORKFLOW_FILENAME,
           content,
@@ -117,7 +118,7 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithPylintInRepo() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-with-pylint-in-repo.yml")) {
+             getClass().getResourceAsStream("pylint-analysis-with-pylint-in-repo.yml")) {
       testPylintFileStreamCheck(
           GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
           content,
@@ -129,7 +130,7 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithPylintInEntry() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-with-pylint-in-entry.yml")) {
+             getClass().getResourceAsStream("pylint-analysis-with-pylint-in-entry.yml")) {
       testPylintFileStreamCheck(
           GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
           content,
@@ -141,7 +142,7 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithPylintInRev() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-with-pylint-in-rev.yml")) {
+             getClass().getResourceAsStream("pylint-analysis-with-pylint-in-rev.yml")) {
       testPylintFileStreamCheck(
           GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
           content,
@@ -153,7 +154,7 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithNoPylintAsPreCommitHookConfig() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-no-pylint-hook.yml")) {
+             getClass().getResourceAsStream("pylint-analysis-no-pylint-hook.yml")) {
       testPylintFileStreamCheck(
           GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
           content,
@@ -165,7 +166,7 @@ public class PylintDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithPylintProspector() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("pylint-analysis-with-prospector.yml")) {
+             getClass().getResourceAsStream("pylint-analysis-with-prospector.yml")) {
       testPylintFileStreamCheck(
           GITHUB_PRE_COMMIT_HOOK_CONFIG_FILENAME,
           content,

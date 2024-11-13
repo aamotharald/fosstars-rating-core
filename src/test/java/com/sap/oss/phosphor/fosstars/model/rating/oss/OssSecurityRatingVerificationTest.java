@@ -31,7 +31,7 @@ public class OssSecurityRatingVerificationTest {
     /**
      * Initializes a {@link OssSecurityRatingVerification} for an {@link OssSecurityRating}.
      *
-     * @param rating A rating to be verified.
+     * @param rating  A rating to be verified.
      * @param vectors A list of test vectors.
      */
     OssSecurityRatingVerification(OssSecurityRating rating, TestVectors vectors) {
@@ -47,7 +47,7 @@ public class OssSecurityRatingVerificationTest {
      */
     static OssSecurityRatingVerification createFor(OssSecurityRating rating) throws IOException {
       try (InputStream is =
-          OssSecurityRatingVerification.class.getResourceAsStream(TEST_VECTORS_YAML)) {
+               OssSecurityRatingVerification.class.getResourceAsStream(TEST_VECTORS_YAML)) {
 
         return new OssSecurityRatingVerification(rating, TestVectors.loadFromYaml(is));
       }

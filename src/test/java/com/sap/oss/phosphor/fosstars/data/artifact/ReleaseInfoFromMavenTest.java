@@ -63,7 +63,7 @@ public class ReleaseInfoFromMavenTest {
     when(response.getEntity()).thenReturn(entity);
 
     try (InputStream content =
-        getClass().getResourceAsStream("ReleaseInfoFromMavenNoArtifactInList.html")) {
+             getClass().getResourceAsStream("ReleaseInfoFromMavenNoArtifactInList.html")) {
       when(entity.getContent()).thenReturn(content);
       processProviderNotFoundInList(provider);
     }

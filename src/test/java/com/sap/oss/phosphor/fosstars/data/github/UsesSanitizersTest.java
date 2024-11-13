@@ -32,10 +32,10 @@ public class UsesSanitizersTest extends TestGitHubDataFetcherHolder {
         String.join(
             "\n",
             new String[] {
-              "first line",
-              "--debug -fsanitize=memory --another-option",
-              "--option -fsanitize=undefined,address --another-option --debug",
-              "another line",
+                "first line",
+                "--debug -fsanitize=memory --another-option",
+                "--option -fsanitize=undefined,address --another-option --debug",
+                "another line",
             });
 
     testProvider(
@@ -87,7 +87,7 @@ public class UsesSanitizersTest extends TestGitHubDataFetcherHolder {
         String.join(
             "\n",
             new String[] {
-              "first line", "-fsanitize=undefined,address", "another line",
+                "first line", "-fsanitize=undefined,address", "another line",
             });
 
     testProvider(
@@ -100,9 +100,9 @@ public class UsesSanitizersTest extends TestGitHubDataFetcherHolder {
         String.join(
             "\n",
             new String[] {
-              "unless ($disabled{asan} || defined $detected_sanitizers{asan}) {",
-              "    push @{$config{cflags}}, \"-fsanitize=address\";",
-              "}"
+                "unless ($disabled{asan} || defined $detected_sanitizers{asan}) {",
+                "    push @{$config{cflags}}, \"-fsanitize=address\";",
+                "}"
             });
 
     testProvider(
@@ -118,7 +118,7 @@ public class UsesSanitizersTest extends TestGitHubDataFetcherHolder {
         String.join(
             "\n",
             new String[] {
-              "first line", "another line",
+                "first line", "another line",
             });
 
     testProvider(
@@ -165,11 +165,11 @@ public class UsesSanitizersTest extends TestGitHubDataFetcherHolder {
         String.join(
             "\n",
             new String[] {
-              "first line",
-              "-fsanitize=address",
-              "another line",
-              "--debug -fsanitize=memory --another-option",
-              "--option -fsanitize=undefined,address --another-option --debug"
+                "first line",
+                "-fsanitize=address",
+                "another line",
+                "--debug -fsanitize=memory --another-option",
+                "--option -fsanitize=undefined,address --another-option --debug"
             });
     List<String> options = UsesSanitizers.lookForSanitizers(content);
     assertEquals(Arrays.asList("address", "memory", "undefined", "address"), options);
@@ -178,7 +178,7 @@ public class UsesSanitizersTest extends TestGitHubDataFetcherHolder {
         String.join(
             "\n",
             new String[] {
-              "--test -fsanitize=  address , memory --undefined",
+                "--test -fsanitize=  address , memory --undefined",
             });
     options = UsesSanitizers.lookForSanitizers(content);
     assertEquals(Arrays.asList("address", "memory"), options);

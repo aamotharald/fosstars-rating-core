@@ -34,7 +34,7 @@ public class LocalRepositoryTest {
   public void testReadFile() throws IOException, GitAPIException {
     Path directory = Files.createTempDirectory(getClass().getSimpleName());
     try (Repository repository = FileRepositoryBuilder.create(directory.resolve(".git").toFile());
-        Git git = new Git(repository)) {
+         Git git = new Git(repository)) {
 
       repository.create();
 
@@ -75,7 +75,7 @@ public class LocalRepositoryTest {
   public void testCommitHistory() throws IOException, GitAPIException, InterruptedException {
     Path directory = Files.createTempDirectory(getClass().getName());
     try (Repository repository = FileRepositoryBuilder.create(directory.resolve(".git").toFile());
-        Git git = new Git(repository)) {
+         Git git = new Git(repository)) {
 
       repository.create();
 
@@ -136,7 +136,7 @@ public class LocalRepositoryTest {
   public void testChanges() throws IOException, GitAPIException {
     Path directory = Files.createTempDirectory(getClass().getName());
     try (Repository repository = FileRepositoryBuilder.create(directory.resolve(".git").toFile());
-        Git git = new Git(repository)) {
+         Git git = new Git(repository)) {
 
       repository.create();
 

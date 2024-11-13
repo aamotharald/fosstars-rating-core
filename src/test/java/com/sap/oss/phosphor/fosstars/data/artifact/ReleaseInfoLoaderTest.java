@@ -70,15 +70,15 @@ public class ReleaseInfoLoaderTest extends TestGitHubDataFetcherHolder {
     assertEquals(0, values.size());
 
     doAnswer(
-            invocation -> {
-              Object[] args = invocation.getArguments();
-              ((ValueHashSet) args[1])
-                  .update(
-                      RELEASED_ARTIFACT_VERSIONS.value(
-                          new ArtifactVersions(
-                              new ArtifactVersion("1.10.10", LocalDateTime.now()))));
-              return null;
-            })
+        invocation -> {
+          Object[] args = invocation.getArguments();
+          ((ValueHashSet) args[1])
+              .update(
+                  RELEASED_ARTIFACT_VERSIONS.value(
+                      new ArtifactVersions(
+                          new ArtifactVersion("1.10.10", LocalDateTime.now()))));
+          return null;
+        })
         .when(releaseInfoFromMaven)
         .update(MAVEN_ARTIFACT, values);
 
@@ -101,14 +101,14 @@ public class ReleaseInfoLoaderTest extends TestGitHubDataFetcherHolder {
     assertEquals(0, values.size());
 
     doAnswer(
-            invocation -> {
-              Object[] args = invocation.getArguments();
-              ((ValueHashSet) args[1])
-                  .update(
-                      RELEASED_ARTIFACT_VERSIONS.value(
-                          new ArtifactVersions(new ArtifactVersion("0.7.1", LocalDateTime.now()))));
-              return null;
-            })
+        invocation -> {
+          Object[] args = invocation.getArguments();
+          ((ValueHashSet) args[1])
+              .update(
+                  RELEASED_ARTIFACT_VERSIONS.value(
+                      new ArtifactVersions(new ArtifactVersion("0.7.1", LocalDateTime.now()))));
+          return null;
+        })
         .when(releaseInfoFromNpm)
         .update(NPM_ARTIFACT, values);
 

@@ -48,7 +48,9 @@ public class RatingRepositoryTest {
     assertSame(ossSecurityRating.score(), ossArtifactSecurityRating.score().ossSecurityScore());
   }
 
-  /** Class used for tests. */
+  /**
+   * Class used for tests.
+   */
   private static class TestRating extends AbstractRating {
 
     public TestRating(Score score) {

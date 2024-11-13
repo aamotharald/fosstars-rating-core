@@ -86,7 +86,7 @@ public class BanditDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithBanditRunsAndMultipleJobs() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("bandit-analysis-with-multiple-jobs.yml")) {
+             getClass().getResourceAsStream("bandit-analysis-with-multiple-jobs.yml")) {
       testBanditRuns(
           GITHUB_WORKFLOW_FILENAME,
           content,
@@ -98,7 +98,7 @@ public class BanditDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithNoBanditRunsButInstallBandit() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("bandit-analysis-with-no-bandit-run.yml")) {
+             getClass().getResourceAsStream("bandit-analysis-with-no-bandit-run.yml")) {
       testBanditRuns(
           GITHUB_WORKFLOW_FILENAME,
           content,
@@ -110,7 +110,8 @@ public class BanditDataProviderTest extends TestGitHubDataFetcherHolder {
   @Test
   public void testWithNoBanditRunsButInstallsBanditAndUsesBandit() throws IOException {
     try (InputStream content =
-        getClass().getResourceAsStream("bandit-analysis-with-no-bandit-run-but-uses-bandit.yml")) {
+             getClass().getResourceAsStream(
+                 "bandit-analysis-with-no-bandit-run-but-uses-bandit.yml")) {
       testBanditRuns(
           GITHUB_WORKFLOW_FILENAME,
           content,

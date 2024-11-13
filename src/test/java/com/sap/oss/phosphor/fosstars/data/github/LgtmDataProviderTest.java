@@ -130,7 +130,7 @@ public class LgtmDataProviderTest extends TestGitHubDataFetcherHolder {
     when(repository.listCommits()).thenReturn(commitPagedIterable);
 
     try (InputStream content =
-        getClass().getResourceAsStream("LgtmProjectDoesNotExistReply.json")) {
+             getClass().getResourceAsStream("LgtmProjectDoesNotExistReply.json")) {
 
       when(entity.getContent()).thenReturn(content);
 
