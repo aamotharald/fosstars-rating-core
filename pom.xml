@@ -361,6 +361,12 @@
       <groupId>org.owasp</groupId>
       <artifactId>dependency-check-core</artifactId>
       <version>${version.dependency-check-core}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.module</groupId>
+          <artifactId>jackson-module-afterburner</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
