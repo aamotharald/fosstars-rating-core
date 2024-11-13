@@ -38,6 +38,29 @@ public class StandardValueCacheTest {
   }
 
   @Test
+  public void testPutAndGet() {
+    StandardValueCache cache = new StandardValueCache();
+    assertEquals(0, cache.size());
+    Optional<ValueSet> someValueSet = cache.get("test");
+    assertFalse(someValueSet.isPresent());
+
+    testPutAndGet(cache, "first", NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(42));
+    assertEquals(1, cache.size());
+
+    testPutAndGet(cache, "first", NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(24));
+    assertEquals(1, cache.size());
+
+    testPutAndGet(cache, "second", NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(24));
+    assertEquals(2, cache.size());
+
+    testPutAndGet(cache, "second", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(7));
+    assertEquals(2, cache.size());
+
+    testPutAndGet(cache, "second", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0));
+    assertEquals(2, cache.size());
+  }
+
+  @Test
   public void testStoreAndLoad() throws IOException {
     Path tmp = Files.createTempFile(StandardValueCacheTest.class.getCanonicalName(), "test");
     String filename = tmp.toString();
@@ -64,29 +87,6 @@ public class StandardValueCacheTest {
     } finally {
       Files.delete(tmp);
     }
-  }
-
-  @Test
-  public void testPutAndGet() {
-    StandardValueCache cache = new StandardValueCache();
-    assertEquals(0, cache.size());
-    Optional<ValueSet> someValueSet = cache.get("test");
-    assertFalse(someValueSet.isPresent());
-
-    testPutAndGet(cache, "first", NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(42));
-    assertEquals(1, cache.size());
-
-    testPutAndGet(cache, "first", NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(24));
-    assertEquals(1, cache.size());
-
-    testPutAndGet(cache, "second", NUMBER_OF_COMMITS_LAST_MONTH_EXAMPLE.value(24));
-    assertEquals(2, cache.size());
-
-    testPutAndGet(cache, "second", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(7));
-    assertEquals(2, cache.size());
-
-    testPutAndGet(cache, "second", NUMBER_OF_CONTRIBUTORS_LAST_MONTH_EXAMPLE.value(0));
-    assertEquals(2, cache.size());
   }
 
   @Test

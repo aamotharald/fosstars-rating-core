@@ -75,6 +75,16 @@ public class TestGitHubDataFetcherHolder {
     }
 
     /**
+     * Adds {@link GitHubProject} and its {@link GHRepository repository on Github} to the cache.
+     *
+     * @param project    The {@link GitHubProject}.
+     * @param repository The {@link GHRepository repository on GitHub}.
+     */
+    void addForTesting(GitHubProject project, GHRepository repository) {
+      repositoryCache().put(project, repository);
+    }
+
+    /**
      * Adds {@link GitHubProject} and its associated {@link LocalRepository} details to cache.
      *
      * @param project    The {@link GitHubProject}.
@@ -105,16 +115,6 @@ public class TestGitHubDataFetcherHolder {
      */
     static Path directoryFor(GitHubProject project) {
       return REPOSITORIES_BASE_PATH.resolve(project.name());
-    }
-
-    /**
-     * Adds {@link GitHubProject} and its {@link GHRepository repository on Github} to the cache.
-     *
-     * @param project    The {@link GitHubProject}.
-     * @param repository The {@link GHRepository repository on GitHub}.
-     */
-    void addForTesting(GitHubProject project, GHRepository repository) {
-      repositoryCache().put(project, repository);
     }
   }
 }

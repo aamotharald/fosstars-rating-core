@@ -94,8 +94,6 @@
     <version.jsoup>1.16.1</version.jsoup>
     <version.okhttp>4.11.0</version.okhttp>
     <version.hamcrest>3.0</version.hamcrest>
-    <version.spotless-maven-plugin>2.43.0</version.spotless-maven-plugin>
-    <version.googleJavaFormat>1.24.0</version.googleJavaFormat>
     <version.maven-gpg-plugin>3.1.0</version.maven-gpg-plugin>
     <version.nexus-staging-maven-plugin>1.6.13</version.nexus-staging-maven-plugin>
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
@@ -105,6 +103,7 @@
     <version.jacoco-maven-plugin>0.8.10</version.jacoco-maven-plugin>
     <version.maven-assembly-plugin>3.6.0</version.maven-assembly-plugin>
 
+    <version.maven-checkstyle-plugin>3.1.2</version.maven-checkstyle-plugin>
     <checkstyleVersion>8.29</checkstyleVersion>
   </properties>
 
@@ -199,32 +198,10 @@
           </execution>
         </executions>
       </plugin>
-      <!--
-      <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <version>${version.spotless-maven-plugin}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>apply</goal>
-            </goals>
-            <phase>compile</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <java>
-            <googleJavaFormat>
-              <version>${version.googleJavaFormat}</version>
-            </googleJavaFormat>
-          </java>
-        </configuration>
-      </plugin>
-        -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>${version.maven-checkstyle-plugin}</version>
         <configuration>
           <configLocation>google_checks.xml</configLocation>
           <encoding>UTF-8</encoding>
@@ -286,7 +263,7 @@
     <profile>
       <id>develop</id>
       <properties>
-        <!--<checkstyle.skip>true</checkstyle.skip>-->
+        <checkstyle.skip>true</checkstyle.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <skipAssembly>true</skipAssembly>
         <spotless.apply.skip>true</spotless.apply.skip>
@@ -295,7 +272,7 @@
     <profile>
       <id>quick-assemble</id>
       <properties>
-        <!--<checkstyle.skip>true</checkstyle.skip>-->
+        <checkstyle.skip>true</checkstyle.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <skipAssembly>false</skipAssembly>
         <skipTests>true</skipTests>

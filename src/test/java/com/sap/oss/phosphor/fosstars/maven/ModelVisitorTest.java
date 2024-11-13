@@ -56,10 +56,8 @@ public class ModelVisitorTest {
 
   @Test
   public void testWithOnePluginInProfileBuild() throws IOException {
-    try (InputStream is =
-             getClass()
-                 .getResourceAsStream(
-                     "/com/sap/oss/phosphor/fosstars/data/github/MavenWithFindSecBugsInProfilesBuild.xml")) {
+    try (InputStream is = getClass().getResourceAsStream(
+        "/com/sap/oss/phosphor/fosstars/data/github/MavenWithFindSecBugsInProfilesBuild.xml")) {
 
       browse(
           readModel(is),
