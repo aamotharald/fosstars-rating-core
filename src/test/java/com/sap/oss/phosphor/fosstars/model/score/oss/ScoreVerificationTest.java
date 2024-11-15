@@ -11,7 +11,6 @@ import com.sap.oss.phosphor.fosstars.model.qa.VerificationFailedException;
 import com.sap.oss.phosphor.fosstars.model.rating.oss.OssSecurityRating;
 import java.io.InputStream;
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ScoreVerificationTest {
@@ -44,11 +43,6 @@ public class ScoreVerificationTest {
   public void testVulnerabilityDiscoveryAndSecurityTestingScore() {
     scoreVerification(
         new VulnerabilityDiscoveryAndSecurityTestingScore(new ProjectSecurityTestingScore()));
-  }
-
-  @Test
-  @Disabled("find out why these test assertins fail")
-  public void testSecurityReviewScore() {
     scoreVerification(new SecurityReviewScore());
   }
 
