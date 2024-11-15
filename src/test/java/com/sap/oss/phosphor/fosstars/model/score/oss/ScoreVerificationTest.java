@@ -29,9 +29,7 @@ public class ScoreVerificationTest {
     collector.scores().add(new VulnerabilityLifetimeScore());
 
     for (Score score : collector.scores()) {
-      if (failingScores.contains(score.getClass().getSimpleName())) {
-        continue;
-      } else {
+      if (!failingScores.contains(score.getClass().getSimpleName())) {
         scoreVerification(score);
       }
     }
