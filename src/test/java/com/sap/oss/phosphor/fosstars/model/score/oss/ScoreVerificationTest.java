@@ -19,7 +19,7 @@ public class ScoreVerificationTest {
   @Test
   public void testVerification() {
 
-    //Scores which are failing - dedicated tests for these below
+    //Scores which are based on dates or somewhat else time dependent and will fail in the future
     List<String> failingScores =
         List.of("VulnerabilityDiscoveryAndSecurityTestingScore", "SecurityReviewScore");
 
@@ -39,14 +39,15 @@ public class ScoreVerificationTest {
   }
 
   @Test
-  @Disabled("investigate why this is failing on JVM different from AdopOpenJDK 8")
+  //Date changed in testdata to have the CVE being more recent to make tests pass
+  // an approach to introduce relative dates is needed for this test case
   public void testVulnerabilityDiscoveryAndSecurityTestingScore() {
     scoreVerification(
         new VulnerabilityDiscoveryAndSecurityTestingScore(new ProjectSecurityTestingScore()));
   }
 
   @Test
-  @Disabled("investigate why this is failing on JVM different from AdopOpenJDK 8")
+  @Disabled("find out why these test assertins fail")
   public void testSecurityReviewScore() {
     scoreVerification(new SecurityReviewScore());
   }
