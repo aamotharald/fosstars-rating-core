@@ -24,8 +24,8 @@ can be found in the [docs](https://sap.github.io/fosstars-rating-core/oss_securi
 
 ## Requirements
 
-*  Java 8+
-*  Maven 3.6.0+
+*  Java 17+
+*  Maven 3.6.3+
 *  Python 3.6.8+
 *  Jupyter Notebook 4.4.0+
 
