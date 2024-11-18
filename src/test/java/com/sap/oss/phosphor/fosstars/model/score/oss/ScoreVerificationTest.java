@@ -15,6 +15,10 @@ import org.junit.jupiter.api.Test;
 
 public class ScoreVerificationTest {
 
+  public static final String TEST_VECTORS_FILE_NAME_TEMPLATE_DEFAULT = "%sTestVectors.yml";
+
+  public static final String TEST_VECTORS_FILE_NAME_TEMPLATE_TIMEDEPENDENT = "%sTestVectorsTimeDependent.yml";
+
   @Test
   public void testVerification() {
 
@@ -30,23 +34,36 @@ public class ScoreVerificationTest {
 
     for (Score score : collector.scores()) {
       if (!failingScores.contains(score.getClass().getSimpleName())) {
-        scoreVerification(score);
+        scoreVerification(score, TEST_VECTORS_FILE_NAME_TEMPLATE_DEFAULT);
       }
     }
   }
 
   @Test
-  //Date changed in testdata to have the CVE being more recent to make tests pass
-  // an approach to introduce relative dates is needed for this test case
-  public void testVulnerabilityDiscoveryAndSecurityTestingScore() {
+  public void testVulnerabilityDiscoveryAndSecurityTestingScoreTimeIndependent() {
     scoreVerification(
-        new VulnerabilityDiscoveryAndSecurityTestingScore(new ProjectSecurityTestingScore()));
-    scoreVerification(new SecurityReviewScore());
+        new VulnerabilityDiscoveryAndSecurityTestingScore(new ProjectSecurityTestingScore()), TEST_VECTORS_FILE_NAME_TEMPLATE_DEFAULT);
   }
 
-  protected void scoreVerification(Score score) {
+  @Test
+  public void testVulnerabilityDiscoveryAndSecurityTestingScoreTimeDependent() {
+    scoreVerification(
+        new VulnerabilityDiscoveryAndSecurityTestingScore(new ProjectSecurityTestingScore()), TEST_VECTORS_FILE_NAME_TEMPLATE_TIMEDEPENDENT);
+  }
+
+  @Test
+  public void testSecurityReviewScoreTimeIndependent() {
+    scoreVerification(new SecurityReviewScore(), TEST_VECTORS_FILE_NAME_TEMPLATE_DEFAULT);
+  }
+
+  @Test
+  public void testSecurityReviewScoreTimeDependent() {
+    scoreVerification(new SecurityReviewScore(), TEST_VECTORS_FILE_NAME_TEMPLATE_TIMEDEPENDENT);
+  }
+
+  protected void scoreVerification(Score score, String testVectorsFileNameTemplate) {
     String className = score.getClass().getSimpleName();
-    String testVectorsFileName = String.format("%sTestVectors.yml", className);
+    String testVectorsFileName = String.format(testVectorsFileNameTemplate, className);
     try (InputStream is = score.getClass().getResourceAsStream(testVectorsFileName)) {
       TestVectors testVectors = TestVectors.loadFromYaml(is);
       if (testVectors.isEmpty()) {

@@ -3,35 +3,51 @@ defaults: [ ]
 elements:
   - type: "StandardTestVector"
     values:
-      - type: "UnknownValue"
+      - type: "SecurityReviewsValue"
         feature:
           type: "SecurityReviewsFeature"
           name: "Security reviews for a project"
+        reviews:
+          - subject:
+              type: "GitHubProject"
+              name: "test"
+              url: "https://github.com/org/test"
+              organization:
+                type: "GitHubOrganization"
+                name: "org"
+            date: "2024-01-01"
     expectedScore:
       type: "DoubleInterval"
-      from: 0.0
+      from: 9.5
       openLeft: false
       negativeInfinity: false
-      to: 0.1
+      to: 10.0
       openRight: false
       positiveInfinity: false
-    expectedUnknownScore: true
     expectedLabel: null
-    alias: "unknown_reviews"
+    alias: "fresh_review"
   - type: "StandardTestVector"
     values:
       - type: "SecurityReviewsValue"
         feature:
           type: "SecurityReviewsFeature"
           name: "Security reviews for a project"
-        reviews: [ ]
+        reviews:
+          - subject:
+              type: "GitHubProject"
+              name: "test"
+              url: "https://github.com/org/test"
+              organization:
+                type: "GitHubOrganization"
+                name: "org"
+            date: "2023-01-01"
     expectedScore:
       type: "DoubleInterval"
-      from: 0.0
+      from: 2.0
       openLeft: false
       negativeInfinity: false
-      to: 1.0
+      to: 5.0
       openRight: false
       positiveInfinity: false
     expectedLabel: null
-    alias: "no_reviews"
+    alias: "old_review"
