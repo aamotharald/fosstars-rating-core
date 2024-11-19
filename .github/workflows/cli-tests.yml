@@ -30,3 +30,5 @@ jobs:
       run: bash src/test/shell/tool/github/run_tests.sh
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #once this credential is available, this could allow for fast pipeline runs
+        #NVD_API_KEAY: ${{ secrets.NVD_API_KEY }}
